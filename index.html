@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#005ca8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.json">
+<title>PROWAY Security Day</title>
+<style>
+:root {
+  --blue: #005ca8;
+  --orange: #ee672a;
+  --bg: #f2f2f7;
+  --card: #ffffff;
+  --text: #000000;
+  --text2: #3c3c43;
+  --text3: #8a8a8e;
+  --sep: #e5e5ea;
+  --orange-light: #fff3ee;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: -apple-system, 'SF Pro Display', 'SF Pro Text', BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* SCREENS */
+.screen { display: none; padding-bottom: 84px; }
+.screen.active { display: block; }
+
+/* NAVBAR */
+.navbar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 0.5px solid var(--sep);
+  display: flex;
+  padding: 8px 0 20px;
+  z-index: 100;
+}
+.nb {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; gap: 3px;
+  border: none; background: none; cursor: pointer;
+  padding: 4px 0;
+}
+.nb svg { width: 26px; height: 26px; }
+.nb-lbl { font-size: 10px; font-weight: 500; color: var(--text3); }
+.nb.act .nb-lbl { color: var(--blue); }
+
+/* HEADER */
+.page-header {
+  background: var(--card);
+  padding: 52px 20px 16px;
+  border-bottom: 0.5px solid var(--sep);
+}
+.page-header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.page-greeting { font-size: 13px; color: var(--text3); font-weight: 400; margin-bottom: 2px; }
+.page-name { font-size: 28px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
+.av-wrap { position: relative; }
+.av {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--blue); display: flex;
+  align-items: center; justify-content: center;
+  font-size: 22px;
+}
+
+/* TICKET */
+.ticket-wrap { padding: 16px 16px 0; }
+.ticket {
+  background: var(--blue);
+  border-radius: 20px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.ticket::before {
+  content: '';
+  position: absolute;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  top: -80px; right: -60px;
+}
+.ticket::after {
+  content: '';
+  position: absolute;
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: rgba(238,103,42,0.25);
+  bottom: -40px; right: 40px;
+}
+.ticket-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20px; position: relative; z-index: 1; }
+.ticket-pts-label { font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.5); letter-spacing: 0.02em; margin-bottom: 4px; }
+.ticket-pts { font-size: 56px; font-weight: 800; color: #fff; letter-spacing: -2px; line-height: 1; }
+.ticket-pts-sub { font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 4px; font-weight: 400; }
+.ticket-rank {
+  background: var(--orange);
+  border-radius: 14px;
+  padding: 10px 16px;
+  text-align: center;
+}
+.ticket-rank-n { font-size: 24px; font-weight: 800; color: #fff; line-height: 1; }
+.ticket-rank-l { font-size: 10px; color: rgba(255,255,255,0.65); font-weight: 500; margin-top: 2px; }
+.ticket-divider {
+  height: 0.5px; background: rgba(255,255,255,0.15);
+  margin-bottom: 16px; position: relative; z-index: 1;
+}
+.ticket-bottom { display: flex; align-items: center; gap: 12px; position: relative; z-index: 1; }
+.ticket-route { display: flex; align-items: center; gap: 8px; }
+.ticket-city { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+.ticket-arrow { color: rgba(255,255,255,0.35); font-size: 16px; }
+.ticket-prog { flex: 1; }
+.ticket-prog-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
+.ticket-prog-lbl { font-size: 11px; color: rgba(255,255,255,0.45); font-weight: 400; }
+.ticket-prog-pct { font-size: 11px; color: var(--orange); font-weight: 700; }
+.ticket-prog-track { height: 3px; background: rgba(255,255,255,0.15); border-radius: 2px; overflow: hidden; }
+.ticket-prog-fill { height: 100%; background: var(--orange); border-radius: 2px; width: 0; transition: width 1s cubic-bezier(0.4,0,0.2,1); }
+
+/* STATS */
+.stats-wrap { padding: 12px 16px 0; display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.stat {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 14px 12px;
+}
+.stat-n { font-size: 28px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; line-height: 1; }
+.stat-n.accent { color: var(--orange); }
+.stat-l { font-size: 12px; color: var(--text3); margin-top: 4px; font-weight: 400; }
+
+/* TIP */
+.tip-wrap { padding: 12px 16px 0; }
+.tip {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.tip-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--orange-light);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.tip-icon svg { width: 18px; height: 18px; }
+.tip-body { flex: 1; }
+.tip-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 1px; }
+.tip-desc { font-size: 12px; color: var(--text3); font-weight: 400; }
+.tip-pts { font-size: 15px; font-weight: 700; color: var(--orange); white-space: nowrap; }
+
+/* SECTION */
+.section-header { padding: 20px 20px 8px; display: flex; align-items: baseline; justify-content: space-between; }
+.section-title { font-size: 17px; font-weight: 700; color: var(--text); letter-spacing: -0.2px; }
+.section-link { font-size: 14px; color: var(--blue); font-weight: 400; }
+
+/* LEADERBOARD */
+.lb { background: var(--card); margin: 0 16px; border-radius: 16px; overflow: hidden; }
+.lb-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 0.5px solid var(--sep); }
+.lb-row:last-child { border-bottom: none; }
+.lb-row.me { background: #f0f5ff; }
+.lb-pos { font-size: 14px; font-weight: 600; min-width: 18px; color: var(--text3); }
+.lb-pos.gold { color: #f59e0b; }
+.lb-pos.me { color: var(--blue); }
+.lb-av { width: 36px; height: 36px; border-radius: 50%; background: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.lb-av.me { border: 2px solid var(--blue); }
+.lb-info { flex: 1; min-width: 0; }
+.lb-name { font-size: 14px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lb-name.me { color: var(--blue); font-weight: 600; }
+.lb-co { font-size: 12px; color: var(--text3); margin-top: 1px; font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lb-pts { font-size: 15px; font-weight: 600; color: var(--text); }
+.lb-pts.me { color: var(--blue); }
+
+/* PROGRAM */
+.program-list { margin: 0 16px; }
+.prog-item { background: var(--card); border-radius: 16px; padding: 16px; margin-bottom: 8px; display: flex; gap: 14px; }
+.prog-time-col { display: flex; flex-direction: column; align-items: center; min-width: 44px; }
+.prog-time { font-size: 14px; font-weight: 700; color: var(--blue); }
+.prog-time-line { width: 1px; flex: 1; background: var(--sep); margin: 6px 0; min-height: 16px; }
+.prog-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--sep); }
+.prog-dot.done { background: var(--blue); }
+.prog-info { flex: 1; min-width: 0; }
+.prog-tag { display: inline-block; font-size: 10px; font-weight: 600; color: var(--blue); background: #e6f0fb; border-radius: 6px; padding: 2px 8px; margin-bottom: 5px; letter-spacing: 0.02em; }
+.prog-tag.orange { color: var(--orange); background: var(--orange-light); }
+.prog-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 3px; line-height: 1.3; }
+.prog-speaker { font-size: 13px; color: var(--text3); font-weight: 400; }
+
+/* SPEAKERS */
+.speaker-list { margin: 0 16px; }
+.speaker-card { background: var(--card); border-radius: 16px; padding: 14px 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+.speaker-av { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; color: #fff; flex-shrink: 0; }
+.speaker-info { flex: 1; }
+.speaker-name { font-size: 15px; font-weight: 600; color: var(--text); }
+.speaker-co { font-size: 13px; font-weight: 400; margin-top: 1px; }
+.speaker-role { font-size: 12px; color: var(--text3); margin-top: 1px; font-weight: 400; }
+
+/* POLLS */
+.poll-card { background: var(--card); border-radius: 16px; padding: 16px; margin: 0 16px 10px; }
+.poll-session { font-size: 11px; font-weight: 600; color: var(--blue); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+.poll-q { font-size: 16px; font-weight: 600; color: var(--text); line-height: 1.4; margin-bottom: 14px; letter-spacing: -0.2px; }
+.poll-opt {
+  width: 100%; text-align: left; padding: 13px 16px;
+  border-radius: 12px; border: 1.5px solid var(--sep);
+  background: var(--bg); font-size: 14px; font-weight: 400;
+  color: var(--text2); font-family: inherit;
+  cursor: pointer; margin-bottom: 8px; transition: all 0.15s;
+  display: block;
+}
+.poll-opt:last-child { margin-bottom: 0; }
+.poll-opt:hover { border-color: var(--blue); }
+.poll-opt.selected { background: var(--blue); color: #fff; border-color: var(--blue); font-weight: 500; }
+.poll-result { position: relative; overflow: hidden; cursor: default; }
+.poll-result-bar { position: absolute; left: 0; top: 0; bottom: 0; background: #e6f0fb; transition: width 0.6s; z-index: 0; }
+.poll-result-bar.orange { background: var(--orange-light); }
+.poll-result-content { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: center; }
+.poll-result-pct { font-weight: 700; color: var(--blue); font-size: 14px; }
+.poll-result-pct.orange { color: var(--orange); }
+
+/* QUESTIONS */
+.q-compose { background: var(--card); margin: 0 16px 10px; border-radius: 16px; padding: 16px; }
+.q-textarea { width: 100%; border: none; background: var(--bg); border-radius: 12px; padding: 12px 14px; font-size: 15px; font-family: inherit; color: var(--text); resize: none; outline: none; min-height: 80px; }
+.q-compose-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
+.q-hint { font-size: 12px; color: var(--text3); }
+.q-send { background: var(--blue); color: #fff; border: none; border-radius: 10px; padding: 10px 18px; font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; }
+.q-card { background: var(--card); border-radius: 16px; padding: 14px 16px; margin: 0 16px 8px; }
+.q-card.top { border-left: 3px solid var(--orange); }
+.q-card.mine { border-left: 3px solid var(--blue); }
+.q-text { font-size: 15px; color: var(--text); line-height: 1.45; margin-bottom: 10px; font-weight: 400; }
+.q-prog { height: 2px; background: var(--sep); border-radius: 1px; margin-bottom: 10px; overflow: hidden; }
+.q-prog-fill { height: 100%; border-radius: 1px; }
+.q-meta { display: flex; align-items: center; justify-content: space-between; }
+.q-author { font-size: 12px; color: var(--text3); }
+.q-vote-row { display: flex; align-items: center; gap: 8px; }
+.q-votes { font-size: 12px; color: var(--text3); }
+.vote-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--sep); background: transparent; font-size: 12px; font-weight: 600; color: var(--text3); font-family: inherit; cursor: pointer; }
+.vote-btn.voted { border-color: var(--orange); color: var(--orange); background: var(--orange-light); }
+
+/* INFO */
+.info-section { background: var(--card); margin: 0 16px 10px; border-radius: 16px; overflow: hidden; }
+.info-row { display: flex; align-items: flex-start; gap: 14px; padding: 14px 16px; border-bottom: 0.5px solid var(--sep); }
+.info-row:last-child { border-bottom: none; }
+.info-icon { width: 32px; height: 32px; border-radius: 8px; background: #e6f0fb; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 16px; }
+.info-icon.orange { background: var(--orange-light); }
+.info-body { flex: 1; }
+.info-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.info-text { font-size: 13px; color: var(--text3); line-height: 1.5; font-weight: 400; }
+
+/* REGISTER */
+.reg-screen { min-height: 100vh; background: var(--bg); }
+.reg-hero { background: var(--blue); padding: 60px 24px 32px; position: relative; overflow: hidden; }
+.reg-hero::before { content: ''; position: absolute; width: 280px; height: 280px; border-radius: 50%; background: rgba(255,255,255,0.05); top: -100px; right: -80px; }
+.reg-hero::after { content: ''; position: absolute; width: 160px; height: 160px; border-radius: 50%; background: rgba(238,103,42,0.3); bottom: -60px; right: 30px; }
+.reg-eyebrow { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.5); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; position: relative; z-index: 1; }
+.reg-title { font-size: 34px; font-weight: 800; color: #fff; line-height: 1.1; letter-spacing: -0.8px; position: relative; z-index: 1; }
+.reg-sub { font-size: 15px; color: rgba(255,255,255,0.55); margin-top: 8px; font-weight: 400; position: relative; z-index: 1; }
+.reg-body { padding: 24px 20px; }
+.field-group { margin-bottom: 20px; }
+.field-label { font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 8px; display: block; }
+.field-input {
+  width: 100%; padding: 14px 16px;
+  border: none; border-radius: 14px;
+  background: var(--card);
+  font-size: 16px; font-family: inherit;
+  color: var(--text); outline: none;
+  -webkit-appearance: none;
+}
+.field-input:focus { box-shadow: 0 0 0 3px rgba(0,92,168,0.15); }
+.tags-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.itag {
+  padding: 9px 16px; border-radius: 24px;
+  background: var(--card); font-size: 14px;
+  font-family: inherit; font-weight: 500;
+  color: var(--text2); border: none; cursor: pointer;
+  transition: all 0.15s;
+}
+.itag.sel { background: var(--blue); color: #fff; }
+.reg-btn {
+  width: 100%; padding: 17px; border-radius: 16px;
+  border: none; background: var(--blue);
+  color: #fff; font-size: 17px; font-weight: 700;
+  font-family: inherit; cursor: pointer;
+  letter-spacing: -0.2px; margin-top: 8px;
+}
+.reg-btn:active { opacity: 0.9; transform: scale(0.99); }
+
+/* TOAST */
+.toast {
+  position: fixed; bottom: 100px; left: 20px; right: 20px;
+  background: rgba(50,50,50,0.92);
+  backdrop-filter: blur(20px);
+  color: #fff; border-radius: 14px;
+  padding: 14px 18px; font-size: 14px; font-weight: 500;
+  text-align: center; z-index: 300;
+  opacity: 0; transition: opacity 0.25s;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; }
+
+.loader { text-align: center; padding: 40px; color: var(--text3); font-size: 14px; }
+</style>
+</head>
+<body>
+
+<!-- REGISTER -->
+<div id="screen-register" class="reg-screen">
+  <div class="reg-hero">
+    <div class="reg-eyebrow">PROWAY Security Day 2025</div>
+    <div class="reg-title">Добро<br>пожаловать<br>на борт</div>
+    <div class="reg-sub">Зарегистрируйтесь и получите посадочный талон</div>
+  </div>
+  <div class="reg-body">
+    <div class="field-group">
+      <label class="field-label">Имя и фамилия</label>
+      <input type="text" id="reg-name" class="field-input" placeholder="Анна Козлова">
+    </div>
+    <div class="field-group">
+      <label class="field-label">Компания</label>
+      <input type="text" id="reg-company" class="field-input" placeholder="Название компании">
+    </div>
+    <div class="field-group">
+      <label class="field-label">Должность</label>
+      <input type="text" id="reg-role" class="field-input" placeholder="ИТ-директор">
+    </div>
+    <div class="field-group">
+      <label class="field-label">Интересы в ИБ — до 3</label>
+      <div class="tags-grid" id="tags-wrap">
+        <button class="itag" data-val="NGFW">NGFW</button>
+        <button class="itag" data-val="SOC/SIEM">SOC / SIEM</button>
+        <button class="itag" data-val="Пентест">Пентест</button>
+        <button class="itag" data-val="Zero Trust">Zero Trust</button>
+        <button class="itag" data-val="DLP">DLP</button>
+        <button class="itag" data-val="PAM">PAM</button>
+        <button class="itag" data-val="Криптография">Криптография</button>
+        <button class="itag" data-val="Compliance">Compliance</button>
+      </div>
+    </div>
+    <button class="reg-btn" onclick="register()">Получить посадочный талон</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none;">
+
+  <!-- PROFILE -->
+  <div id="screen-profile" class="screen active">
+    <div class="page-header">
+      <div class="page-header-inner">
+        <div>
+          <div class="page-greeting">Добро пожаловать на борт</div>
+          <div class="page-name" id="p-name">—</div>
+        </div>
+        <div class="av-wrap">
+          <div class="av" id="p-av">🦊</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ticket-wrap">
+      <div class="ticket">
+        <div class="ticket-top">
+          <div>
+            <div class="ticket-pts-label">Баллы на борту</div>
+            <div class="ticket-pts" id="p-pts">0</div>
+            <div class="ticket-pts-sub">из 430 максимум</div>
+          </div>
+          <div class="ticket-rank">
+            <div class="ticket-rank-n" id="p-rank">#—</div>
+            <div class="ticket-rank-l">место</div>
+          </div>
+        </div>
+        <div class="ticket-divider"></div>
+        <div class="ticket-bottom">
+          <div class="ticket-route">
+            <div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-bottom:2px;">Рейс</div>
+              <div class="ticket-city">SEC</div>
+            </div>
+            <div class="ticket-arrow">›</div>
+            <div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-bottom:2px;">Цель</div>
+              <div class="ticket-city">TOP</div>
+            </div>
+          </div>
+          <div class="ticket-prog">
+            <div class="ticket-prog-row">
+              <span class="ticket-prog-lbl">Прогресс</span>
+              <span class="ticket-prog-pct" id="p-pct">0%</span>
+            </div>
+            <div class="ticket-prog-track">
+              <div class="ticket-prog-fill" id="p-bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-wrap">
+      <div class="stat">
+        <div class="stat-n" id="s-sessions">0</div>
+        <div class="stat-l">Сессии</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n" id="s-questions">0</div>
+        <div class="stat-l">Вопросы</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n accent" id="s-polls">0</div>
+        <div class="stat-l">Опросы</div>
+      </div>
+    </div>
+
+    <div class="tip-wrap">
+      <div class="tip">
+        <div class="tip-icon">
+          <svg viewBox="0 0 18 18" fill="none"><path d="M9 2L10.8 7H16L11.6 10.2L13.4 15.2L9 12L4.6 15.2L6.4 10.2L2 7H7.2L9 2Z" fill="#ee672a"/></svg>
+        </div>
+        <div class="tip-body">
+          <div class="tip-title" id="tip-title">Следующий манёвр</div>
+          <div class="tip-desc" id="tip-desc">Загрузка...</div>
+        </div>
+        <div class="tip-pts" id="tip-pts">+25 б</div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <div class="section-title">Рейтинг</div>
+    </div>
+    <div class="lb" id="leaderboard-wrap">
+      <div class="loader">Загрузка...</div>
+    </div>
+  </div>
+
+  <!-- PROGRAM -->
+  <div id="screen-program" class="screen">
+    <div class="page-header">
+      <div class="page-header-inner">
+        <div class="page-name">Программа</div>
+      </div>
+    </div>
+    <div style="height:16px;"></div>
+    <div class="program-list" id="program-list"></div>
+    <div class="section-header"><div class="section-title">Спикеры</div></div>
+    <div class="speaker-list" id="speakers-list"></div>
+  </div>
+
+  <!-- POLLS -->
+  <div id="screen-polls" class="screen">
+    <div class="page-header">
+      <div class="page-header-inner">
+        <div class="page-name">Опросы</div>
+      </div>
+    </div>
+    <div style="height:16px;"></div>
+    <div id="polls-list"></div>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div id="screen-questions" class="screen">
+    <div class="page-header">
+      <div class="page-header-inner">
+        <div>
+          <div class="page-greeting">+25 б · +50 б если выберут в эфир</div>
+          <div class="page-name">Вопросы</div>
+        </div>
+      </div>
+    </div>
+    <div style="height:16px;"></div>
+    <div class="q-compose">
+      <textarea id="q-text" class="q-textarea" placeholder="Задайте вопрос спикеру..."></textarea>
+      <div class="q-compose-footer">
+        <span class="q-hint">Голосуйте за лучший вопрос ниже</span>
+        <button class="q-send" onclick="sendQuestion()">Отправить</button>
+      </div>
+    </div>
+    <div id="questions-list"></div>
+  </div>
+
+  <!-- INFO -->
+  <div id="screen-info" class="screen">
+    <div class="page-header">
+      <div class="page-header-inner">
+        <div class="page-name">Информация</div>
+      </div>
+    </div>
+    <div style="height:16px;"></div>
+
+    <div class="info-section">
+      <div class="info-row">
+        <div class="info-icon">✈</div>
+        <div class="info-body">
+          <div class="info-title">Место проведения</div>
+          <div class="info-text">Воробьевы Холл · ул. Косыгина 28с1</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">🚇</div>
+        <div class="info-body">
+          <div class="info-title">Метро</div>
+          <div class="info-text">Воробьевы горы, выход №2 (южный). По Эскалаторной галерее направо 500 м. Ориентир — станция канатной дороги</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">🚕</div>
+        <div class="info-body">
+          <div class="info-title">Такси</div>
+          <div class="info-text">ул. Косыгина 28с1</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-header"><div class="section-title">Вечерняя программа</div></div>
+    <div class="info-section">
+      <div class="info-row">
+        <div class="info-icon orange">🍽</div>
+        <div class="info-body">
+          <div class="info-title">Фуршетный дозаправщик</div>
+          <div class="info-text">Закуски и напитки — пополним запасы энергии</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon orange">🏆</div>
+        <div class="info-body">
+          <div class="info-title">Награждение</div>
+          <div class="info-text">Лучшие вопросы дня получают призы на сцене</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon orange">🎤</div>
+        <div class="info-body">
+          <div class="info-title">Кавер-авиашоу</div>
+          <div class="info-text">Живая музыка и DJ-диспетчерская</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon orange">🚡</div>
+        <div class="info-body">
+          <div class="info-title">VIP-кабина канатной дороги</div>
+          <div class="info-text">Приватные беседы с партнёрами с высоты птичьего полёта</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-header"><div class="section-title">Розыгрыш</div></div>
+    <div class="info-section">
+      <div class="info-row">
+        <div class="info-icon">🎁</div>
+        <div class="info-body">
+          <div class="info-title">6 × Telegram Premium на 1 год</div>
+          <div class="info-text">Среди подписчиков каналов PROWAY Security Day 2025 и PROWAY. Участвуйте в опросах и задавайте вопросы — это повышает шансы</div>
+        </div>
+      </div>
+    </div>
+    <div style="height:8px;"></div>
+  </div>
+
+</div>
+
+<nav class="navbar" id="navbar" style="display:none;">
+  <button class="nb act" onclick="showScreen('profile')" id="nav-profile">
+    <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="13" width="4" height="8" rx="1.5" fill="#005ca8"/><rect x="10" y="8" width="4" height="13" rx="1.5" fill="#005ca8"/><rect x="17" y="3" width="4" height="18" rx="1.5" fill="#005ca8"/></svg>
+    <span class="nb-lbl" style="color:#005ca8;">Профиль</span>
+  </button>
+  <button class="nb" onclick="showScreen('program')" id="nav-program">
+    <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="17" rx="3" stroke="#8a8a8e" stroke-width="1.6" fill="none"/><line x1="3" y1="9" x2="21" y2="9" stroke="#8a8a8e" stroke-width="1.6"/><rect x="6.5" y="12.5" width="4" height="4" rx="1" fill="#8a8a8e"/></svg>
+    <span class="nb-lbl">Программа</span>
+  </button>
+  <button class="nb" onclick="showScreen('polls')" id="nav-polls">
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="#8a8a8e" stroke-width="1.6" fill="none"/><path d="M8 12l3 3 5-5" stroke="#8a8a8e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span class="nb-lbl">Опросы</span>
+  </button>
+  <button class="nb" onclick="showScreen('questions')" id="nav-questions">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M4 6a2.5 2.5 0 012.5-2.5h11A2.5 2.5 0 0120 6v10a2.5 2.5 0 01-2.5 2.5H9.5L4 22V6z" stroke="#8a8a8e" stroke-width="1.6" fill="none"/></svg>
+    <span class="nb-lbl">Вопросы</span>
+  </button>
+  <button class="nb" onclick="showScreen('info')" id="nav-info">
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="#8a8a8e" stroke-width="1.6" fill="none"/><line x1="12" y1="11" x2="12" y2="16" stroke="#8a8a8e" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="8" r="1.2" fill="#8a8a8e"/></svg>
+    <span class="nb-lbl">Инфо</span>
+  </button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API='https://script.google.com/macros/s/AKfycbyYuilmUoMlTsWc_M0GeuOxmsbJ7QWK9cyOg20j-uUD8HvHBxzsyW5lm-o0kFT0G53tVA/exec';
+const MAX_PTS=430;
+const ANIMALS=['🦊','🐺','🦁','🐯','🐻','🐼','🦝','🦦','🦔','🐨','🦘','🦙','🦒','🦓','🐘','🦅','🦉','🦜','🐬','🦭','🦋','🦛','🦏','🐢'];
+
+const PROGRAM=[
+  {time:'13:50',title:'Приветственное слово экипажа',speaker:'Алексей Матвеев, PROWAY Security',tag:'Взлёт',done:true},
+  {time:'14:00',title:'Панельная дискуссия «Security Talks»',speaker:'Конкуренция на российском рынке ИБ',tag:'Деловая часть',done:true},
+  {time:'15:30',title:'Кофе-брейк и Lounge Expo',speaker:'Первый этаж и веранда · зарядка гаджетов',tag:'Пауза',done:false},
+  {time:'16:00',title:'Прямая линия PROWAY Security',speaker:'Экспресс-опросы · результаты на главный экран',tag:'Деловая часть',done:false},
+  {time:'17:30',title:'Нетворкинг',speaker:'VIP-кабина канатной дороги',tag:'Нетворкинг',done:false},
+  {time:'18:30',title:'Вечерняя программа',speaker:'Фуршет · Кавер-авиашоу · DJ-диспетчерская',tag:'Финал',done:false},
+  {time:'22:00',title:'Приземление. До новых рейсов!',speaker:'Спасибо что выбрали PROWAY Security Day',tag:'',done:false},
+];
+
+const SPEAKERS=[
+  {name:'Роман Бочкарёв',co:'Positive Technologies',role:'Зам. директора по работе с партнёрами',color:'#c0392b'},
+  {name:'Роман Набережный',co:'ИнфоТеКС (ViPNet)',role:'Зам. коммерческого директора',color:'#005ca8'},
+  {name:'Дмитрий Ивашкин',co:'Код Безопасности',role:'Менеджер по работе с партнёрами',color:'#27ae60'},
+  {name:'Вячеслав Гребнев',co:'Гарда',role:'Бизнес-архитектор',color:'#8e44ad'},
+  {name:'Антон Чухнов',co:'AV Soft',role:'Генеральный директор',color:'#ee672a'},
+  {name:'Александр Корзников',co:'ЭВРИТЕГ',role:'Технический директор',color:'#16a085'},
+  {name:'Алексей Матвеев',co:'PROWAY Security',role:'Директор департамента · Модератор',color:'#005ca8'},
+  {name:'Дмитрий Захаренко',co:'PROWAY Security',role:'Технический директор · Модератор',color:'#005ca8'},
+];
+
+const POLLS=[
+  {id:'poll1',session:'Security Talks',
+   question:'Что будет основным «рецептом» выживаемости вендоров на российском рынке?',
+   options:['Регуляторка — соответствие требованиям','Технологии — развитие до мировых решений','Комплексный подход — экосистемы','Маркетинг — расширение аудитории'],
+   votes:[0,0,0,0]},
+  {id:'poll2',session:'Прямая линия',
+   question:'Что является решающим фактором при выборе NGFW?',
+   options:['Цена','Производительность','Функциональность','Сертификация','Другое'],
+   votes:[0,0,0,0,0]},
+  {id:'poll3',session:'Прямая линия',
+   question:'Готовы ли российские ИБ-решения полностью заменить зарубежные?',
+   options:['Полностью готовы','Готовы в большинстве сегментов','Есть существенные пробелы','Пока не готовы'],
+   votes:[0,0,0,0]},
+];
+
+const TIPS=[
+  {title:'Задайте вопрос спикеру',desc:'Если выберут в эфир — дополнительно +50 б',pts:'+25 б'},
+  {title:'Пройдите опрос',desc:'Ваш голос влияет на дискуссию на сцене',pts:'+15 б'},
+  {title:'Проголосуйте за вопрос',desc:'Помогите выбрать лучший вопрос в эфир',pts:''},
+  {title:'Посетите следующую сессию',desc:'Отметьтесь при входе в зал',pts:'+10 б'},
+];
+
+let participant=null,selectedTags=[],votedQuestions=new Set(),pollAnswers={};
+
+function getAnimal(s){let h=0;for(let i=0;i<s.length;i++)h=s.charCodeAt(i)+((h<<5)-h);return ANIMALS[Math.abs(h)%ANIMALS.length];}
+function api(p){return fetch(API+'?'+new URLSearchParams(p)).then(r=>r.json());}
+function showToast(m,d=2500){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),d);}
+
+document.querySelectorAll('.itag').forEach(t=>{
+  t.addEventListener('click',()=>{
+    if(t.classList.contains('sel')){t.classList.remove('sel');selectedTags=selectedTags.filter(v=>v!==t.dataset.val);}
+    else if(selectedTags.length<3){t.classList.add('sel');selectedTags.push(t.dataset.val);}
+  });
+});
+
+async function register(){
+  const name=document.getElementById('reg-name').value.trim();
+  const company=document.getElementById('reg-company').value.trim();
+  const role=document.getElementById('reg-role').value.trim();
+  if(!name||!company){showToast('Заполни имя и компанию');return;}
+  const btn=document.querySelector('.reg-btn');
+  btn.textContent='Регистрируемся...';btn.disabled=true;
+  try{
+    const res=await api({action:'register',name,company,role,interests:selectedTags.join(',')});
+    if(res.success){
+      localStorage.setItem('participant_id',res.id);
+      localStorage.setItem('participant_name',name);
+      localStorage.setItem('participant_company',company);
+      participant={id:res.id,name,company,role,points:15};
+      initApp();showToast('Добро пожаловать на борт! +15 б');
+    }else{showToast('Ошибка: '+(res.error||'попробуй ещё раз'));btn.textContent='Получить посадочный талон';btn.disabled=false;}
+  }catch(e){showToast('Нет соединения');btn.textContent='Получить посадочный талон';btn.disabled=false;}
+}
+
+function initApp(){
+  document.getElementById('screen-register').style.display='none';
+  document.getElementById('app').style.display='block';
+  document.getElementById('navbar').style.display='flex';
+  renderProfile();renderProgram();renderSpeakers();renderPolls();loadLeaderboard();loadQuestions();
+  setInterval(loadLeaderboard,15000);setInterval(loadQuestions,8000);
+  setTimeout(()=>{const b=document.getElementById('p-bar');if(b)b.style.width=(Math.min(participant.points/MAX_PTS,1)*100)+'%';},100);
+}
+
+function showScreen(n){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b=>{b.classList.remove('act');b.querySelector('.nb-lbl').style.color='';b.querySelectorAll('svg [stroke]').forEach(el=>{if(el.getAttribute('stroke')!=='none')el.setAttribute('stroke','#8a8a8e');});b.querySelectorAll('svg [fill]').forEach(el=>{if(el.getAttribute('fill')!=='none'&&el.tagName!=='svg')el.setAttribute('fill','#8a8a8e');});});
+  document.getElementById('screen-'+n).classList.add('active');
+  const nb=document.getElementById('nav-'+n);nb.classList.add('act');nb.querySelector('.nb-lbl').style.color='#005ca8';
+  nb.querySelectorAll('svg [stroke]').forEach(el=>{if(el.getAttribute('stroke')!=='none')el.setAttribute('stroke','#005ca8');});
+  nb.querySelectorAll('svg [fill]').forEach(el=>{if(el.getAttribute('fill')!=='none'&&el.tagName!=='svg')el.setAttribute('fill','#005ca8');});
+}
+
+function renderProfile(){
+  if(!participant)return;
+  document.getElementById('p-av').textContent=getAnimal(participant.name);
+  document.getElementById('p-name').textContent=participant.name.split(' ')[0];
+  const pts=participant.points||0;
+  document.getElementById('p-pts').textContent=pts;
+  const pct=Math.min(Math.round(pts/MAX_PTS*100),100);
+  document.getElementById('p-pct').textContent=pct+'%';
+  const tip=TIPS[Math.floor(Math.random()*TIPS.length)];
+  document.getElementById('tip-title').textContent=tip.title;
+  document.getElementById('tip-desc').textContent=tip.desc;
+  document.getElementById('tip-pts').textContent=tip.pts;
+  if(!tip.pts)document.getElementById('tip-pts').style.display='none';
+}
+
+async function loadLeaderboard(){
+  try{
+    const res=await api({action:'getLeaderboard'});
+    const wrap=document.getElementById('leaderboard-wrap');
+    if(!res.leaderboard||!res.leaderboard.length){wrap.innerHTML='<div class="loader">Пока нет участников</div>';return;}
+    let myRank='—';
+    wrap.innerHTML=res.leaderboard.map((p,i)=>{
+      const isMe=participant&&p.id===participant.id;
+      if(isMe){myRank=i+1;participant.points=p.points;renderProfile();const b=document.getElementById('p-bar');if(b)b.style.width=(Math.min(p.points/MAX_PTS,1)*100)+'%';document.getElementById('p-pts').textContent=p.points;const pct=Math.min(Math.round(p.points/MAX_PTS*100),100);document.getElementById('p-pct').textContent=pct+'%';}
+      const animal=getAnimal(p.name||'x');
+      return`<div class="lb-row${isMe?' me':''}">
+        <span class="lb-pos${i===0?' gold':''}${isMe?' me':''}">${i+1}</span>
+        <div class="lb-av${isMe?' me':''}">${animal}</div>
+        <div class="lb-info">
+          <div class="lb-name${isMe?' me':''}">${p.name}${isMe?' · Вы':''}</div>
+          <div class="lb-co">${p.company||''}</div>
+        </div>
+        <span class="lb-pts${isMe?' me':''}">${p.points} б</span>
+      </div>`;
+    }).join('');
+    document.getElementById('p-rank').textContent='#'+myRank;
+  }catch(e){}
+}
+
+function renderProgram(){
+  document.getElementById('program-list').innerHTML=PROGRAM.map(s=>`
+    <div class="prog-item">
+      <div class="prog-time-col">
+        <div class="prog-time">${s.time}</div>
+        <div class="prog-time-line"></div>
+        <div class="prog-dot${s.done?' done':''}"></div>
+      </div>
+      <div class="prog-info">
+        ${s.tag?`<div class="prog-tag${s.tag==='Пауза'||s.tag==='Финал'?' orange':''}">${s.tag}</div>`:''}
+        <div class="prog-title">${s.title}</div>
+        ${s.speaker?`<div class="prog-speaker">${s.speaker}</div>`:''}
+      </div>
+    </div>`).join('');
+}
+
+function renderSpeakers(){
+  document.getElementById('speakers-list').innerHTML=SPEAKERS.map(s=>{
+    const initials=s.name.split(' ').map(w=>w[0]).join('').slice(0,2);
+    return`<div class="speaker-card">
+      <div class="speaker-av" style="background:${s.color};">${initials}</div>
+      <div class="speaker-info">
+        <div class="speaker-name">${s.name}</div>
+        <div class="speaker-co" style="color:${s.color};font-weight:600;">${s.co}</div>
+        <div class="speaker-role">${s.role}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderPolls(){
+  document.getElementById('polls-list').innerHTML=POLLS.map(poll=>{
+    const answered=pollAnswers[poll.id]!==undefined;
+    if(answered){
+      const total=poll.votes.reduce((a,b)=>a+b,0)||1;
+      return`<div class="poll-card">
+        <div class="poll-session">${poll.session}</div>
+        <div class="poll-q">${poll.question}</div>
+        ${poll.options.map((opt,i)=>{
+          const pct=Math.round(poll.votes[i]/total*100);
+          const isMe=pollAnswers[poll.id]===i;
+          return`<div class="poll-opt poll-result" style="${isMe?'border-color:#005ca8;':''}">
+            <div class="poll-result-bar${isMe?' orange':''}" style="width:${pct}%"></div>
+            <div class="poll-result-content">
+              <span style="${isMe?'font-weight:600;color:#005ca8;':''}">${opt}</span>
+              <span class="poll-result-pct${isMe?' orange':''}">${pct}%</span>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>`;
+    }
+    return`<div class="poll-card">
+      <div class="poll-session">${poll.session}</div>
+      <div class="poll-q">${poll.question}</div>
+      ${poll.options.map((opt,i)=>`<button class="poll-opt" onclick="answerPoll('${poll.id}',${i})">${opt}</button>`).join('')}
+    </div>`;
+  }).join('');
+}
+
+function answerPoll(pollId,optIdx){
+  if(pollAnswers[pollId]!==undefined)return;
+  pollAnswers[pollId]=optIdx;
+  const poll=POLLS.find(p=>p.id===pollId);
+  poll.votes[optIdx]++;
+  renderPolls();
+  document.getElementById('s-polls').textContent=Object.keys(pollAnswers).length;
+  if(participant)api({action:'addPoints',participant_id:participant.id,action:'poll',points:15});
+  showToast('Голос учтён! +15 б');
+}
+
+async function sendQuestion(){
+  const text=document.getElementById('q-text').value.trim();
+  if(!text){showToast('Напишите вопрос');return;}
+  if(!participant){showToast('Сначала зарегистрируйтесь');return;}
+  const btn=document.querySelector('.q-send');
+  btn.textContent='...';btn.disabled=true;
+  try{
+    const res=await api({action:'addQuestion',participant_id:participant.id,participant_name:participant.name,session:'main',text});
+    if(res.success){
+      document.getElementById('q-text').value='';
+      document.getElementById('s-questions').textContent=(parseInt(document.getElementById('s-questions').textContent)||0)+1;
+      showToast('Вопрос отправлен! +25 б');loadQuestions();
+    }
+  }catch(e){showToast('Нет соединения');}
+  btn.textContent='Отправить';btn.disabled=false;
+}
+
+async function loadQuestions(){
+  try{
+    const res=await api({action:'getQuestions',session:'main'});
+    const wrap=document.getElementById('questions-list');
+    if(!res.questions||!res.questions.length){wrap.innerHTML='<div class="q-card" style="text-align:center;color:#8a8a8e;">Вопросов пока нет — будь первым!</div>';return;}
+    const total=res.questions.reduce((s,q)=>s+(parseInt(q.votes)||0),0)||1;
+    wrap.innerHTML=res.questions.map((q,i)=>{
+      const isMe=participant&&q.participant_id===participant.id;
+      const voted=votedQuestions.has(q.id);
+      const pct=Math.round((parseInt(q.votes)||0)/total*100);
+      return`<div class="q-card${i===0?' top':''}${isMe?' mine':''}">
+        <div class="q-text">${q.text}</div>
+        <div class="q-prog"><div class="q-prog-fill" style="width:${pct}%;background:${i===0?'#ee672a':isMe?'#005ca8':'#c7c7cc'};"></div></div>
+        <div class="q-meta">
+          <span class="q-author">${q.participant_name}${isMe?' · мой':i===0?' · лидер':''}</span>
+          <div class="q-vote-row">
+            <span class="q-votes">${q.votes||0} голосов</span>
+            ${!isMe?`<button onclick="voteQ('${q.id}')" ${voted?'disabled':''} class="vote-btn${voted?' voted':''}">${voted?'Отдан':'Голосую'}</button>`:''}
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){}
+}
+
+async function voteQ(qId){
+  if(!participant||votedQuestions.has(qId))return;
+  votedQuestions.add(qId);
+  try{await api({action:'vote',question_id:qId,participant_id:participant.id});showToast('Голос учтён!');loadQuestions();}
+  catch(e){votedQuestions.delete(qId);}
+}
+
+window.addEventListener('load',()=>{
+  if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
+  const id=localStorage.getItem('participant_id');
+  if(id){
+    participant={id,name:localStorage.getItem('participant_name')||'—',company:localStorage.getItem('participant_company')||'—',points:0};
+    initApp();
+  }
+});
+</script>
+</body>
+</html>
