@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#005ca8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<title>PROWAY Security Day</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#005ca8;--orange:#ee672a;--yellow:#f5e642;--black:#000;--white:#fff;--bg:#fef9e7;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Comic Neue',cursive;background:var(--bg);color:var(--black);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+.halftone{background-image:radial-gradient(circle,rgba(255,255,255,0.1) 1.5px,transparent 1.5px);background-size:12px 12px;}
+.screen{display:none;min-height:100vh;flex-direction:column;}
+.screen.active{display:flex;}
+.app-screen{display:none;padding-bottom:72px;}
+.app-screen.active{display:block;}
+
+/* ONBOARDING */
+#ob-welcome{background:var(--blue);}
+.ob-hero{flex:1;padding:60px 24px 24px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;}
+.ob-deco1{position:absolute;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,0.05);top:-80px;right:-80px;}
+.ob-deco2{position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(238,103,42,0.2);bottom:-60px;left:-40px;}
+.ob-eyebrow{font-family:'Bangers',cursive;font-size:12px;color:rgba(255,255,255,0.5);letter-spacing:4px;margin-bottom:10px;position:relative;z-index:1;}
+.ob-title{font-family:'Bangers',cursive;font-size:56px;color:var(--yellow);line-height:0.9;letter-spacing:3px;text-shadow:4px 4px 0 rgba(0,0,0,0.4);position:relative;z-index:1;}
+.ob-title span{color:var(--white);}
+.ob-speech{background:rgba(0,0,0,0.35);border-radius:12px;padding:14px 16px;margin-top:16px;border:1.5px solid rgba(255,255,255,0.12);position:relative;z-index:1;}
+.ob-speech-text{font-size:14px;color:rgba(255,255,255,0.9);line-height:1.6;font-weight:700;}
+.ob-bottom{background:var(--yellow);padding:20px 24px 40px;border-top:3px solid var(--black);}
+.ob-desc{font-size:14px;font-weight:700;color:var(--black);line-height:1.6;margin-bottom:16px;}
+.ob-btn{background:var(--orange);border:3px solid var(--black);border-radius:8px;padding:16px;width:100%;font-family:'Bangers',cursive;font-size:22px;color:var(--white);letter-spacing:3px;text-shadow:2px 2px 0 rgba(0,0,0,0.4);cursor:pointer;display:block;text-align:center;box-shadow:4px 4px 0 var(--black);}
+.ob-btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--black);}
+
+#ob-choose{background:var(--bg);}
+.ob-choose-header{background:var(--black);padding:52px 20px 16px;}
+.ob-choose-title{font-family:'Bangers',cursive;font-size:28px;color:var(--yellow);letter-spacing:3px;}
+.ob-choose-sub{font-size:12px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:1px;margin-top:3px;}
+.ob-choose-body{flex:1;padding:20px;display:flex;flex-direction:column;gap:14px;}
+.ob-choose-q{font-family:'Bangers',cursive;font-size:22px;color:var(--black);letter-spacing:2px;text-align:center;}
+.agent-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.agent-card{border:3px solid var(--black);border-radius:10px;overflow:hidden;cursor:pointer;box-shadow:4px 4px 0 var(--black);}
+.agent-card:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--black);}
+.ac-top{padding:10px;text-align:center;}
+.ac-face{height:110px;display:flex;align-items:center;justify-content:center;border-top:3px solid var(--black);border-bottom:3px solid var(--black);overflow:hidden;}
+.ac-face img{width:100%;height:100%;object-fit:cover;}
+.ac-name{font-family:'Bangers',cursive;font-size:15px;letter-spacing:2px;padding:10px 8px;text-align:center;background:var(--yellow);}
+.ob-tip{background:var(--black);border-radius:8px;padding:12px 14px;}
+.ob-tip-text{font-size:12px;font-weight:700;color:var(--yellow);line-height:1.5;}
+.ob-btn-blue{background:var(--blue);border:3px solid var(--black);border-radius:8px;padding:14px;width:100%;font-family:'Bangers',cursive;font-size:20px;color:var(--yellow);letter-spacing:3px;cursor:pointer;text-align:center;box-shadow:4px 4px 0 var(--black);margin-top:auto;}
+
+#ob-reveal{background:var(--bg);}
+.ob-reveal-header{background:var(--orange);border-bottom:3px solid var(--black);padding:52px 20px 14px;}
+.ob-reveal-title{font-family:'Bangers',cursive;font-size:26px;color:var(--white);letter-spacing:3px;text-shadow:3px 3px 0 rgba(0,0,0,0.3);}
+.ob-reveal-body{flex:1;padding:16px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;}
+.burst-wrap{position:relative;display:flex;align-items:center;justify-content:center;width:180px;height:180px;flex-shrink:0;}
+.burst-bg{position:absolute;inset:0;background:var(--yellow);clip-path:polygon(50% 0%,58% 18%,76% 8%,70% 27%,92% 22%,80% 38%,100% 40%,84% 52%,96% 68%,76% 66%,78% 86%,62% 76%,56% 96%,46% 78%,30% 90%,34% 70%,14% 76%,24% 58%,4% 52%,20% 42%,4% 28%,24% 32%,18% 12%,36% 24%);border:3px solid var(--black);}
+.burst-av{width:120px;height:120px;border-radius:50%;border:4px solid var(--black);overflow:hidden;background:var(--blue);position:relative;z-index:1;display:flex;align-items:center;justify-content:center;}
+.burst-av img{width:100%;height:100%;object-fit:cover;}
+.codename-wrap{background:var(--black);border-radius:6px;padding:8px 20px;}
+.codename{font-family:'Bangers',cursive;font-size:18px;color:var(--yellow);letter-spacing:4px;text-align:center;}
+.form-section{width:100%;display:flex;flex-direction:column;gap:10px;}
+.field-label{font-size:12px;font-weight:700;color:#555;margin-bottom:4px;}
+.field-input{width:100%;padding:13px 16px;border:3px solid var(--black);border-radius:8px;font-size:16px;font-family:'Comic Neue',cursive;font-weight:700;background:var(--white);outline:none;box-shadow:3px 3px 0 var(--black);}
+.field-input:focus{border-color:var(--blue);box-shadow:3px 3px 0 var(--blue);}
+.tags-wrap{display:flex;flex-wrap:wrap;gap:8px;}
+.itag{padding:8px 14px;border-radius:24px;background:var(--white);font-size:13px;font-family:'Comic Neue',cursive;font-weight:700;color:#333;border:2.5px solid var(--black);cursor:pointer;box-shadow:2px 2px 0 var(--black);}
+.itag.sel{background:var(--blue);color:var(--white);border-color:var(--blue);box-shadow:2px 2px 0 #003d73;}
+
+/* TOPBAR */
+.topbar{background:var(--blue);padding:48px 18px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--black);position:sticky;top:0;z-index:50;}
+.topbar-logo{font-family:'Bangers',cursive;font-size:16px;color:var(--yellow);letter-spacing:3px;text-shadow:2px 2px 0 rgba(0,0,0,0.3);}
+.topbar-sub{font-size:9px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:2px;text-transform:uppercase;margin-top:1px;}
+.topbar-av{width:38px;height:38px;border-radius:50%;border:3px solid var(--black);overflow:hidden;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.topbar-av img{width:100%;height:100%;object-fit:cover;}
+
+/* HERO */
+.hero-block{background:var(--blue);border-bottom:3px solid var(--black);padding:0 16px 16px;}
+.hero-inner{background:rgba(255,255,255,0.08);border:2px solid rgba(255,255,255,0.12);border-radius:12px;padding:16px;position:relative;overflow:hidden;}
+.hero-inner::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,0.06) 1.5px,transparent 1.5px);background-size:10px 10px;}
+.hi-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;position:relative;z-index:1;}
+.hi-pts-label{font-size:10px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:2px;margin-bottom:4px;}
+.pts-burst{width:90px;height:70px;background:var(--yellow);clip-path:polygon(50% 0%,61% 20%,80% 10%,72% 30%,100% 25%,85% 42%,100% 55%,80% 55%,88% 75%,65% 65%,60% 90%,48% 72%,38% 90%,35% 68%,12% 78%,22% 58%,0% 55%,15% 40%,0% 25%,28% 30%,20% 10%,40% 20%);border:2px solid var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.pts-num{font-family:'Bangers',cursive;font-size:28px;color:var(--black);line-height:1;letter-spacing:1px;}
+.pts-lbl{font-family:'Bangers',cursive;font-size:9px;color:var(--black);letter-spacing:2px;}
+.hi-rank{background:var(--orange);border:3px solid var(--black);border-radius:8px;padding:8px 12px;text-align:center;box-shadow:3px 3px 0 rgba(0,0,0,0.3);}
+.hi-rank-n{font-family:'Bangers',cursive;font-size:24px;color:var(--white);line-height:1;text-shadow:2px 2px 0 rgba(0,0,0,0.3);}
+.hi-rank-l{font-family:'Bangers',cursive;font-size:9px;color:rgba(255,255,255,0.8);letter-spacing:2px;}
+.hi-prog{position:relative;z-index:1;}
+.hi-prog-row{display:flex;justify-content:space-between;margin-bottom:5px;}
+.hi-prog-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,0.5);}
+.hi-prog-pct{font-family:'Bangers',cursive;font-size:12px;color:var(--yellow);letter-spacing:1px;}
+.hi-prog-track{height:8px;background:rgba(0,0,0,0.3);border-radius:2px;border:1.5px solid rgba(0,0,0,0.2);overflow:hidden;}
+.hi-prog-fill{height:100%;background:var(--yellow);border-radius:1px;width:0;transition:width 1.2s cubic-bezier(0.4,0,0.2,1);}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);margin:0 16px;border:3px solid var(--black);border-radius:10px;overflow:hidden;box-shadow:4px 4px 0 var(--black);}
+.stat{background:var(--white);padding:12px 8px;text-align:center;border-right:3px solid var(--black);}
+.stat:last-child{border-right:none;}
+.stat-n{font-family:'Bangers',cursive;font-size:28px;color:var(--black);line-height:1;letter-spacing:1px;}
+.stat-n.orange{color:var(--orange);}
+.stat-l{font-size:10px;font-weight:700;color:#777;margin-top:2px;text-transform:uppercase;letter-spacing:1px;}
+
+/* TIP */
+.tip{background:var(--orange);border:3px solid var(--black);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px;box-shadow:4px 4px 0 var(--black);}
+.tip-zap{font-family:'Bangers',cursive;font-size:22px;color:var(--yellow);text-shadow:2px 2px 0 rgba(0,0,0,0.3);flex-shrink:0;letter-spacing:1px;}
+.tip-title{font-family:'Bangers',cursive;font-size:14px;color:var(--white);letter-spacing:1px;text-shadow:1px 1px 0 rgba(0,0,0,0.3);}
+.tip-desc{font-size:11px;font-weight:700;color:rgba(255,255,255,0.8);margin-top:1px;line-height:1.4;}
+.tip-pts{font-family:'Bangers',cursive;font-size:18px;color:var(--yellow);text-shadow:2px 2px 0 rgba(0,0,0,0.3);white-space:nowrap;letter-spacing:1px;}
+
+/* SECTION */
+.section-banner{background:var(--yellow);border-top:3px solid var(--black);border-bottom:3px solid var(--black);padding:8px 16px;display:flex;align-items:center;justify-content:space-between;}
+.section-title{font-family:'Bangers',cursive;font-size:20px;color:var(--black);letter-spacing:2px;}
+.section-sub{font-size:10px;font-weight:700;color:#555;letter-spacing:1px;}
+
+/* LEADERBOARD */
+.lb{margin:0 16px;border:3px solid var(--black);border-radius:10px;overflow:hidden;box-shadow:4px 4px 0 var(--black);}
+.lb-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:3px solid var(--black);background:var(--white);position:relative;}
+.lb-row:last-child{border-bottom:none;}
+.lb-row.me{background:#e6f0fb;}
+.lb-pos{font-family:'Bangers',cursive;font-size:20px;min-width:20px;color:#ccc;line-height:1;}
+.lb-pos.gold{color:#f59e0b;}
+.lb-pos.me-c{color:var(--blue);}
+.lb-av-wrap{width:36px;height:36px;border-radius:50%;border:3px solid var(--black);overflow:hidden;flex-shrink:0;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:18px;}
+.lb-av-wrap.me{border-color:var(--blue);}
+.lb-av-wrap img{width:100%;height:100%;object-fit:cover;}
+.lb-info{flex:1;min-width:0;}
+.lb-name{font-size:13px;font-weight:700;color:var(--black);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lb-name.me{color:var(--blue);}
+.lb-co{font-size:11px;color:#888;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lb-pts{font-family:'Bangers',cursive;font-size:17px;color:var(--black);white-space:nowrap;letter-spacing:1px;}
+.lb-pts.me{color:var(--blue);}
+.lb-speech{position:absolute;top:-16px;right:10px;background:var(--white);border:2px solid var(--black);border-radius:6px;padding:2px 8px;font-family:'Bangers',cursive;font-size:10px;color:var(--orange);letter-spacing:1px;white-space:nowrap;}
+.lb-speech::after{content:'';position:absolute;bottom:-6px;right:10px;border:4px solid transparent;border-top-color:var(--black);}
+.lb-speech::before{content:'';position:absolute;bottom:-4px;right:11px;border:3px solid transparent;border-top-color:var(--white);z-index:1;}
+
+/* NETWORKING */
+.net-card{background:var(--white);border:3px solid var(--black);border-radius:10px;padding:12px 14px;margin:0 16px 10px;box-shadow:3px 3px 0 var(--black);display:flex;align-items:center;gap:12px;}
+.net-av{width:52px;height:52px;border-radius:50%;border:3px solid var(--black);overflow:hidden;flex-shrink:0;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:26px;}
+.net-av img{width:100%;height:100%;object-fit:cover;}
+.net-info{flex:1;min-width:0;}
+.net-name{font-size:14px;font-weight:700;color:var(--black);}
+.net-co{font-size:12px;color:#777;margin-top:1px;}
+.net-role{font-size:11px;color:#aaa;margin-top:1px;}
+.net-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
+.net-tag{font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;background:#f0f0f0;color:#555;border:1.5px solid #ccc;}
+.net-tag.match{background:var(--yellow);color:var(--black);border-color:var(--black);}
+.net-match{text-align:center;flex-shrink:0;}
+.net-match-n{font-family:'Bangers',cursive;font-size:26px;color:var(--orange);line-height:1;}
+.net-match-l{font-size:9px;font-weight:700;color:#aaa;letter-spacing:1px;}
+.net-empty{text-align:center;padding:40px 20px;}
+.net-empty-icon{font-family:'Bangers',cursive;font-size:48px;color:#ddd;letter-spacing:2px;margin-bottom:8px;}
+.net-empty-text{font-size:13px;font-weight:700;color:#aaa;}
+
+/* QR CHECKIN */
+.qr-screen{background:var(--bg);}
+.qr-hero{background:var(--blue);padding:80px 24px 32px;text-align:center;border-bottom:3px solid var(--black);}
+.qr-title{font-family:'Bangers',cursive;font-size:36px;color:var(--yellow);letter-spacing:3px;text-shadow:3px 3px 0 rgba(0,0,0,0.3);}
+.qr-sub{font-size:14px;font-weight:700;color:rgba(255,255,255,0.7);margin-top:8px;}
+.qr-body{padding:24px 20px;display:flex;flex-direction:column;gap:14px;}
+.qr-card{background:var(--white);border:3px solid var(--black);border-radius:10px;padding:16px;box-shadow:4px 4px 0 var(--black);text-align:center;}
+.qr-pts{font-family:'Bangers',cursive;font-size:48px;color:var(--orange);letter-spacing:2px;text-shadow:3px 3px 0 rgba(0,0,0,0.2);}
+.qr-pts-label{font-size:14px;font-weight:700;color:#555;margin-top:4px;}
+.qr-session{font-family:'Bangers',cursive;font-size:20px;color:var(--blue);letter-spacing:2px;margin-top:8px;}
+
+/* PROGRAM */
+.prog-list{padding:0 16px;}
+.prog-item{background:var(--white);border:3px solid var(--black);border-radius:10px;padding:14px;margin-bottom:10px;display:flex;gap:12px;box-shadow:3px 3px 0 var(--black);}
+.prog-time-col{display:flex;flex-direction:column;align-items:center;min-width:46px;}
+.prog-time{font-family:'Bangers',cursive;font-size:14px;color:var(--blue);letter-spacing:1px;}
+.prog-line{width:2px;flex:1;background:#e0e0e0;margin:5px 0;}
+.prog-dot{width:8px;height:8px;border-radius:50%;background:#ddd;border:2px solid var(--black);}
+.prog-dot.done{background:var(--orange);}
+.prog-info{flex:1;}
+.prog-tag{display:inline-block;font-family:'Bangers',cursive;font-size:10px;letter-spacing:1px;padding:2px 8px;border-radius:4px;border:2px solid;margin-bottom:5px;}
+.prog-title{font-size:14px;font-weight:700;color:var(--black);line-height:1.3;margin-bottom:3px;}
+.prog-speaker{font-size:12px;color:#777;}
+
+/* SPEAKERS */
+.speaker-list{padding:0 16px;}
+.speaker-card{background:var(--white);border:3px solid var(--black);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;box-shadow:3px 3px 0 var(--black);}
+.sp-av{width:44px;height:44px;border-radius:50%;border:3px solid var(--black);display:flex;align-items:center;justify-content:center;font-family:'Bangers',cursive;font-size:14px;color:var(--white);flex-shrink:0;}
+.sp-name{font-size:14px;font-weight:700;color:var(--black);}
+.sp-co{font-size:12px;font-weight:700;margin-top:1px;}
+.sp-role{font-size:11px;color:#888;margin-top:1px;}
+
+/* POLLS */
+.poll-card{background:var(--white);border:3px solid var(--black);border-radius:10px;padding:16px;margin:0 16px 12px;box-shadow:3px 3px 0 var(--black);}
+.poll-session{font-family:'Bangers',cursive;font-size:11px;color:var(--blue);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.poll-q{font-size:15px;font-weight:700;color:var(--black);line-height:1.4;margin-bottom:14px;}
+.poll-opt{width:100%;text-align:left;padding:12px 16px;border-radius:8px;border:2.5px solid var(--black);background:#fafaf5;font-size:13px;font-weight:700;color:var(--black);font-family:'Comic Neue',cursive;cursor:pointer;margin-bottom:8px;display:block;box-shadow:2px 2px 0 var(--black);}
+.poll-opt:last-child{margin-bottom:0;}
+.poll-opt.selected{background:var(--blue);color:var(--white);border-color:var(--blue);}
+.poll-result{position:relative;overflow:hidden;cursor:default;}
+.poll-bar{position:absolute;left:0;top:0;bottom:0;background:#dceeff;transition:width 0.6s;z-index:0;}
+.poll-bar.orange{background:#ffebd9;}
+.poll-content{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;}
+.poll-pct{font-family:'Bangers',cursive;font-size:14px;color:var(--blue);letter-spacing:1px;}
+.poll-pct.orange{color:var(--orange);}
+
+/* QUESTIONS */
+.q-compose{background:var(--white);border:3px solid var(--black);border-radius:10px;padding:14px;margin:0 16px 12px;box-shadow:3px 3px 0 var(--black);}
+.q-textarea{width:100%;border:2.5px solid var(--black);border-radius:8px;padding:12px;font-size:14px;font-family:'Comic Neue',cursive;font-weight:700;color:var(--black);resize:none;outline:none;background:#fafaf5;min-height:80px;}
+.q-textarea:focus{border-color:var(--blue);}
+.q-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px;}
+.q-hint{font-size:11px;font-weight:700;color:#888;}
+.q-send{background:var(--orange);border:2.5px solid var(--black);border-radius:8px;padding:10px 18px;font-family:'Bangers',cursive;font-size:16px;color:var(--white);letter-spacing:2px;cursor:pointer;box-shadow:2px 2px 0 var(--black);}
+.q-send:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--black);}
+.q-card{background:var(--white);border:3px solid var(--black);border-radius:10px;padding:12px 14px;margin:0 16px 8px;box-shadow:3px 3px 0 var(--black);}
+.q-card.top{border-color:var(--orange);background:#fff8f5;}
+.q-card.mine{border-color:var(--blue);background:#f0f5ff;}
+.q-text{font-size:14px;font-weight:700;color:var(--black);line-height:1.45;margin-bottom:10px;}
+.q-prog{height:4px;background:#eee;border-radius:2px;margin-bottom:10px;overflow:hidden;border:1px solid #ddd;}
+.q-prog-fill{height:100%;border-radius:2px;}
+.q-meta{display:flex;align-items:center;justify-content:space-between;}
+.q-author{font-size:11px;font-weight:700;color:#888;}
+.q-vote-row{display:flex;align-items:center;gap:8px;}
+.q-votes{font-size:11px;font-weight:700;color:#aaa;}
+.vote-btn{padding:5px 12px;border-radius:20px;border:2px solid var(--black);background:var(--white);font-size:11px;font-weight:700;color:var(--black);font-family:'Comic Neue',cursive;cursor:pointer;box-shadow:2px 2px 0 var(--black);}
+.vote-btn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--black);}
+.vote-btn.voted{border-color:var(--orange);color:var(--orange);background:#fff8f5;}
+
+/* INFO */
+.info-section{background:var(--white);border:3px solid var(--black);border-radius:10px;margin:0 16px 12px;overflow:hidden;box-shadow:4px 4px 0 var(--black);}
+.info-row{display:flex;align-items:flex-start;gap:12px;padding:14px;border-bottom:2px solid #eee;}
+.info-row:last-child{border-bottom:none;}
+.info-icon{width:36px;height:36px;border-radius:8px;border:2px solid var(--black);background:var(--yellow);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;}
+.info-title{font-size:14px;font-weight:700;color:var(--black);margin-bottom:3px;}
+.info-text{font-size:12px;color:#555;line-height:1.5;}
+
+/* NAVBAR */
+.navbar{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:3px solid var(--black);display:flex;padding:8px 0 18px;z-index:100;}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;border:none;background:none;cursor:pointer;padding:4px 0;}
+.nb svg{width:22px;height:22px;}
+.nb-lbl{font-family:'Bangers',cursive;font-size:9px;color:#bbb;letter-spacing:1px;}
+.nb.act .nb-lbl{color:var(--blue);}
+
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:16px;right:16px;background:var(--black);color:var(--yellow);border:3px solid var(--orange);border-radius:10px;padding:14px 18px;font-family:'Bangers',cursive;font-size:18px;letter-spacing:2px;text-align:center;z-index:300;opacity:0;transition:opacity 0.25s;pointer-events:none;box-shadow:4px 4px 0 var(--orange);}
+.toast.show{opacity:1;}
+.loader{text-align:center;padding:32px;font-family:'Bangers',cursive;font-size:16px;color:#aaa;letter-spacing:2px;}
+</style>
+</head>
+<body>
+
+<!-- ===== ONBOARDING ===== -->
+<div id="ob-welcome" class="screen active">
+  <div class="ob-hero halftone">
+    <div class="ob-deco1"></div>
+    <div class="ob-deco2"></div>
+    <div class="ob-eyebrow">PROWAY SECURITY DAY 2025</div>
+    <div class="ob-title">МИР<br><span>ПОД</span><br>УГРОЗОЙ!</div>
+    <div class="ob-speech">
+      <div class="ob-speech-text">Кибератаки участились. Старые методы защиты не работают. Нужны новые герои, способные противостоять угрозам цифрового мира.</div>
+    </div>
+  </div>
+  <div class="ob-bottom">
+    <div class="ob-desc">Конференция PROWAY Security Day — место где рождаются герои кибербезопасности. Пройди регистрацию, получи своего агента и начни миссию.</div>
+    <button class="ob-btn" onclick="goTo('ob-choose')">ПРИНЯТЬ МИССИЮ ›</button>
+  </div>
+</div>
+
+<div id="ob-choose" class="screen">
+  <div class="ob-choose-header">
+    <div class="ob-choose-title">ВЫБЕРИ АГЕНТА</div>
+    <div class="ob-choose-sub">ТЕБЕ НАЗНАЧАТ СЛУЧАЙНОГО ГЕРОЯ</div>
+  </div>
+  <div class="ob-choose-body">
+    <div class="ob-choose-q">КТО ТЫ В КОМАНДЕ?</div>
+    <div class="agent-grid">
+      <div class="agent-card" onclick="selectGender('male')">
+        <div class="ac-top" style="background:#e6f0fb;">
+          <div style="font-family:'Bangers',cursive;font-size:11px;color:#005ca8;letter-spacing:2px;">DEFENDER</div>
+        </div>
+        <div class="ac-face" style="background:#f0f5ff;">
+          <img src="Defense Grid Icon.png" alt="defender" onerror="this.parentElement.innerHTML='<span style=font-size:60px>🦸‍♂️</span>'">
+        </div>
+        <div class="ac-name">БОЕЦ</div>
+      </div>
+      <div class="agent-card" onclick="selectGender('female')">
+        <div class="ac-top" style="background:#ffe8f0;">
+          <div style="font-family:'Bangers',cursive;font-size:11px;color:#c0177a;letter-spacing:2px;">TRACER</div>
+        </div>
+        <div class="ac-face" style="background:#fff0f5;">
+          <img src="Stealth Tracer Icon.png" alt="tracer" onerror="this.parentElement.innerHTML='<span style=font-size:60px>🦸‍♀️</span>'">
+        </div>
+        <div class="ac-name">АГЕНТ</div>
+      </div>
+    </div>
+    <div class="ob-tip">
+      <div class="ob-tip-text">⚡ После выбора система назначит случайного персонажа из базы агентов. Каждый герой уникален и получит своё кодовое имя.</div>
+    </div>
+  </div>
+</div>
+
+<div id="ob-reveal" class="screen">
+  <div class="ob-reveal-header">
+    <div class="ob-reveal-title">⚡ АГЕНТ НАЗНАЧЕН!</div>
+  </div>
+  <div class="ob-reveal-body">
+    <div class="burst-wrap">
+      <div class="burst-bg"></div>
+      <div class="burst-av"><img id="reveal-img" src="" alt=""></div>
+    </div>
+    <div class="codename-wrap">
+      <div class="codename" id="reveal-codename">...</div>
+    </div>
+    <div class="form-section">
+      <div>
+        <div class="field-label">Позывной (имя и фамилия)</div>
+        <input type="text" id="reg-name" class="field-input" placeholder="Анна Козлова">
+      </div>
+      <div>
+        <div class="field-label">Организация</div>
+        <input type="text" id="reg-company" class="field-input" placeholder="Название компании">
+      </div>
+      <div>
+        <div class="field-label">Должность</div>
+        <input type="text" id="reg-role" class="field-input" placeholder="ИТ-директор">
+      </div>
+      <div>
+        <div class="field-label">Специализация (до 3)</div>
+        <div class="tags-wrap" id="tags-wrap">
+          <button class="itag" data-val="NGFW">NGFW</button>
+          <button class="itag" data-val="SOC/SIEM">SOC/SIEM</button>
+          <button class="itag" data-val="Пентест">Пентест</button>
+          <button class="itag" data-val="Zero Trust">Zero Trust</button>
+          <button class="itag" data-val="DLP">DLP</button>
+          <button class="itag" data-val="PAM">PAM</button>
+          <button class="itag" data-val="Криптография">Крипто</button>
+          <button class="itag" data-val="Compliance">Compliance</button>
+        </div>
+      </div>
+      <button class="ob-btn" onclick="register()">ПРИСТУПИТЬ К МИССИИ ›</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MAIN APP ===== -->
+<div id="app" style="display:none;">
+
+  <div id="screen-profile" class="app-screen active">
+    <div class="topbar">
+      <div><div class="topbar-logo">PROWAY SECURITY</div><div class="topbar-sub">Security Day 2025</div></div>
+      <div class="topbar-av"><img id="p-av-img" src="" alt="" style="display:none;"><span id="p-av-emoji">🦸</span></div>
+    </div>
+    <div class="hero-block">
+      <div class="hero-inner">
+        <div class="hi-top">
+          <div>
+            <div class="hi-pts-label">БАЛЛЫ НА БОРТУ</div>
+            <div class="pts-burst"><div class="pts-num" id="p-pts">0</div><div class="pts-lbl">БАЛЛОВ</div></div>
+          </div>
+          <div class="hi-rank"><div class="hi-rank-n" id="p-rank">#—</div><div class="hi-rank-l">МЕСТО</div></div>
+        </div>
+        <div class="hi-prog">
+          <div class="hi-prog-row"><span class="hi-prog-lbl">ДО ПРИЗА</span><span class="hi-prog-pct" id="p-pct">0%</span></div>
+          <div class="hi-prog-track"><div class="hi-prog-fill" id="p-bar"></div></div>
+        </div>
+      </div>
+    </div>
+    <div style="height:12px;"></div>
+    <div class="stats-row" style="margin-bottom:12px;">
+      <div class="stat"><div class="stat-n" id="s-sessions">0</div><div class="stat-l">СЕССИИ</div></div>
+      <div class="stat"><div class="stat-n" id="s-questions">0</div><div class="stat-l">ВОПРОСЫ</div></div>
+      <div class="stat"><div class="stat-n orange" id="s-polls">0</div><div class="stat-l">ОПРОСЫ</div></div>
+    </div>
+    <div style="padding:0 16px;margin-bottom:14px;">
+      <div class="tip">
+        <div class="tip-zap" id="tip-zap">ZAP!</div>
+        <div style="flex:1;"><div class="tip-title" id="tip-title">ЗАДАЙ ВОПРОС СПИКЕРУ</div><div class="tip-desc" id="tip-desc">Выберут в эфир — ещё +50 б!</div></div>
+        <div class="tip-pts" id="tip-pts">+25 б</div>
+      </div>
+    </div>
+    <div class="section-banner"><div class="section-title">⚡ РЕЙТИНГ</div><div class="section-sub">АГЕНТЫ РЕЙСА</div></div>
+    <div style="height:10px;"></div>
+    <div class="lb" id="leaderboard-wrap"><div class="loader">ЗАГРУЗКА...</div></div>
+    <div style="height:12px;"></div>
+  </div>
+
+  <div id="screen-network" class="app-screen">
+    <div class="topbar">
+      <div><div class="topbar-logo">СЕТЬ АГЕНТОВ</div><div class="topbar-sub">НАЙДИ СОЮЗНИКОВ</div></div>
+      <div class="topbar-av"><img id="p-av-img2" src="" alt="" style="display:none;"><span id="p-av-emoji2">🦸</span></div>
+    </div>
+    <div class="section-banner" style="margin-bottom:12px;"><div class="section-title">🤝 НЕТВОРКИНГ</div><div class="section-sub">СОВПАДЕНИЕ ИНТЕРЕСОВ</div></div>
+    <div id="network-list"><div class="loader">СКАНИРУЮ БАЗУ АГЕНТОВ...</div></div>
+    <div style="height:12px;"></div>
+  </div>
+
+  <div id="screen-program" class="app-screen">
+    <div class="topbar">
+      <div><div class="topbar-logo">МАРШРУТ РЕЙСА</div><div class="topbar-sub">PROWAY Security Day 2025</div></div>
+    </div>
+    <div style="height:12px;"></div>
+    <div class="prog-list" id="program-list"></div>
+    <div class="section-banner" style="margin-bottom:10px;"><div class="section-title">👥 СПИКЕРЫ</div><div class="section-sub">НА БОРТУ</div></div>
+    <div class="speaker-list" id="speakers-list"></div>
+    <div style="height:12px;"></div>
+  </div>
+
+  <div id="screen-polls" class="app-screen">
+    <div class="topbar">
+      <div><div class="topbar-logo">МИССИЯ</div><div class="topbar-sub">ОПРОСЫ И ГОЛОСОВАНИЯ</div></div>
+    </div>
+    <div class="section-banner" style="margin-bottom:12px;"><div class="section-title">📡 ОПРОСЫ</div><div class="section-sub">ВЛИЯЙ НА ДИСКУССИЮ</div></div>
+    <div id="polls-list"></div>
+    <div style="height:12px;"></div>
+  </div>
+
+  <div id="screen-questions" class="app-screen">
+    <div class="topbar">
+      <div><div class="topbar-logo">СВЯЗЬ</div><div class="topbar-sub">ВОПРОСЫ СПИКЕРАМ</div></div>
+    </div>
+    <div class="section-banner" style="margin-bottom:12px;"><div class="section-title">💬 ВОПРОСЫ</div><div class="section-sub">+25 Б · +50 Б В ЭФИР</div></div>
+    <div class="q-compose">
+      <textarea id="q-text" class="q-textarea" placeholder="Задай вопрос спикеру..."></textarea>
+      <div class="q-footer">
+        <span class="q-hint">Голосуй за лучший вопрос ↓</span>
+        <button class="q-send" onclick="sendQuestion()">ОТПРАВИТЬ</button>
+      </div>
+    </div>
+    <div id="questions-list"></div>
+    <div style="height:12px;"></div>
+  </div>
+
+  <div id="screen-info" class="app-screen">
+    <div class="topbar">
+      <div><div class="topbar-logo">БАЗА</div><div class="topbar-sub">ИНФОРМАЦИЯ О РЕЙСЕ</div></div>
+    </div>
+    <div class="section-banner" style="margin-bottom:12px;"><div class="section-title">📍 ЛОКАЦИЯ</div></div>
+    <div class="info-section">
+      <div class="info-row"><div class="info-icon">✈</div><div><div class="info-title">Воробьевы Холл</div><div class="info-text">ул. Косыгина 28с1, Москва</div></div></div>
+      <div class="info-row"><div class="info-icon">🚇</div><div><div class="info-title">Метро</div><div class="info-text">Воробьевы горы, выход №2, по Эскалаторной галерее направо 500 м</div></div></div>
+      <div class="info-row"><div class="info-icon">🚕</div><div><div class="info-title">Такси</div><div class="info-text">ул. Косыгина 28с1</div></div></div>
+    </div>
+    <div class="section-banner" style="margin-bottom:12px;"><div class="section-title">🌙 ВЕЧЕР</div></div>
+    <div class="info-section">
+      <div class="info-row"><div class="info-icon">🍽</div><div><div class="info-title">Фуршетный дозаправщик</div><div class="info-text">Закуски и напитки</div></div></div>
+      <div class="info-row"><div class="info-icon">🏆</div><div><div class="info-title">Награждение агентов</div><div class="info-text">Лучшие вопросы получают призы на сцене</div></div></div>
+      <div class="info-row"><div class="info-icon">🎤</div><div><div class="info-title">Кавер-авиашоу + DJ</div><div class="info-text">Танцуем пока не кончится топливо!</div></div></div>
+      <div class="info-row"><div class="info-icon">🚡</div><div><div class="info-title">VIP-кабина канатной дороги</div><div class="info-text">Приватные беседы с видом на Москву</div></div></div>
+    </div>
+    <div class="section-banner" style="margin-bottom:12px;"><div class="section-title">🎁 РОЗЫГРЫШ</div></div>
+    <div class="info-section">
+      <div class="info-row"><div class="info-icon">🎁</div><div><div class="info-title">6 × Telegram Premium на год</div><div class="info-text">Участвуй в опросах и задавай вопросы — повышай шансы!</div></div></div>
+    </div>
+    <div style="height:12px;"></div>
+  </div>
+
+</div>
+
+<nav class="navbar" id="navbar" style="display:none;">
+  <button class="nb act" onclick="showScreen('profile')" id="nav-profile">
+    <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="13" width="4" height="8" rx="1" fill="#005ca8"/><rect x="10" y="8" width="4" height="13" rx="1" fill="#005ca8"/><rect x="17" y="3" width="4" height="18" rx="1" fill="#005ca8"/></svg>
+    <span class="nb-lbl" style="color:#005ca8;">БОРТ</span>
+  </button>
+  <button class="nb" onclick="showScreen('network')" id="nav-network">
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="7" r="3" stroke="#bbb" stroke-width="2" fill="none"/><circle cx="15" cy="7" r="3" stroke="#bbb" stroke-width="2" fill="none"/><path d="M3 20c0-3.3 2.7-6 6-6M21 20c0-3.3-2.7-6-6-6M12 14c2 0 3.5 1 4.5 2.5" stroke="#bbb" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+    <span class="nb-lbl">СЕТЬ</span>
+  </button>
+  <button class="nb" onclick="showScreen('polls')" id="nav-polls">
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#bbb" stroke-width="2" fill="none"/><path d="M8 12l3 3 5-5" stroke="#bbb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span class="nb-lbl">МИССИЯ</span>
+  </button>
+  <button class="nb" onclick="showScreen('questions')" id="nav-questions">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M4 6a3 3 0 013-3h10a3 3 0 013 3v9a3 3 0 01-3 3H10l-6 4V6z" stroke="#bbb" stroke-width="2" fill="none"/></svg>
+    <span class="nb-lbl">СВЯЗЬ</span>
+  </button>
+  <button class="nb" onclick="showScreen('info')" id="nav-info">
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#bbb" stroke-width="2" fill="none"/><line x1="12" y1="11" x2="12" y2="17" stroke="#bbb" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="8" r="1.5" fill="#bbb"/></svg>
+    <span class="nb-lbl">БАЗА</span>
+  </button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API='https://script.google.com/macros/s/AKfycbyYuilmUoMlTsWc_M0GeuOxmsbJ7QWK9cyOg20j-uUD8HvHBxzsyW5lm-o0kFT0G53tVA/exec';
+const MAX_PTS=430;
+
+const AVATARS={
+  male:[
+    {file:'Defense Grid Icon.png',codename:'DEFENSE GRID'},
+  ],
+  female:[
+    {file:'Stealth Tracer Icon.png',codename:'STEALTH TRACER'},
+  ]
+};
+
+const PROGRAM=[
+  {time:'13:50',title:'Приветственное слово экипажа',speaker:'Алексей Матвеев, PROWAY Security',tag:'ВЗЛЁТ',tagColor:'#005ca8',done:true},
+  {time:'14:00',title:'Панельная дискуссия «Security Talks»',speaker:'Конкуренция на российском рынке ИБ',tag:'ДЕЛОВАЯ',tagColor:'#ee672a',done:true},
+  {time:'15:30',title:'Кофе-брейк и Lounge Expo',speaker:'Первый этаж и веранда',tag:'ПАУЗА',tagColor:'#888',done:false},
+  {time:'16:00',title:'Прямая линия PROWAY Security',speaker:'Экспресс-опросы · результаты на экран',tag:'ДЕЛОВАЯ',tagColor:'#ee672a',done:false},
+  {time:'17:30',title:'Нетворкинг',speaker:'VIP-кабина канатной дороги',tag:'НЕТВОРК',tagColor:'#27ae60',done:false},
+  {time:'18:30',title:'Вечерняя программа',speaker:'Фуршет · Кавер-авиашоу · DJ',tag:'ФИНАЛ',tagColor:'#8e44ad',done:false},
+  {time:'22:00',title:'Приземление. До новых рейсов!',speaker:'Спасибо что выбрали PROWAY Security Day',tag:'',tagColor:'',done:false},
+];
+
+const SPEAKERS=[
+  {name:'Роман Бочкарёв',co:'Positive Technologies',role:'Зам. директора по работе с партнёрами',color:'#c0392b'},
+  {name:'Роман Набережный',co:'ИнфоТеКС (ViPNet)',role:'Зам. коммерческого директора',color:'#005ca8'},
+  {name:'Дмитрий Ивашкин',co:'Код Безопасности',role:'Менеджер по работе с партнёрами',color:'#27ae60'},
+  {name:'Вячеслав Гребнев',co:'Гарда',role:'Бизнес-архитектор',color:'#8e44ad'},
+  {name:'Антон Чухнов',co:'AV Soft',role:'Генеральный директор',color:'#ee672a'},
+  {name:'Александр Корзников',co:'ЭВРИТЕГ',role:'Технический директор',color:'#16a085'},
+  {name:'Алексей Матвеев',co:'PROWAY Security',role:'Директор департамента · Модератор',color:'#005ca8'},
+  {name:'Дмитрий Захаренко',co:'PROWAY Security',role:'Технический директор · Модератор',color:'#005ca8'},
+];
+
+const POLLS=[
+  {id:'poll1',session:'SECURITY TALKS',question:'Что будет основным «рецептом» выживаемости вендоров на российском рынке?',options:['Регуляторка — соответствие требованиям','Технологии — развитие до мировых решений','Комплексный подход — экосистемы','Маркетинг — расширение аудитории'],votes:[0,0,0,0]},
+  {id:'poll2',session:'ПРЯМАЯ ЛИНИЯ',question:'Что является решающим фактором при выборе NGFW?',options:['Цена','Производительность','Функциональность','Сертификация','Другое'],votes:[0,0,0,0,0]},
+  {id:'poll3',session:'ПРЯМАЯ ЛИНИЯ',question:'Готовы ли российские ИБ-решения полностью заменить зарубежные?',options:['Полностью готовы','В большинстве сегментов','Есть пробелы','Пока не готовы'],votes:[0,0,0,0]},
+];
+
+const TIPS=[
+  {zap:'ZAP!',title:'ЗАДАЙ ВОПРОС СПИКЕРУ',desc:'Выберут в эфир — дополнительно +50 б!',pts:'+25 б'},
+  {zap:'POW!',title:'ПРОЙДИ ОПРОС',desc:'Твой голос влияет на дискуссию на сцене',pts:'+15 б'},
+  {zap:'BAM!',title:'НАЙДИ СОЮЗНИКА',desc:'Открой раздел СЕТЬ и познакомься с агентами',pts:''},
+  {zap:'BOOM!',title:'ГОЛОСУЙ ЗА ВОПРОС',desc:'Помоги выбрать лучший вопрос в эфир',pts:''},
+];
+
+let participant=null,selectedTags=[],votedQuestions=new Set(),pollAnswers={};
+let selectedGender=null,assignedAvatar=null;
+
+function api(p){return fetch(API+'?'+new URLSearchParams(p)).then(r=>r.json());}
+function showToast(m,d=2500){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),d);}
+function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+
+function selectGender(gender){
+  selectedGender=gender;
+  const pool=AVATARS[gender];
+  assignedAvatar=pool[Math.floor(Math.random()*pool.length)];
+  const img=document.getElementById('reveal-img');
+  img.src=assignedAvatar.file;
+  document.getElementById('reveal-codename').textContent=assignedAvatar.codename;
+  goTo('ob-reveal');
+}
+
+document.querySelectorAll('.itag').forEach(t=>{
+  t.addEventListener('click',()=>{
+    if(t.classList.contains('sel')){t.classList.remove('sel');selectedTags=selectedTags.filter(v=>v!==t.dataset.val);}
+    else if(selectedTags.length<3){t.classList.add('sel');selectedTags.push(t.dataset.val);}
+  });
+});
+
+async function register(){
+  const name=document.getElementById('reg-name').value.trim();
+  const company=document.getElementById('reg-company').value.trim();
+  const role=document.getElementById('reg-role').value.trim();
+  if(!name||!company){showToast('ЗАПОЛНИ ПОЗЫВНОЙ И ОРГАНИЗАЦИЮ!');return;}
+  const btn=document.querySelector('#ob-reveal .ob-btn');
+  btn.textContent='АВТОРИЗАЦИЯ...';btn.disabled=true;
+  try{
+    const res=await api({action:'register',name,company,role,interests:selectedTags.join(','),avatar:assignedAvatar?assignedAvatar.file:'',codename:assignedAvatar?assignedAvatar.codename:''});
+    if(res.success){
+      localStorage.setItem('participant_id',res.id);
+      localStorage.setItem('participant_name',name);
+      localStorage.setItem('participant_company',company);
+      localStorage.setItem('participant_interests',selectedTags.join(','));
+      localStorage.setItem('participant_avatar',assignedAvatar?assignedAvatar.file:'');
+      participant={id:res.id,name,company,role,points:15,interests:selectedTags.join(','),avatar:assignedAvatar?assignedAvatar.file:''};
+      initApp();
+      showToast('ДОБРО ПОЖАЛОВАТЬ, АГЕНТ! +15 б');
+    }else{showToast('ОШИБКА АВТОРИЗАЦИИ!');btn.textContent='ПРИСТУПИТЬ К МИССИИ ›';btn.disabled=false;}
+  }catch(e){showToast('НЕТ СВЯЗИ!');btn.textContent='ПРИСТУПИТЬ К МИССИИ ›';btn.disabled=false;}
+}
+
+function setAvatarUI(){
+  const av=participant&&participant.avatar?participant.avatar:'';
+  ['p-av-img','p-av-img2'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&av){el.src=av;el.style.display='block';}
+  });
+  if(av){
+    ['p-av-emoji','p-av-emoji2'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+  }
+}
+
+function initApp(){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('app').style.display='block';
+  document.getElementById('navbar').style.display='flex';
+  setAvatarUI();
+  renderProfile();renderProgram();renderSpeakers();renderPolls();
+  loadLeaderboard();loadQuestions();loadNetwork();
+  setInterval(loadLeaderboard,15000);
+  setInterval(loadQuestions,8000);
+  setInterval(loadNetwork,30000);
+  setTimeout(()=>{const b=document.getElementById('p-bar');if(b)b.style.width=(Math.min((participant.points||0)/MAX_PTS,1)*100)+'%';},200);
+}
+
+function showScreen(n){
+  document.querySelectorAll('.app-screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b=>{
+    b.classList.remove('act');
+    b.querySelector('.nb-lbl').style.color='';
+    b.querySelectorAll('svg [stroke]').forEach(el=>{if(el.getAttribute('stroke')!=='none')el.setAttribute('stroke','#bbb');});
+    b.querySelectorAll('svg [fill]').forEach(el=>{if(el.getAttribute('fill')!=='none'&&el.tagName!=='svg')el.setAttribute('fill','#bbb');});
+  });
+  document.getElementById('screen-'+n).classList.add('active');
+  const nb=document.getElementById('nav-'+n);
+  nb.classList.add('act');nb.querySelector('.nb-lbl').style.color='#005ca8';
+  nb.querySelectorAll('svg [stroke]').forEach(el=>{if(el.getAttribute('stroke')!=='none')el.setAttribute('stroke','#005ca8');});
+  nb.querySelectorAll('svg [fill]').forEach(el=>{if(el.getAttribute('fill')!=='none'&&el.tagName!=='svg')el.setAttribute('fill','#005ca8');});
+  window.scrollTo(0,0);
+}
+
+function renderProfile(){
+  if(!participant)return;
+  const pts=participant.points||0;
+  document.getElementById('p-pts').textContent=pts;
+  const pct=Math.min(Math.round(pts/MAX_PTS*100),100);
+  document.getElementById('p-pct').textContent=pct+'%';
+  const tip=TIPS[Math.floor(Math.random()*TIPS.length)];
+  document.getElementById('tip-zap').textContent=tip.zap;
+  document.getElementById('tip-title').textContent=tip.title;
+  document.getElementById('tip-desc').textContent=tip.desc;
+  const tpts=document.getElementById('tip-pts');
+  if(tpts){tpts.textContent=tip.pts;tpts.style.display=tip.pts?'':'none';}
+}
+
+async function loadLeaderboard(){
+  try{
+    const res=await api({action:'getLeaderboard'});
+    const wrap=document.getElementById('leaderboard-wrap');
+    if(!res.leaderboard||!res.leaderboard.length){wrap.innerHTML='<div class="loader">АГЕНТОВ НЕТ...</div>';return;}
+    let myRank='—';
+    wrap.innerHTML=res.leaderboard.map((p,i)=>{
+      const isMe=participant&&p.id===participant.id;
+      if(isMe){myRank=i+1;participant.points=p.points;renderProfile();const b=document.getElementById('p-bar');if(b)b.style.width=(Math.min(p.points/MAX_PTS,1)*100)+'%';document.getElementById('p-pts').textContent=p.points;document.getElementById('p-pct').textContent=Math.min(Math.round(p.points/MAX_PTS*100),100)+'%';}
+      const avHtml=p.avatar?`<img src="${p.avatar}" alt="">`:`<span style="font-size:18px;">🦸</span>`;
+      return`<div class="lb-row${isMe?' me':''}">
+        ${i===0?'<div class="lb-speech">ЛИДЕР!</div>':''}
+        <span class="lb-pos${i===0?' gold':''}${isMe?' me-c':''}">${i+1}</span>
+        <div class="lb-av-wrap${isMe?' me':''}">${avHtml}</div>
+        <div class="lb-info"><div class="lb-name${isMe?' me':''}">${p.name}${isMe?' · ВЫ':''}</div><div class="lb-co">${p.company||''}</div></div>
+        <span class="lb-pts${isMe?' me':''}">${p.points} б</span>
+      </div>`;
+    }).join('');
+    document.getElementById('p-rank').textContent='#'+myRank;
+  }catch(e){}
+}
+
+async function loadNetwork(){
+  if(!participant)return;
+  try{
+    const res=await api({action:'getParticipants',exclude:participant.id});
+    const wrap=document.getElementById('network-list');
+    if(!res.participants||!res.participants.length){
+      wrap.innerHTML='<div class="net-empty"><div class="net-empty-icon">🤝</div><div class="net-empty-text">ДРУГИХ АГЕНТОВ ПОКА НЕТ.<br>СКОРО ПОЯВЯТСЯ!</div></div>';
+      return;
+    }
+    const myInterests=(participant.interests||'').split(',').filter(Boolean);
+    const scored=res.participants.map(p=>{
+      const their=(p.interests||'').split(',').filter(Boolean);
+      const matches=myInterests.filter(i=>their.includes(i));
+      return{...p,matches,score:matches.length};
+    }).sort((a,b)=>b.score-a.score||b.points-a.points);
+
+    wrap.innerHTML=scored.map(p=>{
+      const their=(p.interests||'').split(',').filter(Boolean);
+      const mySet=new Set(myInterests);
+      const tagsHtml=their.length
+        ?their.map(t=>`<span class="net-tag${mySet.has(t)?' match':''}">${t}</span>`).join('')
+        :'<span class="net-tag">нет тегов</span>';
+      const avHtml=p.avatar?`<img src="${p.avatar}" alt="">`:`<span style="font-size:26px;">🦸</span>`;
+      return`<div class="net-card">
+        <div class="net-av">${avHtml}</div>
+        <div class="net-info">
+          <div class="net-name">${p.name}</div>
+          <div class="net-co">${p.company||''}${p.role?' · '+p.role:''}</div>
+          <div class="net-tags">${tagsHtml}</div>
+        </div>
+        <div class="net-match">
+          <div class="net-match-n" style="color:${p.score>0?'#ee672a':'#ccc'}">${p.score}</div>
+          <div class="net-match-l">СОВПАД.</div>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){
+    document.getElementById('network-list').innerHTML='<div class="loader">ОШИБКА СВЯЗИ...</div>';
+  }
+}
+
+function renderProgram(){
+  document.getElementById('program-list').innerHTML=PROGRAM.map(s=>`
+    <div class="prog-item">
+      <div class="prog-time-col"><div class="prog-time">${s.time}</div><div class="prog-line"></div><div class="prog-dot${s.done?' done':''}"></div></div>
+      <div class="prog-info">
+        ${s.tag?`<div class="prog-tag" style="background:${s.tagColor}18;color:${s.tagColor};border-color:${s.tagColor};">${s.tag}</div>`:''}
+        <div class="prog-title">${s.title}</div>
+        ${s.speaker?`<div class="prog-speaker">${s.speaker}</div>`:''}
+      </div>
+    </div>`).join('');
+}
+
+function renderSpeakers(){
+  document.getElementById('speakers-list').innerHTML=SPEAKERS.map(s=>{
+    const initials=s.name.split(' ').map(w=>w[0]).join('').slice(0,2);
+    return`<div class="speaker-card">
+      <div class="sp-av" style="background:${s.color};">${initials}</div>
+      <div><div class="sp-name">${s.name}</div><div class="sp-co" style="color:${s.color};">${s.co}</div><div class="sp-role">${s.role}</div></div>
+    </div>`;
+  }).join('');
+}
+
+function renderPolls(){
+  document.getElementById('polls-list').innerHTML=POLLS.map(poll=>{
+    const answered=pollAnswers[poll.id]!==undefined;
+    if(answered){
+      const total=poll.votes.reduce((a,b)=>a+b,0)||1;
+      return`<div class="poll-card"><div class="poll-session">${poll.session}</div><div class="poll-q">${poll.question}</div>
+        ${poll.options.map((opt,i)=>{const pct=Math.round(poll.votes[i]/total*100);const isMe=pollAnswers[poll.id]===i;
+          return`<div class="poll-opt poll-result" style="${isMe?'border-color:#005ca8;':''}">
+            <div class="poll-bar${isMe?' orange':''}" style="width:${pct}%"></div>
+            <div class="poll-content"><span style="${isMe?'color:#005ca8;font-weight:700;':''}">${opt}</span><span class="poll-pct${isMe?' orange':''}">${pct}%</span></div>
+          </div>`;}).join('')}
+      </div>`;
+    }
+    return`<div class="poll-card"><div class="poll-session">${poll.session}</div><div class="poll-q">${poll.question}</div>
+      ${poll.options.map((opt,i)=>`<button class="poll-opt" onclick="answerPoll('${poll.id}',${i})">${opt}</button>`).join('')}
+    </div>`;
+  }).join('');
+}
+
+function answerPoll(pollId,optIdx){
+  if(pollAnswers[pollId]!==undefined)return;
+  pollAnswers[pollId]=optIdx;
+  const poll=POLLS.find(p=>p.id===pollId);
+  poll.votes[optIdx]++;
+  renderPolls();
+  document.getElementById('s-polls').textContent=Object.keys(pollAnswers).length;
+  if(participant)api({action:'addPoints',participant_id:participant.id,action:'poll',points:15});
+  showToast('ГОЛОС ПРИНЯТ! +15 б');
+}
+
+async function sendQuestion(){
+  const text=document.getElementById('q-text').value.trim();
+  if(!text){showToast('ВВЕДИ ВОПРОС!');return;}
+  if(!participant){showToast('СНАЧАЛА ЗАРЕГИСТРИРУЙСЯ!');return;}
+  const btn=document.querySelector('.q-send');
+  btn.textContent='...';btn.disabled=true;
+  try{
+    const res=await api({action:'addQuestion',participant_id:participant.id,participant_name:participant.name,session:'main',text});
+    if(res.success){
+      document.getElementById('q-text').value='';
+      document.getElementById('s-questions').textContent=(parseInt(document.getElementById('s-questions').textContent)||0)+1;
+      showToast('ВОПРОС ОТПРАВЛЕН! +25 б');loadQuestions();
+    }
+  }catch(e){showToast('НЕТ СВЯЗИ!');}
+  btn.textContent='ОТПРАВИТЬ';btn.disabled=false;
+}
+
+async function loadQuestions(){
+  try{
+    const res=await api({action:'getQuestions',session:'main'});
+    const wrap=document.getElementById('questions-list');
+    if(!res.questions||!res.questions.length){wrap.innerHTML='<div class="q-card" style="text-align:center;"><span style="font-family:Bangers,cursive;font-size:16px;letter-spacing:2px;color:#aaa;">ПЕРВЫЙ ВОПРОС — ТВОЙ!</span></div>';return;}
+    const total=res.questions.reduce((s,q)=>s+(parseInt(q.votes)||0),0)||1;
+    wrap.innerHTML=res.questions.map((q,i)=>{
+      const isMe=participant&&q.participant_id===participant.id;
+      const voted=votedQuestions.has(q.id);
+      const pct=Math.round((parseInt(q.votes)||0)/total*100);
+      return`<div class="q-card${i===0?' top':''}${isMe?' mine':''}">
+        <div class="q-text">${q.text}</div>
+        <div class="q-prog"><div class="q-prog-fill" style="width:${pct}%;background:${i===0?'#ee672a':isMe?'#005ca8':'#ccc'};"></div></div>
+        <div class="q-meta">
+          <span class="q-author">${q.participant_name}${isMe?' · МОЙ':i===0?' · ЛИДЕР':''}</span>
+          <div class="q-vote-row">
+            <span class="q-votes">${q.votes||0} голосов</span>
+            ${!isMe?`<button onclick="voteQ('${q.id}')" ${voted?'disabled':''} class="vote-btn${voted?' voted':''}">${voted?'ОТДАН':'ГОЛОС'}</button>`:''}
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){}
+}
+
+async function voteQ(qId){
+  if(!participant||votedQuestions.has(qId))return;
+  votedQuestions.add(qId);
+  try{await api({action:'vote',question_id:qId,participant_id:participant.id});showToast('ГОЛОС УЧТЁН!');loadQuestions();}
+  catch(e){votedQuestions.delete(qId);}
+}
+
+window.addEventListener('load',()=>{
+  if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
+  const id=localStorage.getItem('participant_id');
+  if(id){
+    participant={
+      id,
+      name:localStorage.getItem('participant_name')||'—',
+      company:localStorage.getItem('participant_company')||'—',
+      points:0,
+      interests:localStorage.getItem('participant_interests')||'',
+      avatar:localStorage.getItem('participant_avatar')||''
+    };
+    initApp();
+  }
+});
+</script>
+</body>
+</html>
