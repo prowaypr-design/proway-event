@@ -49,7 +49,6 @@ body{font-family:'Comic Neue',cursive;background:var(--bg);color:var(--black);mi
 .ac-name{font-family:'Bangers',cursive;font-size:15px;letter-spacing:2px;padding:10px 8px;text-align:center;background:var(--yellow);}
 .ob-tip{background:var(--black);border-radius:8px;padding:12px 14px;}
 .ob-tip-text{font-size:12px;font-weight:700;color:var(--yellow);line-height:1.5;}
-.ob-btn-blue{background:var(--blue);border:3px solid var(--black);border-radius:8px;padding:14px;width:100%;font-family:'Bangers',cursive;font-size:20px;color:var(--yellow);letter-spacing:3px;cursor:pointer;text-align:center;box-shadow:4px 4px 0 var(--black);margin-top:auto;}
 
 #ob-reveal{background:var(--bg);}
 .ob-reveal-header{background:var(--orange);border-bottom:3px solid var(--black);padding:52px 20px 14px;}
@@ -143,7 +142,6 @@ body{font-family:'Comic Neue',cursive;background:var(--bg);color:var(--black);mi
 .net-info{flex:1;min-width:0;}
 .net-name{font-size:14px;font-weight:700;color:var(--black);}
 .net-co{font-size:12px;color:#777;margin-top:1px;}
-.net-role{font-size:11px;color:#aaa;margin-top:1px;}
 .net-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
 .net-tag{font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;background:#f0f0f0;color:#555;border:1.5px solid #ccc;}
 .net-tag.match{background:var(--yellow);color:var(--black);border-color:var(--black);}
@@ -153,17 +151,6 @@ body{font-family:'Comic Neue',cursive;background:var(--bg);color:var(--black);mi
 .net-empty{text-align:center;padding:40px 20px;}
 .net-empty-icon{font-family:'Bangers',cursive;font-size:48px;color:#ddd;letter-spacing:2px;margin-bottom:8px;}
 .net-empty-text{font-size:13px;font-weight:700;color:#aaa;}
-
-/* QR CHECKIN */
-.qr-screen{background:var(--bg);}
-.qr-hero{background:var(--blue);padding:80px 24px 32px;text-align:center;border-bottom:3px solid var(--black);}
-.qr-title{font-family:'Bangers',cursive;font-size:36px;color:var(--yellow);letter-spacing:3px;text-shadow:3px 3px 0 rgba(0,0,0,0.3);}
-.qr-sub{font-size:14px;font-weight:700;color:rgba(255,255,255,0.7);margin-top:8px;}
-.qr-body{padding:24px 20px;display:flex;flex-direction:column;gap:14px;}
-.qr-card{background:var(--white);border:3px solid var(--black);border-radius:10px;padding:16px;box-shadow:4px 4px 0 var(--black);text-align:center;}
-.qr-pts{font-family:'Bangers',cursive;font-size:48px;color:var(--orange);letter-spacing:2px;text-shadow:3px 3px 0 rgba(0,0,0,0.2);}
-.qr-pts-label{font-size:14px;font-weight:700;color:#555;margin-top:4px;}
-.qr-session{font-family:'Bangers',cursive;font-size:20px;color:var(--blue);letter-spacing:2px;margin-top:8px;}
 
 /* PROGRAM */
 .prog-list{padding:0 16px;}
@@ -245,7 +232,7 @@ body{font-family:'Comic Neue',cursive;background:var(--bg);color:var(--black);mi
 </head>
 <body>
 
-<!-- ===== ONBOARDING ===== -->
+<!-- ONBOARDING -->
 <div id="ob-welcome" class="screen active">
   <div class="ob-hero halftone">
     <div class="ob-deco1"></div>
@@ -313,6 +300,10 @@ body{font-family:'Comic Neue',cursive;background:var(--bg);color:var(--black);mi
         <input type="text" id="reg-name" class="field-input" placeholder="Анна Козлова">
       </div>
       <div>
+        <div class="field-label">Корпоративная почта</div>
+        <input type="email" id="reg-email" class="field-input" placeholder="name@company.ru">
+      </div>
+      <div>
         <div class="field-label">Организация</div>
         <input type="text" id="reg-company" class="field-input" placeholder="Название компании">
       </div>
@@ -338,7 +329,7 @@ body{font-family:'Comic Neue',cursive;background:var(--bg);color:var(--black);mi
   </div>
 </div>
 
-<!-- ===== MAIN APP ===== -->
+<!-- APP -->
 <div id="app" style="display:none;">
 
   <div id="screen-profile" class="app-screen active">
@@ -482,37 +473,8 @@ const API='https://script.google.com/macros/s/AKfycbyYuilmUoMlTsWc_M0GeuOxmsbJ7Q
 const MAX_PTS=430;
 
 const AVATARS={
-  male:[
-    {file:'male0.png',codename:'DEFENSE GRID'},
-{file:'male1.png',codename:'DEFENSE GRID'},
-{file:'male2.png',codename:'DEFENSE GRID'},
-{file:'male3.png',codename:'DEFENSE GRID'},
-{file:'male4.png',codename:'DEFENSE GRID'},
-{file:'male5.png',codename:'DEFENSE GRID'},
-{file:'male6.png',codename:'DEFENSE GRID'},
-{file:'male7.png',codename:'DEFENSE GRID'},
-{file:'Male8.png',codename:'DEFENSE GRID'},
-{file:'Male9.png',codename:'DEFENSE GRID'},
-{file:'Male10.png',codename:'DEFENSE GRID'},
-{file:'Male11.png',codename:'DEFENSE GRID'},
-{file:'Male12.png',codename:'DEFENSE GRID'},
-  ],
-  female:[
-    {file:'female0.png',codename:'STEALTH TRACER'},
-{file:'female1.png',codename:'STEALTH TRACER'},
-{file:'female2.png',codename:'STEALTH TRACER'},
-{file:'female3.png',codename:'STEALTH TRACER'},
-{file:'female4.png',codename:'STEALTH TRACER'},
-{file:'female5.png',codename:'STEALTH TRACER'},
-{file:'female6.png',codename:'STEALTH TRACER'},
-{file:'female7.png',codename:'STEALTH TRACER'},
-{file:'female8.png',codename:'STEALTH TRACER'},
-{file:'female9.png',codename:'STEALTH TRACER'},
-{file:'female10.png',codename:'STEALTH TRACER'},
-{file:'female11.png',codename:'STEALTH TRACER'},
-{file:'female12.png',codename:'STEALTH TRACER'},
-{file:'Female13.png',codename:'STEALTH TRACER'},
-  ]
+  male:[{file:'Defense_Grid_Icon.png',codename:'DEFENSE GRID'}],
+  female:[{file:'Stealth_Tracer_Icon.png',codename:'STEALTH TRACER'}]
 };
 
 const PROGRAM=[
@@ -560,8 +522,7 @@ function selectGender(gender){
   selectedGender=gender;
   const pool=AVATARS[gender];
   assignedAvatar=pool[Math.floor(Math.random()*pool.length)];
-  const img=document.getElementById('reveal-img');
-  img.src=assignedAvatar.file;
+  document.getElementById('reveal-img').src=assignedAvatar.file;
   document.getElementById('reveal-codename').textContent=assignedAvatar.codename;
   goTo('ob-reveal');
 }
@@ -575,20 +536,22 @@ document.querySelectorAll('.itag').forEach(t=>{
 
 async function register(){
   const name=document.getElementById('reg-name').value.trim();
+  const email=document.getElementById('reg-email').value.trim();
   const company=document.getElementById('reg-company').value.trim();
   const role=document.getElementById('reg-role').value.trim();
   if(!name||!company){showToast('ЗАПОЛНИ ПОЗЫВНОЙ И ОРГАНИЗАЦИЮ!');return;}
   const btn=document.querySelector('#ob-reveal .ob-btn');
   btn.textContent='АВТОРИЗАЦИЯ...';btn.disabled=true;
   try{
-    const res=await api({action:'register',name,company,role,interests:selectedTags.join(','),avatar:assignedAvatar?assignedAvatar.file:'',codename:assignedAvatar?assignedAvatar.codename:''});
+    const res=await api({action:'register',name,email,company,role,interests:selectedTags.join(','),avatar:assignedAvatar?assignedAvatar.file:'',codename:assignedAvatar?assignedAvatar.codename:''});
     if(res.success){
       localStorage.setItem('participant_id',res.id);
       localStorage.setItem('participant_name',name);
+      localStorage.setItem('participant_email',email);
       localStorage.setItem('participant_company',company);
       localStorage.setItem('participant_interests',selectedTags.join(','));
       localStorage.setItem('participant_avatar',assignedAvatar?assignedAvatar.file:'');
-      participant={id:res.id,name,company,role,points:15,interests:selectedTags.join(','),avatar:assignedAvatar?assignedAvatar.file:''};
+      participant={id:res.id,name,email,company,role,points:15,interests:selectedTags.join(','),avatar:assignedAvatar?assignedAvatar.file:''};
       initApp();
       showToast('ДОБРО ПОЖАЛОВАТЬ, АГЕНТ! +15 б');
     }else{showToast('ОШИБКА АВТОРИЗАЦИИ!');btn.textContent='ПРИСТУПИТЬ К МИССИИ ›';btn.disabled=false;}
@@ -597,13 +560,8 @@ async function register(){
 
 function setAvatarUI(){
   const av=participant&&participant.avatar?participant.avatar:'';
-  ['p-av-img','p-av-img2'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el&&av){el.src=av;el.style.display='block';}
-  });
-  if(av){
-    ['p-av-emoji','p-av-emoji2'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
-  }
+  ['p-av-img','p-av-img2'].forEach(id=>{const el=document.getElementById(id);if(el&&av){el.src=av;el.style.display='block';}});
+  if(av){['p-av-emoji','p-av-emoji2'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});}
 }
 
 function initApp(){
@@ -622,8 +580,7 @@ function initApp(){
 function showScreen(n){
   document.querySelectorAll('.app-screen').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nb').forEach(b=>{
-    b.classList.remove('act');
-    b.querySelector('.nb-lbl').style.color='';
+    b.classList.remove('act');b.querySelector('.nb-lbl').style.color='';
     b.querySelectorAll('svg [stroke]').forEach(el=>{if(el.getAttribute('stroke')!=='none')el.setAttribute('stroke','#bbb');});
     b.querySelectorAll('svg [fill]').forEach(el=>{if(el.getAttribute('fill')!=='none'&&el.tagName!=='svg')el.setAttribute('fill','#bbb');});
   });
@@ -674,9 +631,7 @@ async function loadLeaderboard(){
 async function loadNetwork(){
   if(!participant)return;
   try{
-    console.log('My ID:', participant.id);
-const res=await api({action:'getParticipants',exclude:participant.id});
-console.log('Network response:', JSON.stringify(res));
+    const res=await api({action:'getParticipants',exclude:participant.id});
     const wrap=document.getElementById('network-list');
     if(!res.participants||!res.participants.length){
       wrap.innerHTML='<div class="net-empty"><div class="net-empty-icon">🤝</div><div class="net-empty-text">ДРУГИХ АГЕНТОВ ПОКА НЕТ.<br>СКОРО ПОЯВЯТСЯ!</div></div>';
@@ -688,13 +643,10 @@ console.log('Network response:', JSON.stringify(res));
       const matches=myInterests.filter(i=>their.includes(i));
       return{...p,matches,score:matches.length};
     }).sort((a,b)=>b.score-a.score||b.points-a.points);
-
     wrap.innerHTML=scored.map(p=>{
       const their=(p.interests||'').split(',').filter(Boolean);
       const mySet=new Set(myInterests);
-      const tagsHtml=their.length
-        ?their.map(t=>`<span class="net-tag${mySet.has(t)?' match':''}">${t}</span>`).join('')
-        :'<span class="net-tag">нет тегов</span>';
+      const tagsHtml=their.length?their.map(t=>`<span class="net-tag${mySet.has(t)?' match':''}">${t}</span>`).join(''):'<span class="net-tag">нет тегов</span>';
       const avHtml=p.avatar?`<img src="${p.avatar}" alt="">`:`<span style="font-size:26px;">🦸</span>`;
       return`<div class="net-card">
         <div class="net-av">${avHtml}</div>
@@ -709,9 +661,7 @@ console.log('Network response:', JSON.stringify(res));
         </div>
       </div>`;
     }).join('');
-  }catch(e){
-    document.getElementById('network-list').innerHTML='<div class="loader">ОШИБКА СВЯЗИ...</div>';
-  }
+  }catch(e){document.getElementById('network-list').innerHTML='<div class="loader">ОШИБКА СВЯЗИ...</div>';}
 }
 
 function renderProgram(){
@@ -822,6 +772,7 @@ window.addEventListener('load',()=>{
     participant={
       id,
       name:localStorage.getItem('participant_name')||'—',
+      email:localStorage.getItem('participant_email')||'',
       company:localStorage.getItem('participant_company')||'—',
       points:0,
       interests:localStorage.getItem('participant_interests')||'',
@@ -832,4 +783,4 @@ window.addEventListener('load',()=>{
 });
 </script>
 </body>
-</html> 
+</html>
