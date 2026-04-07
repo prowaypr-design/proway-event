@@ -3,242 +3,293 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="theme-color" content="#005ca8">
+<meta name="theme-color" content="#050a12">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="manifest" href="manifest.json">
 <title>PROWAY Security Day</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
-:root{--blue:#005ca8;--orange:#ee672a;--yellow:#f5e642;--black:#000;--white:#fff;--bg:#fef9e7;}
+:root{--bg:#050a12;--bg2:#0a0f1e;--bg3:#0d1525;--cyan:#00ffff;--orange:#ff6b35;--yellow:#ffcc00;--blue:#005ca8;--white:#fff;--border:#00ffff22;--border2:#00ffff44;--text:#ffffffcc;--text2:#ffffff66;--text3:#ffffff22;}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-body{font-family:'Comic Neue',cursive;background:var(--bg);color:var(--black);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
-.halftone{background-image:radial-gradient(circle,rgba(255,255,255,0.1) 1.5px,transparent 1.5px);background-size:12px 12px;}
+body{font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
 .screen{display:none;min-height:100vh;flex-direction:column;}
 .screen.active{display:flex;}
-.app-screen{display:none;padding-bottom:72px;}
+.app-screen{display:none;padding-bottom:72px;min-height:100vh;}
 .app-screen.active{display:block;}
 
+/* TICKER */
+.ticker-wrap{background:#020609;border-bottom:1px solid var(--border);overflow:hidden;height:26px;display:flex;align-items:center;position:sticky;top:0;z-index:200;}
+.ticker-label{background:var(--cyan);padding:0 10px;font-family:'Bangers',cursive;font-size:11px;color:#000;letter-spacing:3px;white-space:nowrap;height:100%;display:flex;align-items:center;flex-shrink:0;}
+.ticker-track{overflow:hidden;flex:1;}
+.ticker-inner{display:inline-flex;white-space:nowrap;animation:ticker 25s linear infinite;}
+@keyframes ticker{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+.ticker-msg{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);padding:0 32px;letter-spacing:1px;}
+.ticker-sep{color:var(--border2);}
+
+/* BANNER */
+.announce-banner{position:fixed;top:26px;left:0;right:0;z-index:190;background:#0a1a0a;border-left:3px solid #00ff88;border-bottom:1px solid #00ff8833;padding:10px 16px;display:flex;align-items:center;gap:10px;transform:translateY(-120%);transition:transform 0.3s;}
+.announce-banner.show{transform:translateY(0);}
+.announce-text{flex:1;font-size:13px;font-weight:600;color:#00ff88cc;line-height:1.4;}
+.announce-close{background:none;border:none;font-size:16px;color:#00ff8866;cursor:pointer;padding:4px;}
+
 /* ONBOARDING */
-#ob-welcome{background:var(--blue);}
+#ob-welcome{background:var(--bg);}
 .ob-hero{flex:1;padding:60px 24px 24px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;}
-.ob-deco1{position:absolute;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,0.05);top:-80px;right:-80px;}
-.ob-deco2{position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(238,103,42,0.2);bottom:-60px;left:-40px;}
-.ob-eyebrow{font-family:'Bangers',cursive;font-size:12px;color:rgba(255,255,255,0.5);letter-spacing:4px;margin-bottom:10px;position:relative;z-index:1;}
-.ob-title{font-family:'Bangers',cursive;font-size:56px;color:var(--yellow);line-height:0.9;letter-spacing:3px;text-shadow:4px 4px 0 rgba(0,0,0,0.4);position:relative;z-index:1;}
-.ob-title span{color:var(--white);}
-.ob-speech{background:rgba(0,0,0,0.35);border-radius:12px;padding:14px 16px;margin-top:16px;border:1.5px solid rgba(255,255,255,0.12);position:relative;z-index:1;}
-.ob-speech-text{font-size:14px;color:rgba(255,255,255,0.9);line-height:1.6;font-weight:700;}
-.ob-bottom{background:var(--yellow);padding:20px 24px 40px;border-top:3px solid var(--black);}
-.ob-desc{font-size:14px;font-weight:700;color:var(--black);line-height:1.6;margin-bottom:16px;}
-.ob-btn{background:var(--orange);border:3px solid var(--black);border-radius:8px;padding:16px;width:100%;font-family:'Bangers',cursive;font-size:22px;color:var(--white);letter-spacing:3px;text-shadow:2px 2px 0 rgba(0,0,0,0.4);cursor:pointer;display:block;text-align:center;box-shadow:4px 4px 0 var(--black);}
-.ob-btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--black);}
+.ob-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;}
+.ob-glow{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(0,255,255,0.07),transparent 70%);top:-80px;right:-60px;}
+.ob-eyebrow{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:4px;margin-bottom:12px;position:relative;z-index:1;}
+.ob-title{font-family:'Bangers',cursive;font-size:60px;color:var(--white);line-height:0.9;letter-spacing:3px;position:relative;z-index:1;}
+.ob-title .accent{color:var(--cyan);}
+.ob-line{width:60px;height:2px;background:var(--cyan);margin:16px 0;position:relative;z-index:1;}
+.ob-speech{background:rgba(0,255,255,0.04);border:1px solid var(--border2);border-left:3px solid var(--cyan);border-radius:4px;padding:14px 16px;position:relative;z-index:1;}
+.ob-speech-text{font-size:14px;color:var(--text);line-height:1.6;font-weight:500;}
+.ob-bottom{background:#020609;padding:20px 24px 40px;border-top:1px solid var(--border);}
+.ob-desc{font-size:14px;font-weight:500;color:var(--text2);line-height:1.6;margin-bottom:16px;}
+.ob-btn{background:transparent;border:1px solid var(--cyan);border-radius:4px;padding:16px;width:100%;font-family:'Bangers',cursive;font-size:22px;color:var(--cyan);letter-spacing:4px;cursor:pointer;display:block;text-align:center;}
+.ob-btn:active{opacity:0.7;}
 
 #ob-choose{background:var(--bg);}
-.ob-choose-header{background:var(--black);padding:52px 20px 16px;}
-.ob-choose-title{font-family:'Bangers',cursive;font-size:28px;color:var(--yellow);letter-spacing:3px;}
-.ob-choose-sub{font-size:12px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:1px;margin-top:3px;}
-.ob-choose-body{flex:1;padding:20px;display:flex;flex-direction:column;gap:14px;}
-.ob-choose-q{font-family:'Bangers',cursive;font-size:22px;color:var(--black);letter-spacing:2px;text-align:center;}
+.ob-choose-header{background:#020609;padding:52px 20px 16px;border-bottom:1px solid var(--border);}
+.ob-choose-title{font-family:'Bangers',cursive;font-size:28px;color:var(--cyan);letter-spacing:4px;}
+.ob-choose-sub{font-size:11px;font-weight:600;color:var(--text2);letter-spacing:2px;margin-top:4px;}
+.ob-choose-body{flex:1;padding:20px;display:flex;flex-direction:column;gap:16px;background:var(--bg);}
+.ob-choose-q{font-family:'Bangers',cursive;font-size:20px;color:var(--white);letter-spacing:3px;text-align:center;}
 .agent-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.agent-card{border:3px solid var(--black);border-radius:10px;overflow:hidden;cursor:pointer;box-shadow:4px 4px 0 var(--black);}
-.agent-card:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--black);}
-.ac-top{padding:10px;text-align:center;}
-.ac-face{height:110px;display:flex;align-items:center;justify-content:center;border-top:3px solid var(--black);border-bottom:3px solid var(--black);overflow:hidden;}
+.agent-card{border:1px solid var(--border2);border-radius:8px;overflow:hidden;cursor:pointer;background:var(--bg2);}
+.agent-card:active{border-color:var(--cyan);}
+.ac-top{padding:10px;text-align:center;border-bottom:1px solid var(--border);}
+.ac-label{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:2px;}
+.ac-face{height:110px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-bottom:1px solid var(--border);}
 .ac-face img{width:100%;height:100%;object-fit:cover;}
-.ac-name{font-family:'Bangers',cursive;font-size:15px;letter-spacing:2px;padding:10px 8px;text-align:center;background:var(--yellow);}
-.ob-tip{background:var(--black);border-radius:8px;padding:12px 14px;}
-.ob-tip-text{font-size:12px;font-weight:700;color:var(--yellow);line-height:1.5;}
+.ac-name{font-family:'Bangers',cursive;font-size:16px;letter-spacing:3px;padding:10px 8px;text-align:center;}
+.ob-tip{background:rgba(0,255,255,0.03);border:1px solid var(--border);border-radius:4px;padding:12px 14px;}
+.ob-tip-text{font-size:12px;font-weight:500;color:var(--text2);line-height:1.5;}
 
 #ob-reveal{background:var(--bg);}
-.ob-reveal-header{background:var(--orange);border-bottom:3px solid var(--black);padding:52px 20px 14px;}
-.ob-reveal-title{font-family:'Bangers',cursive;font-size:26px;color:var(--white);letter-spacing:3px;text-shadow:3px 3px 0 rgba(0,0,0,0.3);}
-.ob-reveal-body{flex:1;padding:16px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;}
-.burst-wrap{position:relative;display:flex;align-items:center;justify-content:center;width:180px;height:180px;flex-shrink:0;}
-.burst-bg{position:absolute;inset:0;background:var(--yellow);clip-path:polygon(50% 0%,58% 18%,76% 8%,70% 27%,92% 22%,80% 38%,100% 40%,84% 52%,96% 68%,76% 66%,78% 86%,62% 76%,56% 96%,46% 78%,30% 90%,34% 70%,14% 76%,24% 58%,4% 52%,20% 42%,4% 28%,24% 32%,18% 12%,36% 24%);border:3px solid var(--black);}
-.burst-av{width:120px;height:120px;border-radius:50%;border:4px solid var(--black);overflow:hidden;background:var(--blue);position:relative;z-index:1;display:flex;align-items:center;justify-content:center;}
-.burst-av img{width:100%;height:100%;object-fit:cover;}
-.codename-wrap{background:var(--black);border-radius:6px;padding:8px 20px;}
-.codename{font-family:'Bangers',cursive;font-size:18px;color:var(--yellow);letter-spacing:4px;text-align:center;}
+.ob-reveal-header{background:#020609;border-bottom:1px solid var(--border);padding:52px 20px 14px;}
+.ob-reveal-title{font-family:'Bangers',cursive;font-size:26px;color:var(--cyan);letter-spacing:4px;}
+.ob-reveal-body{flex:1;padding:16px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;background:var(--bg);}
+.av-ring{width:130px;height:130px;border-radius:50%;border:2px solid var(--cyan);overflow:hidden;background:var(--bg2);display:flex;align-items:center;justify-content:center;}
+.av-ring img{width:100%;height:100%;object-fit:cover;}
+.codename-wrap{background:rgba(0,255,255,0.05);border:1px solid var(--border2);border-radius:4px;padding:8px 24px;}
+.codename{font-family:'Bangers',cursive;font-size:18px;color:var(--cyan);letter-spacing:6px;text-align:center;}
 .form-section{width:100%;display:flex;flex-direction:column;gap:10px;}
-.field-label{font-size:12px;font-weight:700;color:#555;margin-bottom:4px;}
-.field-input{width:100%;padding:13px 16px;border:3px solid var(--black);border-radius:8px;font-size:16px;font-family:'Comic Neue',cursive;font-weight:700;background:var(--white);outline:none;box-shadow:3px 3px 0 var(--black);}
-.field-input:focus{border-color:var(--blue);box-shadow:3px 3px 0 var(--blue);}
+.field-label{font-size:11px;font-weight:600;color:var(--text2);margin-bottom:4px;letter-spacing:1px;}
+.field-input{width:100%;padding:12px 16px;border:1px solid var(--border2);border-radius:4px;font-size:15px;font-family:'Rajdhani',sans-serif;font-weight:600;background:var(--bg2);color:var(--white);outline:none;}
+.field-input:focus{border-color:var(--cyan);}
+.field-input::placeholder{color:var(--text3);}
 .tags-wrap{display:flex;flex-wrap:wrap;gap:8px;}
-.itag{padding:8px 14px;border-radius:24px;background:var(--white);font-size:13px;font-family:'Comic Neue',cursive;font-weight:700;color:#333;border:2.5px solid var(--black);cursor:pointer;box-shadow:2px 2px 0 var(--black);}
-.itag.sel{background:var(--blue);color:var(--white);border-color:var(--blue);box-shadow:2px 2px 0 #003d73;}
+.itag{padding:6px 14px;border-radius:2px;background:transparent;font-size:12px;font-family:'Rajdhani',sans-serif;font-weight:600;color:var(--text2);border:1px solid var(--border2);cursor:pointer;letter-spacing:1px;}
+.itag.sel{background:rgba(0,255,255,0.08);color:var(--cyan);border-color:var(--cyan);}
 
 /* TOPBAR */
-.topbar{background:var(--blue);padding:48px 18px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--black);position:sticky;top:0;z-index:50;}
-.topbar-logo{font-family:'Bangers',cursive;font-size:16px;color:var(--yellow);letter-spacing:3px;text-shadow:2px 2px 0 rgba(0,0,0,0.3);}
-.topbar-sub{font-size:9px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:2px;text-transform:uppercase;margin-top:1px;}
-.topbar-av{width:38px;height:38px;border-radius:50%;border:3px solid var(--black);overflow:hidden;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.topbar{background:#020609;padding:46px 16px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:26px;z-index:50;}
+.topbar-logo{font-family:'Bangers',cursive;font-size:18px;color:var(--cyan);letter-spacing:4px;}
+.topbar-sub{font-size:9px;font-weight:600;color:var(--text2);letter-spacing:3px;margin-top:2px;}
+.topbar-right{display:flex;align-items:center;gap:6px;}
+.topbar-dosye{font-size:9px;font-weight:700;color:var(--cyan);letter-spacing:2px;opacity:0.7;}
+.topbar-av{width:36px;height:36px;border-radius:50%;border:1px solid var(--cyan);overflow:hidden;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text2);}
 .topbar-av img{width:100%;height:100%;object-fit:cover;}
 
 /* HERO */
-.hero-block{background:var(--blue);border-bottom:3px solid var(--black);padding:0 16px 16px;}
-.hero-inner{background:rgba(255,255,255,0.08);border:2px solid rgba(255,255,255,0.12);border-radius:12px;padding:16px;position:relative;overflow:hidden;}
-.hero-inner::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,0.06) 1.5px,transparent 1.5px);background-size:10px 10px;}
-.hi-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;position:relative;z-index:1;}
-.hi-pts-label{font-size:10px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:2px;margin-bottom:4px;}
-.pts-burst{width:90px;height:70px;background:var(--yellow);clip-path:polygon(50% 0%,61% 20%,80% 10%,72% 30%,100% 25%,85% 42%,100% 55%,80% 55%,88% 75%,65% 65%,60% 90%,48% 72%,38% 90%,35% 68%,12% 78%,22% 58%,0% 55%,15% 40%,0% 25%,28% 30%,20% 10%,40% 20%);border:2px solid var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;}
-.pts-num{font-family:'Bangers',cursive;font-size:28px;color:var(--black);line-height:1;letter-spacing:1px;}
-.pts-lbl{font-family:'Bangers',cursive;font-size:9px;color:var(--black);letter-spacing:2px;}
-.hi-rank{background:var(--orange);border:3px solid var(--black);border-radius:8px;padding:8px 12px;text-align:center;box-shadow:3px 3px 0 rgba(0,0,0,0.3);}
-.hi-rank-n{font-family:'Bangers',cursive;font-size:24px;color:var(--white);line-height:1;text-shadow:2px 2px 0 rgba(0,0,0,0.3);}
-.hi-rank-l{font-family:'Bangers',cursive;font-size:9px;color:rgba(255,255,255,0.8);letter-spacing:2px;}
-.hi-prog{position:relative;z-index:1;}
-.hi-prog-row{display:flex;justify-content:space-between;margin-bottom:5px;}
-.hi-prog-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,0.5);}
-.hi-prog-pct{font-family:'Bangers',cursive;font-size:12px;color:var(--yellow);letter-spacing:1px;}
-.hi-prog-track{height:8px;background:rgba(0,0,0,0.3);border-radius:2px;border:1.5px solid rgba(0,0,0,0.2);overflow:hidden;}
-.hi-prog-fill{height:100%;background:var(--yellow);border-radius:1px;width:0;transition:width 1.2s cubic-bezier(0.4,0,0.2,1);}
+.hero-block{background:#020609;padding:14px 16px;border-bottom:1px solid var(--border);}
+.pts-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:12px;}
+.pts-label{font-size:10px;font-weight:600;color:var(--text2);letter-spacing:2px;margin-bottom:4px;}
+.pts-big{font-family:'Bangers',cursive;font-size:52px;color:var(--cyan);line-height:1;}
+.pts-unit{font-family:'Bangers',cursive;font-size:18px;color:var(--cyan);opacity:0.5;margin-left:4px;letter-spacing:2px;}
+.rank-box{background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.3);border-radius:4px;padding:8px 14px;text-align:center;}
+.rank-n{font-family:'Bangers',cursive;font-size:26px;color:var(--orange);line-height:1;}
+.rank-l{font-size:9px;font-weight:600;color:rgba(255,107,53,0.5);letter-spacing:2px;}
+.prog-row{display:flex;justify-content:space-between;margin-bottom:5px;}
+.prog-lbl{font-size:10px;font-weight:600;color:var(--text2);letter-spacing:1px;}
+.prog-pct{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);}
+.prog-track{height:3px;background:var(--bg3);border-radius:2px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:2px;width:0;transition:width 1.2s ease;}
 
-/* STATS */
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);margin:0 16px;border:3px solid var(--black);border-radius:10px;overflow:hidden;box-shadow:4px 4px 0 var(--black);}
-.stat{background:var(--white);padding:12px 8px;text-align:center;border-right:3px solid var(--black);}
-.stat:last-child{border-right:none;}
-.stat-n{font-family:'Bangers',cursive;font-size:28px;color:var(--black);line-height:1;letter-spacing:1px;}
-.stat-n.orange{color:var(--orange);}
-.stat-l{font-size:10px;font-weight:700;color:#777;margin-top:2px;text-transform:uppercase;letter-spacing:1px;}
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border);}
+.sg-cell{background:var(--bg);padding:10px 8px;text-align:center;}
+.sg-n{font-family:'Bangers',cursive;font-size:26px;color:var(--white);line-height:1;}
+.sg-n.accent{color:var(--orange);}
+.sg-l{font-size:9px;font-weight:600;color:var(--text2);letter-spacing:2px;margin-top:2px;}
 
-/* TIP */
-.tip{background:var(--orange);border:3px solid var(--black);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px;box-shadow:4px 4px 0 var(--black);}
-.tip-zap{font-family:'Bangers',cursive;font-size:22px;color:var(--yellow);text-shadow:2px 2px 0 rgba(0,0,0,0.3);flex-shrink:0;letter-spacing:1px;}
-.tip-title{font-family:'Bangers',cursive;font-size:14px;color:var(--white);letter-spacing:1px;text-shadow:1px 1px 0 rgba(0,0,0,0.3);}
-.tip-desc{font-size:11px;font-weight:700;color:rgba(255,255,255,0.8);margin-top:1px;line-height:1.4;}
-.tip-pts{font-family:'Bangers',cursive;font-size:18px;color:var(--yellow);text-shadow:2px 2px 0 rgba(0,0,0,0.3);white-space:nowrap;letter-spacing:1px;}
+/* SECTION HDR */
+.section-hdr{padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.section-hdr-title{font-family:'Bangers',cursive;font-size:16px;color:var(--cyan);letter-spacing:3px;}
+.section-hdr-sub{font-size:9px;font-weight:600;color:var(--text2);letter-spacing:2px;}
 
-/* SECTION */
-.section-banner{background:var(--yellow);border-top:3px solid var(--black);border-bottom:3px solid var(--black);padding:8px 16px;display:flex;align-items:center;justify-content:space-between;}
-.section-title{font-family:'Bangers',cursive;font-size:20px;color:var(--black);letter-spacing:2px;}
-.section-sub{font-size:10px;font-weight:700;color:#555;letter-spacing:1px;}
-
-/* LEADERBOARD */
-.lb{margin:0 16px;border:3px solid var(--black);border-radius:10px;overflow:hidden;box-shadow:4px 4px 0 var(--black);}
-.lb-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:3px solid var(--black);background:var(--white);position:relative;}
-.lb-row:last-child{border-bottom:none;}
-.lb-row.me{background:#e6f0fb;}
-.lb-pos{font-family:'Bangers',cursive;font-size:20px;min-width:20px;color:#ccc;line-height:1;}
-.lb-pos.gold{color:#f59e0b;}
-.lb-pos.me-c{color:var(--blue);}
-.lb-av-wrap{width:36px;height:36px;border-radius:50%;border:3px solid var(--black);overflow:hidden;flex-shrink:0;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:18px;}
-.lb-av-wrap.me{border-color:var(--blue);}
-.lb-av-wrap img{width:100%;height:100%;object-fit:cover;}
-.lb-info{flex:1;min-width:0;}
-.lb-name{font-size:13px;font-weight:700;color:var(--black);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.lb-name.me{color:var(--blue);}
-.lb-co{font-size:11px;color:#888;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.lb-pts{font-family:'Bangers',cursive;font-size:17px;color:var(--black);white-space:nowrap;letter-spacing:1px;}
-.lb-pts.me{color:var(--blue);}
-.lb-speech{position:absolute;top:-16px;right:10px;background:var(--white);border:2px solid var(--black);border-radius:6px;padding:2px 8px;font-family:'Bangers',cursive;font-size:10px;color:var(--orange);letter-spacing:1px;white-space:nowrap;}
-.lb-speech::after{content:'';position:absolute;bottom:-6px;right:10px;border:4px solid transparent;border-top-color:var(--black);}
-.lb-speech::before{content:'';position:absolute;bottom:-4px;right:11px;border:3px solid transparent;border-top-color:var(--white);z-index:1;}
-
-/* NETWORKING */
-.net-card{background:var(--white);border:3px solid var(--black);border-radius:10px;padding:12px 14px;margin:0 16px 10px;box-shadow:3px 3px 0 var(--black);display:flex;align-items:center;gap:12px;}
-.net-av{width:52px;height:52px;border-radius:50%;border:3px solid var(--black);overflow:hidden;flex-shrink:0;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:26px;}
-.net-av img{width:100%;height:100%;object-fit:cover;}
-.net-info{flex:1;min-width:0;}
-.net-name{font-size:14px;font-weight:700;color:var(--black);}
-.net-co{font-size:12px;color:#777;margin-top:1px;}
-.net-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
-.net-tag{font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;background:#f0f0f0;color:#555;border:1.5px solid #ccc;}
-.net-tag.match{background:var(--yellow);color:var(--black);border-color:var(--black);}
-.net-match{text-align:center;flex-shrink:0;}
-.net-match-n{font-family:'Bangers',cursive;font-size:26px;color:var(--orange);line-height:1;}
-.net-match-l{font-size:9px;font-weight:700;color:#aaa;letter-spacing:1px;}
-.net-empty{text-align:center;padding:40px 20px;}
-.net-empty-icon{font-family:'Bangers',cursive;font-size:48px;color:#ddd;letter-spacing:2px;margin-bottom:8px;}
-.net-empty-text{font-size:13px;font-weight:700;color:#aaa;}
-
-/* PROGRAM */
-.prog-list{padding:0 16px;}
-.prog-item{background:var(--white);border:3px solid var(--black);border-radius:10px;padding:14px;margin-bottom:10px;display:flex;gap:12px;box-shadow:3px 3px 0 var(--black);}
-.prog-time-col{display:flex;flex-direction:column;align-items:center;min-width:46px;}
-.prog-time{font-family:'Bangers',cursive;font-size:14px;color:var(--blue);letter-spacing:1px;}
-.prog-line{width:2px;flex:1;background:#e0e0e0;margin:5px 0;}
-.prog-dot{width:8px;height:8px;border-radius:50%;background:#ddd;border:2px solid var(--black);}
-.prog-dot.done{background:var(--orange);}
-.prog-info{flex:1;}
-.prog-tag{display:inline-block;font-family:'Bangers',cursive;font-size:10px;letter-spacing:1px;padding:2px 8px;border-radius:4px;border:2px solid;margin-bottom:5px;}
-.prog-title{font-size:14px;font-weight:700;color:var(--black);line-height:1.3;margin-bottom:3px;}
-.prog-speaker{font-size:12px;color:#777;}
-
-/* SPEAKERS */
-.speaker-list{padding:0 16px;}
-.speaker-card{background:var(--white);border:3px solid var(--black);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;box-shadow:3px 3px 0 var(--black);}
-.sp-av{width:44px;height:44px;border-radius:50%;border:3px solid var(--black);display:flex;align-items:center;justify-content:center;font-family:'Bangers',cursive;font-size:14px;color:var(--white);flex-shrink:0;}
-.sp-name{font-size:14px;font-weight:700;color:var(--black);}
-.sp-co{font-size:12px;font-weight:700;margin-top:1px;}
-.sp-role{font-size:11px;color:#888;margin-top:1px;}
-
-/* POLLS */
-.poll-card{background:var(--white);border:3px solid var(--black);border-radius:10px;padding:16px;margin:0 16px 12px;box-shadow:3px 3px 0 var(--black);}
-.poll-session{font-family:'Bangers',cursive;font-size:11px;color:var(--blue);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
-.poll-q{font-size:15px;font-weight:700;color:var(--black);line-height:1.4;margin-bottom:14px;}
-.poll-opt{width:100%;text-align:left;padding:12px 16px;border-radius:8px;border:2.5px solid var(--black);background:#fafaf5;font-size:13px;font-weight:700;color:var(--black);font-family:'Comic Neue',cursive;cursor:pointer;margin-bottom:8px;display:block;box-shadow:2px 2px 0 var(--black);}
-.poll-opt:last-child{margin-bottom:0;}
-.poll-opt.selected{background:var(--blue);color:var(--white);border-color:var(--blue);}
-.poll-result{position:relative;overflow:hidden;cursor:default;}
-.poll-bar{position:absolute;left:0;top:0;bottom:0;background:#dceeff;transition:width 0.6s;z-index:0;}
-.poll-bar.orange{background:#ffebd9;}
-.poll-content{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;}
-.poll-pct{font-family:'Bangers',cursive;font-size:14px;color:var(--blue);letter-spacing:1px;}
-.poll-pct.orange{color:var(--orange);}
-
-/* QUESTIONS */
-.q-compose{background:var(--white);border:3px solid var(--black);border-radius:10px;padding:14px;margin:0 16px 12px;box-shadow:3px 3px 0 var(--black);}
-.q-textarea{width:100%;border:2.5px solid var(--black);border-radius:8px;padding:12px;font-size:14px;font-family:'Comic Neue',cursive;font-weight:700;color:var(--black);resize:none;outline:none;background:#fafaf5;min-height:80px;}
-.q-textarea:focus{border-color:var(--blue);}
-.q-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px;}
-.q-hint{font-size:11px;font-weight:700;color:#888;}
-.q-send{background:var(--orange);border:2.5px solid var(--black);border-radius:8px;padding:10px 18px;font-family:'Bangers',cursive;font-size:16px;color:var(--white);letter-spacing:2px;cursor:pointer;box-shadow:2px 2px 0 var(--black);}
-.q-send:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--black);}
-.q-card{background:var(--white);border:3px solid var(--black);border-radius:10px;padding:12px 14px;margin:0 16px 8px;box-shadow:3px 3px 0 var(--black);}
-.q-card.top{border-color:var(--orange);background:#fff8f5;}
-.q-card.mine{border-color:var(--blue);background:#f0f5ff;}
-.q-text{font-size:14px;font-weight:700;color:var(--black);line-height:1.45;margin-bottom:10px;}
-.q-prog{height:4px;background:#eee;border-radius:2px;margin-bottom:10px;overflow:hidden;border:1px solid #ddd;}
-.q-prog-fill{height:100%;border-radius:2px;}
-.q-meta{display:flex;align-items:center;justify-content:space-between;}
-.q-author{font-size:11px;font-weight:700;color:#888;}
-.q-vote-row{display:flex;align-items:center;gap:8px;}
-.q-votes{font-size:11px;font-weight:700;color:#aaa;}
-.vote-btn{padding:5px 12px;border-radius:20px;border:2px solid var(--black);background:var(--white);font-size:11px;font-weight:700;color:var(--black);font-family:'Comic Neue',cursive;cursor:pointer;box-shadow:2px 2px 0 var(--black);}
-.vote-btn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--black);}
-.vote-btn.voted{border-color:var(--orange);color:var(--orange);background:#fff8f5;}
+/* AGENT CARD */
+.agent-card-full{margin:12px 14px;background:var(--bg2);border:1px solid var(--border2);border-radius:6px;overflow:hidden;}
+.acf-namebar{background:rgba(0,255,255,0.05);border-bottom:1px solid var(--border);padding:8px 14px;display:flex;align-items:center;justify-content:space-between;}
+.acf-codename{font-family:'Bangers',cursive;font-size:18px;color:var(--cyan);letter-spacing:4px;}
+.acf-badge{border:1px solid var(--border2);border-radius:2px;padding:2px 8px;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;}
+.acf-art{width:100%;height:180px;overflow:hidden;border-bottom:1px solid var(--border);background:var(--bg3);display:flex;align-items:center;justify-content:center;position:relative;}
+.acf-art img{width:100%;height:100%;object-fit:cover;object-position:top;}
+.acf-rarity{position:absolute;bottom:8px;right:10px;display:flex;gap:3px;}
+.acf-star{width:12px;height:12px;background:var(--yellow);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);}
+.acf-star.empty{background:var(--text3);}
+.acf-stats{padding:10px 14px;border-bottom:1px solid var(--border);}
+.acf-stat-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.acf-stat-row:last-child{margin-bottom:0;}
+.acf-stat-lbl{font-size:10px;font-weight:700;color:var(--text2);letter-spacing:2px;min-width:100px;}
+.acf-bar-wrap{flex:1;height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;}
+.acf-bar{height:100%;border-radius:2px;}
+.acf-stat-val{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--white);min-width:26px;text-align:right;}
+.acf-story{padding:10px 14px;background:#020609;}
+.acf-story-lbl{font-size:9px;font-weight:600;color:var(--orange);letter-spacing:3px;margin-bottom:8px;}
+.acf-chapter-badge{display:inline-block;background:rgba(255,107,53,0.12);border:1px solid rgba(255,107,53,0.35);border-radius:2px;padding:2px 8px;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--orange);letter-spacing:2px;margin-bottom:5px;}
+.acf-chapter-text{font-size:12px;font-weight:500;color:var(--text2);line-height:1.6;margin-bottom:10px;}
+.acf-locked{display:flex;align-items:center;gap:6px;margin-bottom:4px;opacity:0.35;}
+.acf-lock{width:14px;height:14px;border:1px solid var(--text3);border-radius:2px;flex-shrink:0;}
+.acf-locked-text{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:2px;}
+.acf-footer{background:rgba(0,255,255,0.03);padding:8px 14px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);}
+.acf-footer-name{font-size:11px;font-weight:600;color:var(--text2);letter-spacing:1px;}
+.acf-footer-pts{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--cyan);}
 
 /* INFO */
-.info-section{background:var(--white);border:3px solid var(--black);border-radius:10px;margin:0 16px 12px;overflow:hidden;box-shadow:4px 4px 0 var(--black);}
-.info-row{display:flex;align-items:flex-start;gap:12px;padding:14px;border-bottom:2px solid #eee;}
+.info-block{margin:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+.info-row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-bottom:1px solid var(--border);}
 .info-row:last-child{border-bottom:none;}
-.info-icon{width:36px;height:36px;border-radius:8px;border:2px solid var(--black);background:var(--yellow);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;}
-.info-title{font-size:14px;font-weight:700;color:var(--black);margin-bottom:3px;}
-.info-text{font-size:12px;color:#555;line-height:1.5;}
+.info-icon{width:32px;height:32px;border-radius:4px;border:1px solid var(--border2);background:rgba(0,255,255,0.05);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;}
+.info-title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:2px;letter-spacing:0.5px;}
+.info-text{font-size:11px;color:var(--text2);line-height:1.5;font-weight:500;}
+
+/* LEADERBOARD */
+.lb-wrap{margin:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+.lb-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--bg2);position:relative;}
+.lb-row:last-child{border-bottom:none;}
+.lb-row.me{background:rgba(0,255,255,0.03);border-left:2px solid var(--cyan);}
+.lb-pos{font-family:'Bangers',cursive;font-size:18px;min-width:20px;color:var(--text3);line-height:1;}
+.lb-pos.gold{color:var(--yellow);}
+.lb-pos.me-c{color:var(--cyan);}
+.lb-av{width:34px;height:34px;border-radius:50%;border:1px solid var(--border2);overflow:hidden;flex-shrink:0;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text2);}
+.lb-av.me{border-color:var(--cyan);}
+.lb-av img{width:100%;height:100%;object-fit:cover;}
+.lb-info{flex:1;min-width:0;}
+.lb-name{font-size:13px;font-weight:700;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lb-name.me{color:var(--cyan);}
+.lb-co{font-size:10px;color:var(--text2);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lb-pts{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text);white-space:nowrap;}
+.lb-pts.me{color:var(--cyan);}
+.lb-leader{position:absolute;top:-1px;right:10px;background:rgba(255,204,0,0.12);border:1px solid rgba(255,204,0,0.3);border-top:none;border-radius:0 0 3px 3px;padding:1px 6px;font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--yellow);letter-spacing:2px;}
+
+/* NET */
+.net-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:12px 14px;margin:0 14px 10px;display:flex;align-items:center;gap:12px;}
+.net-av{width:46px;height:46px;border-radius:50%;border:1px solid var(--border2);overflow:hidden;flex-shrink:0;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--text2);}
+.net-av img{width:100%;height:100%;object-fit:cover;}
+.net-info{flex:1;min-width:0;}
+.net-name{font-size:14px;font-weight:700;color:var(--white);margin-bottom:2px;}
+.net-co{font-size:11px;color:var(--text2);}
+.net-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;}
+.net-tag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:2px;background:var(--bg3);color:var(--text2);border:1px solid var(--border);}
+.net-tag.match{background:rgba(0,255,255,0.06);color:var(--cyan);border-color:var(--border2);}
+.net-match-n{font-family:'Bangers',cursive;font-size:24px;color:var(--text3);line-height:1;text-align:center;}
+.net-match-n.hot{color:var(--orange);}
+.net-match-l{font-size:8px;font-weight:600;color:var(--text3);letter-spacing:1px;text-align:center;}
+
+/* PROGRAM */
+.prog-list{padding:0 14px;}
+.prog-item{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:12px;margin-bottom:10px;display:flex;gap:12px;}
+.prog-time-col{display:flex;flex-direction:column;align-items:center;min-width:44px;}
+.prog-time{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--cyan);}
+.prog-line{width:1px;flex:1;background:var(--border);margin:5px 0;}
+.prog-dot{width:8px;height:8px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);}
+.prog-dot.done{background:var(--orange);border-color:var(--orange);}
+.prog-tag{display:inline-block;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;padding:2px 8px;border-radius:2px;border:1px solid;margin-bottom:5px;}
+.prog-title{font-size:13px;font-weight:700;color:var(--white);line-height:1.3;margin-bottom:2px;}
+.prog-speaker{font-size:11px;color:var(--text2);}
+
+/* SPEAKERS */
+.speaker-list{padding:0 14px;}
+.speaker-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:11px 13px;margin-bottom:8px;display:flex;align-items:center;gap:12px;}
+.sp-av{width:40px;height:40px;border-radius:50%;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:'Bangers',cursive;font-size:13px;color:var(--bg);flex-shrink:0;}
+.sp-name{font-size:13px;font-weight:700;color:var(--white);}
+.sp-co{font-size:11px;font-weight:600;margin-top:1px;}
+.sp-role{font-size:10px;color:var(--text2);margin-top:1px;}
+
+/* VENDORS */
+.vendor-prog{margin:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;}
+.vp-label{font-size:10px;font-weight:700;color:var(--text2);letter-spacing:2px;}
+.vp-right{display:flex;align-items:center;gap:8px;}
+.vp-count{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--cyan);}
+.vp-stars{display:flex;gap:3px;}
+.vp-star{width:12px;height:12px;background:var(--yellow);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);}
+.vp-star.empty{background:var(--text3);}
+.vendor-list{padding:0 14px;display:flex;flex-direction:column;gap:10px;}
+.vendor-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+.vendor-card.scanned{border-color:var(--border2);}
+.vendor-top{padding:12px 14px;display:flex;align-items:center;gap:12px;}
+.vendor-icon{width:44px;height:44px;border-radius:6px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:'Bangers',cursive;font-size:16px;flex-shrink:0;}
+.vendor-info{flex:1;}
+.vendor-name{font-size:14px;font-weight:700;color:var(--white);margin-bottom:2px;}
+.vendor-system{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:2px;}
+.vendor-pts{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--orange);text-align:right;}
+.vendor-pts.done{color:#00ff88;}
+.vendor-pts-lbl{font-size:8px;font-weight:600;color:var(--text2);letter-spacing:1px;text-align:right;}
+.vendor-desc{padding:0 14px 12px;font-size:11px;font-weight:500;color:var(--text2);line-height:1.5;border-top:1px solid var(--border);padding-top:10px;}
+.vendor-chapter{background:rgba(255,107,53,0.05);border-top:1px solid rgba(255,107,53,0.2);padding:8px 14px;display:flex;align-items:center;gap:8px;}
+.vc-badge{background:rgba(255,107,53,0.12);border:1px solid rgba(255,107,53,0.35);border-radius:2px;padding:2px 8px;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--orange);letter-spacing:2px;flex-shrink:0;}
+.vc-text{font-size:11px;font-weight:500;color:rgba(255,107,53,0.6);line-height:1.4;}
+.vendor-locked{background:var(--bg3);border-top:1px solid var(--border);padding:8px 14px;display:flex;align-items:center;gap:8px;}
+.vl-text{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:2px;}
+
+/* POLLS */
+.poll-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:14px;margin:0 14px 12px;}
+.poll-session{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--cyan);letter-spacing:3px;margin-bottom:8px;}
+.poll-q{font-size:14px;font-weight:700;color:var(--white);line-height:1.4;margin-bottom:12px;}
+.poll-opt{width:100%;text-align:left;padding:10px 14px;border-radius:4px;border:1px solid var(--border2);background:transparent;font-size:12px;font-weight:600;color:var(--text);font-family:'Rajdhani',sans-serif;cursor:pointer;margin-bottom:7px;display:block;}
+.poll-opt:last-child{margin-bottom:0;}
+.poll-opt.selected{background:rgba(0,255,255,0.06);color:var(--cyan);border-color:var(--cyan);}
+.poll-result{position:relative;overflow:hidden;cursor:default;}
+.poll-bar{position:absolute;left:0;top:0;bottom:0;background:rgba(0,255,255,0.05);transition:width 0.6s;z-index:0;}
+.poll-bar.me-bar{background:rgba(0,255,255,0.09);}
+.poll-content{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;}
+.poll-pct{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text2);}
+.poll-pct.me{color:var(--cyan);}
 
 /* NAVBAR */
-.navbar{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:3px solid var(--black);display:flex;padding:8px 0 18px;z-index:100;}
+.navbar{position:fixed;bottom:0;left:0;right:0;background:#020609;border-top:1px solid var(--border);display:flex;padding:8px 0 18px;z-index:100;}
 .nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;border:none;background:none;cursor:pointer;padding:4px 0;}
-.nb svg{width:22px;height:22px;}
-.nb-lbl{font-family:'Bangers',cursive;font-size:9px;color:#bbb;letter-spacing:1px;}
-.nb.act .nb-lbl{color:var(--blue);}
+.nb svg{width:20px;height:20px;}
+.nb-lbl{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:1px;}
+.nb.act .nb-lbl{color:var(--cyan);}
 
 /* TOAST */
-.toast{position:fixed;bottom:90px;left:16px;right:16px;background:var(--black);color:var(--yellow);border:3px solid var(--orange);border-radius:10px;padding:14px 18px;font-family:'Bangers',cursive;font-size:18px;letter-spacing:2px;text-align:center;z-index:300;opacity:0;transition:opacity 0.25s;pointer-events:none;box-shadow:4px 4px 0 var(--orange);}
+.toast{position:fixed;bottom:90px;left:14px;right:14px;background:#020609;color:var(--cyan);border:1px solid var(--border2);border-left:3px solid var(--cyan);border-radius:4px;padding:12px 16px;font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:2px;text-align:center;z-index:300;opacity:0;transition:opacity 0.25s;pointer-events:none;}
 .toast.show{opacity:1;}
-.loader{text-align:center;padding:32px;font-family:'Bangers',cursive;font-size:16px;color:#aaa;letter-spacing:2px;}
+.loader{text-align:center;padding:32px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text3);letter-spacing:3px;}
+.empty-state{text-align:center;padding:40px 20px;}
+.empty-text{font-size:12px;font-weight:600;color:var(--text2);letter-spacing:1px;}
 </style>
 </head>
 <body>
 
+<div class="ticker-wrap" id="ticker-wrap" style="display:none;">
+  <div class="ticker-label">БОРТ</div>
+  <div class="ticker-track">
+    <div class="ticker-inner" id="ticker-inner">
+      <span class="ticker-msg">ДОБРО ПОЖАЛОВАТЬ НА БОРТ PROWAY SECURITY DAY 2025</span>
+      <span class="ticker-sep"> · </span>
+      <span class="ticker-msg">СКАНИРУЙ QR-КОДЫ НА СТЕНДАХ И ОТКРЫВАЙ ГЛАВЫ СВОЕГО ДОСЬЕ</span>
+      <span class="ticker-sep"> · </span>
+    </div>
+  </div>
+</div>
+
+<div class="announce-banner" id="announce-banner">
+  <div class="announce-text" id="announce-text"></div>
+  <button class="announce-close" onclick="closeBanner()">✕</button>
+</div>
+
 <!-- ONBOARDING -->
 <div id="ob-welcome" class="screen active">
-  <div class="ob-hero halftone">
-    <div class="ob-deco1"></div>
-    <div class="ob-deco2"></div>
-    <div class="ob-eyebrow">PROWAY SECURITY DAY 2025</div>
-    <div class="ob-title">МИР<br><span>ПОД</span><br>УГРОЗОЙ!</div>
+  <div class="ob-hero">
+    <div class="ob-grid"></div>
+    <div class="ob-glow"></div>
+    <div class="ob-eyebrow">// PROWAY_SECURITY_DAY_2025</div>
+    <div class="ob-title">МИР<br><span class="accent">ПОД</span><br>УГРОЗОЙ</div>
+    <div class="ob-line"></div>
     <div class="ob-speech">
       <div class="ob-speech-text">Кибератаки участились. Старые методы защиты не работают. Нужны новые герои, способные противостоять угрозам цифрового мира.</div>
     </div>
@@ -252,67 +303,38 @@ body{font-family:'Comic Neue',cursive;background:var(--bg);color:var(--black);mi
 <div id="ob-choose" class="screen">
   <div class="ob-choose-header">
     <div class="ob-choose-title">ВЫБЕРИ АГЕНТА</div>
-    <div class="ob-choose-sub">ТЕБЕ НАЗНАЧАТ СЛУЧАЙНОГО ГЕРОЯ</div>
+    <div class="ob-choose-sub">// СИСТЕМА НАЗНАЧИТ СЛУЧАЙНОГО ГЕРОЯ</div>
   </div>
   <div class="ob-choose-body">
     <div class="ob-choose-q">КТО ТЫ В КОМАНДЕ?</div>
     <div class="agent-grid">
       <div class="agent-card" onclick="selectGender('male')">
-        <div class="ac-top" style="background:#e6f0fb;">
-          <div style="font-family:'Bangers',cursive;font-size:11px;color:#005ca8;letter-spacing:2px;">DEFENDER</div>
-        </div>
-        <div class="ac-face" style="background:#f0f5ff;">
-          <img src="Defense_Grid_Icon.png" alt="defender" onerror="this.parentElement.innerHTML='<span style=font-size:60px>🦸‍♂️</span>'">
-        </div>
-        <div class="ac-name">БОЕЦ</div>
+        <div class="ac-top"><div class="ac-label">// DEFENDER</div></div>
+        <div class="ac-face" style="background:#0a1525;"><img src="Defense_Grid_Icon.png" alt="defender" onerror="this.parentElement.innerHTML='<span style=font-size:50px>🦸‍♂️</span>'"></div>
+        <div class="ac-name" style="color:var(--cyan);">БОЕЦ</div>
       </div>
       <div class="agent-card" onclick="selectGender('female')">
-        <div class="ac-top" style="background:#ffe8f0;">
-          <div style="font-family:'Bangers',cursive;font-size:11px;color:#c0177a;letter-spacing:2px;">TRACER</div>
-        </div>
-        <div class="ac-face" style="background:#fff0f5;">
-          <img src="Stealth_Tracer_Icon.png" alt="tracer" onerror="this.parentElement.innerHTML='<span style=font-size:60px>🦸‍♀️</span>'">
-        </div>
-        <div class="ac-name">АГЕНТ</div>
+        <div class="ac-top"><div class="ac-label" style="color:#e879f9;">// TRACER</div></div>
+        <div class="ac-face" style="background:#150a25;"><img src="Stealth_Tracer_Icon.png" alt="tracer" onerror="this.parentElement.innerHTML='<span style=font-size:50px>🦸‍♀️</span>'"></div>
+        <div class="ac-name" style="color:#e879f9;">АГЕНТ</div>
       </div>
     </div>
-    <div class="ob-tip">
-      <div class="ob-tip-text">⚡ После выбора система назначит случайного персонажа из базы агентов. Каждый герой уникален и получит своё кодовое имя.</div>
-    </div>
+    <div class="ob-tip"><div class="ob-tip-text">// После выбора система назначит случайного персонажа. Каждый герой уникален и получит своё кодовое имя.</div></div>
   </div>
 </div>
 
 <div id="ob-reveal" class="screen">
-  <div class="ob-reveal-header">
-    <div class="ob-reveal-title">⚡ АГЕНТ НАЗНАЧЕН!</div>
-  </div>
+  <div class="ob-reveal-header"><div class="ob-reveal-title">// АГЕНТ_НАЗНАЧЕН</div></div>
   <div class="ob-reveal-body">
-    <div class="burst-wrap">
-      <div class="burst-bg"></div>
-      <div class="burst-av"><img id="reveal-img" src="" alt=""></div>
-    </div>
-    <div class="codename-wrap">
-      <div class="codename" id="reveal-codename">...</div>
-    </div>
+    <div class="av-ring"><img id="reveal-img" src="" alt=""></div>
+    <div class="codename-wrap"><div class="codename" id="reveal-codename">...</div></div>
     <div class="form-section">
+      <div><div class="field-label">// ПОЗЫВНОЙ (имя и фамилия)</div><input type="text" id="reg-name" class="field-input" placeholder="Анна Козлова"></div>
+      <div><div class="field-label">// КОРПОРАТИВНАЯ ПОЧТА</div><input type="email" id="reg-email" class="field-input" placeholder="name@company.ru"></div>
+      <div><div class="field-label">// ОРГАНИЗАЦИЯ</div><input type="text" id="reg-company" class="field-input" placeholder="Название компании"></div>
+      <div><div class="field-label">// ДОЛЖНОСТЬ</div><input type="text" id="reg-role" class="field-input" placeholder="ИТ-директор"></div>
       <div>
-        <div class="field-label">Позывной (имя и фамилия)</div>
-        <input type="text" id="reg-name" class="field-input" placeholder="Анна Козлова">
-      </div>
-      <div>
-        <div class="field-label">Корпоративная почта</div>
-        <input type="email" id="reg-email" class="field-input" placeholder="name@company.ru">
-      </div>
-      <div>
-        <div class="field-label">Организация</div>
-        <input type="text" id="reg-company" class="field-input" placeholder="Название компании">
-      </div>
-      <div>
-        <div class="field-label">Должность</div>
-        <input type="text" id="reg-role" class="field-input" placeholder="ИТ-директор">
-      </div>
-      <div>
-        <div class="field-label">Специализация (до 3)</div>
+        <div class="field-label">// СПЕЦИАЛИЗАЦИЯ (до 3)</div>
         <div class="tags-wrap" id="tags-wrap">
           <button class="itag" data-val="NGFW">NGFW</button>
           <button class="itag" data-val="SOC/SIEM">SOC/SIEM</button>
@@ -332,112 +354,95 @@ body{font-family:'Comic Neue',cursive;background:var(--bg);color:var(--black);mi
 <!-- APP -->
 <div id="app" style="display:none;">
 
+  <!-- ПРОФИЛЬ -->
   <div id="screen-profile" class="app-screen active">
     <div class="topbar">
-      <div><div class="topbar-logo">PROWAY SECURITY</div><div class="topbar-sub">Security Day 2025</div></div>
-      <div class="topbar-av"><img id="p-av-img" src="" alt="" style="display:none;"><span id="p-av-emoji">🦸</span></div>
+      <div><div class="topbar-logo">PROWAY</div><div class="topbar-sub">SECURITY DAY 2025</div></div>
+      <div class="topbar-right">
+        <div class="topbar-dosye">ДОСЬЕ ›</div>
+        <div class="topbar-av"><img id="p-av-img" src="" alt="" style="display:none;"><span id="p-av-emoji">◈</span></div>
+      </div>
     </div>
     <div class="hero-block">
-      <div class="hero-inner">
-        <div class="hi-top">
-          <div>
-            <div class="hi-pts-label">БАЛЛЫ НА БОРТУ</div>
-            <div class="pts-burst"><div class="pts-num" id="p-pts">0</div><div class="pts-lbl">БАЛЛОВ</div></div>
-          </div>
-          <div class="hi-rank"><div class="hi-rank-n" id="p-rank">#—</div><div class="hi-rank-l">МЕСТО</div></div>
-        </div>
-        <div class="hi-prog">
-          <div class="hi-prog-row"><span class="hi-prog-lbl">ДО ПРИЗА</span><span class="hi-prog-pct" id="p-pct">0%</span></div>
-          <div class="hi-prog-track"><div class="hi-prog-fill" id="p-bar"></div></div>
-        </div>
+      <div class="pts-row">
+        <div><div class="pts-label">// БАЛЛЫ</div><div><span class="pts-big" id="p-pts">0</span><span class="pts-unit">Б</span></div></div>
+        <div class="rank-box"><div class="rank-n" id="p-rank">#—</div><div class="rank-l">МЕСТО</div></div>
       </div>
+      <div class="prog-row"><span class="prog-lbl">ДО ПРИЗА</span><span class="prog-pct" id="p-pct">0%</span></div>
+      <div class="prog-track"><div class="prog-fill" id="p-bar"></div></div>
+    </div>
+    <div class="stats-grid">
+      <div class="sg-cell"><div class="sg-n" id="s-vendors">0</div><div class="sg-l">СТЕНДЫ</div></div>
+      <div class="sg-cell"><div class="sg-n" id="s-polls">0</div><div class="sg-l">ОПРОСЫ</div></div>
+      <div class="sg-cell"><div class="sg-n accent" id="s-rank2">—</div><div class="sg-l">МЕСТО</div></div>
     </div>
     <div style="height:12px;"></div>
-    <div class="stats-row" style="margin-bottom:12px;">
-      <div class="stat"><div class="stat-n" id="s-sessions">0</div><div class="stat-l">СЕССИИ</div></div>
-      <div class="stat"><div class="stat-n" id="s-questions">0</div><div class="stat-l">ВОПРОСЫ</div></div>
-      <div class="stat"><div class="stat-n orange" id="s-polls">0</div><div class="stat-l">ОПРОСЫ</div></div>
-    </div>
-    <div style="padding:0 16px;margin-bottom:14px;">
-      <div class="tip">
-        <div class="tip-zap" id="tip-zap">ZAP!</div>
-        <div style="flex:1;"><div class="tip-title" id="tip-title">ЗАДАЙ ВОПРОС СПИКЕРУ</div><div class="tip-desc" id="tip-desc">Выберут в эфир — ещё +50 б!</div></div>
-        <div class="tip-pts" id="tip-pts">+25 б</div>
-      </div>
-    </div>
-    <div class="section-banner"><div class="section-title">⚡ РЕЙТИНГ</div><div class="section-sub">АГЕНТЫ РЕЙСА</div></div>
-    <div style="height:10px;"></div>
-    <div class="lb" id="leaderboard-wrap"><div class="loader">ЗАГРУЗКА...</div></div>
+    <div class="section-hdr"><div class="section-hdr-title">МОЯ КАРТОЧКА</div><div class="section-hdr-sub">// ДОСЬЕ АГЕНТА</div></div>
+    <div class="agent-card-full" id="agent-full-card"><div class="loader">ЗАГРУЗКА...</div></div>
     <div style="height:12px;"></div>
-  </div>
-
-  <div id="screen-network" class="app-screen">
-    <div class="topbar">
-      <div><div class="topbar-logo">СЕТЬ АГЕНТОВ</div><div class="topbar-sub">НАЙДИ СОЮЗНИКОВ</div></div>
-      <div class="topbar-av"><img id="p-av-img2" src="" alt="" style="display:none;"><span id="p-av-emoji2">🦸</span></div>
-    </div>
-    <div class="section-banner" style="margin-bottom:12px;"><div class="section-title">🤝 НЕТВОРКИНГ</div><div class="section-sub">СОВПАДЕНИЕ ИНТЕРЕСОВ</div></div>
-    <div id="network-list"><div class="loader">СКАНИРУЮ БАЗУ АГЕНТОВ...</div></div>
-    <div style="height:12px;"></div>
-  </div>
-
-  <div id="screen-program" class="app-screen">
-    <div class="topbar">
-      <div><div class="topbar-logo">МАРШРУТ РЕЙСА</div><div class="topbar-sub">PROWAY Security Day 2025</div></div>
-    </div>
-    <div style="height:12px;"></div>
-    <div class="prog-list" id="program-list"></div>
-    <div class="section-banner" style="margin-bottom:10px;"><div class="section-title">👥 СПИКЕРЫ</div><div class="section-sub">НА БОРТУ</div></div>
-    <div class="speaker-list" id="speakers-list"></div>
-    <div style="height:12px;"></div>
-  </div>
-
-  <div id="screen-polls" class="app-screen">
-    <div class="topbar">
-      <div><div class="topbar-logo">МИССИЯ</div><div class="topbar-sub">ОПРОСЫ И ГОЛОСОВАНИЯ</div></div>
-    </div>
-    <div class="section-banner" style="margin-bottom:12px;"><div class="section-title">📡 ОПРОСЫ</div><div class="section-sub">ВЛИЯЙ НА ДИСКУССИЮ</div></div>
-    <div id="polls-list"></div>
-    <div style="height:12px;"></div>
-  </div>
-
-  <div id="screen-questions" class="app-screen">
-    <div class="topbar">
-      <div><div class="topbar-logo">СВЯЗЬ</div><div class="topbar-sub">ВОПРОСЫ СПИКЕРАМ</div></div>
-    </div>
-    <div class="section-banner" style="margin-bottom:12px;"><div class="section-title">💬 ВОПРОСЫ</div><div class="section-sub">+25 Б · +50 Б В ЭФИР</div></div>
-    <div class="q-compose">
-      <textarea id="q-text" class="q-textarea" placeholder="Задай вопрос спикеру..."></textarea>
-      <div class="q-footer">
-        <span class="q-hint">Голосуй за лучший вопрос ↓</span>
-        <button class="q-send" onclick="sendQuestion()">ОТПРАВИТЬ</button>
-      </div>
-    </div>
-    <div id="questions-list"></div>
-    <div style="height:12px;"></div>
-  </div>
-
-  <div id="screen-info" class="app-screen">
-    <div class="topbar">
-      <div><div class="topbar-logo">БАЗА</div><div class="topbar-sub">ИНФОРМАЦИЯ О РЕЙСЕ</div></div>
-    </div>
-    <div class="section-banner" style="margin-bottom:12px;"><div class="section-title">📍 ЛОКАЦИЯ</div></div>
-    <div class="info-section">
+    <div class="section-hdr"><div class="section-hdr-title">БАЗА</div><div class="section-hdr-sub">// ЛОКАЦИЯ</div></div>
+    <div class="info-block">
       <div class="info-row"><div class="info-icon">✈</div><div><div class="info-title">Воробьевы Холл</div><div class="info-text">ул. Косыгина 28с1, Москва</div></div></div>
       <div class="info-row"><div class="info-icon">🚇</div><div><div class="info-title">Метро</div><div class="info-text">Воробьевы горы, выход №2, по Эскалаторной галерее направо 500 м</div></div></div>
       <div class="info-row"><div class="info-icon">🚕</div><div><div class="info-title">Такси</div><div class="info-text">ул. Косыгина 28с1</div></div></div>
     </div>
-    <div class="section-banner" style="margin-bottom:12px;"><div class="section-title">🌙 ВЕЧЕР</div></div>
-    <div class="info-section">
+    <div class="section-hdr" style="margin-top:0;"><div class="section-hdr-title">ВЕЧЕР</div><div class="section-hdr-sub">// ПРОГРАММА</div></div>
+    <div class="info-block">
       <div class="info-row"><div class="info-icon">🍽</div><div><div class="info-title">Фуршетный дозаправщик</div><div class="info-text">Закуски и напитки</div></div></div>
-      <div class="info-row"><div class="info-icon">🏆</div><div><div class="info-title">Награждение агентов</div><div class="info-text">Лучшие вопросы получают призы на сцене</div></div></div>
+      <div class="info-row"><div class="info-icon">🏆</div><div><div class="info-title">Награждение агентов</div><div class="info-text">Лучшие получают призы на сцене</div></div></div>
       <div class="info-row"><div class="info-icon">🎤</div><div><div class="info-title">Кавер-авиашоу + DJ</div><div class="info-text">Танцуем пока не кончится топливо!</div></div></div>
       <div class="info-row"><div class="info-icon">🚡</div><div><div class="info-title">VIP-кабина канатной дороги</div><div class="info-text">Приватные беседы с видом на Москву</div></div></div>
     </div>
-    <div class="section-banner" style="margin-bottom:12px;"><div class="section-title">🎁 РОЗЫГРЫШ</div></div>
-    <div class="info-section">
-      <div class="info-row"><div class="info-icon">🎁</div><div><div class="info-title">6 × Telegram Premium на год</div><div class="info-text">Участвуй в опросах и задавай вопросы — повышай шансы!</div></div></div>
+    <div class="section-hdr" style="margin-top:0;"><div class="section-hdr-title">РОЗЫГРЫШ</div><div class="section-hdr-sub">// ПРИЗЫ</div></div>
+    <div class="info-block">
+      <div class="info-row"><div class="info-icon">🎁</div><div><div class="info-title">6 × Telegram Premium на год</div><div class="info-text">Участвуй в опросах и сканируй стенды — повышай шансы!</div></div></div>
     </div>
+    <div style="height:12px;"></div>
+  </div>
+
+  <!-- РЕЙТИНГ -->
+  <div id="screen-rating" class="app-screen">
+    <div class="topbar">
+      <div><div class="topbar-logo">РЕЙТИНГ</div><div class="topbar-sub">// АГЕНТЫ РЕЙСА</div></div>
+      <div class="topbar-av"><img id="p-av-img3" src="" alt="" style="display:none;"><span id="p-av-emoji3">◈</span></div>
+    </div>
+    <div style="height:12px;"></div>
+    <div class="lb-wrap" id="leaderboard-wrap"><div class="loader">ЗАГРУЗКА...</div></div>
+    <div style="height:12px;"></div>
+  </div>
+
+  <!-- СЕТЬ -->
+  <div id="screen-network" class="app-screen">
+    <div class="topbar">
+      <div><div class="topbar-logo">СЕТЬ</div><div class="topbar-sub">// НАЙДИ СОЮЗНИКОВ</div></div>
+      <div class="topbar-av"><img id="p-av-img2" src="" alt="" style="display:none;"><span id="p-av-emoji2">◈</span></div>
+    </div>
+    <div style="height:12px;"></div>
+    <div id="network-list"><div class="loader">СКАНИРУЮ БАЗУ...</div></div>
+    <div style="height:12px;"></div>
+  </div>
+
+  <!-- СТЕНДЫ -->
+  <div id="screen-vendors" class="app-screen">
+    <div class="topbar">
+      <div><div class="topbar-logo">СТЕНДЫ</div><div class="topbar-sub">// СКАНИРУЙ QR · +20 Б · ОТКРЫВАЙ ДОСЬЕ</div></div>
+    </div>
+    <div style="height:12px;"></div>
+    <div class="vendor-prog">
+      <div class="vp-label">// ПРОГРЕСС МИССИИ</div>
+      <div class="vp-right"><div class="vp-stars" id="vendor-stars"></div><div class="vp-count" id="vendor-count">0 / 0</div></div>
+    </div>
+    <div class="vendor-list" id="vendor-list"></div>
+    <div style="height:12px;"></div>
+  </div>
+
+  <!-- МИССИЯ -->
+  <div id="screen-polls" class="app-screen">
+    <div class="topbar">
+      <div><div class="topbar-logo">МИССИЯ</div><div class="topbar-sub">// ОПРОСЫ · +15 Б ЗА ГОЛОС</div></div>
+    </div>
+    <div style="height:12px;"></div>
+    <div id="polls-list"></div>
     <div style="height:12px;"></div>
   </div>
 
@@ -445,24 +450,24 @@ body{font-family:'Comic Neue',cursive;background:var(--bg);color:var(--black);mi
 
 <nav class="navbar" id="navbar" style="display:none;">
   <button class="nb act" onclick="showScreen('profile')" id="nav-profile">
-    <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="13" width="4" height="8" rx="1" fill="#005ca8"/><rect x="10" y="8" width="4" height="13" rx="1" fill="#005ca8"/><rect x="17" y="3" width="4" height="18" rx="1" fill="#005ca8"/></svg>
-    <span class="nb-lbl" style="color:#005ca8;">БОРТ</span>
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#00ffff" stroke-width="1.5" fill="none"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#00ffff" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+    <span class="nb-lbl" style="color:var(--cyan);">ПРОФИЛЬ</span>
+  </button>
+  <button class="nb" onclick="showScreen('rating')" id="nav-rating">
+    <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="13" width="4" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="10" y="8" width="4" height="13" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="17" y="3" width="4" height="18" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/></svg>
+    <span class="nb-lbl">РЕЙТИНГ</span>
   </button>
   <button class="nb" onclick="showScreen('network')" id="nav-network">
-    <svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="7" r="3" stroke="#bbb" stroke-width="2" fill="none"/><circle cx="15" cy="7" r="3" stroke="#bbb" stroke-width="2" fill="none"/><path d="M3 20c0-3.3 2.7-6 6-6M21 20c0-3.3-2.7-6-6-6M12 14c2 0 3.5 1 4.5 2.5" stroke="#bbb" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="7" r="3" stroke="#ffffff22" stroke-width="1.5" fill="none"/><circle cx="15" cy="7" r="3" stroke="#ffffff22" stroke-width="1.5" fill="none"/><path d="M3 20c0-3.3 2.7-6 6-6M21 20c0-3.3-2.7-6-6-6" stroke="#ffffff22" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
     <span class="nb-lbl">СЕТЬ</span>
   </button>
+  <button class="nb" onclick="showScreen('vendors')" id="nav-vendors">
+    <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="13" y="3" width="8" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="3" y="13" width="8" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="13" y="13" width="8" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/></svg>
+    <span class="nb-lbl">СТЕНДЫ</span>
+  </button>
   <button class="nb" onclick="showScreen('polls')" id="nav-polls">
-    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#bbb" stroke-width="2" fill="none"/><path d="M8 12l3 3 5-5" stroke="#bbb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#ffffff22" stroke-width="1.5" fill="none"/><path d="M8 12l3 3 5-5" stroke="#ffffff22" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     <span class="nb-lbl">МИССИЯ</span>
-  </button>
-  <button class="nb" onclick="showScreen('questions')" id="nav-questions">
-    <svg viewBox="0 0 24 24" fill="none"><path d="M4 6a3 3 0 013-3h10a3 3 0 013 3v9a3 3 0 01-3 3H10l-6 4V6z" stroke="#bbb" stroke-width="2" fill="none"/></svg>
-    <span class="nb-lbl">СВЯЗЬ</span>
-  </button>
-  <button class="nb" onclick="showScreen('info')" id="nav-info">
-    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#bbb" stroke-width="2" fill="none"/><line x1="12" y1="11" x2="12" y2="17" stroke="#bbb" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="8" r="1.5" fill="#bbb"/></svg>
-    <span class="nb-lbl">БАЗА</span>
   </button>
 </nav>
 
@@ -471,16 +476,37 @@ body{font-family:'Comic Neue',cursive;background:var(--bg);color:var(--black);mi
 <script>
 const API='https://script.google.com/macros/s/AKfycbyYuilmUoMlTsWc_M0GeuOxmsbJ7QWK9cyOg20j-uUD8HvHBxzsyW5lm-o0kFT0G53tVA/exec';
 const MAX_PTS=430;
+const STORY_UNLOCK_DATE=new Date('2025-11-16T00:00:00');
+
+const VENDORS=[
+  {id:'vendor_ngfw',name:'Positive Technologies',system:'NGFW',color:'#c0392b',icon:'PT',desc:'Межсетевой экран нового поколения. Глубокий анализ трафика, блокировка угроз до проникновения в сеть.',chapterMale:'Иванов не ожидал что первое задание окажется таким... визуальным. Поток данных на экране выглядел как город с высоты птичьего полёта. Каждый пакет — человек. Каждая угроза — незнакомец в толпе. Он указал пальцем на аномалию. "Вот." Куратор молча сделал пометку в досье.',chapterFemale:'Козлова не ожидала что первое задание окажется таким... визуальным. Поток данных на экране выглядел как город с высоты птичьего полёта. Каждый пакет — человек. Каждая угроза — незнакомец в толпе. Она указала пальцем на аномалию. "Вот." Куратор молча сделал пометку в досье.'},
+  {id:'vendor_dlp',name:'Гарда',system:'DLP',color:'#8e44ad',icon:'Г',desc:'Система предотвращения утечек данных. Контроль всех каналов передачи информации в реальном времени.',chapterMale:'«Данные уходят тихо» — сообщение пришло в 6 утра. Иванов налил кофе. Данные всегда куда-то уходят — это он знал ещё до всей этой истории с конвертом. Но теперь он видел как именно. Одна флешка. Один человек. Канал был найден до второй чашки.',chapterFemale:'«Данные уходят тихо» — сообщение пришло в 6 утра. Козлова налила кофе. Данные всегда куда-то уходят — это она знала ещё до всей этой истории с конвертом. Но теперь она видела как именно. Одна флешка. Один человек. Канал был найден до второй чашки.'},
+  {id:'vendor_pam',name:'АВ Софт',system:'PAM',color:'#ee672a',icon:'АВ',desc:'Управление привилегированным доступом. Контроль действий администраторов и защита критических систем.',chapterMale:'Привилегированный доступ — это власть. Иванов понял это за первые тридцать секунд. Кто контролирует учётные записи администраторов — контролирует всё. Остальные девять минут он просто наслаждался осознанием. И как его найти.',chapterFemale:'Привилегированный доступ — это власть. Козлова поняла это за первые тридцать секунд. Кто контролирует учётные записи администраторов — контролирует всё. Остальные девять минут она просто наслаждалась осознанием. И как его найти.'},
+  {id:'vendor_crypto',name:'ИнфоТеКС',system:'VPN / Крипто',color:'#005ca8',icon:'ИТ',desc:'Криптографическая защита каналов связи. ViPNet — стандарт защищённых коммуникаций.',chapterMale:'Новое задание пришло зашифрованным. Разумеется. Иванов расшифровал его за четыре минуты. "Как?" — спросили его. "Просто знаю где искать ключ." Теперь его каналы связи непробиваемы.',chapterFemale:'Новое задание пришло зашифрованным. Разумеется. Козлова расшифровала его за четыре минуты. "Как?" — спросили её. "Просто знаю где искать ключ." Теперь её каналы связи непробиваемы.'},
+];
+
+const AGENT_STATS={
+  male:{'DEFENSE GRID':{АНАЛИЗ:79,СКОРОСТЬ:62,КРИПТО:91,ПЕРИМЕТР:96,ВЛИЯНИЕ:55}},
+  female:{'STEALTH TRACER':{АНАЛИЗ:88,СКОРОСТЬ:94,КРИПТО:71,ПЕРИМЕТР:65,ВЛИЯНИЕ:97}}
+};
+const STAT_COLORS={АНАЛИЗ:'#00aeee',СКОРОСТЬ:'#f5e642',КРИПТО:'#ee672a',ПЕРИМЕТР:'#005ca8',ВЛИЯНИЕ:'#8e44ad'};
+
+const RARITY=[
+  {min:0,label:'НОВОБРАНЕЦ',bg:'rgba(255,255,255,0.06)',color:'#ffffff44',stars:0},
+  {min:1,label:'АГЕНТ',bg:'rgba(0,255,255,0.1)',color:'#00ffff',stars:2},
+  {min:3,label:'МАСТЕР',bg:'rgba(255,107,53,0.12)',color:'#ff6b35',stars:3},
+  {min:5,label:'ЛЕГЕНДА',bg:'rgba(255,204,0,0.12)',color:'#ffcc00',stars:4},
+];
 
 const AVATARS={
-  male:[{file:'Defense_Grid_Icon.png',codename:'DEFENSE GRID'}],
-  female:[{file:'Stealth_Tracer_Icon.png',codename:'STEALTH TRACER'}]
+  male:[{file:'Defense_Grid_Icon.png',codename:'DEFENSE GRID',artFile:'5379679076819343593.jpg'}],
+  female:[{file:'Stealth_Tracer_Icon.png',codename:'STEALTH TRACER',artFile:'5379679076819343592.jpg'}]
 };
 
 const PROGRAM=[
   {time:'13:50',title:'Приветственное слово экипажа',speaker:'Алексей Матвеев, PROWAY Security',tag:'ВЗЛЁТ',tagColor:'#005ca8',done:true},
   {time:'14:00',title:'Панельная дискуссия «Security Talks»',speaker:'Конкуренция на российском рынке ИБ',tag:'ДЕЛОВАЯ',tagColor:'#ee672a',done:true},
-  {time:'15:30',title:'Кофе-брейк и Lounge Expo',speaker:'Первый этаж и веранда',tag:'ПАУЗА',tagColor:'#888',done:false},
+  {time:'15:30',title:'Кофе-брейк и Lounge Expo',speaker:'Первый этаж и веранда',tag:'ПАУЗА',tagColor:'#555',done:false},
   {time:'16:00',title:'Прямая линия PROWAY Security',speaker:'Экспресс-опросы · результаты на экран',tag:'ДЕЛОВАЯ',tagColor:'#ee672a',done:false},
   {time:'17:30',title:'Нетворкинг',speaker:'VIP-кабина канатной дороги',tag:'НЕТВОРК',tagColor:'#27ae60',done:false},
   {time:'18:30',title:'Вечерняя программа',speaker:'Фуршет · Кавер-авиашоу · DJ',tag:'ФИНАЛ',tagColor:'#8e44ad',done:false},
@@ -499,28 +525,23 @@ const SPEAKERS=[
 ];
 
 const POLLS=[
-  {id:'poll1',session:'SECURITY TALKS',question:'Что будет основным «рецептом» выживаемости вендоров на российском рынке?',options:['Регуляторка — соответствие требованиям','Технологии — развитие до мировых решений','Комплексный подход — экосистемы','Маркетинг — расширение аудитории'],votes:[0,0,0,0]},
-  {id:'poll2',session:'ПРЯМАЯ ЛИНИЯ',question:'Что является решающим фактором при выборе NGFW?',options:['Цена','Производительность','Функциональность','Сертификация','Другое'],votes:[0,0,0,0,0]},
-  {id:'poll3',session:'ПРЯМАЯ ЛИНИЯ',question:'Готовы ли российские ИБ-решения полностью заменить зарубежные?',options:['Полностью готовы','В большинстве сегментов','Есть пробелы','Пока не готовы'],votes:[0,0,0,0]},
+  {id:'poll1',session:'// SECURITY_TALKS',question:'Что будет основным «рецептом» выживаемости вендоров на российском рынке?',options:['Регуляторка — соответствие требованиям','Технологии — развитие до мировых решений','Комплексный подход — экосистемы','Маркетинг — расширение аудитории'],votes:[0,0,0,0]},
+  {id:'poll2',session:'// ПРЯМАЯ_ЛИНИЯ',question:'Что является решающим фактором при выборе NGFW?',options:['Цена','Производительность','Функциональность','Сертификация','Другое'],votes:[0,0,0,0,0]},
+  {id:'poll3',session:'// ПРЯМАЯ_ЛИНИЯ',question:'Готовы ли российские ИБ-решения полностью заменить зарубежные?',options:['Полностью готовы','В большинстве сегментов','Есть пробелы','Пока не готовы'],votes:[0,0,0,0]},
 ];
 
-const TIPS=[
-  {zap:'ZAP!',title:'ЗАДАЙ ВОПРОС СПИКЕРУ',desc:'Выберут в эфир — дополнительно +50 б!',pts:'+25 б'},
-  {zap:'POW!',title:'ПРОЙДИ ОПРОС',desc:'Твой голос влияет на дискуссию на сцене',pts:'+15 б'},
-  {zap:'BAM!',title:'НАЙДИ СОЮЗНИКА',desc:'Открой раздел СЕТЬ и познакомься с агентами',pts:''},
-  {zap:'BOOM!',title:'ГОЛОСУЙ ЗА ВОПРОС',desc:'Помоги выбрать лучший вопрос в эфир',pts:''},
-];
-
-let participant=null,selectedTags=[],votedQuestions=new Set(),pollAnswers={};
+let participant=null,selectedTags=[],pollAnswers={};
 let selectedGender=null,assignedAvatar=null;
+let scannedVendors=new Set();
+let lastAnnouncementId=null;
 
 function api(p){return fetch(API+'?'+new URLSearchParams(p)).then(r=>r.json());}
 function showToast(m,d=2500){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),d);}
 function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
 
-function selectGender(gender){
-  selectedGender=gender;
-  const pool=AVATARS[gender];
+function selectGender(g){
+  selectedGender=g;
+  const pool=AVATARS[g];
   assignedAvatar=pool[Math.floor(Math.random()*pool.length)];
   document.getElementById('reveal-img').src=assignedAvatar.file;
   document.getElementById('reveal-codename').textContent=assignedAvatar.codename;
@@ -539,58 +560,92 @@ async function register(){
   const email=document.getElementById('reg-email').value.trim();
   const company=document.getElementById('reg-company').value.trim();
   const role=document.getElementById('reg-role').value.trim();
-  if(!name||!company){showToast('ЗАПОЛНИ ПОЗЫВНОЙ И ОРГАНИЗАЦИЮ!');return;}
+  if(!name||!company){showToast('// ЗАПОЛНИ ПОЗЫВНОЙ И ОРГАНИЗАЦИЮ');return;}
   const btn=document.querySelector('#ob-reveal .ob-btn');
-  btn.textContent='АВТОРИЗАЦИЯ...';btn.disabled=true;
+  btn.textContent='// АВТОРИЗАЦИЯ...';btn.disabled=true;
   try{
     const res=await api({action:'register',name,email,company,role,interests:selectedTags.join(','),avatar:assignedAvatar?assignedAvatar.file:'',codename:assignedAvatar?assignedAvatar.codename:''});
     if(res.success){
-      localStorage.setItem('participant_id',res.id);
-      localStorage.setItem('participant_name',name);
-      localStorage.setItem('participant_email',email);
-      localStorage.setItem('participant_company',company);
-      localStorage.setItem('participant_interests',selectedTags.join(','));
-      localStorage.setItem('participant_avatar',assignedAvatar?assignedAvatar.file:'');
-      participant={id:res.id,name,email,company,role,points:15,interests:selectedTags.join(','),avatar:assignedAvatar?assignedAvatar.file:''};
+      const save=(k,v)=>localStorage.setItem(k,v);
+      save('participant_id',res.id);save('participant_name',name);save('participant_email',email);
+      save('participant_company',company);save('participant_interests',selectedTags.join(','));
+      save('participant_avatar',assignedAvatar?assignedAvatar.file:'');
+      save('participant_gender',selectedGender||'male');
+      save('participant_codename',assignedAvatar?assignedAvatar.codename:'');
+      save('participant_artfile',assignedAvatar?assignedAvatar.artFile:'');
+      participant={id:res.id,name,email,company,role,points:15,interests:selectedTags.join(','),
+        avatar:assignedAvatar?assignedAvatar.file:'',gender:selectedGender,
+        codename:assignedAvatar?assignedAvatar.codename:'',artFile:assignedAvatar?assignedAvatar.artFile:''};
       initApp();
-      showToast('ДОБРО ПОЖАЛОВАТЬ, АГЕНТ! +15 б');
-    }else{showToast('ОШИБКА АВТОРИЗАЦИИ!');btn.textContent='ПРИСТУПИТЬ К МИССИИ ›';btn.disabled=false;}
-  }catch(e){showToast('НЕТ СВЯЗИ!');btn.textContent='ПРИСТУПИТЬ К МИССИИ ›';btn.disabled=false;}
+      showToast('// ДОБРО ПОЖАЛОВАТЬ, АГЕНТ! +15 Б');
+    }else{showToast('// ОШИБКА АВТОРИЗАЦИИ');btn.textContent='ПРИСТУПИТЬ К МИССИИ ›';btn.disabled=false;}
+  }catch(e){showToast('// НЕТ СВЯЗИ');btn.textContent='ПРИСТУПИТЬ К МИССИИ ›';btn.disabled=false;}
 }
 
 function setAvatarUI(){
   const av=participant&&participant.avatar?participant.avatar:'';
-  ['p-av-img','p-av-img2'].forEach(id=>{const el=document.getElementById(id);if(el&&av){el.src=av;el.style.display='block';}});
-  if(av){['p-av-emoji','p-av-emoji2'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});}
+  ['p-av-img','p-av-img2','p-av-img3'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&av){el.src=av;el.style.display='block';}
+  });
+  if(av){['p-av-emoji','p-av-emoji2','p-av-emoji3'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.style.display='none';
+  });}
 }
 
 function initApp(){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('app').style.display='block';
   document.getElementById('navbar').style.display='flex';
+  document.getElementById('ticker-wrap').style.display='flex';
   setAvatarUI();
-  renderProfile();renderProgram();renderSpeakers();renderPolls();
-  loadLeaderboard();loadQuestions();loadNetwork();
+  renderProfile();
+  renderAgentCard();
+  renderPolls();
+  renderVendors();
+  loadLeaderboard();
+  loadNetwork();
+  checkAnnouncements();
   setInterval(loadLeaderboard,15000);
-  setInterval(loadQuestions,8000);
   setInterval(loadNetwork,30000);
-  setTimeout(()=>{const b=document.getElementById('p-bar');if(b)b.style.width=(Math.min((participant.points||0)/MAX_PTS,1)*100)+'%';},200);
+  setInterval(checkAnnouncements,30000);
+  setTimeout(()=>{const b=document.getElementById('p-bar');if(b)b.style.width=(Math.min((participant.points||0)/MAX_PTS,1)*100)+'%';},300);
 }
 
 function showScreen(n){
   document.querySelectorAll('.app-screen').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nb').forEach(b=>{
-    b.classList.remove('act');b.querySelector('.nb-lbl').style.color='';
-    b.querySelectorAll('svg [stroke]').forEach(el=>{if(el.getAttribute('stroke')!=='none')el.setAttribute('stroke','#bbb');});
-    b.querySelectorAll('svg [fill]').forEach(el=>{if(el.getAttribute('fill')!=='none'&&el.tagName!=='svg')el.setAttribute('fill','#bbb');});
+    b.classList.remove('act');
+    b.querySelector('.nb-lbl').style.color='';
+    b.querySelectorAll('svg [stroke]').forEach(el=>{if(el.getAttribute('stroke')!=='none')el.setAttribute('stroke','#ffffff22');});
   });
   document.getElementById('screen-'+n).classList.add('active');
   const nb=document.getElementById('nav-'+n);
-  nb.classList.add('act');nb.querySelector('.nb-lbl').style.color='#005ca8';
-  nb.querySelectorAll('svg [stroke]').forEach(el=>{if(el.getAttribute('stroke')!=='none')el.setAttribute('stroke','#005ca8');});
-  nb.querySelectorAll('svg [fill]').forEach(el=>{if(el.getAttribute('fill')!=='none'&&el.tagName!=='svg')el.setAttribute('fill','#005ca8');});
+  if(nb){
+    nb.classList.add('act');
+    nb.querySelector('.nb-lbl').style.color='#00ffff';
+    nb.querySelectorAll('svg [stroke]').forEach(el=>{if(el.getAttribute('stroke')!=='none')el.setAttribute('stroke','#00ffff');});
+  }
   window.scrollTo(0,0);
 }
+
+async function checkAnnouncements(){
+  try{
+    const res=await api({action:'getAnnouncements'});
+    if(!res.announcements||!res.announcements.length)return;
+    const latest=res.announcements[0];
+    const msgs=res.announcements.map(a=>`<span class="ticker-msg">${a.message}</span><span class="ticker-sep"> · </span>`).join('');
+    document.getElementById('ticker-inner').innerHTML=msgs;
+    if(latest.id!==lastAnnouncementId){lastAnnouncementId=latest.id;showBanner(latest.message);}
+  }catch(e){}
+}
+function showBanner(msg){
+  const b=document.getElementById('announce-banner');
+  document.getElementById('announce-text').textContent=msg;
+  b.classList.add('show');
+  setTimeout(()=>b.classList.remove('show'),8000);
+}
+function closeBanner(){document.getElementById('announce-banner').classList.remove('show');}
 
 function renderProfile(){
   if(!participant)return;
@@ -598,29 +653,131 @@ function renderProfile(){
   document.getElementById('p-pts').textContent=pts;
   const pct=Math.min(Math.round(pts/MAX_PTS*100),100);
   document.getElementById('p-pct').textContent=pct+'%';
-  const tip=TIPS[Math.floor(Math.random()*TIPS.length)];
-  document.getElementById('tip-zap').textContent=tip.zap;
-  document.getElementById('tip-title').textContent=tip.title;
-  document.getElementById('tip-desc').textContent=tip.desc;
-  const tpts=document.getElementById('tip-pts');
-  if(tpts){tpts.textContent=tip.pts;tpts.style.display=tip.pts?'':'none';}
+  document.getElementById('s-vendors').textContent=scannedVendors.size;
+  document.getElementById('s-polls').textContent=Object.keys(pollAnswers).length;
+}
+
+function getRarity(n){let r=RARITY[0];for(const l of RARITY){if(n>=l.min)r=l;}return r;}
+
+function renderAgentCard(){
+  if(!participant)return;
+  const scanned=scannedVendors.size;
+  const rarity=getRarity(scanned);
+  const gender=participant.gender||'male';
+  const codename=participant.codename||'DEFENSE GRID';
+  const artFile=participant.artFile||'';
+  const stats=AGENT_STATS[gender]?.[codename]||{АНАЛИЗ:75,СКОРОСТЬ:75,КРИПТО:75,ПЕРИМЕТР:75,ВЛИЯНИЕ:75};
+  const lastName=participant.name.split(' ').slice(-1)[0]||participant.name;
+  const unlocked=new Date()>STORY_UNLOCK_DATE;
+
+  let starsHtml='';
+  for(let i=0;i<4;i++)starsHtml+=`<div class="acf-star${i<rarity.stars?'':' empty'}"></div>`;
+
+  let statsHtml=Object.entries(stats).map(([k,v])=>`
+    <div class="acf-stat-row">
+      <span class="acf-stat-lbl">${k}</span>
+      <div class="acf-bar-wrap"><div class="acf-bar" style="width:${v}%;background:${STAT_COLORS[k]};"></div></div>
+      <span class="acf-stat-val">${v}</span>
+    </div>`).join('');
+
+  const baseStory=gender==='female'
+    ?`${lastName} не планировала становиться агентом. Конверт лежал прямо на клавиатуре — без подписи, без обратного адреса. Только координаты и время. Она пришла. Конечно пришла.`
+    :`${lastName} не планировал становиться агентом. Конверт лежал прямо на клавиатуре — без подписи, без обратного адреса. Только координаты и время. Он пришёл. Конечно пришёл.`;
+
+  let chaptersHtml=`<div class="acf-chapter-badge">НАЧАЛО</div><div class="acf-chapter-text">${baseStory}</div>`;
+  VENDORS.forEach((v,idx)=>{
+    const wasScanned=scannedVendors.has(v.id);
+    if(wasScanned||unlocked){
+      const text=gender==='female'?v.chapterFemale:v.chapterMale;
+      chaptersHtml+=`<div class="acf-chapter-badge">ГЛАВА ${idx+1} · ${v.system}</div><div class="acf-chapter-text">${text}</div>`;
+    }else{
+      chaptersHtml+=`<div class="acf-locked"><div class="acf-lock"></div><span class="acf-locked-text">ГЛАВА ${idx+1} · СТЕНД ${v.system}</span></div>`;
+    }
+  });
+
+  const artHtml=artFile?`<img src="${artFile}" alt="${codename}">`:`<span style="font-family:'Bangers',cursive;font-size:28px;color:var(--cyan);letter-spacing:4px;">${codename}</span>`;
+
+  document.getElementById('agent-full-card').innerHTML=`
+    <div class="acf-namebar">
+      <span class="acf-codename">${codename}</span>
+      <span class="acf-badge" style="background:${rarity.bg};color:${rarity.color};border-color:${rarity.color}44;">${rarity.label}</span>
+    </div>
+    <div class="acf-art">${artHtml}<div class="acf-rarity">${starsHtml}</div></div>
+    <div class="acf-stats">${statsHtml}</div>
+    <div class="acf-story">
+      <div class="acf-story-lbl">// ДОСЬЕ</div>
+      ${chaptersHtml}
+    </div>
+    <div class="acf-footer">
+      <span class="acf-footer-name">${participant.name.toUpperCase()}</span>
+      <span class="acf-footer-pts">${participant.points||0} Б</span>
+    </div>`;
+}
+
+function renderVendors(){
+  const total=VENDORS.length;
+  let starsHtml='';
+  for(let i=0;i<total;i++)starsHtml+=`<div class="vp-star${i<scannedVendors.size?'':' empty'}"></div>`;
+  document.getElementById('vendor-stars').innerHTML=starsHtml;
+  document.getElementById('vendor-count').textContent=`${scannedVendors.size} / ${total}`;
+  document.getElementById('vendor-list').innerHTML=VENDORS.map((v,idx)=>{
+    const scanned=scannedVendors.has(v.id);
+    return`<div class="vendor-card${scanned?' scanned':''}">
+      <div class="vendor-top">
+        <div class="vendor-icon" style="background:${v.color}18;border-color:${v.color}44;color:${v.color};">${v.icon}</div>
+        <div class="vendor-info"><div class="vendor-name">${v.name}</div><div class="vendor-system">${v.system}</div></div>
+        <div><div class="vendor-pts${scanned?' done':''}">${scanned?'ПОЛУЧЕНО':'+20 Б'}</div><div class="vendor-pts-lbl">${scanned?'✓':'ЗА СКАН'}</div></div>
+      </div>
+      <div class="vendor-desc">${v.desc}</div>
+      ${scanned
+        ?`<div class="vendor-chapter"><span class="vc-badge">ГЛАВА ${idx+1} · ОТКРЫТА</span><span class="vc-text">Фрагмент досье добавлен в карточку агента</span></div>`
+        :`<div class="vendor-locked"><span class="vl-text">// ГЛАВА ${idx+1} · ОТСКАНИРУЙ QR НА СТЕНДЕ</span></div>`}
+    </div>`;
+  }).join('');
+}
+
+async function handleVendorScan(vendorId){
+  if(!participant){showToast('// СНАЧАЛА ЗАРЕГИСТРИРУЙСЯ');return;}
+  if(scannedVendors.has(vendorId)){showToast('// СТЕНД УЖЕ ОТСКАНИРОВАН');showScreen('vendors');return;}
+  try{
+    const res=await api({action:'scanVendor',participant_id:participant.id,vendor_id:vendorId});
+    if(res.success||res.already){
+      scannedVendors.add(vendorId);
+      localStorage.setItem('scanned_vendors',JSON.stringify([...scannedVendors]));
+      if(res.success)participant.points=(participant.points||0)+20;
+      document.getElementById('s-vendors').textContent=scannedVendors.size;
+      renderVendors();renderProfile();renderAgentCard();
+      showToast(res.already?'// СТЕНД УЖЕ БЫЛ ЗАСЧИТАН':'// СТЕНД ЗАСЧИТАН! +20 Б · ГЛАВА ОТКРЫТА');
+      showScreen('vendors');
+    }
+  }catch(e){showToast('// НЕТ СВЯЗИ');}
 }
 
 async function loadLeaderboard(){
   try{
     const res=await api({action:'getLeaderboard'});
     const wrap=document.getElementById('leaderboard-wrap');
-    if(!res.leaderboard||!res.leaderboard.length){wrap.innerHTML='<div class="loader">АГЕНТОВ НЕТ...</div>';return;}
+    if(!res.leaderboard||!res.leaderboard.length){wrap.innerHTML='<div class="loader">// АГЕНТОВ НЕТ</div>';return;}
     let myRank='—';
     wrap.innerHTML=res.leaderboard.map((p,i)=>{
       const isMe=participant&&p.id===participant.id;
-      if(isMe){myRank=i+1;participant.points=p.points;renderProfile();const b=document.getElementById('p-bar');if(b)b.style.width=(Math.min(p.points/MAX_PTS,1)*100)+'%';document.getElementById('p-pts').textContent=p.points;document.getElementById('p-pct').textContent=Math.min(Math.round(p.points/MAX_PTS*100),100)+'%';}
-      const avHtml=p.avatar?`<img src="${p.avatar}" alt="">`:`<span style="font-size:18px;">🦸</span>`;
+      if(isMe){
+        myRank=i+1;participant.points=p.points;renderProfile();
+        const b=document.getElementById('p-bar');
+        if(b)b.style.width=(Math.min(p.points/MAX_PTS,1)*100)+'%';
+        document.getElementById('p-pts').textContent=p.points;
+        document.getElementById('p-pct').textContent=Math.min(Math.round(p.points/MAX_PTS*100),100)+'%';
+        document.getElementById('s-rank2').textContent=i+1;
+      }
+      const avHtml=p.avatar?`<img src="${p.avatar}" alt="">`:`<span style="font-size:13px;color:var(--text2);">◈</span>`;
       return`<div class="lb-row${isMe?' me':''}">
-        ${i===0?'<div class="lb-speech">ЛИДЕР!</div>':''}
+        ${i===0?'<div class="lb-leader">ЛИДЕР</div>':''}
         <span class="lb-pos${i===0?' gold':''}${isMe?' me-c':''}">${i+1}</span>
-        <div class="lb-av-wrap${isMe?' me':''}">${avHtml}</div>
-        <div class="lb-info"><div class="lb-name${isMe?' me':''}">${p.name}${isMe?' · ВЫ':''}</div><div class="lb-co">${p.company||''}</div></div>
+        <div class="lb-av${isMe?' me':''}">${avHtml}</div>
+        <div class="lb-info">
+          <div class="lb-name${isMe?' me':''}">${p.name}${isMe?' · ВЫ':''}</div>
+          <div class="lb-co">${p.company||''}</div>
+        </div>
         <span class="lb-pts${isMe?' me':''}">${p.points} б</span>
       </div>`;
     }).join('');
@@ -634,8 +791,7 @@ async function loadNetwork(){
     const res=await api({action:'getParticipants',exclude:participant.id});
     const wrap=document.getElementById('network-list');
     if(!res.participants||!res.participants.length){
-      wrap.innerHTML='<div class="net-empty"><div class="net-empty-icon">🤝</div><div class="net-empty-text">ДРУГИХ АГЕНТОВ ПОКА НЕТ.<br>СКОРО ПОЯВЯТСЯ!</div></div>';
-      return;
+      wrap.innerHTML='<div class="empty-state"><div class="empty-text">// ДРУГИХ АГЕНТОВ ПОКА НЕТ</div></div>';return;
     }
     const myInterests=(participant.interests||'').split(',').filter(Boolean);
     const scored=res.participants.map(p=>{
@@ -646,44 +802,22 @@ async function loadNetwork(){
     wrap.innerHTML=scored.map(p=>{
       const their=(p.interests||'').split(',').filter(Boolean);
       const mySet=new Set(myInterests);
-      const tagsHtml=their.length?their.map(t=>`<span class="net-tag${mySet.has(t)?' match':''}">${t}</span>`).join(''):'<span class="net-tag">нет тегов</span>';
-      const avHtml=p.avatar?`<img src="${p.avatar}" alt="">`:`<span style="font-size:26px;">🦸</span>`;
-      return`<div class="net-card">
+      const tagsHtml=their.map(t=>`<span class="net-tag${mySet.has(t)?' match':''}">${t}</span>`).join('');
+      const avHtml=p.avatar?`<img src="${p.avatar}" alt="">`:`<span style="font-size:18px;color:var(--text2);">◈</span>`;
+      return`<div class="net-card${p.score>0?' top-match':''}">
         <div class="net-av">${avHtml}</div>
         <div class="net-info">
           <div class="net-name">${p.name}</div>
           <div class="net-co">${p.company||''}${p.role?' · '+p.role:''}</div>
           <div class="net-tags">${tagsHtml}</div>
         </div>
-        <div class="net-match">
-          <div class="net-match-n" style="color:${p.score>0?'#ee672a':'#ccc'}">${p.score}</div>
-          <div class="net-match-l">СОВПАД.</div>
+        <div>
+          <div class="net-match-n${p.score>0?' hot':''}">${p.score}</div>
+          <div class="net-match-l">СОВП.</div>
         </div>
       </div>`;
     }).join('');
-  }catch(e){document.getElementById('network-list').innerHTML='<div class="loader">ОШИБКА СВЯЗИ...</div>';}
-}
-
-function renderProgram(){
-  document.getElementById('program-list').innerHTML=PROGRAM.map(s=>`
-    <div class="prog-item">
-      <div class="prog-time-col"><div class="prog-time">${s.time}</div><div class="prog-line"></div><div class="prog-dot${s.done?' done':''}"></div></div>
-      <div class="prog-info">
-        ${s.tag?`<div class="prog-tag" style="background:${s.tagColor}18;color:${s.tagColor};border-color:${s.tagColor};">${s.tag}</div>`:''}
-        <div class="prog-title">${s.title}</div>
-        ${s.speaker?`<div class="prog-speaker">${s.speaker}</div>`:''}
-      </div>
-    </div>`).join('');
-}
-
-function renderSpeakers(){
-  document.getElementById('speakers-list').innerHTML=SPEAKERS.map(s=>{
-    const initials=s.name.split(' ').map(w=>w[0]).join('').slice(0,2);
-    return`<div class="speaker-card">
-      <div class="sp-av" style="background:${s.color};">${initials}</div>
-      <div><div class="sp-name">${s.name}</div><div class="sp-co" style="color:${s.color};">${s.co}</div><div class="sp-role">${s.role}</div></div>
-    </div>`;
-  }).join('');
+  }catch(e){document.getElementById('network-list').innerHTML='<div class="loader">// ОШИБКА СВЯЗИ</div>';}
 }
 
 function renderPolls(){
@@ -692,10 +826,12 @@ function renderPolls(){
     if(answered){
       const total=poll.votes.reduce((a,b)=>a+b,0)||1;
       return`<div class="poll-card"><div class="poll-session">${poll.session}</div><div class="poll-q">${poll.question}</div>
-        ${poll.options.map((opt,i)=>{const pct=Math.round(poll.votes[i]/total*100);const isMe=pollAnswers[poll.id]===i;
-          return`<div class="poll-opt poll-result" style="${isMe?'border-color:#005ca8;':''}">
-            <div class="poll-bar${isMe?' orange':''}" style="width:${pct}%"></div>
-            <div class="poll-content"><span style="${isMe?'color:#005ca8;font-weight:700;':''}">${opt}</span><span class="poll-pct${isMe?' orange':''}">${pct}%</span></div>
+        ${poll.options.map((opt,i)=>{
+          const pct=Math.round(poll.votes[i]/total*100);
+          const isMe=pollAnswers[poll.id]===i;
+          return`<div class="poll-opt poll-result" style="${isMe?'border-color:var(--cyan);':''}">
+            <div class="poll-bar${isMe?' me-bar':''}" style="width:${pct}%"></div>
+            <div class="poll-content"><span style="${isMe?'color:var(--cyan);':''}">${opt}</span><span class="poll-pct${isMe?' me':''}">${pct}%</span></div>
           </div>`;}).join('')}
       </div>`;
     }
@@ -713,60 +849,13 @@ function answerPoll(pollId,optIdx){
   renderPolls();
   document.getElementById('s-polls').textContent=Object.keys(pollAnswers).length;
   if(participant)api({action:'addPoints',participant_id:participant.id,action:'poll',points:15});
-  showToast('ГОЛОС ПРИНЯТ! +15 б');
-}
-
-async function sendQuestion(){
-  const text=document.getElementById('q-text').value.trim();
-  if(!text){showToast('ВВЕДИ ВОПРОС!');return;}
-  if(!participant){showToast('СНАЧАЛА ЗАРЕГИСТРИРУЙСЯ!');return;}
-  const btn=document.querySelector('.q-send');
-  btn.textContent='...';btn.disabled=true;
-  try{
-    const res=await api({action:'addQuestion',participant_id:participant.id,participant_name:participant.name,session:'main',text});
-    if(res.success){
-      document.getElementById('q-text').value='';
-      document.getElementById('s-questions').textContent=(parseInt(document.getElementById('s-questions').textContent)||0)+1;
-      showToast('ВОПРОС ОТПРАВЛЕН! +25 б');loadQuestions();
-    }
-  }catch(e){showToast('НЕТ СВЯЗИ!');}
-  btn.textContent='ОТПРАВИТЬ';btn.disabled=false;
-}
-
-async function loadQuestions(){
-  try{
-    const res=await api({action:'getQuestions',session:'main'});
-    const wrap=document.getElementById('questions-list');
-    if(!res.questions||!res.questions.length){wrap.innerHTML='<div class="q-card" style="text-align:center;"><span style="font-family:Bangers,cursive;font-size:16px;letter-spacing:2px;color:#aaa;">ПЕРВЫЙ ВОПРОС — ТВОЙ!</span></div>';return;}
-    const total=res.questions.reduce((s,q)=>s+(parseInt(q.votes)||0),0)||1;
-    wrap.innerHTML=res.questions.map((q,i)=>{
-      const isMe=participant&&q.participant_id===participant.id;
-      const voted=votedQuestions.has(q.id);
-      const pct=Math.round((parseInt(q.votes)||0)/total*100);
-      return`<div class="q-card${i===0?' top':''}${isMe?' mine':''}">
-        <div class="q-text">${q.text}</div>
-        <div class="q-prog"><div class="q-prog-fill" style="width:${pct}%;background:${i===0?'#ee672a':isMe?'#005ca8':'#ccc'};"></div></div>
-        <div class="q-meta">
-          <span class="q-author">${q.participant_name}${isMe?' · МОЙ':i===0?' · ЛИДЕР':''}</span>
-          <div class="q-vote-row">
-            <span class="q-votes">${q.votes||0} голосов</span>
-            ${!isMe?`<button onclick="voteQ('${q.id}')" ${voted?'disabled':''} class="vote-btn${voted?' voted':''}">${voted?'ОТДАН':'ГОЛОС'}</button>`:''}
-          </div>
-        </div>
-      </div>`;
-    }).join('');
-  }catch(e){}
-}
-
-async function voteQ(qId){
-  if(!participant||votedQuestions.has(qId))return;
-  votedQuestions.add(qId);
-  try{await api({action:'vote',question_id:qId,participant_id:participant.id});showToast('ГОЛОС УЧТЁН!');loadQuestions();}
-  catch(e){votedQuestions.delete(qId);}
+  showToast('// ГОЛОС ПРИНЯТ · +15 Б');
 }
 
 window.addEventListener('load',()=>{
   if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
+  const savedScans=localStorage.getItem('scanned_vendors');
+  if(savedScans){try{JSON.parse(savedScans).forEach(id=>scannedVendors.add(id));}catch(e){}}
   const id=localStorage.getItem('participant_id');
   if(id){
     participant={
@@ -776,10 +865,16 @@ window.addEventListener('load',()=>{
       company:localStorage.getItem('participant_company')||'—',
       points:0,
       interests:localStorage.getItem('participant_interests')||'',
-      avatar:localStorage.getItem('participant_avatar')||''
+      avatar:localStorage.getItem('participant_avatar')||'',
+      gender:localStorage.getItem('participant_gender')||'male',
+      codename:localStorage.getItem('participant_codename')||'DEFENSE GRID',
+      artFile:localStorage.getItem('participant_artfile')||''
     };
     initApp();
   }
+  const urlParams=new URLSearchParams(window.location.search);
+  const vendorId=urlParams.get('id');
+  if(vendorId&&id)handleVendorScan(vendorId);
 });
 </script>
 </body>
