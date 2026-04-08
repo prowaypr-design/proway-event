@@ -960,7 +960,7 @@ async function loadLeaderboard(){
         document.getElementById('p-pct').textContent=Math.min(Math.round(p.points/MAX_PTS*100),100)+'%';
         document.getElementById('s-rank2').textContent=i+1;
       }
-      const avHtml=p.avatar?`<img src="${p.avatar}" alt="">`:`<span style="font-size:13px;color:var(--text2);">◈</span>`;
+      const avHtml=p.avatar?`<img src="${p.avatar.startsWith('http')?p.avatar:'https://proway-event.vercel.app/'+p.avatar}" alt="">`:`<span style="font-size:13px;color:var(--text2);">◈</span>`;
       return`<div class="lb-row${isMe?' me':''}">
         ${i===0?'<div class="lb-leader">ЛИДЕР</div>':''}
         <span class="lb-pos${i===0?' gold':''}${isMe?' me-c':''}">${i+1}</span>
@@ -994,7 +994,7 @@ async function loadNetwork(){
       const their=(p.interests||'').split(',').filter(Boolean);
       const mySet=new Set(myInterests);
       const tagsHtml=their.map(t=>`<span class="net-tag${mySet.has(t)?' match':''}">${t}</span>`).join('');
-      const avHtml=p.avatar?`<img src="${p.avatar}" alt="">`:`<span style="font-size:18px;color:var(--text2);">◈</span>`;
+      const avHtml=p.avatar?`<img src="${p.avatar.startsWith('http')?p.avatar:'https://proway-event.vercel.app/'+p.avatar}" alt="">`:`<span style="font-size:18px;color:var(--text2);">◈</span>`;
       return`<div class="net-card${p.score>0?' top-match':''}">
         <div class="net-av">${avHtml}</div>
         <div class="net-info">
