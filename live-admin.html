@@ -2,219 +2,1067 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PROWAY · Live Admin</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#050a12">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<title>PROWAY Security Day</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Inter',sans-serif;background:#080920;color:#fff;min-height:100vh;padding:0;}
-.lock{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px;}
-.lock-box{background:#0e0f28;border:0.5px solid rgba(108,92,231,0.3);border-radius:20px;padding:32px 24px;width:100%;max-width:360px;}
-.lock-title{font-size:20px;font-weight:700;color:#fff;margin-bottom:4px;}
-.lock-sub{font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:24px;}
-.lock-input{width:100%;padding:12px 16px;background:#13152f;border:0.5px solid rgba(108,92,231,0.3);border-radius:12px;font-size:15px;font-family:'Inter',sans-serif;color:#fff;outline:none;margin-bottom:12px;}
-.lock-input:focus{border-color:#6c5ce7;}
-.lock-btn{width:100%;padding:13px;background:linear-gradient(135deg,#6c5ce7,#4834d4);border:none;border-radius:12px;font-size:14px;font-weight:700;color:#fff;cursor:pointer;}
-.lock-err{font-size:12px;color:#ee672a;margin-top:8px;text-align:center;display:none;}
+:root{
+  --bg:#080920;--bg2:#0e0f28;--bg3:#13152f;
+  --cyan:#a29bfe;--orange:#ee672a;--yellow:#f5e642;
+  --blue:#4834d4;--violet:#6c5ce7;--white:#fff;
+  --border:#6c5ce722;--border2:#6c5ce744;
+  --text:#ffffffcc;--text2:#ffffff66;--text3:#ffffff22;
+  --grad:linear-gradient(135deg,#6c5ce7,#4834d4);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+.screen{display:none;min-height:100vh;flex-direction:column;}
+.screen.active{display:flex;}
+.app-screen{display:none;padding-bottom:72px;min-height:100vh;}
+.app-screen.active{display:block;}
 
-.admin{display:none;max-width:560px;margin:0 auto;padding:24px 16px 40px;}
-.admin-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
-.admin-logo{font-size:16px;font-weight:700;color:#fff;letter-spacing:1px;}
-.admin-badge{background:rgba(108,92,231,0.15);border:0.5px solid rgba(108,92,231,0.4);border-radius:20px;padding:4px 12px;font-size:11px;color:#a29bfe;}
+/* TICKER */
+.ticker-wrap{background:#06071a;border-bottom:1px solid var(--border);overflow:hidden;height:26px;display:flex;align-items:center;position:sticky;top:0;z-index:200;}
+.ticker-label{background:var(--violet);padding:0 10px;font-family:'Inter',sans-serif;font-size:10px;font-weight:700;color:#fff;letter-spacing:2px;white-space:nowrap;height:100%;display:flex;align-items:center;flex-shrink:0;}
+.ticker-track{overflow:hidden;flex:1;}
+.ticker-inner{display:inline-flex;white-space:nowrap;animation:ticker 25s linear infinite;}
+@keyframes ticker{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+.ticker-msg{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);padding:0 32px;letter-spacing:1px;opacity:0.8;}
+.ticker-sep{color:var(--border2);}
 
-.card{background:#0e0f28;border:0.5px solid rgba(108,92,231,0.2);border-radius:16px;padding:20px;margin-bottom:16px;}
-.card-title{font-size:12px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;}
+/* BANNER */
+.announce-banner{position:fixed;top:26px;left:0;right:0;z-index:190;background:#0e0f28;border-left:3px solid var(--violet);border-bottom:1px solid #00ff8833;padding:10px 16px;display:flex;align-items:center;gap:10px;transform:translateY(-120%);transition:transform 0.3s;}
+.announce-banner.show{transform:translateY(0);}
+.announce-text{flex:1;font-size:13px;font-weight:600;color:var(--cyan);line-height:1.4;}
+.announce-close{background:none;border:none;font-size:16px;color:#00ff8866;cursor:pointer;padding:4px;}
 
-.type-row{display:flex;gap:8px;margin-bottom:14px;}
-.type-btn{flex:1;padding:8px;border-radius:10px;border:0.5px solid rgba(108,92,231,0.2);background:transparent;font-size:12px;font-weight:600;color:rgba(255,255,255,0.4);cursor:pointer;font-family:'Inter',sans-serif;}
-.type-btn.active-info{background:rgba(108,92,231,0.15);color:#a29bfe;border-color:rgba(108,92,231,0.5);}
-.type-btn.active-alert{background:rgba(238,103,42,0.15);color:#ee672a;border-color:rgba(238,103,42,0.5);}
-.type-btn.active-success{background:rgba(0,200,100,0.1);color:#00c864;border-color:rgba(0,200,100,0.4);}
+/* ONBOARDING */
+#ob-welcome{background:var(--bg);}
+.ob-hero{flex:1;padding:60px 24px 24px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;}
+.ob-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;}
+.ob-glow{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(0,255,255,0.07),transparent 70%);top:-80px;right:-60px;}
+.ob-eyebrow{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:3px;opacity:0.8;margin-bottom:12px;position:relative;z-index:1;}
+.ob-title{font-family:'Inter',sans-serif;font-size:54px;font-weight:800;color:#fff;line-height:0.95;letter-spacing:-1px;position:relative;z-index:1;}
+.ob-title .accent{color:var(--cyan);}
+.ob-line{width:60px;height:2px;background:var(--violet);margin:16px 0;position:relative;z-index:1;}
+.ob-speech{background:rgba(108,92,231,0.04);border:1px solid var(--border2);border-left:3px solid var(--cyan);border-radius:4px;padding:14px 16px;position:relative;z-index:1;}
+.ob-speech-text{font-size:14px;color:var(--text);line-height:1.6;font-weight:500;}
+.ob-bottom{background:#06071a;padding:20px 24px 40px;border-top:0.5px solid var(--border);}
+.ob-desc{font-size:14px;font-weight:500;color:var(--text2);line-height:1.6;margin-bottom:16px;}
+.ob-btn{background:linear-gradient(135deg,#6c5ce7,#4834d4);border:none;border-radius:14px;padding:16px;width:100%;font-family:'Inter',sans-serif;font-size:16px;font-weight:700;color:#fff;letter-spacing:1px;cursor:pointer;display:block;text-align:center;}
+.ob-btn:active{opacity:0.7;}
 
-textarea{width:100%;padding:12px 16px;background:#13152f;border:0.5px solid rgba(108,92,231,0.3);border-radius:12px;font-size:14px;font-family:'Inter',sans-serif;color:#fff;outline:none;resize:none;height:100px;line-height:1.5;margin-bottom:12px;}
-textarea:focus{border-color:#6c5ce7;}
-textarea::placeholder{color:rgba(255,255,255,0.2);}
-.char-count{font-size:11px;color:rgba(255,255,255,0.3);text-align:right;margin-top:-8px;margin-bottom:12px;}
+#ob-choose{background:var(--bg);}
+.ob-choose-header{background:#06071a;padding:52px 20px 16px;border-bottom:0.5px solid var(--border);}
+.ob-choose-title{font-family:'Inter',sans-serif;font-size:24px;font-weight:800;color:#fff;letter-spacing:1px;}
+.ob-choose-sub{font-size:11px;font-weight:600;color:var(--text2);letter-spacing:2px;margin-top:4px;}
+.ob-choose-body{flex:1;padding:20px;display:flex;flex-direction:column;gap:16px;background:var(--bg);}
+.ob-choose-q{font-family:'Inter',sans-serif;font-size:18px;font-weight:700;color:#fff;letter-spacing:0px;text-align:center;}
+.agent-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.agent-card{border:0.5px solid rgba(108,92,231,0.3);border-radius:16px;overflow:hidden;cursor:pointer;background:var(--bg2);}
+.agent-card:active{border-color:var(--violet);}
+.ac-top{padding:10px;text-align:center;border-bottom:0.5px solid var(--border);}
+.ac-label{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:1px;opacity:0.8;}
+.ac-face{height:110px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-bottom:0.5px solid var(--border);}
+.ac-face img{width:100%;height:100%;object-fit:cover;}
+.ac-name{font-family:'Inter',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;padding:10px 8px;text-align:center;}
+.ob-tip{background:rgba(108,92,231,0.03);border:1px solid var(--border);border-radius:4px;padding:12px 14px;}
+.ob-tip-text{font-size:12px;font-weight:500;color:var(--text2);line-height:1.5;}
 
-.templates{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
-.tpl{background:#13152f;border:0.5px solid rgba(108,92,231,0.15);border-radius:10px;padding:10px 12px;font-size:12px;color:rgba(255,255,255,0.5);cursor:pointer;text-align:left;}
-.tpl:hover{background:rgba(108,92,231,0.08);color:#a29bfe;border-color:rgba(108,92,231,0.3);}
+#ob-reveal{background:var(--bg);}
+.ob-reveal-header{background:#06071a;border-bottom:0.5px solid var(--border);padding:52px 20px 14px;}
+.ob-reveal-title{font-family:'Inter',sans-serif;font-size:22px;font-weight:800;color:#fff;letter-spacing:1px;}
+.ob-reveal-body{flex:1;padding:16px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;background:var(--bg);}
+.av-ring{width:130px;height:130px;border-radius:50%;border:2px solid var(--violet);overflow:hidden;background:var(--bg2);display:flex;align-items:center;justify-content:center;}
+.av-ring img{width:100%;height:100%;object-fit:cover;}
+.codename-wrap{background:rgba(108,92,231,0.05);border:1px solid var(--border2);border-radius:4px;padding:8px 24px;}
+.codename{font-family:'Inter',sans-serif;font-size:16px;font-weight:800;color:var(--cyan);letter-spacing:3px;text-align:center;}
+.form-section{width:100%;display:flex;flex-direction:column;gap:10px;}
+.field-label{font-size:11px;font-weight:600;color:var(--text2);margin-bottom:4px;letter-spacing:1px;}
+.field-input{width:100%;padding:12px 16px;border:0.5px solid rgba(108,92,231,0.3);border-radius:10px;font-size:15px;font-family:'Rajdhani',sans-serif;font-weight:600;background:var(--bg2);color:var(--white);outline:none;}
+.field-input:focus{border-color:var(--violet);}
+.field-input::placeholder{color:var(--text3);}
+.tags-wrap{display:flex;flex-wrap:wrap;gap:8px;}
+.itag{padding:6px 14px;border-radius:20px;background:transparent;font-size:12px;font-family:'Inter',sans-serif;font-weight:600;color:var(--text2);border:0.5px solid rgba(108,92,231,0.25);cursor:pointer;letter-spacing:0px;}
+.itag.sel{background:rgba(108,92,231,0.08);color:var(--cyan);border-color:var(--cyan);}
 
-.publish-btn{width:100%;padding:14px;background:linear-gradient(135deg,#6c5ce7,#4834d4);border:none;border-radius:12px;font-size:14px;font-weight:700;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
-.publish-btn:disabled{opacity:0.5;cursor:not-allowed;}
+/* TOPBAR */
+.topbar{background:#06071a;padding:46px 16px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:26px;z-index:50;}
+.topbar-logo{font-family:'Inter',sans-serif;font-size:16px;font-weight:700;color:#fff;letter-spacing:2px;}
+.topbar-sub{font-size:9px;font-weight:600;color:var(--text2);letter-spacing:2px;margin-top:2px;}
+.topbar-right{display:flex;align-items:center;gap:6px;}
+.topbar-dosye{font-size:9px;font-weight:600;color:var(--cyan);letter-spacing:2px;opacity:0.7;}
+.topbar-av{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--violet);overflow:hidden;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text2);}
+.topbar-av img{width:100%;height:100%;object-fit:cover;}
 
-.feed-list{display:flex;flex-direction:column;gap:8px;}
-.feed-item{background:#13152f;border-radius:12px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px;border-left:3px solid #6c5ce7;}
-.feed-item.alert{border-left-color:#ee672a;}
-.feed-item.success{border-left-color:#00c864;}
-.feed-dot{width:8px;height:8px;border-radius:50%;background:#6c5ce7;flex-shrink:0;margin-top:5px;}
-.feed-dot.alert{background:#ee672a;}
-.feed-dot.success{background:#00c864;}
-.feed-body{flex:1;}
-.feed-text{font-size:13px;color:rgba(255,255,255,0.85);line-height:1.4;margin-bottom:4px;}
-.feed-meta{font-size:10px;color:rgba(255,255,255,0.3);}
-.feed-del{background:none;border:none;color:rgba(255,255,255,0.2);cursor:pointer;font-size:16px;padding:0 4px;flex-shrink:0;}
-.feed-del:hover{color:#ee672a;}
-.empty{text-align:center;padding:24px;font-size:12px;color:rgba(255,255,255,0.25);}
-.toast-adm{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0e0f28;border:0.5px solid rgba(108,92,231,0.4);border-left:3px solid #6c5ce7;border-radius:12px;padding:12px 20px;font-size:13px;color:#a29bfe;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;}
-.toast-adm.show{opacity:1;}
+/* HERO */
+.hero-block{background:#06071a;padding:16px 16px;border-bottom:1px solid var(--border);}
+.pts-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:12px;}
+.pts-label{font-size:10px;font-weight:600;color:var(--text2);letter-spacing:2px;margin-bottom:4px;text-transform:uppercase;}
+.pts-big{font-family:'Inter',sans-serif;font-size:48px;font-weight:700;color:#fff;line-height:1;}
+.pts-unit{font-family:'Inter',sans-serif;font-size:16px;font-weight:600;color:var(--cyan);opacity:0.7;margin-left:4px;letter-spacing:1px;}
+.rank-box{background:rgba(108,92,231,0.1);border:1px solid rgba(108,92,231,0.3);border-radius:10px;padding:8px 14px;text-align:center;}
+.rank-n{font-family:'Inter',sans-serif;font-size:24px;font-weight:700;color:var(--cyan);line-height:1;}
+.rank-l{font-size:9px;font-weight:600;color:rgba(162,155,254,0.5);letter-spacing:2px;margin-top:2px;}
+.prog-row{display:flex;justify-content:space-between;margin-bottom:6px;}
+.prog-lbl{font-size:10px;font-weight:600;color:var(--text2);letter-spacing:1px;}
+.prog-pct{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);}
+.prog-track{height:3px;background:var(--bg3);border-radius:2px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:2px;width:0;transition:width 1.2s ease;}
+
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 14px;border-bottom:1px solid var(--border);}
+.sg-cell{background:rgba(255,255,255,0.02);border:0.5px solid rgba(108,92,231,0.2);border-radius:12px;padding:10px 8px;text-align:center;}
+.sg-n{font-family:'Inter',sans-serif;font-size:22px;font-weight:700;color:#fff;line-height:1;}
+.sg-n.accent{color:var(--cyan);}
+.sg-l{font-size:9px;font-weight:600;color:var(--text2);letter-spacing:2px;margin-top:4px;text-transform:uppercase;}
+
+/* SECTION HDR */
+.section-hdr{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.section-hdr-title{font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:#fff;letter-spacing:1px;text-transform:uppercase;}
+.section-hdr-sub{font-size:9px;font-weight:600;color:var(--cyan);letter-spacing:2px;opacity:0.7;}
+
+/* AGENT CARD */
+.agent-card-full{margin:12px 14px;background:var(--bg2);border:0.5px solid rgba(108,92,231,0.3);border-radius:16px;overflow:hidden;}
+.acf-namebar{background:rgba(108,92,231,0.08);border-bottom:0.5px solid var(--border);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;}
+.acf-codename{font-family:'Inter',sans-serif;font-size:15px;font-weight:700;color:#fff;letter-spacing:2px;text-transform:uppercase;}
+.acf-badge{border:0.5px solid rgba(108,92,231,0.4);border-radius:20px;padding:3px 10px;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--cyan);}
+.acf-art{width:100%;height:180px;overflow:hidden;border-bottom:0.5px solid var(--border);background:var(--bg3);display:flex;align-items:center;justify-content:center;position:relative;}
+.acf-art img{width:100%;height:100%;object-fit:cover;object-position:top;}
+.acf-rarity{position:absolute;bottom:8px;right:10px;display:flex;gap:3px;}
+.acf-star{width:12px;height:12px;background:var(--yellow);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);}
+.acf-star.empty{background:var(--text3);}
+.acf-stats{padding:12px 14px;border-bottom:0.5px solid var(--border);}
+.acf-stat-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.acf-stat-row:last-child{margin-bottom:0;}
+.acf-stat-lbl{font-size:10px;font-weight:600;color:var(--text2);letter-spacing:2px;min-width:100px;text-transform:uppercase;}
+.acf-bar-wrap{flex:1;height:3px;background:var(--bg3);border-radius:2px;overflow:hidden;}
+.acf-bar{height:100%;border-radius:2px;}
+.acf-stat-val{font-family:'Share Tech Mono',monospace;font-size:11px;color:#fff;min-width:26px;text-align:right;}
+.acf-story{padding:12px 14px;background:rgba(255,255,255,0.02);}
+.acf-story-lbl{font-size:9px;font-weight:700;color:var(--orange);letter-spacing:3px;margin-bottom:8px;text-transform:uppercase;}
+.acf-chapter-badge{display:inline-block;background:rgba(238,103,42,0.12);border:0.5px solid rgba(238,103,42,0.35);border-radius:20px;padding:3px 10px;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--orange);letter-spacing:2px;margin-bottom:6px;}
+.acf-chapter-text{font-size:12px;font-weight:500;color:var(--text2);line-height:1.6;margin-bottom:10px;}
+.acf-locked{display:flex;align-items:center;gap:6px;margin-bottom:4px;opacity:0.35;}
+.acf-lock{width:14px;height:14px;border:1px solid var(--text3);border-radius:4px;flex-shrink:0;}
+.acf-locked-text{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:2px;}
+.acf-footer{background:rgba(108,92,231,0.05);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border-top:0.5px solid var(--border);}
+.acf-footer-name{font-size:11px;font-weight:600;color:var(--text2);letter-spacing:1px;}
+.acf-footer-pts{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--cyan);}
+
+/* INFO */
+.info-block{margin:12px 14px;background:var(--bg2);border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;overflow:hidden;}
+.info-row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-bottom:0.5px solid var(--border);}
+.info-row:last-child{border-bottom:none;}
+.info-icon{width:32px;height:32px;border-radius:8px;border:0.5px solid rgba(108,92,231,0.3);background:rgba(108,92,231,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;}
+.info-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px;}
+.info-text{font-size:11px;color:var(--text2);line-height:1.5;}
+
+/* LEADERBOARD */
+.lb-wrap{margin:12px 14px;background:var(--bg2);border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;overflow:hidden;}
+.lb-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:0.5px solid var(--border);background:var(--bg2);position:relative;}
+.lb-row:last-child{border-bottom:none;}
+.lb-row.me{background:rgba(108,92,231,0.05);border-left:2px solid var(--cyan);}
+.lb-pos{font-family:'Inter',sans-serif;font-size:16px;font-weight:700;min-width:20px;color:var(--text3);line-height:1;}
+.lb-pos.gold{color:var(--yellow);}
+.lb-pos.me-c{color:var(--cyan);}
+.lb-av{width:34px;height:34px;border-radius:50%;border:0.5px solid var(--border2);overflow:hidden;flex-shrink:0;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text2);}
+.lb-av.me{border-color:var(--violet);}
+.lb-av img{width:100%;height:100%;object-fit:cover;}
+.lb-info{flex:1;min-width:0;}
+.lb-name{font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lb-name.me{color:var(--cyan);}
+.lb-co{font-size:10px;color:var(--text2);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lb-pts{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text);white-space:nowrap;}
+.lb-pts.me{color:var(--cyan);}
+.lb-leader{position:absolute;top:-1px;right:10px;background:rgba(245,230,66,0.1);border:0.5px solid rgba(245,230,66,0.3);border-top:none;border-radius:0 0 6px 6px;padding:1px 6px;font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--yellow);letter-spacing:2px;}
+
+/* NET */
+.net-card{background:var(--bg2);border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;padding:12px 14px;margin:0 14px 10px;display:flex;align-items:center;gap:12px;}
+.net-av{width:46px;height:46px;border-radius:50%;border:0.5px solid var(--border2);overflow:hidden;flex-shrink:0;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--text2);}
+.net-av img{width:100%;height:100%;object-fit:cover;}
+.net-info{flex:1;min-width:0;}
+.net-name{font-size:14px;font-weight:600;color:#fff;margin-bottom:2px;}
+.net-co{font-size:11px;color:var(--text2);}
+.net-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;}
+.net-tag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--bg3);color:var(--text2);border:0.5px solid var(--border);}
+.net-tag.match{background:rgba(108,92,231,0.1);color:var(--cyan);border-color:var(--border2);}
+.net-match-n{font-family:'Inter',sans-serif;font-size:22px;font-weight:700;color:var(--text3);line-height:1;text-align:center;}
+.net-match-n.hot{color:var(--orange);}
+.net-match-l{font-size:8px;font-weight:600;color:var(--text3);letter-spacing:1px;text-align:center;}
+
+/* PROGRAM */
+.prog-list{padding:0 14px;}
+.prog-item{background:var(--bg2);border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;padding:12px;margin-bottom:10px;display:flex;gap:12px;}
+.prog-time-col{display:flex;flex-direction:column;align-items:center;min-width:44px;}
+.prog-time{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--cyan);}
+.prog-line{width:1px;flex:1;background:var(--border);margin:5px 0;}
+.prog-dot{width:8px;height:8px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);}
+.prog-dot.done{background:var(--orange);border-color:var(--orange);}
+.prog-tag{display:inline-block;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;padding:2px 8px;border-radius:20px;border:0.5px solid;margin-bottom:5px;}
+.prog-title{font-size:13px;font-weight:600;color:#fff;line-height:1.3;margin-bottom:2px;}
+.prog-speaker{font-size:11px;color:var(--text2);}
+
+/* SPEAKERS */
+.speaker-list{padding:0 14px;}
+.speaker-card{background:var(--bg2);border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;padding:11px 13px;margin-bottom:8px;display:flex;align-items:center;gap:12px;}
+.sp-av{width:40px;height:40px;border-radius:50%;border:0.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
+.sp-name{font-size:13px;font-weight:600;color:#fff;}
+.sp-co{font-size:11px;font-weight:600;margin-top:1px;}
+.sp-role{font-size:10px;color:var(--text2);margin-top:1px;}
+
+/* VENDORS */
+.vendor-prog{margin:12px 14px;background:var(--bg2);border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;}
+.vp-label{font-size:10px;font-weight:700;color:var(--text2);letter-spacing:2px;}
+.vp-right{display:flex;align-items:center;gap:8px;}
+.vp-count{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--cyan);}
+.vp-stars{display:flex;gap:3px;}
+.vp-star{width:12px;height:12px;background:var(--yellow);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);}
+.vp-star.empty{background:var(--text3);}
+.vendor-list{padding:0 14px;display:flex;flex-direction:column;gap:10px;}
+.vendor-card{background:var(--bg2);border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;overflow:hidden;}
+.vendor-card.scanned{border-color:rgba(108,92,231,0.5);}
+.vendor-top{padding:12px 14px;display:flex;align-items:center;gap:12px;}
+.vendor-icon{width:44px;height:44px;border-radius:10px;border:0.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:16px;font-weight:700;flex-shrink:0;}
+.vendor-info{flex:1;}
+.vendor-name{font-size:14px;font-weight:600;color:#fff;margin-bottom:2px;}
+.vendor-system{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:2px;}
+.vendor-pts{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--orange);text-align:right;}
+.vendor-pts.done{color:#00ff88;}
+.vendor-pts-lbl{font-size:8px;font-weight:600;color:var(--text2);letter-spacing:1px;text-align:right;}
+.vendor-desc{padding:0 14px 12px;font-size:11px;font-weight:500;color:var(--text2);line-height:1.5;border-top:0.5px solid var(--border);padding-top:10px;}
+.vendor-chapter{background:rgba(238,103,42,0.05);border-top:0.5px solid rgba(238,103,42,0.2);padding:8px 14px;display:flex;align-items:center;gap:8px;}
+.vc-badge{background:rgba(238,103,42,0.12);border:0.5px solid rgba(238,103,42,0.35);border-radius:20px;padding:2px 8px;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--orange);letter-spacing:2px;flex-shrink:0;}
+.vc-text{font-size:11px;font-weight:500;color:rgba(255,107,53,0.6);line-height:1.4;}
+.vendor-locked{background:var(--bg3);border-top:0.5px solid var(--border);padding:8px 14px;display:flex;align-items:center;gap:8px;}
+.vl-text{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:2px;}
+
+/* POLLS */
+.poll-card{background:var(--bg2);border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;padding:14px;margin:0 14px 12px;}
+.poll-session{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--cyan);letter-spacing:3px;margin-bottom:8px;}
+.poll-q{font-size:14px;font-weight:700;color:var(--white);line-height:1.4;margin-bottom:12px;}
+.poll-opt{width:100%;text-align:left;padding:10px 14px;border-radius:10px;border:0.5px solid rgba(108,92,231,0.25);background:transparent;font-size:12px;font-weight:600;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;margin-bottom:7px;display:block;}
+.poll-opt:last-child{margin-bottom:0;}
+.poll-opt.selected{background:rgba(108,92,231,0.1);color:var(--cyan);border-color:var(--violet);}
+.poll-result{position:relative;overflow:hidden;cursor:default;}
+.poll-bar{position:absolute;left:0;top:0;bottom:0;background:rgba(108,92,231,0.07);transition:width 0.6s;z-index:0;}
+.poll-bar.me-bar{background:rgba(108,92,231,0.13);}
+.poll-content{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;}
+.poll-pct{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text2);}
+.poll-pct.me{color:var(--cyan);}
+
+/* NAVBAR */
+.navbar{position:fixed;bottom:0;left:0;right:0;background:#06071a;border-top:0.5px solid var(--border);display:flex;padding:8px 0 18px;z-index:100;}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;border:none;background:none;cursor:pointer;padding:4px 0;}
+.nb svg{width:20px;height:20px;}
+.nb-lbl{font-family:'Inter',sans-serif;font-size:8px;font-weight:600;color:var(--text3);letter-spacing:0.5px;text-transform:uppercase;}
+.nb.act .nb-lbl{color:var(--cyan);}
+
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:14px;right:14px;background:#0e0f28;color:var(--cyan);border:0.5px solid rgba(108,92,231,0.4);border-left:3px solid var(--violet);border-radius:12px;padding:12px 16px;font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:2px;text-align:center;z-index:300;opacity:0;transition:opacity 0.25s;pointer-events:none;}
+.toast.show{opacity:1;}
+.loader{text-align:center;padding:32px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text3);letter-spacing:3px;}
+.empty-state{text-align:center;padding:40px 20px;}
+.empty-text{font-size:12px;font-weight:600;color:var(--text2);letter-spacing:1px;}
+
+/* BELL & NOTIFICATION PANEL */
+.bell-wrap{position:relative;cursor:pointer;}
+.bell-btn{width:36px;height:36px;border-radius:50%;border:1.5px solid rgba(108,92,231,0.4);background:rgba(108,92,231,0.08);display:flex;align-items:center;justify-content:center;}
+.bell-badge{position:absolute;top:-3px;right:-3px;width:16px;height:16px;background:#ee672a;border-radius:50%;font-size:9px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;display:none;}
+.bell-badge.show{display:flex;}
+
+.notif-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:400;opacity:0;pointer-events:none;transition:opacity 0.2s;}
+.notif-overlay.show{opacity:1;pointer-events:auto;}
+.notif-panel{position:fixed;top:0;right:0;bottom:0;width:min(340px,100vw);background:#0e0f28;border-left:0.5px solid rgba(108,92,231,0.3);z-index:401;transform:translateX(100%);transition:transform 0.3s ease;display:flex;flex-direction:column;}
+.notif-panel.show{transform:translateX(0);}
+.notif-header{padding:52px 16px 14px;border-bottom:0.5px solid rgba(108,92,231,0.15);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.notif-title{font-size:16px;font-weight:700;color:#fff;}
+.notif-close{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.05);border:none;color:rgba(255,255,255,0.4);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.notif-list{flex:1;overflow-y:auto;padding:12px 14px;}
+.notif-item{background:#13152f;border-radius:12px;padding:12px 14px;margin-bottom:8px;border-left:3px solid #6c5ce7;display:flex;gap:10px;}
+.notif-item.alert{border-left-color:#ee672a;}
+.notif-item.success{border-left-color:#00c864;}
+.notif-dot{width:8px;height:8px;border-radius:50%;background:#6c5ce7;flex-shrink:0;margin-top:5px;}
+.notif-dot.alert{background:#ee672a;}
+.notif-dot.success{background:#00c864;}
+.notif-body{}
+.notif-text{font-size:13px;color:rgba(255,255,255,0.85);line-height:1.5;margin-bottom:3px;}
+.notif-time{font-size:10px;color:rgba(255,255,255,0.3);}
+.notif-empty{text-align:center;padding:40px 20px;font-size:12px;color:rgba(255,255,255,0.25);}
+
+/* ЭКРАН ЛЕНТА */
+.feed-card{background:#0e0f28;border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;padding:12px 14px;margin:0 14px 10px;border-left:3px solid #6c5ce7;}
+.feed-card.alert{border-left-color:#ee672a;}
+.feed-card.success{border-left-color:#00c864;}
+.feed-card-text{font-size:14px;color:rgba(255,255,255,0.85);line-height:1.5;margin-bottom:4px;}
+.feed-card-time{font-size:11px;color:rgba(255,255,255,0.3);}
+.feed-how-block{background:rgba(108,92,231,0.06);border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;margin:0 14px 12px;padding:14px;}
+.feed-how-title{font-size:12px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
+.feed-how-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
+.feed-how-item:last-child{margin-bottom:0;}
+.feed-how-num{width:22px;height:22px;border-radius:50%;background:rgba(108,92,231,0.2);border:0.5px solid rgba(108,92,231,0.4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#a29bfe;flex-shrink:0;}
+.feed-how-text{font-size:12px;color:rgba(255,255,255,0.6);line-height:1.5;padding-top:2px;}
 </style>
 </head>
 <body>
 
-<!-- Экран входа -->
-<div class="lock" id="lock-screen">
-  <div class="lock-box">
-    <div class="lock-title">Live Admin</div>
-    <div class="lock-sub">PROWAY Security Day · Контент-менеджер</div>
-    <input class="lock-input" type="password" id="pwd-input" placeholder="Пароль" onkeydown="if(event.key==='Enter')checkPwd()">
-    <button class="lock-btn" onclick="checkPwd()">Войти</button>
-    <div class="lock-err" id="lock-err">Неверный пароль</div>
+<div class="ticker-wrap" id="ticker-wrap" style="display:none;">
+  <div class="ticker-label">LIVE</div>
+  <div class="ticker-track">
+    <div class="ticker-inner" id="ticker-inner">
+      <span class="ticker-msg">ДОБРО ПОЖАЛОВАТЬ НА БОРТ PROWAY SECURITY DAY 2025</span>
+      <span class="ticker-sep"> · </span>
+      <span class="ticker-msg">СКАНИРУЙ QR-КОДЫ НА СТЕНДАХ И ОТКРЫВАЙ ГЛАВЫ СВОЕГО ДОСЬЕ</span>
+      <span class="ticker-sep"> · </span>
+    </div>
   </div>
 </div>
 
-<!-- Панель КМ -->
-<div class="admin" id="admin-panel">
-  <div class="admin-header">
-    <div class="admin-logo">PROWAY · Live</div>
-    <div class="admin-badge">Контент-менеджер</div>
-  </div>
+<div class="announce-banner" id="announce-banner">
+  <div class="announce-text" id="announce-text"></div>
+  <button class="announce-close" onclick="closeBanner()">✕</button>
+</div>
 
-  <!-- Форма публикации -->
-  <div class="card">
-    <div class="card-title">Новое сообщение</div>
-
-    <div class="type-row">
-      <button class="type-btn active-info" onclick="setType('info',this)" id="t-info">ℹ Инфо</button>
-      <button class="type-btn" onclick="setType('alert',this)" id="t-alert">⚡ Срочно</button>
-      <button class="type-btn" onclick="setType('success',this)" id="t-success">✓ Событие</button>
+<!-- ONBOARDING -->
+<div id="ob-welcome" class="screen active">
+  <div class="ob-hero">
+    <div class="ob-grid"></div>
+    <div class="ob-glow"></div>
+    <div class="ob-eyebrow">// PROWAY_SECURITY_DAY_2025</div>
+    <div class="ob-title">МИР<br><span class="accent">ПОД</span><br>УГРОЗОЙ</div>
+    <div class="ob-line"></div>
+    <div class="ob-speech">
+      <div class="ob-speech-text">Кибератаки участились. Старые методы защиты не работают. Нужны новые герои, способные противостоять угрозам цифрового мира.</div>
     </div>
-
-    <div class="card-title" style="margin-bottom:8px;">Шаблоны</div>
-    <div class="templates">
-      <button class="tpl" onclick="useTpl(this)">→ Начинается сессия 2 · Переходите в зал А</button>
-      <button class="tpl" onclick="useTpl(this)">🍽 Фуршет открыт · Зал Б, 3 этаж</button>
-      <button class="tpl" onclick="useTpl(this)">🏆 Розыгрыш начинается через 10 минут · Главная сцена</button>
-      <button class="tpl" onclick="useTpl(this)">⚡ Внимание: изменение программы</button>
-      <button class="tpl" onclick="useTpl(this)">🎤 Спикер отвечает на вопросы · Подходите к сцене</button>
-    </div>
-
-    <textarea id="msg-input" placeholder="Напишите сообщение для участников..." oninput="updateCount()"></textarea>
-    <div class="char-count"><span id="char-n">0</span> / 200</div>
-
-    <button class="publish-btn" onclick="publish()" id="pub-btn">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8l10-6-4 6 4 6z" fill="white"/></svg>
-      Опубликовать
-    </button>
   </div>
-
-  <!-- Лента -->
-  <div class="card">
-    <div class="card-title">Активные сообщения</div>
-    <div class="feed-list" id="feed-list"><div class="empty">Сообщений нет</div></div>
+  <div class="ob-bottom">
+    <div class="ob-desc">Конференция PROWAY Security Day — место где рождаются герои кибербезопасности. Пройди регистрацию, получи своего агента и начни миссию.</div>
+    <button class="ob-btn" onclick="goTo('ob-choose')">ПРИНЯТЬ МИССИЮ ›</button>
   </div>
 </div>
 
-<div class="toast-adm" id="toast-adm"></div>
+<div id="ob-choose" class="screen">
+  <div class="ob-choose-header">
+    <div class="ob-choose-title">ВЫБЕРИ АГЕНТА</div>
+    <div class="ob-choose-sub">// СИСТЕМА НАЗНАЧИТ СЛУЧАЙНОГО ГЕРОЯ</div>
+  </div>
+  <div class="ob-choose-body">
+    <div class="ob-choose-q">КТО ТЫ В КОМАНДЕ?</div>
+    <div class="agent-grid">
+      <div class="agent-card" onclick="selectGender('male')">
+        <div class="ac-top"><div class="ac-label">// DEFENDER</div></div>
+        <div class="ac-face" style="background:#0a1525;"><img src="Defense_Grid_Icon.png" alt="defender" onerror="this.parentElement.innerHTML='<span style=font-size:50px>🦸‍♂️</span>'"></div>
+        <div class="ac-name" style="color:var(--cyan);">БОЕЦ</div>
+      </div>
+      <div class="agent-card" onclick="selectGender('female')">
+        <div class="ac-top"><div class="ac-label" style="color:#e879f9;">// TRACER</div></div>
+        <div class="ac-face" style="background:#150a25;"><img src="Stealth_Tracer_Icon.png" alt="tracer" onerror="this.parentElement.innerHTML='<span style=font-size:50px>🦸‍♀️</span>'"></div>
+        <div class="ac-name" style="color:#e879f9;">АГЕНТ</div>
+      </div>
+    </div>
+    <div class="ob-tip"><div class="ob-tip-text">// После выбора система назначит случайного персонажа. Каждый герой уникален и получит своё кодовое имя.</div></div>
+  </div>
+</div>
+
+<div id="ob-reveal" class="screen">
+  <div class="ob-reveal-header"><div class="ob-reveal-title">// АГЕНТ_НАЗНАЧЕН</div></div>
+  <div class="ob-reveal-body">
+    <div class="av-ring"><img id="reveal-img" src="" alt=""></div>
+    <div class="codename-wrap"><div class="codename" id="reveal-codename">...</div></div>
+    <div class="form-section">
+      <div><div class="field-label">// ПОЗЫВНОЙ (имя и фамилия)</div><input type="text" id="reg-name" class="field-input" placeholder="Анна Козлова"></div>
+      <div><div class="field-label">// КОРПОРАТИВНАЯ ПОЧТА</div><input type="email" id="reg-email" class="field-input" placeholder="name@company.ru"></div>
+      <div><div class="field-label">// ОРГАНИЗАЦИЯ</div><input type="text" id="reg-company" class="field-input" placeholder="Название компании"></div>
+      <div><div class="field-label">// ДОЛЖНОСТЬ</div><input type="text" id="reg-role" class="field-input" placeholder="ИТ-директор"></div>
+      <div>
+        <div class="field-label">// СПЕЦИАЛИЗАЦИЯ (до 3)</div>
+        <div class="tags-wrap" id="tags-wrap">
+          <button class="itag" data-val="NGFW">NGFW</button>
+          <button class="itag" data-val="SOC/SIEM">SOC/SIEM</button>
+          <button class="itag" data-val="Пентест">Пентест</button>
+          <button class="itag" data-val="Zero Trust">Zero Trust</button>
+          <button class="itag" data-val="DLP">DLP</button>
+          <button class="itag" data-val="PAM">PAM</button>
+          <button class="itag" data-val="Криптография">Крипто</button>
+          <button class="itag" data-val="Compliance">Compliance</button>
+        </div>
+      </div>
+      <button class="ob-btn" onclick="register()">ПРИСТУПИТЬ К МИССИИ ›</button>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none;">
+
+  <!-- ПРОФИЛЬ -->
+  
+<!-- NOTIFICATION PANEL -->
+<div class="notif-overlay" id="notif-overlay" onclick="closeNotifPanel()"></div>
+<div class="notif-panel" id="notif-panel">
+  <div class="notif-header">
+    <div class="notif-title">Уведомления</div>
+    <button class="notif-close" onclick="closeNotifPanel()">✕</button>
+  </div>
+  <div class="notif-list" id="notif-list">
+    <div class="notif-empty">Пока тихо — следите за обновлениями</div>
+  </div>
+</div>
+
+<div id="screen-profile" class="app-screen active">
+    <div class="topbar">
+      <div><div class="topbar-logo">PROWAY</div><div class="topbar-sub">SECURITY DAY 2025</div></div>
+      <div class="topbar-right">
+        <div class="bell-wrap" onclick="openNotifPanel()">
+          <div class="bell-btn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 2a5 5 0 00-5 5v3l-1 1.5h12L13 10V7a5 5 0 00-5-5z" stroke="#a29bfe" stroke-width="1.3" stroke-linejoin="round"/>
+              <path d="M6.5 13.5a1.5 1.5 0 003 0" stroke="#a29bfe" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="bell-badge" id="bell-badge">0</div>
+        </div>
+        <div class="topbar-av"><img id="p-av-img" src="" alt="" style="display:none;"><span id="p-av-emoji">◈</span></div>
+      </div>
+    </div>
+    <div class="hero-block">
+      <div class="pts-row">
+        <div><div class="pts-label">// БАЛЛЫ</div><div><span class="pts-big" id="p-pts">0</span><span class="pts-unit">Б</span></div></div>
+        <div class="rank-box"><div class="rank-n" id="p-rank">#—</div><div class="rank-l">МЕСТО</div></div>
+      </div>
+      <div class="prog-row"><span class="prog-lbl">ДО ПРИЗА</span><span class="prog-pct" id="p-pct">0%</span></div>
+      <div class="prog-track"><div class="prog-fill" id="p-bar"></div></div>
+    </div>
+    <div class="stats-grid">
+      <div class="sg-cell"><div class="sg-n" id="s-vendors">0</div><div class="sg-l">СТЕНДЫ</div></div>
+      <div class="sg-cell"><div class="sg-n" id="s-polls">0</div><div class="sg-l">ОПРОСЫ</div></div>
+      <div class="sg-cell"><div class="sg-n accent" id="s-rank2">—</div><div class="sg-l">МЕСТО</div></div>
+    </div>
+    <div style="height:12px;"></div>
+    <div class="section-hdr"><div class="section-hdr-title">МОЯ КАРТОЧКА</div><div class="section-hdr-sub">// ДОСЬЕ АГЕНТА</div></div>
+    <div class="agent-card-full" id="agent-full-card"><div class="loader">ЗАГРУЗКА...</div></div>
+    <div style="height:12px;"></div>
+    <div class="section-hdr"><div class="section-hdr-title">БАЗА</div><div class="section-hdr-sub">// ЛОКАЦИЯ</div></div>
+    <div class="info-block">
+      <div class="info-row"><div class="info-icon">✈</div><div><div class="info-title">Воробьевы Холл</div><div class="info-text">ул. Косыгина 28с1, Москва</div></div></div>
+      <div class="info-row"><div class="info-icon">🚇</div><div><div class="info-title">Метро</div><div class="info-text">Воробьевы горы, выход №2, по Эскалаторной галерее направо 500 м</div></div></div>
+      <div class="info-row"><div class="info-icon">🚕</div><div><div class="info-title">Такси</div><div class="info-text">ул. Косыгина 28с1</div></div></div>
+    </div>
+    <div class="section-hdr" style="margin-top:0;"><div class="section-hdr-title">ВЕЧЕР</div><div class="section-hdr-sub">// ПРОГРАММА</div></div>
+    <div class="info-block">
+      <div class="info-row"><div class="info-icon">🍽</div><div><div class="info-title">Фуршетный дозаправщик</div><div class="info-text">Закуски и напитки</div></div></div>
+      <div class="info-row"><div class="info-icon">🏆</div><div><div class="info-title">Награждение агентов</div><div class="info-text">Лучшие получают призы на сцене</div></div></div>
+      <div class="info-row"><div class="info-icon">🎤</div><div><div class="info-title">Кавер-авиашоу + DJ</div><div class="info-text">Танцуем пока не кончится топливо!</div></div></div>
+      <div class="info-row"><div class="info-icon">🚡</div><div><div class="info-title">VIP-кабина канатной дороги</div><div class="info-text">Приватные беседы с видом на Москву</div></div></div>
+    </div>
+    <div class="section-hdr" style="margin-top:0;"><div class="section-hdr-title">РОЗЫГРЫШ</div><div class="section-hdr-sub">// ПРИЗЫ</div></div>
+    <div class="info-block">
+      <div class="info-row"><div class="info-icon">🎁</div><div><div class="info-title">6 × Telegram Premium на год</div><div class="info-text">Участвуй в опросах и сканируй стенды — повышай шансы!</div></div></div>
+    </div>
+    <div style="height:12px;"></div>
+  </div>
+
+  <!-- ЛЕНТА -->
+  <div id="screen-feed" class="app-screen">
+    <div class="topbar">
+      <div><div class="topbar-logo">ЛЕНТА</div><div class="topbar-sub">// LIVE · ОБНОВЛЕНИЯ</div></div>
+    </div>
+    <div style="height:12px;"></div>
+    <div class="feed-how-block">
+      <div class="feed-how-title">Как играть</div>
+      <div class="feed-how-item">
+        <div class="feed-how-num">1</div>
+        <div class="feed-how-text">Зарегистрируйся и получи агента — он твой персонаж на весь день</div>
+      </div>
+      <div class="feed-how-item">
+        <div class="feed-how-num">2</div>
+        <div class="feed-how-text">Сканируй QR-коды на стендах вендоров — каждый даёт +20 баллов</div>
+      </div>
+      <div class="feed-how-item">
+        <div class="feed-how-num">3</div>
+        <div class="feed-how-text">Голосуй в опросах после каждого доклада — +15 баллов за голос</div>
+      </div>
+      <div class="feed-how-item">
+        <div class="feed-how-num">4</div>
+        <div class="feed-how-text">Задавай вопросы спикерам — если твой выберут на трансляцию, +50 баллов</div>
+      </div>
+      <div class="feed-how-item">
+        <div class="feed-how-num">5</div>
+        <div class="feed-how-text">Лучшие агенты по итогу получают призы на главной сцене</div>
+      </div>
+    </div>
+    <div class="section-hdr"><div class="section-hdr-title">ОБНОВЛЕНИЯ</div><div class="section-hdr-sub">// LIVE</div></div>
+    <div style="height:8px;"></div>
+    <div id="feed-screen-list"><div class="loader">ЗАГРУЗКА...</div></div>
+    <div style="height:12px;"></div>
+  </div>
+
+  <!-- РЕЙТИНГ -->
+  <div id="screen-rating" class="app-screen">
+    <div class="topbar">
+      <div><div class="topbar-logo">РЕЙТИНГ</div><div class="topbar-sub">// АГЕНТЫ РЕЙСА</div></div>
+      <div class="topbar-av"><img id="p-av-img3" src="" alt="" style="display:none;"><span id="p-av-emoji3">◈</span></div>
+    </div>
+    <div style="height:12px;"></div>
+    <div class="lb-wrap" id="leaderboard-wrap"><div class="loader">ЗАГРУЗКА...</div></div>
+    <div style="height:12px;"></div>
+  </div>
+
+  <!-- СЕТЬ -->
+  <div id="screen-network" class="app-screen">
+    <div class="topbar">
+      <div><div class="topbar-logo">СЕТЬ</div><div class="topbar-sub">// НАЙДИ СОЮЗНИКОВ</div></div>
+      <div class="topbar-av"><img id="p-av-img2" src="" alt="" style="display:none;"><span id="p-av-emoji2">◈</span></div>
+    </div>
+    <div style="height:12px;"></div>
+    <div id="network-list"><div class="loader">СКАНИРУЮ БАЗУ...</div></div>
+    <div style="height:12px;"></div>
+  </div>
+
+  <!-- СТЕНДЫ -->
+  <div id="screen-vendors" class="app-screen">
+    <div class="topbar">
+      <div><div class="topbar-logo">СТЕНДЫ</div><div class="topbar-sub">// СКАНИРУЙ QR · +20 Б · ОТКРЫВАЙ ДОСЬЕ</div></div>
+    </div>
+    <div style="height:12px;"></div>
+    <div class="vendor-prog">
+      <div class="vp-label">// ПРОГРЕСС МИССИИ</div>
+      <div class="vp-right"><div class="vp-stars" id="vendor-stars"></div><div class="vp-count" id="vendor-count">0 / 0</div></div>
+    </div>
+    <div class="vendor-list" id="vendor-list"></div>
+    <div style="height:12px;"></div>
+  </div>
+
+  <!-- МИССИЯ -->
+  <div id="screen-polls" class="app-screen">
+    <div class="topbar">
+      <div><div class="topbar-logo">МИССИЯ</div><div class="topbar-sub">// ОПРОСЫ · +15 Б ЗА ГОЛОС</div></div>
+    </div>
+    <div style="height:12px;"></div>
+    <div id="polls-list"></div>
+    <div style="height:12px;"></div>
+  </div>
+
+</div>
+
+<nav class="navbar" id="navbar" style="display:none;">
+  <button class="nb act" onclick="showScreen('profile')" id="nav-profile">
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="var(--cyan)" stroke-width="1.5" fill="none"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+    <span class="nb-lbl" style="color:var(--cyan);">ПРОФИЛЬ</span>
+  </button>
+  <button class="nb" onclick="showScreen('rating')" id="nav-rating">
+    <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="13" width="4" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="10" y="8" width="4" height="13" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="17" y="3" width="4" height="18" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/></svg>
+    <span class="nb-lbl">РЕЙТИНГ</span>
+  </button>
+  <button class="nb" onclick="showScreen('feed')" id="nav-feed">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M18 8a5 5 0 00-10 0v5l-1.5 2.5h13L18 13V8z" stroke="#ffffff22" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M10.5 19a1.5 1.5 0 003 0" stroke="#ffffff22" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <span class="nb-lbl" style="position:relative;">ЛЕНТА<span id="nav-feed-dot" style="display:none;position:absolute;top:-6px;right:-8px;width:7px;height:7px;background:#ee672a;border-radius:50%;"></span></span>
+  </button>
+  <button class="nb" onclick="showScreen('vendors')" id="nav-vendors">
+    <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="13" y="3" width="8" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="3" y="13" width="8" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="13" y="13" width="8" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/></svg>
+    <span class="nb-lbl">СТЕНДЫ</span>
+  </button>
+  <button class="nb" onclick="showScreen('polls')" id="nav-polls">
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#ffffff22" stroke-width="1.5" fill="none"/><path d="M8 12l3 3 5-5" stroke="#ffffff22" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span class="nb-lbl">МИССИЯ</span>
+  </button>
+</nav>
+
+<div class="toast" id="toast"></div>
 
 <script>
-const API = 'https://script.google.com/macros/s/AKfycbyYuilmUoMlTsWc_M0GeuOxmsbJ7QWK9cyOg20j-uUD8HvHBxzsyW5lm-o0kFT0G53tVA/exec';
-const SECRET = 'proway2025';
-let currentType = 'info';
+const API='https://script.google.com/macros/s/AKfycbyDyYFwHvLPwHZSqd2abQCLhr9RaoqgVTA96OIw4-mxvRSRkioSe2Th2MD8LYiKhRFstw/exec';
+const MAX_PTS=430;
+const STORY_UNLOCK_DATE=new Date('2025-11-16T00:00:00');
+
+const VENDORS=[
+  {id:'vendor_ngfw',name:'Positive Technologies',system:'NGFW',color:'#c0392b',icon:'PT',desc:'Межсетевой экран нового поколения. Глубокий анализ трафика, блокировка угроз до проникновения в сеть.',chapterMale:'Иванов не ожидал что первое задание окажется таким... визуальным. Поток данных на экране выглядел как город с высоты птичьего полёта. Каждый пакет — человек. Каждая угроза — незнакомец в толпе. Он указал пальцем на аномалию. "Вот." Куратор молча сделал пометку в досье.',chapterFemale:'Козлова не ожидала что первое задание окажется таким... визуальным. Поток данных на экране выглядел как город с высоты птичьего полёта. Каждый пакет — человек. Каждая угроза — незнакомец в толпе. Она указала пальцем на аномалию. "Вот." Куратор молча сделал пометку в досье.'},
+  {id:'vendor_dlp',name:'Гарда',system:'DLP',color:'#8e44ad',icon:'Г',desc:'Система предотвращения утечек данных. Контроль всех каналов передачи информации в реальном времени.',chapterMale:'«Данные уходят тихо» — сообщение пришло в 6 утра. Иванов налил кофе. Данные всегда куда-то уходят — это он знал ещё до всей этой истории с конвертом. Но теперь он видел как именно. Одна флешка. Один человек. Канал был найден до второй чашки.',chapterFemale:'«Данные уходят тихо» — сообщение пришло в 6 утра. Козлова налила кофе. Данные всегда куда-то уходят — это она знала ещё до всей этой истории с конвертом. Но теперь она видела как именно. Одна флешка. Один человек. Канал был найден до второй чашки.'},
+  {id:'vendor_pam',name:'АВ Софт',system:'PAM',color:'#ee672a',icon:'АВ',desc:'Управление привилегированным доступом. Контроль действий администраторов и защита критических систем.',chapterMale:'Привилегированный доступ — это власть. Иванов понял это за первые тридцать секунд. Кто контролирует учётные записи администраторов — контролирует всё. Остальные девять минут он просто наслаждался осознанием. И как его найти.',chapterFemale:'Привилегированный доступ — это власть. Козлова поняла это за первые тридцать секунд. Кто контролирует учётные записи администраторов — контролирует всё. Остальные девять минут она просто наслаждалась осознанием. И как его найти.'},
+  {id:'vendor_crypto',name:'ИнфоТеКС',system:'VPN / Крипто',color:'#005ca8',icon:'ИТ',desc:'Криптографическая защита каналов связи. ViPNet — стандарт защищённых коммуникаций.',chapterMale:'Новое задание пришло зашифрованным. Разумеется. Иванов расшифровал его за четыре минуты. "Как?" — спросили его. "Просто знаю где искать ключ." Теперь его каналы связи непробиваемы.',chapterFemale:'Новое задание пришло зашифрованным. Разумеется. Козлова расшифровала его за четыре минуты. "Как?" — спросили её. "Просто знаю где искать ключ." Теперь её каналы связи непробиваемы.'},
+];
+
+const AGENT_STATS={
+  male:{'DEFENSE GRID':{АНАЛИЗ:79,СКОРОСТЬ:62,КРИПТО:91,ПЕРИМЕТР:96,ВЛИЯНИЕ:55}},
+  female:{'STEALTH TRACER':{АНАЛИЗ:88,СКОРОСТЬ:94,КРИПТО:71,ПЕРИМЕТР:65,ВЛИЯНИЕ:97}}
+};
+const STAT_COLORS={АНАЛИЗ:'#00aeee',СКОРОСТЬ:'#f5e642',КРИПТО:'#ee672a',ПЕРИМЕТР:'#005ca8',ВЛИЯНИЕ:'#8e44ad'};
+
+const RARITY=[
+  {min:0,label:'НОВОБРАНЕЦ',bg:'rgba(255,255,255,0.06)',color:'#ffffff44',stars:0},
+  {min:1,label:'АГЕНТ',bg:'rgba(0,255,255,0.1)',color:'#00ffff',stars:2},
+  {min:3,label:'МАСТЕР',bg:'rgba(255,107,53,0.12)',color:'#ff6b35',stars:3},
+  {min:5,label:'ЛЕГЕНДА',bg:'rgba(255,204,0,0.12)',color:'#ffcc00',stars:4},
+];
+
+const AVATARS={
+  male:[{file:'Defense_Grid_Icon.png',codename:'DEFENSE GRID',artFile:'5379679076819343593.jpg'}],
+  female:[{file:'Stealth_Tracer_Icon.png',codename:'STEALTH TRACER',artFile:'5379679076819343592.jpg'}]
+};
+
+const PROGRAM=[
+  {time:'13:50',title:'Приветственное слово экипажа',speaker:'Алексей Матвеев, PROWAY Security',tag:'ВЗЛЁТ',tagColor:'#005ca8',done:true},
+  {time:'14:00',title:'Панельная дискуссия «Security Talks»',speaker:'Конкуренция на российском рынке ИБ',tag:'ДЕЛОВАЯ',tagColor:'#ee672a',done:true},
+  {time:'15:30',title:'Кофе-брейк и Lounge Expo',speaker:'Первый этаж и веранда',tag:'ПАУЗА',tagColor:'#555',done:false},
+  {time:'16:00',title:'Прямая линия PROWAY Security',speaker:'Экспресс-опросы · результаты на экран',tag:'ДЕЛОВАЯ',tagColor:'#ee672a',done:false},
+  {time:'17:30',title:'Нетворкинг',speaker:'VIP-кабина канатной дороги',tag:'НЕТВОРК',tagColor:'#27ae60',done:false},
+  {time:'18:30',title:'Вечерняя программа',speaker:'Фуршет · Кавер-авиашоу · DJ',tag:'ФИНАЛ',tagColor:'#8e44ad',done:false},
+  {time:'22:00',title:'Приземление. До новых рейсов!',speaker:'Спасибо что выбрали PROWAY Security Day',tag:'',tagColor:'',done:false},
+];
+
+const SPEAKERS=[
+  {name:'Роман Бочкарёв',co:'Positive Technologies',role:'Зам. директора по работе с партнёрами',color:'#c0392b'},
+  {name:'Роман Набережный',co:'ИнфоТеКС (ViPNet)',role:'Зам. коммерческого директора',color:'#005ca8'},
+  {name:'Дмитрий Ивашкин',co:'Код Безопасности',role:'Менеджер по работе с партнёрами',color:'#27ae60'},
+  {name:'Вячеслав Гребнев',co:'Гарда',role:'Бизнес-архитектор',color:'#8e44ad'},
+  {name:'Антон Чухнов',co:'AV Soft',role:'Генеральный директор',color:'#ee672a'},
+  {name:'Александр Корзников',co:'ЭВРИТЕГ',role:'Технический директор',color:'#16a085'},
+  {name:'Алексей Матвеев',co:'PROWAY Security',role:'Директор департамента · Модератор',color:'#005ca8'},
+  {name:'Дмитрий Захаренко',co:'PROWAY Security',role:'Технический директор · Модератор',color:'#005ca8'},
+];
+
+const POLLS=[
+  {id:'poll1',session:'// SECURITY_TALKS',question:'Что будет основным «рецептом» выживаемости вендоров на российском рынке?',options:['Регуляторка — соответствие требованиям','Технологии — развитие до мировых решений','Комплексный подход — экосистемы','Маркетинг — расширение аудитории'],votes:[0,0,0,0]},
+  {id:'poll2',session:'// ПРЯМАЯ_ЛИНИЯ',question:'Что является решающим фактором при выборе NGFW?',options:['Цена','Производительность','Функциональность','Сертификация','Другое'],votes:[0,0,0,0,0]},
+  {id:'poll3',session:'// ПРЯМАЯ_ЛИНИЯ',question:'Готовы ли российские ИБ-решения полностью заменить зарубежные?',options:['Полностью готовы','В большинстве сегментов','Есть пробелы','Пока не готовы'],votes:[0,0,0,0]},
+];
+
+let participant=null,selectedTags=[],pollAnswers={};
+let selectedGender=null,assignedAvatar=null;
+let scannedVendors=new Set();
+let lastAnnouncementId=null;
+
+function api(p){return fetch(API+'?'+new URLSearchParams(p)).then(r=>r.json());}
+function showToast(m,d=2500){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),d);}
+function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+
+function selectGender(g){
+  selectedGender=g;
+  const pool=AVATARS[g];
+  assignedAvatar=pool[Math.floor(Math.random()*pool.length)];
+  document.getElementById('reveal-img').src=assignedAvatar.file;
+  document.getElementById('reveal-codename').textContent=assignedAvatar.codename;
+  goTo('ob-reveal');
+}
+
+document.querySelectorAll('.itag').forEach(t=>{
+  t.addEventListener('click',()=>{
+    if(t.classList.contains('sel')){t.classList.remove('sel');selectedTags=selectedTags.filter(v=>v!==t.dataset.val);}
+    else if(selectedTags.length<3){t.classList.add('sel');selectedTags.push(t.dataset.val);}
+  });
+});
+
+async function register(){
+  const name=document.getElementById('reg-name').value.trim();
+  const email=document.getElementById('reg-email').value.trim();
+  const company=document.getElementById('reg-company').value.trim();
+  const role=document.getElementById('reg-role').value.trim();
+  if(!name||!company){showToast('// ЗАПОЛНИ ПОЗЫВНОЙ И ОРГАНИЗАЦИЮ');return;}
+  const btn=document.querySelector('#ob-reveal .ob-btn');
+  btn.textContent='// АВТОРИЗАЦИЯ...';btn.disabled=true;
+  try{
+    const res=await api({action:'register',name,email,company,role,interests:selectedTags.join(','),avatar:assignedAvatar?assignedAvatar.file:'',codename:assignedAvatar?assignedAvatar.codename:''});
+    if(res.success){
+      const save=(k,v)=>localStorage.setItem(k,v);
+      save('participant_id',res.id);save('participant_name',name);save('participant_email',email);
+      save('participant_company',company);save('participant_interests',selectedTags.join(','));
+      save('participant_avatar',assignedAvatar?assignedAvatar.file:'');
+      save('participant_gender',selectedGender||'male');
+      save('participant_codename',assignedAvatar?assignedAvatar.codename:'');
+      save('participant_artfile',assignedAvatar?assignedAvatar.artFile:'');
+      participant={id:res.id,name,email,company,role,points:15,interests:selectedTags.join(','),
+        avatar:assignedAvatar?assignedAvatar.file:'',gender:selectedGender,
+        codename:assignedAvatar?assignedAvatar.codename:'',artFile:assignedAvatar?assignedAvatar.artFile:''};
+      initApp();
+      showToast('// ДОБРО ПОЖАЛОВАТЬ, АГЕНТ! +15 Б');
+    }else{showToast('// ОШИБКА АВТОРИЗАЦИИ');btn.textContent='ПРИСТУПИТЬ К МИССИИ ›';btn.disabled=false;}
+  }catch(e){showToast('// НЕТ СВЯЗИ');btn.textContent='ПРИСТУПИТЬ К МИССИИ ›';btn.disabled=false;}
+}
+
+function setAvatarUI(){
+  const av=participant&&participant.avatar?participant.avatar:'';
+  ['p-av-img','p-av-img2','p-av-img3'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&av){el.src=av;el.style.display='block';}
+  });
+  if(av){['p-av-emoji','p-av-emoji2','p-av-emoji3'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.style.display='none';
+  });}
+}
+
+function initApp(){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('app').style.display='block';
+  document.getElementById('navbar').style.display='flex';
+  document.getElementById('ticker-wrap').style.display='flex';
+  setAvatarUI();
+  renderProfile();
+  renderAgentCard();
+  renderPolls();
+  renderVendors();
+  loadLeaderboard();
+  loadNetwork();
+  checkAnnouncements();
+  setInterval(loadLeaderboard,15000);
+  setInterval(loadNetwork,30000);
+  setInterval(checkAnnouncements,20000);
+  setTimeout(()=>{const b=document.getElementById('p-bar');if(b)b.style.width=(Math.min((participant.points||0)/MAX_PTS,1)*100)+'%';},300);
+}
+
+function showScreen(n){
+  document.querySelectorAll('.app-screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b=>{
+    b.classList.remove('act');
+    b.querySelector('.nb-lbl').style.color='';
+    b.querySelectorAll('svg [stroke]').forEach(el=>{if(el.getAttribute('stroke')!=='none')el.setAttribute('stroke','#ffffff22');});
+  });
+  document.getElementById('screen-'+n).classList.add('active');
+  const nb=document.getElementById('nav-'+n);
+  if(nb){
+    nb.classList.add('act');
+    nb.querySelector('.nb-lbl').style.color='var(--cyan)';
+    nb.querySelectorAll('svg [stroke]').forEach(el=>{if(el.getAttribute('stroke')!=='none')el.setAttribute('stroke','#a29bfe');});
+  }
+  window.scrollTo(0,0);
+  if(n==='feed') renderFeedScreen();
+}
+
+// ── ANNOUNCEMENTS & NOTIFICATIONS ────────────────────────────────
+
 let announcements = [];
 
-function checkPwd() {
-  const v = document.getElementById('pwd-input').value;
-  if (v === SECRET) {
-    document.getElementById('lock-screen').style.display = 'none';
-    document.getElementById('admin-panel').style.display = 'block';
-    loadFeed();
-    setInterval(loadFeed, 15000);
-  } else {
-    document.getElementById('lock-err').style.display = 'block';
+async function checkAnnouncements(){
+  try{
+    const res=await api({action:'getAnnouncements'});
+    if(!res.announcements) return;
+    const list = res.announcements;
+
+    // Бегущая строка — последнее сообщение
+    if(list.length){
+      const msgs = list.map(a=>`<span class="ticker-msg">${a.message}</span><span class="ticker-sep"> · </span>`).join('');
+      document.getElementById('ticker-inner').innerHTML = msgs;
+    }
+
+    // Новые сообщения → баннер + бейдж
+    const latest = list[0];
+    if(latest && latest.id !== lastAnnouncementId){
+      lastAnnouncementId = latest.id;
+      showBanner(latest.message);
+    }
+
+    announcements = list;
+
+    // Обновляем бейдж колокольчика
+    const badge = document.getElementById('bell-badge');
+    const dot = document.getElementById('nav-feed-dot');
+    if(list.length > 0){
+      badge.textContent = list.length > 9 ? '9+' : list.length;
+      badge.classList.add('show');
+      if(dot) dot.style.display = 'block';
+    } else {
+      badge.classList.remove('show');
+      if(dot) dot.style.display = 'none';
+    }
+
+    // Если панель открыта — обновляем
+    if(document.getElementById('notif-panel').classList.contains('show')) renderNotifPanel();
+    // Если экран ленты открыт — обновляем
+    if(document.getElementById('screen-feed').classList.contains('active')) renderFeedScreen();
+
+  }catch(e){}
+}
+
+function openNotifPanel(){
+  document.getElementById('notif-overlay').classList.add('show');
+  document.getElementById('notif-panel').classList.add('show');
+  renderNotifPanel();
+  // Убираем бейдж пока открыто
+  document.getElementById('bell-badge').classList.remove('show');
+  const dot = document.getElementById('nav-feed-dot');
+  if(dot) dot.style.display='none';
+}
+
+function closeNotifPanel(){
+  document.getElementById('notif-overlay').classList.remove('show');
+  document.getElementById('notif-panel').classList.remove('show');
+}
+
+function renderNotifPanel(){
+  const el = document.getElementById('notif-list');
+  if(!announcements.length){
+    el.innerHTML='<div class="notif-empty">Пока тихо — следите за обновлениями</div>';
+    return;
   }
-}
-
-function setType(type, btn) {
-  currentType = type;
-  ['info','alert','success'].forEach(t => {
-    const b = document.getElementById('t-'+t);
-    b.className = 'type-btn';
-    if(t===type) b.className = 'type-btn active-'+t;
-  });
-}
-
-function useTpl(btn) {
-  document.getElementById('msg-input').value = btn.textContent.trim();
-  updateCount();
-}
-
-function updateCount() {
-  const n = document.getElementById('msg-input').value.length;
-  document.getElementById('char-n').textContent = n;
-}
-
-async function publish() {
-  const msg = document.getElementById('msg-input').value.trim();
-  if (!msg) return showToast('Напишите сообщение');
-  if (msg.length > 200) return showToast('Слишком длинное');
-  const btn = document.getElementById('pub-btn');
-  btn.disabled = true;
-  btn.textContent = 'Публикую...';
-  try {
-    const url = `${API}?action=addAnnouncement&secret=${encodeURIComponent(SECRET)}&message=${encodeURIComponent(msg)}&type=${currentType}`;
-    await fetch(url);
-    document.getElementById('msg-input').value = '';
-    updateCount();
-    showToast('Опубликовано ✓');
-    loadFeed();
-  } catch(e) {
-    showToast('Ошибка соединения');
-  }
-  btn.disabled = false;
-  btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8l10-6-4 6 4 6z" fill="white"/></svg> Опубликовать';
-}
-
-async function loadFeed() {
-  try {
-    const r = await fetch(`${API}?action=getAnnouncements`);
-    const d = await r.json();
-    announcements = d.announcements || [];
-    renderFeed();
-  } catch(e) {}
-}
-
-function renderFeed() {
-  const el = document.getElementById('feed-list');
-  if (!announcements.length) { el.innerHTML = '<div class="empty">Сообщений нет</div>'; return; }
-  el.innerHTML = announcements.map(a => {
-    const type = a.type || 'info';
+  el.innerHTML = announcements.map(a=>{
+    const type = a.type||'info';
     const time = a.created_at ? new Date(a.created_at).toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'}) : '';
-    return `<div class="feed-item ${type}">
-      <div class="feed-dot ${type}"></div>
-      <div class="feed-body">
-        <div class="feed-text">${a.message}</div>
-        <div class="feed-meta">${time}</div>
+    return `<div class="notif-item ${type}">
+      <div class="notif-dot ${type}"></div>
+      <div class="notif-body">
+        <div class="notif-text">${a.message}</div>
+        <div class="notif-time">${time}</div>
       </div>
-      <button class="feed-del" onclick="deleteMsg('${a.id}')">✕</button>
     </div>`;
   }).join('');
 }
 
-async function deleteMsg(id) {
-  try {
-    await fetch(`${API}?action=deleteAnnouncement&secret=${encodeURIComponent(SECRET)}&id=${id}`);
-    showToast('Удалено');
-    loadFeed();
-  } catch(e) {}
+function renderFeedScreen(){
+  const el = document.getElementById('feed-screen-list');
+  if(!announcements.length){
+    el.innerHTML='<div class="loader" style="color:rgba(255,255,255,0.25);font-size:12px;">Сообщений пока нет</div>';
+    return;
+  }
+  el.innerHTML = announcements.map(a=>{
+    const type = a.type||'info';
+    const time = a.created_at ? new Date(a.created_at).toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'}) : '';
+    return `<div class="feed-card ${type}">
+      <div class="feed-card-text">${a.message}</div>
+      <div class="feed-card-time">${time}</div>
+    </div>`;
+  }).join('');
 }
 
-function showToast(msg) {
-  const t = document.getElementById('toast-adm');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+function showBanner(msg){
+  const b=document.getElementById('announce-banner');
+  document.getElementById('announce-text').textContent=msg;
+  b.classList.add('show');
+  setTimeout(()=>b.classList.remove('show'),8000);
 }
+function closeBanner(){document.getElementById('announce-banner').classList.remove('show');}
+
+function renderProfile(){
+  if(!participant)return;
+  const pts=participant.points||0;
+  document.getElementById('p-pts').textContent=pts;
+  const pct=Math.min(Math.round(pts/MAX_PTS*100),100);
+  document.getElementById('p-pct').textContent=pct+'%';
+  document.getElementById('s-vendors').textContent=scannedVendors.size;
+  document.getElementById('s-polls').textContent=Object.keys(pollAnswers).length;
+}
+
+function getRarity(n){let r=RARITY[0];for(const l of RARITY){if(n>=l.min)r=l;}return r;}
+
+function renderAgentCard(){
+  if(!participant)return;
+  const scanned=scannedVendors.size;
+  const rarity=getRarity(scanned);
+  const gender=participant.gender||'male';
+  const codename=participant.codename||'DEFENSE GRID';
+  const artFile=participant.artFile||'';
+  const stats=AGENT_STATS[gender]?.[codename]||{АНАЛИЗ:75,СКОРОСТЬ:75,КРИПТО:75,ПЕРИМЕТР:75,ВЛИЯНИЕ:75};
+  const lastName=participant.name.split(' ').slice(-1)[0]||participant.name;
+  const unlocked=new Date()>STORY_UNLOCK_DATE;
+
+  let starsHtml='';
+  for(let i=0;i<4;i++)starsHtml+=`<div class="acf-star${i<rarity.stars?'':' empty'}"></div>`;
+
+  let statsHtml=Object.entries(stats).map(([k,v])=>`
+    <div class="acf-stat-row">
+      <span class="acf-stat-lbl">${k}</span>
+      <div class="acf-bar-wrap"><div class="acf-bar" style="width:${v}%;background:${STAT_COLORS[k]};"></div></div>
+      <span class="acf-stat-val">${v}</span>
+    </div>`).join('');
+
+  const baseStory=gender==='female'
+    ?`${lastName} не планировала становиться агентом. Конверт лежал прямо на клавиатуре — без подписи, без обратного адреса. Только координаты и время. Она пришла. Конечно пришла.`
+    :`${lastName} не планировал становиться агентом. Конверт лежал прямо на клавиатуре — без подписи, без обратного адреса. Только координаты и время. Он пришёл. Конечно пришёл.`;
+
+  let chaptersHtml=`<div class="acf-chapter-badge">НАЧАЛО</div><div class="acf-chapter-text">${baseStory}</div>`;
+  VENDORS.forEach((v,idx)=>{
+    const wasScanned=scannedVendors.has(v.id);
+    if(wasScanned||unlocked){
+      const text=gender==='female'?v.chapterFemale:v.chapterMale;
+      chaptersHtml+=`<div class="acf-chapter-badge">ГЛАВА ${idx+1} · ${v.system}</div><div class="acf-chapter-text">${text}</div>`;
+    }else{
+      chaptersHtml+=`<div class="acf-locked"><div class="acf-lock"></div><span class="acf-locked-text">ГЛАВА ${idx+1} · СТЕНД ${v.system}</span></div>`;
+    }
+  });
+
+  const artHtml=artFile?`<img src="${artFile}" alt="${codename}">`:`<span style="font-family:'Bangers',cursive;font-size:28px;color:var(--cyan);letter-spacing:4px;">${codename}</span>`;
+
+  document.getElementById('agent-full-card').innerHTML=`
+    <div class="acf-namebar">
+      <span class="acf-codename">${codename}</span>
+      <span class="acf-badge" style="background:${rarity.bg};color:${rarity.color};border-color:${rarity.color}44;">${rarity.label}</span>
+    </div>
+    <div class="acf-art">${artHtml}<div class="acf-rarity">${starsHtml}</div></div>
+    <div class="acf-stats">${statsHtml}</div>
+    <div class="acf-story">
+      <div class="acf-story-lbl">// ДОСЬЕ</div>
+      ${chaptersHtml}
+    </div>
+    <div class="acf-footer">
+      <span class="acf-footer-name">${participant.name.toUpperCase()}</span>
+      <span class="acf-footer-pts">${participant.points||0} Б</span>
+    </div>`;
+}
+
+function renderVendors(){
+  const total=VENDORS.length;
+  let starsHtml='';
+  for(let i=0;i<total;i++)starsHtml+=`<div class="vp-star${i<scannedVendors.size?'':' empty'}"></div>`;
+  document.getElementById('vendor-stars').innerHTML=starsHtml;
+  document.getElementById('vendor-count').textContent=`${scannedVendors.size} / ${total}`;
+  document.getElementById('vendor-list').innerHTML=VENDORS.map((v,idx)=>{
+    const scanned=scannedVendors.has(v.id);
+    return`<div class="vendor-card${scanned?' scanned':''}">
+      <div class="vendor-top">
+        <div class="vendor-icon" style="background:${v.color}18;border-color:${v.color}44;color:${v.color};">${v.icon}</div>
+        <div class="vendor-info"><div class="vendor-name">${v.name}</div><div class="vendor-system">${v.system}</div></div>
+        <div><div class="vendor-pts${scanned?' done':''}">${scanned?'ПОЛУЧЕНО':'+20 Б'}</div><div class="vendor-pts-lbl">${scanned?'✓':'ЗА СКАН'}</div></div>
+      </div>
+      <div class="vendor-desc">${v.desc}</div>
+      ${scanned
+        ?`<div class="vendor-chapter"><span class="vc-badge">ГЛАВА ${idx+1} · ОТКРЫТА</span><span class="vc-text">Фрагмент досье добавлен в карточку агента</span></div>`
+        :`<div class="vendor-locked"><span class="vl-text">// ГЛАВА ${idx+1} · ОТСКАНИРУЙ QR НА СТЕНДЕ</span></div>`}
+    </div>`;
+  }).join('');
+}
+
+async function handleVendorScan(vendorId){
+  if(!participant){showToast('// СНАЧАЛА ЗАРЕГИСТРИРУЙСЯ');return;}
+  if(scannedVendors.has(vendorId)){showToast('// СТЕНД УЖЕ ОТСКАНИРОВАН');showScreen('vendors');return;}
+  try{
+    const res=await api({action:'scanVendor',participant_id:participant.id,vendor_id:vendorId});
+    if(res.success||res.already){
+      scannedVendors.add(vendorId);
+      localStorage.setItem('scanned_vendors',JSON.stringify([...scannedVendors]));
+      if(res.success)participant.points=(participant.points||0)+20;
+      document.getElementById('s-vendors').textContent=scannedVendors.size;
+      renderVendors();renderProfile();renderAgentCard();
+      showToast(res.already?'// СТЕНД УЖЕ БЫЛ ЗАСЧИТАН':'// СТЕНД ЗАСЧИТАН! +20 Б · ГЛАВА ОТКРЫТА');
+      showScreen('vendors');
+    }
+  }catch(e){showToast('// НЕТ СВЯЗИ');}
+}
+
+async function loadLeaderboard(){
+  try{
+    const res=await api({action:'getLeaderboard'});
+    const wrap=document.getElementById('leaderboard-wrap');
+    if(!res.leaderboard||!res.leaderboard.length){wrap.innerHTML='<div class="loader">// АГЕНТОВ НЕТ</div>';return;}
+    let myRank='—';
+    wrap.innerHTML=res.leaderboard.map((p,i)=>{
+      const isMe=participant&&p.id===participant.id;
+      if(isMe){
+        myRank=i+1;participant.points=p.points;renderProfile();
+        const b=document.getElementById('p-bar');
+        if(b)b.style.width=(Math.min(p.points/MAX_PTS,1)*100)+'%';
+        document.getElementById('p-pts').textContent=p.points;
+        document.getElementById('p-pct').textContent=Math.min(Math.round(p.points/MAX_PTS*100),100)+'%';
+        document.getElementById('s-rank2').textContent=i+1;
+      }
+      const avHtml=p.avatar?`<img src="${p.avatar}" alt="">`:`<span style="font-size:13px;color:var(--text2);">◈</span>`;
+      return`<div class="lb-row${isMe?' me':''}">
+        ${i===0?'<div class="lb-leader">ЛИДЕР</div>':''}
+        <span class="lb-pos${i===0?' gold':''}${isMe?' me-c':''}">${i+1}</span>
+        <div class="lb-av${isMe?' me':''}">${avHtml}</div>
+        <div class="lb-info">
+          <div class="lb-name${isMe?' me':''}">${p.name}${isMe?' · ВЫ':''}</div>
+          <div class="lb-co">${p.company||''}</div>
+        </div>
+        <span class="lb-pts${isMe?' me':''}">${p.points} б</span>
+      </div>`;
+    }).join('');
+    document.getElementById('p-rank').textContent='#'+myRank;
+  }catch(e){}
+}
+
+async function loadNetwork(){
+  if(!participant)return;
+  try{
+    const res=await api({action:'getParticipants',exclude:participant.id});
+    const wrap=document.getElementById('network-list');
+    if(!res.participants||!res.participants.length){
+      wrap.innerHTML='<div class="empty-state"><div class="empty-text">// ДРУГИХ АГЕНТОВ ПОКА НЕТ</div></div>';return;
+    }
+    const myInterests=(participant.interests||'').split(',').filter(Boolean);
+    const scored=res.participants.map(p=>{
+      const their=(p.interests||'').split(',').filter(Boolean);
+      const matches=myInterests.filter(i=>their.includes(i));
+      return{...p,matches,score:matches.length};
+    }).sort((a,b)=>b.score-a.score||b.points-a.points);
+    wrap.innerHTML=scored.map(p=>{
+      const their=(p.interests||'').split(',').filter(Boolean);
+      const mySet=new Set(myInterests);
+      const tagsHtml=their.map(t=>`<span class="net-tag${mySet.has(t)?' match':''}">${t}</span>`).join('');
+      const avHtml=p.avatar?`<img src="${p.avatar}" alt="">`:`<span style="font-size:18px;color:var(--text2);">◈</span>`;
+      return`<div class="net-card${p.score>0?' top-match':''}">
+        <div class="net-av">${avHtml}</div>
+        <div class="net-info">
+          <div class="net-name">${p.name}</div>
+          <div class="net-co">${p.company||''}${p.role?' · '+p.role:''}</div>
+          <div class="net-tags">${tagsHtml}</div>
+        </div>
+        <div>
+          <div class="net-match-n${p.score>0?' hot':''}">${p.score}</div>
+          <div class="net-match-l">СОВП.</div>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){document.getElementById('network-list').innerHTML='<div class="loader">// ОШИБКА СВЯЗИ</div>';}
+}
+
+function renderPolls(){
+  document.getElementById('polls-list').innerHTML=POLLS.map(poll=>{
+    const answered=pollAnswers[poll.id]!==undefined;
+    if(answered){
+      const total=poll.votes.reduce((a,b)=>a+b,0)||1;
+      return`<div class="poll-card"><div class="poll-session">${poll.session}</div><div class="poll-q">${poll.question}</div>
+        ${poll.options.map((opt,i)=>{
+          const pct=Math.round(poll.votes[i]/total*100);
+          const isMe=pollAnswers[poll.id]===i;
+          return`<div class="poll-opt poll-result" style="${isMe?'border-color:var(--cyan);':''}">
+            <div class="poll-bar${isMe?' me-bar':''}" style="width:${pct}%"></div>
+            <div class="poll-content"><span style="${isMe?'color:var(--cyan);':''}">${opt}</span><span class="poll-pct${isMe?' me':''}">${pct}%</span></div>
+          </div>`;}).join('')}
+      </div>`;
+    }
+    return`<div class="poll-card"><div class="poll-session">${poll.session}</div><div class="poll-q">${poll.question}</div>
+      ${poll.options.map((opt,i)=>`<button class="poll-opt" onclick="answerPoll('${poll.id}',${i})">${opt}</button>`).join('')}
+    </div>`;
+  }).join('');
+}
+
+function answerPoll(pollId,optIdx){
+  if(pollAnswers[pollId]!==undefined)return;
+  pollAnswers[pollId]=optIdx;
+  const poll=POLLS.find(p=>p.id===pollId);
+  poll.votes[optIdx]++;
+  renderPolls();
+  document.getElementById('s-polls').textContent=Object.keys(pollAnswers).length;
+  if(participant)api({action:'addPoints',participant_id:participant.id,action:'poll',points:15});
+  showToast('// ГОЛОС ПРИНЯТ · +15 Б');
+}
+
+window.addEventListener('load',()=>{
+  if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
+  const savedScans=localStorage.getItem('scanned_vendors');
+  if(savedScans){try{JSON.parse(savedScans).forEach(id=>scannedVendors.add(id));}catch(e){}}
+  const id=localStorage.getItem('participant_id');
+  if(id){
+    participant={
+      id,
+      name:localStorage.getItem('participant_name')||'—',
+      email:localStorage.getItem('participant_email')||'',
+      company:localStorage.getItem('participant_company')||'—',
+      points:0,
+      interests:localStorage.getItem('participant_interests')||'',
+      avatar:localStorage.getItem('participant_avatar')||'',
+      gender:localStorage.getItem('participant_gender')||'male',
+      codename:localStorage.getItem('participant_codename')||'DEFENSE GRID',
+      artFile:localStorage.getItem('participant_artfile')||''
+    };
+    initApp();
+  }
+  const urlParams=new URLSearchParams(window.location.search);
+  const vendorId=urlParams.get('id');
+  if(vendorId&&id)handleVendorScan(vendorId);
+});
 </script>
 </body>
 </html>
