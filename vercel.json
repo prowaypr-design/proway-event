@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/live-admin", "destination": "/live-admin.html" },
+    { "source": "/((?!live-admin).*)", "destination": "/index.html" }
+  ]
+}
