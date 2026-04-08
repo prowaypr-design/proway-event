@@ -268,12 +268,50 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .loader{text-align:center;padding:32px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text3);letter-spacing:3px;}
 .empty-state{text-align:center;padding:40px 20px;}
 .empty-text{font-size:12px;font-weight:600;color:var(--text2);letter-spacing:1px;}
+
+/* BELL & NOTIFICATION PANEL */
+.bell-wrap{position:relative;cursor:pointer;}
+.bell-btn{width:36px;height:36px;border-radius:50%;border:1.5px solid rgba(108,92,231,0.4);background:rgba(108,92,231,0.08);display:flex;align-items:center;justify-content:center;}
+.bell-badge{position:absolute;top:-3px;right:-3px;width:16px;height:16px;background:#ee672a;border-radius:50%;font-size:9px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;display:none;}
+.bell-badge.show{display:flex;}
+
+.notif-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:400;opacity:0;pointer-events:none;transition:opacity 0.2s;}
+.notif-overlay.show{opacity:1;pointer-events:auto;}
+.notif-panel{position:fixed;top:0;right:0;bottom:0;width:min(340px,100vw);background:#0e0f28;border-left:0.5px solid rgba(108,92,231,0.3);z-index:401;transform:translateX(100%);transition:transform 0.3s ease;display:flex;flex-direction:column;}
+.notif-panel.show{transform:translateX(0);}
+.notif-header{padding:52px 16px 14px;border-bottom:0.5px solid rgba(108,92,231,0.15);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.notif-title{font-size:16px;font-weight:700;color:#fff;}
+.notif-close{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.05);border:none;color:rgba(255,255,255,0.4);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.notif-list{flex:1;overflow-y:auto;padding:12px 14px;}
+.notif-item{background:#13152f;border-radius:12px;padding:12px 14px;margin-bottom:8px;border-left:3px solid #6c5ce7;display:flex;gap:10px;}
+.notif-item.alert{border-left-color:#ee672a;}
+.notif-item.success{border-left-color:#00c864;}
+.notif-dot{width:8px;height:8px;border-radius:50%;background:#6c5ce7;flex-shrink:0;margin-top:5px;}
+.notif-dot.alert{background:#ee672a;}
+.notif-dot.success{background:#00c864;}
+.notif-body{}
+.notif-text{font-size:13px;color:rgba(255,255,255,0.85);line-height:1.5;margin-bottom:3px;}
+.notif-time{font-size:10px;color:rgba(255,255,255,0.3);}
+.notif-empty{text-align:center;padding:40px 20px;font-size:12px;color:rgba(255,255,255,0.25);}
+
+/* ЭКРАН ЛЕНТА */
+.feed-card{background:#0e0f28;border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;padding:12px 14px;margin:0 14px 10px;border-left:3px solid #6c5ce7;}
+.feed-card.alert{border-left-color:#ee672a;}
+.feed-card.success{border-left-color:#00c864;}
+.feed-card-text{font-size:14px;color:rgba(255,255,255,0.85);line-height:1.5;margin-bottom:4px;}
+.feed-card-time{font-size:11px;color:rgba(255,255,255,0.3);}
+.feed-how-block{background:rgba(108,92,231,0.06);border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;margin:0 14px 12px;padding:14px;}
+.feed-how-title{font-size:12px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
+.feed-how-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
+.feed-how-item:last-child{margin-bottom:0;}
+.feed-how-num{width:22px;height:22px;border-radius:50%;background:rgba(108,92,231,0.2);border:0.5px solid rgba(108,92,231,0.4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#a29bfe;flex-shrink:0;}
+.feed-how-text{font-size:12px;color:rgba(255,255,255,0.6);line-height:1.5;padding-top:2px;}
 </style>
 </head>
 <body>
 
 <div class="ticker-wrap" id="ticker-wrap" style="display:none;">
-  <div class="ticker-label">БОРТ</div>
+  <div class="ticker-label">LIVE</div>
   <div class="ticker-track">
     <div class="ticker-inner" id="ticker-inner">
       <span class="ticker-msg">ДОБРО ПОЖАЛОВАТЬ НА БОРТ PROWAY SECURITY DAY 2025</span>
@@ -362,11 +400,32 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 <div id="app" style="display:none;">
 
   <!-- ПРОФИЛЬ -->
-  <div id="screen-profile" class="app-screen active">
+  
+<!-- NOTIFICATION PANEL -->
+<div class="notif-overlay" id="notif-overlay" onclick="closeNotifPanel()"></div>
+<div class="notif-panel" id="notif-panel">
+  <div class="notif-header">
+    <div class="notif-title">Уведомления</div>
+    <button class="notif-close" onclick="closeNotifPanel()">✕</button>
+  </div>
+  <div class="notif-list" id="notif-list">
+    <div class="notif-empty">Пока тихо — следите за обновлениями</div>
+  </div>
+</div>
+
+<div id="screen-profile" class="app-screen active">
     <div class="topbar">
       <div><div class="topbar-logo">PROWAY</div><div class="topbar-sub">SECURITY DAY 2025</div></div>
       <div class="topbar-right">
-        <div class="topbar-dosye">ДОСЬЕ ›</div>
+        <div class="bell-wrap" onclick="openNotifPanel()">
+          <div class="bell-btn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 2a5 5 0 00-5 5v3l-1 1.5h12L13 10V7a5 5 0 00-5-5z" stroke="#a29bfe" stroke-width="1.3" stroke-linejoin="round"/>
+              <path d="M6.5 13.5a1.5 1.5 0 003 0" stroke="#a29bfe" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="bell-badge" id="bell-badge">0</div>
+        </div>
         <div class="topbar-av"><img id="p-av-img" src="" alt="" style="display:none;"><span id="p-av-emoji">◈</span></div>
       </div>
     </div>
@@ -404,6 +463,41 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     <div class="info-block">
       <div class="info-row"><div class="info-icon">🎁</div><div><div class="info-title">6 × Telegram Premium на год</div><div class="info-text">Участвуй в опросах и сканируй стенды — повышай шансы!</div></div></div>
     </div>
+    <div style="height:12px;"></div>
+  </div>
+
+  <!-- ЛЕНТА -->
+  <div id="screen-feed" class="app-screen">
+    <div class="topbar">
+      <div><div class="topbar-logo">ЛЕНТА</div><div class="topbar-sub">// LIVE · ОБНОВЛЕНИЯ</div></div>
+    </div>
+    <div style="height:12px;"></div>
+    <div class="feed-how-block">
+      <div class="feed-how-title">Как играть</div>
+      <div class="feed-how-item">
+        <div class="feed-how-num">1</div>
+        <div class="feed-how-text">Зарегистрируйся и получи агента — он твой персонаж на весь день</div>
+      </div>
+      <div class="feed-how-item">
+        <div class="feed-how-num">2</div>
+        <div class="feed-how-text">Сканируй QR-коды на стендах вендоров — каждый даёт +20 баллов</div>
+      </div>
+      <div class="feed-how-item">
+        <div class="feed-how-num">3</div>
+        <div class="feed-how-text">Голосуй в опросах после каждого доклада — +15 баллов за голос</div>
+      </div>
+      <div class="feed-how-item">
+        <div class="feed-how-num">4</div>
+        <div class="feed-how-text">Задавай вопросы спикерам — если твой выберут на трансляцию, +50 баллов</div>
+      </div>
+      <div class="feed-how-item">
+        <div class="feed-how-num">5</div>
+        <div class="feed-how-text">Лучшие агенты по итогу получают призы на главной сцене</div>
+      </div>
+    </div>
+    <div class="section-hdr"><div class="section-hdr-title">ОБНОВЛЕНИЯ</div><div class="section-hdr-sub">// LIVE</div></div>
+    <div style="height:8px;"></div>
+    <div id="feed-screen-list"><div class="loader">ЗАГРУЗКА...</div></div>
     <div style="height:12px;"></div>
   </div>
 
@@ -457,16 +551,16 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 
 <nav class="navbar" id="navbar" style="display:none;">
   <button class="nb act" onclick="showScreen('profile')" id="nav-profile">
-    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#00ffff" stroke-width="1.5" fill="none"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#00ffff" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="var(--cyan)" stroke-width="1.5" fill="none"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
     <span class="nb-lbl" style="color:var(--cyan);">ПРОФИЛЬ</span>
   </button>
   <button class="nb" onclick="showScreen('rating')" id="nav-rating">
     <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="13" width="4" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="10" y="8" width="4" height="13" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="17" y="3" width="4" height="18" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/></svg>
     <span class="nb-lbl">РЕЙТИНГ</span>
   </button>
-  <button class="nb" onclick="showScreen('network')" id="nav-network">
-    <svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="7" r="3" stroke="#ffffff22" stroke-width="1.5" fill="none"/><circle cx="15" cy="7" r="3" stroke="#ffffff22" stroke-width="1.5" fill="none"/><path d="M3 20c0-3.3 2.7-6 6-6M21 20c0-3.3-2.7-6-6-6" stroke="#ffffff22" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
-    <span class="nb-lbl">СЕТЬ</span>
+  <button class="nb" onclick="showScreen('feed')" id="nav-feed">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M18 8a5 5 0 00-10 0v5l-1.5 2.5h13L18 13V8z" stroke="#ffffff22" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M10.5 19a1.5 1.5 0 003 0" stroke="#ffffff22" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <span class="nb-lbl" style="position:relative;">ЛЕНТА<span id="nav-feed-dot" style="display:none;position:absolute;top:-6px;right:-8px;width:7px;height:7px;background:#ee672a;border-radius:50%;"></span></span>
   </button>
   <button class="nb" onclick="showScreen('vendors')" id="nav-vendors">
     <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="13" y="3" width="8" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="3" y="13" width="8" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="13" y="13" width="8" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/></svg>
@@ -615,7 +709,7 @@ function initApp(){
   checkAnnouncements();
   setInterval(loadLeaderboard,15000);
   setInterval(loadNetwork,30000);
-  setInterval(checkAnnouncements,30000);
+  setInterval(checkAnnouncements,20000);
   setTimeout(()=>{const b=document.getElementById('p-bar');if(b)b.style.width=(Math.min((participant.points||0)/MAX_PTS,1)*100)+'%';},300);
 }
 
@@ -630,22 +724,108 @@ function showScreen(n){
   const nb=document.getElementById('nav-'+n);
   if(nb){
     nb.classList.add('act');
-    nb.querySelector('.nb-lbl').style.color='#00ffff';
-    nb.querySelectorAll('svg [stroke]').forEach(el=>{if(el.getAttribute('stroke')!=='none')el.setAttribute('stroke','#00ffff');});
+    nb.querySelector('.nb-lbl').style.color='var(--cyan)';
+    nb.querySelectorAll('svg [stroke]').forEach(el=>{if(el.getAttribute('stroke')!=='none')el.setAttribute('stroke','#a29bfe');});
   }
   window.scrollTo(0,0);
+  if(n==='feed') renderFeedScreen();
 }
+
+// ── ANNOUNCEMENTS & NOTIFICATIONS ────────────────────────────────
+
+let announcements = [];
 
 async function checkAnnouncements(){
   try{
     const res=await api({action:'getAnnouncements'});
-    if(!res.announcements||!res.announcements.length)return;
-    const latest=res.announcements[0];
-    const msgs=res.announcements.map(a=>`<span class="ticker-msg">${a.message}</span><span class="ticker-sep"> · </span>`).join('');
-    document.getElementById('ticker-inner').innerHTML=msgs;
-    if(latest.id!==lastAnnouncementId){lastAnnouncementId=latest.id;showBanner(latest.message);}
+    if(!res.announcements) return;
+    const list = res.announcements;
+
+    // Бегущая строка — последнее сообщение
+    if(list.length){
+      const msgs = list.map(a=>`<span class="ticker-msg">${a.message}</span><span class="ticker-sep"> · </span>`).join('');
+      document.getElementById('ticker-inner').innerHTML = msgs;
+    }
+
+    // Новые сообщения → баннер + бейдж
+    const latest = list[0];
+    if(latest && latest.id !== lastAnnouncementId){
+      lastAnnouncementId = latest.id;
+      showBanner(latest.message);
+    }
+
+    announcements = list;
+
+    // Обновляем бейдж колокольчика
+    const badge = document.getElementById('bell-badge');
+    const dot = document.getElementById('nav-feed-dot');
+    if(list.length > 0){
+      badge.textContent = list.length > 9 ? '9+' : list.length;
+      badge.classList.add('show');
+      if(dot) dot.style.display = 'block';
+    } else {
+      badge.classList.remove('show');
+      if(dot) dot.style.display = 'none';
+    }
+
+    // Если панель открыта — обновляем
+    if(document.getElementById('notif-panel').classList.contains('show')) renderNotifPanel();
+    // Если экран ленты открыт — обновляем
+    if(document.getElementById('screen-feed').classList.contains('active')) renderFeedScreen();
+
   }catch(e){}
 }
+
+function openNotifPanel(){
+  document.getElementById('notif-overlay').classList.add('show');
+  document.getElementById('notif-panel').classList.add('show');
+  renderNotifPanel();
+  // Убираем бейдж пока открыто
+  document.getElementById('bell-badge').classList.remove('show');
+  const dot = document.getElementById('nav-feed-dot');
+  if(dot) dot.style.display='none';
+}
+
+function closeNotifPanel(){
+  document.getElementById('notif-overlay').classList.remove('show');
+  document.getElementById('notif-panel').classList.remove('show');
+}
+
+function renderNotifPanel(){
+  const el = document.getElementById('notif-list');
+  if(!announcements.length){
+    el.innerHTML='<div class="notif-empty">Пока тихо — следите за обновлениями</div>';
+    return;
+  }
+  el.innerHTML = announcements.map(a=>{
+    const type = a.type||'info';
+    const time = a.created_at ? new Date(a.created_at).toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'}) : '';
+    return `<div class="notif-item ${type}">
+      <div class="notif-dot ${type}"></div>
+      <div class="notif-body">
+        <div class="notif-text">${a.message}</div>
+        <div class="notif-time">${time}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderFeedScreen(){
+  const el = document.getElementById('feed-screen-list');
+  if(!announcements.length){
+    el.innerHTML='<div class="loader" style="color:rgba(255,255,255,0.25);font-size:12px;">Сообщений пока нет</div>';
+    return;
+  }
+  el.innerHTML = announcements.map(a=>{
+    const type = a.type||'info';
+    const time = a.created_at ? new Date(a.created_at).toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'}) : '';
+    return `<div class="feed-card ${type}">
+      <div class="feed-card-text">${a.message}</div>
+      <div class="feed-card-time">${time}</div>
+    </div>`;
+  }).join('');
+}
+
 function showBanner(msg){
   const b=document.getElementById('announce-banner');
   document.getElementById('announce-text').textContent=msg;
