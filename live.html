@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PROWAY · Live Widget</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: transparent;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  min-height: 100vh;
+  padding: 32px;
+}
+
+.widget {
+  width: 320px;
+  background: rgba(8, 9, 32, 0.92);
+  border: 0.5px solid rgba(108, 92, 231, 0.4);
+  border-radius: 20px;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+}
+
+/* Радар на фоне */
+.widget-inner {
+  position: relative;
+  overflow: hidden;
+}
+.radar {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 200px;
+  height: 200px;
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+/* Шапка */
+.widget-header {
+  padding: 14px 16px 10px;
+  border-bottom: 0.5px solid rgba(108,92,231,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+.widget-logo {
+  font-size: 13px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 2px;
+}
+.widget-live {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: #a29bfe;
+  letter-spacing: 1px;
+}
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00c864;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Топ агентов */
+.top-section {
+  padding: 12px 16px;
+  border-bottom: 0.5px solid rgba(108,92,231,0.1);
+  position: relative;
+  z-index: 1;
+}
+.section-label {
+  font-size: 9px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.25);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.top-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.top-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: rgba(255,255,255,0.02);
+  border-radius: 10px;
+  border: 0.5px solid rgba(108,92,231,0.1);
+}
+.top-item.first {
+  background: rgba(108,92,231,0.08);
+  border-color: rgba(108,92,231,0.25);
+}
+.top-pos {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  min-width: 18px;
+  color: rgba(255,255,255,0.2);
+}
+.top-pos.gold { color: #f5e642; }
+.top-pos.silver { color: #a29bfe; }
+.top-pos.bronze { color: #ee672a; }
+.top-av {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(108,92,231,0.3);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #13152f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: rgba(255,255,255,0.3);
+}
+.top-av img { width: 100%; height: 100%; object-fit: cover; }
+.top-info { flex: 1; min-width: 0; }
+.top-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.top-codename {
+  font-size: 9px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+.top-pts {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: #a29bfe;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.top-pts span {
+  font-size: 9px;
+  opacity: 0.5;
+}
+
+/* Сообщение КМ */
+.msg-section {
+  padding: 10px 16px 14px;
+  position: relative;
+  z-index: 1;
+}
+.msg-card {
+  background: rgba(108,92,231,0.06);
+  border: 0.5px solid rgba(108,92,231,0.2);
+  border-left: 3px solid #6c5ce7;
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: none;
+}
+.msg-card.alert { border-left-color: #ee672a; background: rgba(238,103,42,0.06); }
+.msg-card.success { border-left-color: #00c864; background: rgba(0,200,100,0.05); }
+.msg-text {
+  font-size: 12px;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.5;
+}
+.msg-time {
+  font-size: 10px;
+  color: rgba(255,255,255,0.25);
+  margin-top: 4px;
+  font-family: 'Share Tech Mono', monospace;
+}
+.msg-empty {
+  font-size: 11px;
+  color: rgba(255,255,255,0.2);
+  text-align: center;
+  padding: 4px 0;
+}
+
+/* QR */
+.qr-section {
+  padding: 0 16px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+.qr-box {
+  width: 48px;
+  height: 48px;
+  background: #fff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 4px;
+}
+.qr-box img { width: 100%; height: 100%; }
+.qr-text { font-size: 11px; color: rgba(255,255,255,0.4); line-height: 1.4; }
+.qr-text strong { color: #a29bfe; font-size: 12px; display: block; margin-bottom: 2px; }
+
+/* Анимация появления нового сообщения */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.msg-card.show {
+  display: block;
+  animation: fadeIn 0.4s ease;
+}
+</style>
+</head>
+<body>
+
+<div class="widget">
+  <div class="widget-inner">
+
+    <svg class="radar" viewBox="0 0 200 200" fill="none">
+      <circle cx="100" cy="100" r="95" stroke="white" stroke-width="0.5"/>
+      <circle cx="100" cy="100" r="65" stroke="white" stroke-width="0.5"/>
+      <circle cx="100" cy="100" r="35" stroke="white" stroke-width="0.5"/>
+      <line x1="100" y1="5" x2="100" y2="195" stroke="white" stroke-width="0.5"/>
+      <line x1="5" y1="100" x2="195" y2="100" stroke="white" stroke-width="0.5"/>
+      <line x1="33" y1="33" x2="167" y2="167" stroke="white" stroke-width="0.5"/>
+      <line x1="167" y1="33" x2="33" y2="167" stroke="white" stroke-width="0.5"/>
+    </svg>
+
+    <div class="widget-header">
+      <div class="widget-logo">PROWAY · SECURITY DAY</div>
+      <div class="widget-live">
+        <div class="live-dot"></div>
+        LIVE
+      </div>
+    </div>
+
+    <div class="top-section">
+      <div class="section-label">Топ агентов</div>
+      <div class="top-list" id="top-list">
+        <div style="text-align:center;padding:12px;font-size:11px;color:rgba(255,255,255,0.2);">Загрузка...</div>
+      </div>
+    </div>
+
+    <div class="msg-section">
+      <div class="section-label">Сообщение</div>
+      <div class="msg-card" id="msg-card">
+        <div class="msg-text" id="msg-text"></div>
+        <div class="msg-time" id="msg-time"></div>
+      </div>
+      <div class="msg-empty" id="msg-empty">Нет активных сообщений</div>
+    </div>
+
+    <div class="qr-section">
+      <div class="qr-box">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=https://proway-event.vercel.app" alt="QR">
+      </div>
+      <div class="qr-text">
+        <strong>Скачай приложение</strong>
+        proway-event.vercel.app
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const API = 'https://script.google.com/macros/s/AKfycbyDyYFwHvLPwHZSqd2abQCLhr9RaoqgVTA96OIw4-mxvRSRkioSe2Th2MD8LYiKhRFstw/exec';
+
+const MEDALS = ['gold', 'silver', 'bronze'];
+const MEDAL_NUMS = ['1', '2', '3'];
+
+async function loadTop() {
+  try {
+    const r = await fetch(`${API}?action=getLeaderboard`);
+    const d = await r.json();
+    const top = (d.leaderboard || []).slice(0, 3);
+    const el = document.getElementById('top-list');
+    if (!top.length) { el.innerHTML = '<div style="text-align:center;padding:12px;font-size:11px;color:rgba(255,255,255,0.2);">Пока нет участников</div>'; return; }
+    el.innerHTML = top.map((p, i) => {
+      const avHtml = p.avatar
+        ? `<img src="${p.avatar}" alt="">`
+        : `<span>◈</span>`;
+      return `<div class="top-item ${i===0?'first':''}">
+        <div class="top-pos ${MEDALS[i]}">${MEDAL_NUMS[i]}</div>
+        <div class="top-av">${avHtml}</div>
+        <div class="top-info">
+          <div class="top-name">${p.name}</div>
+          <div class="top-codename">${p.codename||''}</div>
+        </div>
+        <div class="top-pts">${p.points}<span> б</span></div>
+      </div>`;
+    }).join('');
+  } catch(e) {}
+}
+
+async function loadMsg() {
+  try {
+    const r = await fetch(`${API}?action=getAnnouncements`);
+    const d = await r.json();
+    const list = d.announcements || [];
+    const card = document.getElementById('msg-card');
+    const empty = document.getElementById('msg-empty');
+    if (!list.length) {
+      card.className = 'msg-card';
+      empty.style.display = 'block';
+      return;
+    }
+    const latest = list[0];
+    const type = latest.type || 'info';
+    const time = latest.created_at
+      ? new Date(latest.created_at).toLocaleTimeString('ru', {hour:'2-digit', minute:'2-digit'})
+      : '';
+    document.getElementById('msg-text').textContent = latest.message;
+    document.getElementById('msg-time').textContent = time;
+    card.className = `msg-card ${type} show`;
+    empty.style.display = 'none';
+  } catch(e) {}
+}
+
+function refresh() {
+  loadTop();
+  loadMsg();
+}
+
+refresh();
+setInterval(refresh, 20000);
+</script>
+</body>
+</html>
