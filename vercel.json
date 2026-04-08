@@ -1,6 +1,7 @@
 {
-  "rewrites": [
-    { "source": "/live-admin", "destination": "/live-admin.html" },
-    { "source": "/((?!live-admin).*)", "destination": "/index.html" }
+  "routes": [
+    { "src": "/live-admin", "dest": "/live-admin.html" },
+    { "src": "/live-admin.html", "dest": "/live-admin.html" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
