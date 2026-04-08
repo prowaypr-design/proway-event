@@ -256,10 +256,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .poll-pct.me{color:var(--cyan);}
 
 /* NAVBAR */
-.navbar{position:fixed;bottom:0;left:0;right:0;background:#06071a;border-top:0.5px solid var(--border);display:flex;padding:8px 0 18px;z-index:100;}
+.navbar{position:fixed;bottom:0;left:0;right:0;background:#06071a;border-top:0.5px solid var(--border);display:flex;padding:6px 0 16px;z-index:100;}
 .nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;border:none;background:none;cursor:pointer;padding:4px 0;}
-.nb svg{width:20px;height:20px;}
-.nb-lbl{font-family:'Inter',sans-serif;font-size:8px;font-weight:600;color:var(--text3);letter-spacing:0.5px;text-transform:uppercase;}
+.nb svg{width:18px;height:18px;}
+.nb-lbl{font-family:'Inter',sans-serif;font-size:7px;font-weight:600;color:var(--text3);letter-spacing:0.3px;text-transform:uppercase;}
 .nb.act .nb-lbl{color:var(--cyan);}
 
 /* TOAST */
@@ -552,15 +552,19 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 <nav class="navbar" id="navbar" style="display:none;">
   <button class="nb act" onclick="showScreen('profile')" id="nav-profile">
     <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="var(--cyan)" stroke-width="1.5" fill="none"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
-    <span class="nb-lbl" style="color:var(--cyan);">ПРОФИЛЬ</span>
+    <span class="nb-lbl" style="color:var(--cyan);">Я</span>
   </button>
   <button class="nb" onclick="showScreen('rating')" id="nav-rating">
     <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="13" width="4" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="10" y="8" width="4" height="13" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="17" y="3" width="4" height="18" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/></svg>
-    <span class="nb-lbl">РЕЙТИНГ</span>
+    <span class="nb-lbl">ТОП</span>
   </button>
   <button class="nb" onclick="showScreen('feed')" id="nav-feed">
     <svg viewBox="0 0 24 24" fill="none"><path d="M18 8a5 5 0 00-10 0v5l-1.5 2.5h13L18 13V8z" stroke="#ffffff22" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M10.5 19a1.5 1.5 0 003 0" stroke="#ffffff22" stroke-width="1.5" stroke-linecap="round"/></svg>
     <span class="nb-lbl" style="position:relative;">ЛЕНТА<span id="nav-feed-dot" style="display:none;position:absolute;top:-6px;right:-8px;width:7px;height:7px;background:#ee672a;border-radius:50%;"></span></span>
+  </button>
+  <button class="nb" onclick="showScreen('network')" id="nav-network">
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="7" r="3" stroke="#ffffff22" stroke-width="1.5" fill="none"/><circle cx="15" cy="7" r="3" stroke="#ffffff22" stroke-width="1.5" fill="none"/><path d="M3 20c0-3.3 2.7-6 6-6M21 20c0-3.3-2.7-6-6-6" stroke="#ffffff22" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+    <span class="nb-lbl">СЕТЬ</span>
   </button>
   <button class="nb" onclick="showScreen('vendors')" id="nav-vendors">
     <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="13" y="3" width="8" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="3" y="13" width="8" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="13" y="13" width="8" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/></svg>
