@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PROWAY · Live Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:#080920;color:#fff;min-height:100vh;padding:0;}
+.lock{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px;}
+.lock-box{background:#0e0f28;border:0.5px solid rgba(108,92,231,0.3);border-radius:20px;padding:32px 24px;width:100%;max-width:360px;}
+.lock-title{font-size:20px;font-weight:700;color:#fff;margin-bottom:4px;}
+.lock-sub{font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:24px;}
+.lock-input{width:100%;padding:12px 16px;background:#13152f;border:0.5px solid rgba(108,92,231,0.3);border-radius:12px;font-size:15px;font-family:'Inter',sans-serif;color:#fff;outline:none;margin-bottom:12px;}
+.lock-input:focus{border-color:#6c5ce7;}
+.lock-btn{width:100%;padding:13px;background:linear-gradient(135deg,#6c5ce7,#4834d4);border:none;border-radius:12px;font-size:14px;font-weight:700;color:#fff;cursor:pointer;}
+.lock-err{font-size:12px;color:#ee672a;margin-top:8px;text-align:center;display:none;}
+
+.admin{display:none;max-width:560px;margin:0 auto;padding:24px 16px 40px;}
+.admin-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.admin-logo{font-size:16px;font-weight:700;color:#fff;letter-spacing:1px;}
+.admin-badge{background:rgba(108,92,231,0.15);border:0.5px solid rgba(108,92,231,0.4);border-radius:20px;padding:4px 12px;font-size:11px;color:#a29bfe;}
+
+.card{background:#0e0f28;border:0.5px solid rgba(108,92,231,0.2);border-radius:16px;padding:20px;margin-bottom:16px;}
+.card-title{font-size:12px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;}
+
+.type-row{display:flex;gap:8px;margin-bottom:14px;}
+.type-btn{flex:1;padding:8px;border-radius:10px;border:0.5px solid rgba(108,92,231,0.2);background:transparent;font-size:12px;font-weight:600;color:rgba(255,255,255,0.4);cursor:pointer;font-family:'Inter',sans-serif;}
+.type-btn.active-info{background:rgba(108,92,231,0.15);color:#a29bfe;border-color:rgba(108,92,231,0.5);}
+.type-btn.active-alert{background:rgba(238,103,42,0.15);color:#ee672a;border-color:rgba(238,103,42,0.5);}
+.type-btn.active-success{background:rgba(0,200,100,0.1);color:#00c864;border-color:rgba(0,200,100,0.4);}
+
+textarea{width:100%;padding:12px 16px;background:#13152f;border:0.5px solid rgba(108,92,231,0.3);border-radius:12px;font-size:14px;font-family:'Inter',sans-serif;color:#fff;outline:none;resize:none;height:100px;line-height:1.5;margin-bottom:12px;}
+textarea:focus{border-color:#6c5ce7;}
+textarea::placeholder{color:rgba(255,255,255,0.2);}
+.char-count{font-size:11px;color:rgba(255,255,255,0.3);text-align:right;margin-top:-8px;margin-bottom:12px;}
+
+.templates{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.tpl{background:#13152f;border:0.5px solid rgba(108,92,231,0.15);border-radius:10px;padding:10px 12px;font-size:12px;color:rgba(255,255,255,0.5);cursor:pointer;text-align:left;}
+.tpl:hover{background:rgba(108,92,231,0.08);color:#a29bfe;border-color:rgba(108,92,231,0.3);}
+
+.publish-btn{width:100%;padding:14px;background:linear-gradient(135deg,#6c5ce7,#4834d4);border:none;border-radius:12px;font-size:14px;font-weight:700;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.publish-btn:disabled{opacity:0.5;cursor:not-allowed;}
+
+.feed-list{display:flex;flex-direction:column;gap:8px;}
+.feed-item{background:#13152f;border-radius:12px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px;border-left:3px solid #6c5ce7;}
+.feed-item.alert{border-left-color:#ee672a;}
+.feed-item.success{border-left-color:#00c864;}
+.feed-dot{width:8px;height:8px;border-radius:50%;background:#6c5ce7;flex-shrink:0;margin-top:5px;}
+.feed-dot.alert{background:#ee672a;}
+.feed-dot.success{background:#00c864;}
+.feed-body{flex:1;}
+.feed-text{font-size:13px;color:rgba(255,255,255,0.85);line-height:1.4;margin-bottom:4px;}
+.feed-meta{font-size:10px;color:rgba(255,255,255,0.3);}
+.feed-del{background:none;border:none;color:rgba(255,255,255,0.2);cursor:pointer;font-size:16px;padding:0 4px;flex-shrink:0;}
+.feed-del:hover{color:#ee672a;}
+.empty{text-align:center;padding:24px;font-size:12px;color:rgba(255,255,255,0.25);}
+.toast-adm{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0e0f28;border:0.5px solid rgba(108,92,231,0.4);border-left:3px solid #6c5ce7;border-radius:12px;padding:12px 20px;font-size:13px;color:#a29bfe;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;}
+.toast-adm.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<!-- Экран входа -->
+<div class="lock" id="lock-screen">
+  <div class="lock-box">
+    <div class="lock-title">Live Admin</div>
+    <div class="lock-sub">PROWAY Security Day · Контент-менеджер</div>
+    <input class="lock-input" type="password" id="pwd-input" placeholder="Пароль" onkeydown="if(event.key==='Enter')checkPwd()">
+    <button class="lock-btn" onclick="checkPwd()">Войти</button>
+    <div class="lock-err" id="lock-err">Неверный пароль</div>
+  </div>
+</div>
+
+<!-- Панель КМ -->
+<div class="admin" id="admin-panel">
+  <div class="admin-header">
+    <div class="admin-logo">PROWAY · Live</div>
+    <div class="admin-badge">Контент-менеджер</div>
+  </div>
+
+  <!-- Форма публикации -->
+  <div class="card">
+    <div class="card-title">Новое сообщение</div>
+
+    <div class="type-row">
+      <button class="type-btn active-info" onclick="setType('info',this)" id="t-info">ℹ Инфо</button>
+      <button class="type-btn" onclick="setType('alert',this)" id="t-alert">⚡ Срочно</button>
+      <button class="type-btn" onclick="setType('success',this)" id="t-success">✓ Событие</button>
+    </div>
+
+    <div class="card-title" style="margin-bottom:8px;">Шаблоны</div>
+    <div class="templates">
+      <button class="tpl" onclick="useTpl(this)">→ Начинается сессия 2 · Переходите в зал А</button>
+      <button class="tpl" onclick="useTpl(this)">🍽 Фуршет открыт · Зал Б, 3 этаж</button>
+      <button class="tpl" onclick="useTpl(this)">🏆 Розыгрыш начинается через 10 минут · Главная сцена</button>
+      <button class="tpl" onclick="useTpl(this)">⚡ Внимание: изменение программы</button>
+      <button class="tpl" onclick="useTpl(this)">🎤 Спикер отвечает на вопросы · Подходите к сцене</button>
+    </div>
+
+    <textarea id="msg-input" placeholder="Напишите сообщение для участников..." oninput="updateCount()"></textarea>
+    <div class="char-count"><span id="char-n">0</span> / 200</div>
+
+    <button class="publish-btn" onclick="publish()" id="pub-btn">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8l10-6-4 6 4 6z" fill="white"/></svg>
+      Опубликовать
+    </button>
+  </div>
+
+  <!-- Лента -->
+  <div class="card">
+    <div class="card-title">Активные сообщения</div>
+    <div class="feed-list" id="feed-list"><div class="empty">Сообщений нет</div></div>
+  </div>
+</div>
+
+<div class="toast-adm" id="toast-adm"></div>
+
+<script>
+const API = 'https://script.google.com/macros/s/AKfycbyYuilmUoMlTsWc_M0GeuOxmsbJ7QWK9cyOg20j-uUD8HvHBxzsyW5lm-o0kFT0G53tVA/exec';
+const SECRET = 'proway2025';
+let currentType = 'info';
+let announcements = [];
+
+function checkPwd() {
+  const v = document.getElementById('pwd-input').value;
+  if (v === SECRET) {
+    document.getElementById('lock-screen').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+    loadFeed();
+    setInterval(loadFeed, 15000);
+  } else {
+    document.getElementById('lock-err').style.display = 'block';
+  }
+}
+
+function setType(type, btn) {
+  currentType = type;
+  ['info','alert','success'].forEach(t => {
+    const b = document.getElementById('t-'+t);
+    b.className = 'type-btn';
+    if(t===type) b.className = 'type-btn active-'+t;
+  });
+}
+
+function useTpl(btn) {
+  document.getElementById('msg-input').value = btn.textContent.trim();
+  updateCount();
+}
+
+function updateCount() {
+  const n = document.getElementById('msg-input').value.length;
+  document.getElementById('char-n').textContent = n;
+}
+
+async function publish() {
+  const msg = document.getElementById('msg-input').value.trim();
+  if (!msg) return showToast('Напишите сообщение');
+  if (msg.length > 200) return showToast('Слишком длинное');
+  const btn = document.getElementById('pub-btn');
+  btn.disabled = true;
+  btn.textContent = 'Публикую...';
+  try {
+    const url = `${API}?action=addAnnouncement&secret=${encodeURIComponent(SECRET)}&message=${encodeURIComponent(msg)}&type=${currentType}`;
+    await fetch(url);
+    document.getElementById('msg-input').value = '';
+    updateCount();
+    showToast('Опубликовано ✓');
+    loadFeed();
+  } catch(e) {
+    showToast('Ошибка соединения');
+  }
+  btn.disabled = false;
+  btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8l10-6-4 6 4 6z" fill="white"/></svg> Опубликовать';
+}
+
+async function loadFeed() {
+  try {
+    const r = await fetch(`${API}?action=getAnnouncements`);
+    const d = await r.json();
+    announcements = d.announcements || [];
+    renderFeed();
+  } catch(e) {}
+}
+
+function renderFeed() {
+  const el = document.getElementById('feed-list');
+  if (!announcements.length) { el.innerHTML = '<div class="empty">Сообщений нет</div>'; return; }
+  el.innerHTML = announcements.map(a => {
+    const type = a.type || 'info';
+    const time = a.created_at ? new Date(a.created_at).toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'}) : '';
+    return `<div class="feed-item ${type}">
+      <div class="feed-dot ${type}"></div>
+      <div class="feed-body">
+        <div class="feed-text">${a.message}</div>
+        <div class="feed-meta">${time}</div>
+      </div>
+      <button class="feed-del" onclick="deleteMsg('${a.id}')">✕</button>
+    </div>`;
+  }).join('');
+}
+
+async function deleteMsg(id) {
+  try {
+    await fetch(`${API}?action=deleteAnnouncement&secret=${encodeURIComponent(SECRET)}&id=${id}`);
+    showToast('Удалено');
+    loadFeed();
+  } catch(e) {}
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast-adm');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>
