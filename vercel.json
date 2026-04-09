@@ -1,9 +1,9 @@
 {
-  "cleanUrls": false,
   "rewrites": [
     { "source": "/vendor", "destination": "/vendor.html" },
     { "source": "/live-admin", "destination": "/live-admin.html" },
     { "source": "/live", "destination": "/live.html" },
-    { "source": "/((?!vendor|live-admin|live|.*\\..+).*)", "destination": "/index.html" }
+    { "source": "/profile-scan", "destination": "/profile-scan.html" },
+    { "source": "/((?!vendor|live-admin|live|profile-scan|.*\\..+).*)", "destination": "/index.html" }
   ]
 }
