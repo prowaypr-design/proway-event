@@ -1141,8 +1141,9 @@ function answerPoll(pollId,optIdx){
 window.addEventListener('load',()=>{
   
 function showQrModal() {
-  if (!participant) return;
-  const url = 'https://proway-event.vercel.app/profile-scan.html?id=' + participant.id;
+  const id = participant ? participant.id : localStorage.getItem('participant_id');
+  if (!id) { showToast('Сначала зарегистрируйся'); return; }
+  const url = 'https://proway-event.vercel.app/profile-scan.html?id=' + id;
   const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' + encodeURIComponent(url);
   document.getElementById('qr-modal-img').src = qrUrl;
   document.getElementById('qr-modal-overlay').classList.add('show');
