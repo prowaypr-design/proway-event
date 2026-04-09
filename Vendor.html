@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>PROWAY · Стенд</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: #080920;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.card {
+  width: 100%;
+  max-width: 400px;
+  background: #0e0f28;
+  border: 0.5px solid rgba(108,92,231,0.3);
+  border-radius: 24px;
+  overflow: hidden;
+  text-align: center;
+}
+.card-top {
+  padding: 40px 24px 32px;
+  position: relative;
+}
+.radar {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 240px;
+  height: 240px;
+  opacity: 0.05;
+  pointer-events: none;
+}
+.vendor-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0 auto 16px;
+  position: relative;
+  z-index: 1;
+}
+.vendor-system {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: #a29bfe;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+.vendor-name {
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+.vendor-desc {
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+}
+.pts-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(108,92,231,0.12);
+  border: 0.5px solid rgba(108,92,231,0.3);
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #a29bfe;
+  margin: 16px auto 0;
+  position: relative;
+  z-index: 1;
+}
+
+.card-bottom {
+  padding: 20px 24px 32px;
+  border-top: 0.5px solid rgba(108,92,231,0.15);
+}
+.status-box {
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.status-box.loading { background: rgba(255,255,255,0.03); }
+.status-box.success { background: rgba(0,200,100,0.08); border: 0.5px solid rgba(0,200,100,0.25); }
+.status-box.already { background: rgba(108,92,231,0.08); border: 0.5px solid rgba(108,92,231,0.25); }
+.status-box.error { background: rgba(238,103,42,0.08); border: 0.5px solid rgba(238,103,42,0.25); }
+.status-box.noauth { background: rgba(245,230,66,0.06); border: 0.5px solid rgba(245,230,66,0.2); }
+
+.status-icon {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+.status-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.status-title.success { color: #00c864; }
+.status-title.already { color: #a29bfe; }
+.status-title.error { color: #ee672a; }
+.status-title.noauth { color: #f5e642; }
+.status-text {
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.5;
+}
+
+.action-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.5px;
+}
+.action-btn.primary {
+  background: linear-gradient(135deg, #6c5ce7, #4834d4);
+  color: #fff;
+}
+.action-btn.secondary {
+  background: rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.6);
+  border: 0.5px solid rgba(255,255,255,0.1);
+  margin-top: 10px;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 2px solid rgba(108,92,231,0.2);
+  border-top-color: #6c5ce7;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 12px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.logo {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 2px;
+  margin-top: 16px;
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="card-top" id="vendor-info">
+    <svg class="radar" viewBox="0 0 240 240" fill="none">
+      <circle cx="120" cy="120" r="110" stroke="white" stroke-width="0.5"/>
+      <circle cx="120" cy="120" r="75" stroke="white" stroke-width="0.5"/>
+      <circle cx="120" cy="120" r="40" stroke="white" stroke-width="0.5"/>
+      <line x1="120" y1="10" x2="120" y2="230" stroke="white" stroke-width="0.5"/>
+      <line x1="10" y1="120" x2="230" y2="120" stroke="white" stroke-width="0.5"/>
+    </svg>
+    <div class="vendor-icon" id="v-icon" style="background:rgba(108,92,231,0.15);">?</div>
+    <div class="vendor-system" id="v-system">ЗАГРУЗКА</div>
+    <div class="vendor-name" id="v-name">...</div>
+    <div class="vendor-desc" id="v-desc"></div>
+    <div class="pts-badge">+20 баллов за визит</div>
+  </div>
+  <div class="card-bottom">
+    <div class="status-box loading" id="status-box">
+      <div class="spinner"></div>
+      <div class="status-text">Проверяем твой статус...</div>
+    </div>
+    <div id="action-area"></div>
+    <div class="logo">PROWAY SECURITY DAY 2025</div>
+  </div>
+</div>
+
+<script>
+const API = 'https://script.google.com/macros/s/AKfycbyDyYFwHvLPwHZSqd2abQCLhr9RaoqgVTA96OIw4-mxvRSRkioSe2Th2MD8LYiKhRFstw/exec';
+const BASE = 'https://proway-event.vercel.app/';
+
+const VENDORS = {
+  vendor_ngfw:   { name:'Positive Technologies', system:'NGFW', icon:'PT', color:'#c0392b', desc:'Межсетевой экран нового поколения. Глубокий анализ трафика, блокировка угроз до проникновения в сеть.' },
+  vendor_dlp:    { name:'Гарда', system:'DLP', icon:'Г', color:'#8e44ad', desc:'Система предотвращения утечек данных. Контроль всех каналов передачи информации в реальном времени.' },
+  vendor_pam:    { name:'АВ Софт', system:'PAM', icon:'АВ', color:'#ee672a', desc:'Управление привилегированным доступом. Контроль действий администраторов и защита критических систем.' },
+  vendor_crypto: { name:'ИнфоТеКС', system:'VPN / Крипто', icon:'ИТ', color:'#005ca8', desc:'Криптографическая защита каналов связи. ViPNet — стандарт защищённых коммуникаций.' },
+};
+
+const params = new URLSearchParams(window.location.search);
+const vendorId = params.get('id');
+const participantId = localStorage.getItem('participant_id');
+
+function showStatus(type, icon, title, text) {
+  const box = document.getElementById('status-box');
+  box.className = `status-box ${type}`;
+  box.innerHTML = `<div class="status-icon">${icon}</div><div class="status-title ${type}">${title}</div><div class="status-text">${text}</div>`;
+}
+
+function showActions(html) {
+  document.getElementById('action-area').innerHTML = html;
+}
+
+async function init() {
+  // Проверяем vendorId
+  if (!vendorId || !VENDORS[vendorId]) {
+    showStatus('error', '❌', 'Стенд не найден', 'Попробуй отсканировать QR-код ещё раз.');
+    return;
+  }
+
+  // Заполняем инфо о вендоре
+  const v = VENDORS[vendorId];
+  document.getElementById('v-icon').textContent = v.icon;
+  document.getElementById('v-icon').style.background = v.color + '22';
+  document.getElementById('v-icon').style.color = v.color;
+  document.getElementById('v-system').textContent = v.system;
+  document.getElementById('v-name').textContent = v.name;
+  document.getElementById('v-desc').textContent = v.desc;
+
+  // Не авторизован
+  if (!participantId) {
+    showStatus('noauth', '🔐', 'Сначала зарегистрируйся', 'Открой приложение, пройди регистрацию и возвращайся сканировать стенды.');
+    showActions(`<button class="action-btn primary" onclick="window.location.href='${BASE}'">Открыть приложение →</button>`);
+    return;
+  }
+
+  // Начисляем баллы
+  try {
+    const r = await fetch(`${API}?action=scanVendor&participant_id=${participantId}&vendor_id=${vendorId}`);
+    const d = await r.json();
+
+    if (d.already) {
+      showStatus('already', '✓', 'Стенд уже засчитан', 'Ты уже посещал этот стенд. Баллы начислены ранее.');
+      showActions(`<button class="action-btn primary" onclick="window.location.href='${BASE}'">Вернуться в приложение →</button>`);
+    } else if (d.success) {
+      showStatus('success', '🎯', '+20 баллов!', `Стенд ${v.name} засчитан. Продолжай исследовать другие стенды!`);
+      showActions(`<button class="action-btn primary" onclick="window.location.href='${BASE}'">Вернуться в приложение →</button>`);
+    } else {
+      showStatus('error', '⚠️', 'Что-то пошло не так', 'Попробуй ещё раз или обратись к организаторам.');
+      showActions(`<button class="action-btn secondary" onclick="init()">Попробовать снова</button><button class="action-btn primary" onclick="window.location.href='${BASE}'" style="margin-top:10px;">Вернуться в приложение →</button>`);
+    }
+  } catch(e) {
+    showStatus('error', '📡', 'Нет соединения', 'Проверь интернет и попробуй ещё раз.');
+    showActions(`<button class="action-btn secondary" onclick="init()">Попробовать снова</button>`);
+  }
+}
+
+init();
+</script>
+</body>
+</html>
