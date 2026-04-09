@@ -2,14 +2,7 @@
   "rewrites": [
     { "source": "/vendor", "destination": "/vendor.html" },
     { "source": "/live-admin", "destination": "/live-admin.html" },
-    { "source": "/live", "destination": "/live.html" }
-  ],
-  "routes": [
-    { "src": "/(.*\\.png)", "dest": "/$1" },
-    { "src": "/(.*\\.jpg)", "dest": "/$1" },
-    { "src": "/(.*\\.ico)", "dest": "/$1" },
-    { "src": "/(.*\\.js)", "dest": "/$1" },
-    { "src": "/(.*\\.html)", "dest": "/$1" },
-    { "src": "/(.*)", "dest": "/index.html" }
+    { "source": "/live", "destination": "/live.html" },
+    { "source": "/((?!.*\\.).*)", "destination": "/index.html" }
   ]
 }
