@@ -1227,7 +1227,7 @@ async function generateShareCard() {
   // Статы
   const gender = participant.gender || 'male';
   const codename = participant.codename || 'DEFENSE GRID';
-  const stats = (window.AGENT_STATS[gender]?.[codename]) || {АНАЛИЗ:75,СКОРОСТЬ:75,КРИПТО:75,ПЕРИМЕТР:75,ВЛИЯНИЕ:75};
+  const stats = (AGENT_STATS[gender]?.[codename]) || {АНАЛИЗ:75,СКОРОСТЬ:75,КРИПТО:75,ПЕРИМЕТР:75,ВЛИЯНИЕ:75};
   const STAT_C = {АНАЛИЗ:'#6c5ce7',СКОРОСТЬ:'#ee672a',КРИПТО:'#00c864',ПЕРИМЕТР:'#005ca8',ВЛИЯНИЕ:'#f5e642'};
 
   const statEntries = Object.entries(stats);
