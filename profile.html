@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>PROWAY · Агент</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: #080920;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.card {
+  width: 100%;
+  max-width: 400px;
+  background: #0e0f28;
+  border: 0.5px solid rgba(108,92,231,0.3);
+  border-radius: 24px;
+  overflow: hidden;
+}
+.card-top {
+  padding: 32px 24px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.radar {
+  position: absolute;
+  top: -40px; left: 50%;
+  transform: translateX(-50%);
+  width: 260px; height: 260px;
+  opacity: 0.05; pointer-events: none;
+}
+.avatar-wrap {
+  width: 90px; height: 90px;
+  border-radius: 50%;
+  border: 2px solid rgba(108,92,231,0.5);
+  overflow: hidden;
+  margin: 0 auto 14px;
+  background: #13152f;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px; color: rgba(255,255,255,0.2);
+  position: relative; z-index: 1;
+}
+.avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
+.agent-codename {
+  font-size: 11px; font-weight: 700;
+  color: #a29bfe; letter-spacing: 3px;
+  text-transform: uppercase; margin-bottom: 6px;
+  position: relative; z-index: 1;
+}
+.agent-name {
+  font-size: 20px; font-weight: 800; color: #fff;
+  margin-bottom: 4px; position: relative; z-index: 1;
+}
+.agent-company {
+  font-size: 13px; color: rgba(255,255,255,0.4);
+  position: relative; z-index: 1; margin-bottom: 14px;
+}
+.tags-row {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  justify-content: center; position: relative; z-index: 1;
+}
+.tag {
+  padding: 3px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 600;
+  background: rgba(108,92,231,0.12);
+  color: #a29bfe;
+  border: 0.5px solid rgba(108,92,231,0.3);
+}
+.stats-row {
+  display: flex; gap: 1px;
+  background: rgba(108,92,231,0.1);
+  border-top: 0.5px solid rgba(108,92,231,0.15);
+  border-bottom: 0.5px solid rgba(108,92,231,0.15);
+}
+.stat {
+  flex: 1; padding: 12px 8px; text-align: center;
+  background: #0e0f28;
+}
+.stat-val {
+  font-size: 18px; font-weight: 700; color: #fff;
+  line-height: 1; margin-bottom: 3px;
+}
+.stat-lbl {
+  font-size: 9px; color: rgba(255,255,255,0.3);
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.card-bottom {
+  padding: 20px 24px 28px;
+}
+.status-box {
+  border-radius: 14px; padding: 18px;
+  text-align: center; margin-bottom: 14px;
+  background: rgba(255,255,255,0.02);
+}
+.status-box.success { background: rgba(0,200,100,0.08); border: 0.5px solid rgba(0,200,100,0.25); }
+.status-box.already { background: rgba(108,92,231,0.08); border: 0.5px solid rgba(108,92,231,0.25); }
+.status-box.self { background: rgba(245,230,66,0.06); border: 0.5px solid rgba(245,230,66,0.2); }
+.status-box.noauth { background: rgba(245,230,66,0.06); border: 0.5px solid rgba(245,230,66,0.2); }
+.status-box.error { background: rgba(238,103,42,0.08); border: 0.5px solid rgba(238,103,42,0.25); }
+.status-icon { font-size: 32px; margin-bottom: 8px; }
+.status-title { font-size: 15px; font-weight: 700; margin-bottom: 5px; }
+.status-title.success { color: #00c864; }
+.status-title.already { color: #a29bfe; }
+.status-title.self { color: #f5e642; }
+.status-title.noauth { color: #f5e642; }
+.status-title.error { color: #ee672a; }
+.status-text { font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.5; }
+.action-btn {
+  width: 100%; padding: 14px; border: none;
+  border-radius: 14px; font-size: 14px; font-weight: 700;
+  cursor: pointer; font-family: 'Inter', sans-serif;
+}
+.action-btn.primary { background: linear-gradient(135deg,#6c5ce7,#4834d4); color: #fff; }
+.action-btn.secondary {
+  background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.5);
+  border: 0.5px solid rgba(255,255,255,0.1); margin-top: 10px;
+}
+.spinner {
+  width: 32px; height: 32px;
+  border: 2px solid rgba(108,92,231,0.2);
+  border-top-color: #6c5ce7; border-radius: 50%;
+  animation: spin 1s linear infinite; margin: 0 auto 10px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.logo { text-align: center; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.15); letter-spacing: 2px; margin-top: 14px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="card-top" id="profile-top">
+    <svg class="radar" viewBox="0 0 260 260" fill="none">
+      <circle cx="130" cy="130" r="120" stroke="white" stroke-width="0.5"/>
+      <circle cx="130" cy="130" r="80" stroke="white" stroke-width="0.5"/>
+      <circle cx="130" cy="130" r="40" stroke="white" stroke-width="0.5"/>
+      <line x1="130" y1="10" x2="130" y2="250" stroke="white" stroke-width="0.5"/>
+      <line x1="10" y1="130" x2="250" y2="130" stroke="white" stroke-width="0.5"/>
+      <line x1="38" y1="38" x2="222" y2="222" stroke="white" stroke-width="0.5"/>
+      <line x1="222" y1="38" x2="38" y2="222" stroke="white" stroke-width="0.5"/>
+    </svg>
+    <div class="avatar-wrap" id="p-avatar">◈</div>
+    <div class="agent-codename" id="p-codename">АГЕНТ</div>
+    <div class="agent-name" id="p-name">Загрузка...</div>
+    <div class="agent-company" id="p-company"></div>
+    <div class="tags-row" id="p-tags"></div>
+  </div>
+  <div class="stats-row" id="p-stats" style="display:none;">
+    <div class="stat"><div class="stat-val" id="p-pts">0</div><div class="stat-lbl">Баллы</div></div>
+    <div class="stat"><div class="stat-val" id="p-rank">—</div><div class="stat-lbl">Место</div></div>
+    <div class="stat"><div class="stat-val" id="p-vendors">0</div><div class="stat-lbl">Стенды</div></div>
+  </div>
+  <div class="card-bottom">
+    <div class="status-box" id="status-box">
+      <div class="spinner"></div>
+      <div class="status-text">Загружаем профиль...</div>
+    </div>
+    <div id="action-area"></div>
+    <div class="logo">PROWAY SECURITY DAY 2025</div>
+  </div>
+</div>
+
+<script>
+const API = 'https://script.google.com/macros/s/AKfycbyDyYFwHvLPwHZSqd2abQCLhr9RaoqgVTA96OIw4-mxvRSRkioSe2Th2MD8LYiKhRFstw/exec';
+const BASE = 'https://proway-event.vercel.app/';
+
+const params = new URLSearchParams(window.location.search);
+const targetId = params.get('id');
+const myId = localStorage.getItem('participant_id');
+
+function showStatus(type, icon, title, text) {
+  const box = document.getElementById('status-box');
+  box.className = `status-box ${type}`;
+  box.innerHTML = `<div class="status-icon">${icon}</div><div class="status-title ${type}">${title}</div><div class="status-text">${text}</div>`;
+}
+
+function showActions(html) {
+  document.getElementById('action-area').innerHTML = html;
+}
+
+function renderProfile(p) {
+  const av = document.getElementById('p-avatar');
+  if (p.avatar) {
+    const src = p.avatar.startsWith('http') ? p.avatar : BASE + p.avatar;
+    av.innerHTML = `<img src="${src}" alt="">`;
+  }
+  document.getElementById('p-codename').textContent = p.codename || 'АГЕНТ';
+  document.getElementById('p-name').textContent = p.name || '';
+  document.getElementById('p-company').textContent = [p.company, p.role].filter(Boolean).join(' · ');
+  const interests = (p.interests || '').split(',').filter(Boolean);
+  document.getElementById('p-tags').innerHTML = interests.map(t => `<span class="tag">${t}</span>`).join('');
+  document.getElementById('p-pts').textContent = p.points || 0;
+  document.getElementById('p-stats').style.display = 'flex';
+}
+
+async function init() {
+  if (!targetId) {
+    showStatus('error', '❌', 'Профиль не найден', 'Попробуй отсканировать QR-код ещё раз.');
+    return;
+  }
+
+  try {
+    // Загружаем профиль участника
+    const r = await fetch(`${API}?action=getParticipant&id=${targetId}`);
+    const p = await r.json();
+
+    if (p.error) {
+      showStatus('error', '❌', 'Агент не найден', 'Профиль не существует или был удалён.');
+      return;
+    }
+
+    renderProfile(p);
+
+    // Свой QR
+    if (myId === targetId) {
+      showStatus('self', '🪪', 'Это твой профиль', 'Покажи этот экран другому участнику чтобы он отсканировал твой QR.');
+      showActions(`<button class="action-btn secondary" onclick="window.location.href='${BASE}'">Вернуться в приложение</button>`);
+      return;
+    }
+
+    // Не авторизован
+    if (!myId) {
+      showStatus('noauth', '🔐', 'Сначала зарегистрируйся', 'Открой приложение, пройди регистрацию и возвращайся знакомиться.');
+      showActions(`<button class="action-btn primary" onclick="window.location.href='${BASE}'">Открыть приложение →</button>`);
+      return;
+    }
+
+    // Уже знакомились?
+    const metKey = 'met_' + targetId;
+    if (localStorage.getItem(metKey)) {
+      showStatus('already', '✓', 'Уже знакомы', 'Вы уже встречались на этом мероприятии. Баллы начислены ранее.');
+      showActions(`<button class="action-btn primary" onclick="window.location.href='${BASE}'">Вернуться в приложение →</button>`);
+      return;
+    }
+
+    // Начисляем баллы обоим
+    await Promise.all([
+      fetch(`${API}?action=addPoints&participant_id=${myId}&action=meet&points=10`),
+      fetch(`${API}?action=addPoints&participant_id=${targetId}&action=meet&points=10`)
+    ]);
+
+    localStorage.setItem(metKey, '1');
+    showStatus('success', '🤝', '+10 баллов! Знакомство засчитано', `Ты познакомился с ${p.name}. Оба агента получили по 10 баллов!`);
+    showActions(`<button class="action-btn primary" onclick="window.location.href='${BASE}'">Вернуться в приложение →</button>`);
+
+  } catch(e) {
+    showStatus('error', '📡', 'Нет соединения', 'Проверь интернет и попробуй ещё раз.');
+    showActions(`<button class="action-btn secondary" onclick="init()">Попробовать снова</button>`);
+  }
+}
+
+init();
+</script>
+</body>
+</html>
