@@ -1138,8 +1138,6 @@ function answerPoll(pollId,optIdx){
   showToast('// ГОЛОС ПРИНЯТ · +15 Б');
 }
 
-window.addEventListener('load',()=>{
-  
 function showQrModal() {
   const id = participant ? participant.id : localStorage.getItem('participant_id');
   if (!id) { showToast('Сначала зарегистрируйся'); return; }
@@ -1152,6 +1150,7 @@ function closeQrModal() {
   document.getElementById('qr-modal-overlay').classList.remove('show');
 }
 
+window.addEventListener('load',()=>{
 if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
   const savedScans=localStorage.getItem('scanned_vendors');
   if(savedScans){try{JSON.parse(savedScans).forEach(id=>scannedVendors.add(id));}catch(e){}}
