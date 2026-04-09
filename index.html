@@ -348,6 +348,25 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .ach-banner-body{}
 .ach-banner-title{font-size:11px;font-weight:700;color:#f5e642;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;}
 .ach-banner-name{font-size:14px;font-weight:700;color:#fff;}
+
+/* FINALE */
+.finale-overlay{position:fixed;inset:0;background:#07071a;z-index:600;display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;}
+.finale-overlay.show{display:flex;}
+.finale-stars{display:flex;justify-content:center;gap:8px;margin-bottom:24px;}
+.finale-star{width:32px;height:32px;background:#f5e642;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);animation:starPop 0.5s ease both;}
+.finale-star:nth-child(2){animation-delay:0.15s;}
+.finale-star:nth-child(3){animation-delay:0.3s;}
+@keyframes starPop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.finale-badge{background:linear-gradient(135deg,#6c5ce7,#4834d4);border-radius:20px;padding:4px 16px;font-size:11px;font-weight:700;color:#fff;letter-spacing:2px;margin-bottom:20px;display:inline-block;}
+.finale-title{font-family:'Bangers',cursive;font-size:52px;color:#fff;letter-spacing:3px;line-height:1;margin-bottom:12px;}
+.finale-sub{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:8px;max-width:300px;}
+.finale-pts{font-family:'Bangers',cursive;font-size:36px;color:#a29bfe;margin-bottom:8px;}
+.finale-rank{font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:32px;}
+.finale-achs{display:flex;gap:8px;justify-content:center;margin-bottom:32px;flex-wrap:wrap;}
+.finale-ach{font-size:24px;}
+.finale-btn{width:100%;max-width:320px;padding:16px;background:linear-gradient(135deg,#6c5ce7,#4834d4);border:none;border-radius:16px;font-size:15px;font-weight:700;color:#fff;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;}
+.finale-btn-sec{width:100%;max-width:320px;padding:14px;background:transparent;border:0.5px solid rgba(108,92,231,0.4);border-radius:16px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;font-family:'Inter',sans-serif;}
+.finale-radar{position:absolute;opacity:0.05;pointer-events:none;}
 </style>
 </head>
 <body>
@@ -457,6 +476,36 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   </div>
 </div>
 
+
+<!-- FINALE SCREEN -->
+<div class="finale-overlay" id="finale-overlay">
+  <svg class="finale-radar" width="400" height="400" viewBox="0 0 400 400" fill="none">
+    <circle cx="200" cy="200" r="180" stroke="white" stroke-width="0.5"/>
+    <circle cx="200" cy="200" r="130" stroke="white" stroke-width="0.5"/>
+    <circle cx="200" cy="200" r="80" stroke="white" stroke-width="0.5"/>
+    <circle cx="200" cy="200" r="40" stroke="white" stroke-width="0.5"/>
+    <line x1="200" y1="20" x2="200" y2="380" stroke="white" stroke-width="0.5"/>
+    <line x1="20" y1="200" x2="380" y2="200" stroke="white" stroke-width="0.5"/>
+    <line x1="73" y1="73" x2="327" y2="327" stroke="white" stroke-width="0.5"/>
+    <line x1="327" y1="73" x2="73" y2="327" stroke="white" stroke-width="0.5"/>
+  </svg>
+  <div class="finale-stars">
+    <div class="finale-star"></div>
+    <div class="finale-star"></div>
+    <div class="finale-star"></div>
+  </div>
+  <div class="finale-badge">МИССИЯ ВЫПОЛНЕНА</div>
+  <div class="finale-title">СПАСИБО,<br>АГЕНТ!</div>
+  <div class="finale-sub">Ты сделал этот день особенным.<br>Твой вклад в безопасность цифрового мира бесценен.</div>
+  <div class="finale-pts" id="finale-pts">0 Б</div>
+  <div class="finale-rank" id="finale-rank">Место в рейтинге: —</div>
+  <div class="finale-achs" id="finale-achs"></div>
+  <button class="finale-btn" onclick="generateShareCard()">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 5l3-3 3 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11v2a1 1 0 001 1h10a1 1 0 001-1v-2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+    Скачать карточку агента
+  </button>
+  <button class="finale-btn-sec" onclick="document.getElementById('finale-overlay').classList.remove('show')">Вернуться в приложение</button>
+</div>
 <!-- ACHIEVEMENT BANNER -->
 <div class="ach-banner" id="ach-banner">
   <div class="ach-banner-icon" id="ach-banner-icon">🏆</div>
@@ -848,6 +897,8 @@ function initApp(){
   setInterval(loadLeaderboard,15000); setInterval(checkAchievements,20000);
   setInterval(loadNetwork,30000);
   setInterval(checkAnnouncements,20000);
+  setInterval(checkFinale,15000);
+  checkFinale();
   setTimeout(()=>{const b=document.getElementById('p-bar');if(b)b.style.width=(Math.min((participant.points||0)/MAX_PTS,1)*100)+'%';},300);
 }
 
@@ -879,25 +930,38 @@ async function checkAnnouncements(){
     if(!res.announcements) return;
     const list = res.announcements;
 
+    // Проверяем финальный сигнал
+    const finaleMsg = list.find(a => a.message === '__FINALE_START__');
+    const finaleEnd = list.find(a => a.message === '__FINALE_END__');
+    if (finaleMsg && !finaleEnd) {
+      localStorage.setItem('finale_active', 'true');
+      checkFinale();
+    } else {
+      localStorage.setItem('finale_active', 'false');
+    }
+
+    // Фильтруем спец-сообщения из ленты
+    const visibleList = list.filter(a => !a.message.startsWith('__'));
+
     // Бегущая строка — последнее сообщение
-    if(list.length){
-      const msgs = list.map(a=>`<span class="ticker-msg">${a.message}</span><span class="ticker-sep"> · </span>`).join('');
+    if(visibleList.length){
+      const msgs = visibleList.map(a=>`<span class="ticker-msg">${a.message}</span><span class="ticker-sep"> · </span>`).join('');
       document.getElementById('ticker-inner').innerHTML = msgs;
     }
 
     // Новые сообщения → баннер + бейдж
-    const latest = list[0];
+    const latest = visibleList[0];
     if(latest && latest.id !== lastAnnouncementId){
       lastAnnouncementId = latest.id;
       showBanner(latest.message);
     }
 
-    announcements = list;
+    announcements = visibleList;
 
     // Обновляем бейдж колокольчика
     const badge = document.getElementById('bell-badge');
     const dot = document.getElementById('nav-feed-dot');
-    if(list.length > 0){
+    if(visibleList.length > 0){
       badge.textContent = list.length > 9 ? '9+' : list.length;
       badge.classList.add('show');
       if(dot) dot.style.display = 'block';
@@ -1599,6 +1663,27 @@ function showAchievementBanner(icon, name) {
   document.getElementById('ach-banner-name').textContent = name;
   banner.classList.add('show');
   setTimeout(() => banner.classList.remove('show'), 4000);
+}
+
+
+function showFinale() {
+  if (!participant) return;
+  // Обновляем данные
+  document.getElementById('finale-pts').textContent = (participant.points||0) + ' Б';
+  document.getElementById('finale-rank').textContent = myRank ? 'Место в рейтинге: #' + myRank : 'Место в рейтинге: —';
+  // Ачивки
+  const achEl = document.getElementById('finale-achs');
+  achEl.innerHTML = ACHIEVEMENTS.filter(a => unlockedAchs.has(a.id)).map(a => `<div class="finale-ach">${a.icon}</div>`).join('');
+  // Показываем
+  document.getElementById('finale-overlay').classList.add('show');
+}
+
+function checkFinale() {
+  try {
+    if (localStorage.getItem('finale_active') === 'true') {
+      showFinale();
+    }
+  } catch(e) {}
 }
 
 function showQrModal() {
