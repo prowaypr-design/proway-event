@@ -1157,9 +1157,9 @@ async function generateShareCard() {
   btn.innerHTML = '<svg style="animation:spin 1s linear infinite;width:16px;height:16px;" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,0.3)" stroke-width="2"/><path d="M12 3a9 9 0 019 9" stroke="white" stroke-width="2" stroke-linecap="round"/></svg> Генерируем...';
   btn.disabled = true;
 
-  // Загружаем Bebas Neue
+  // Загружаем Bangers
   try {
-    const font = new FontFace('Bebas Neue', 'url(https://fonts.gstatic.com/s/bebasneu/v14/JTUSjIg69CK48gW7PXoo9Wlhyw.woff2)');
+    const font = new FontFace('Bangers', 'url(https://fonts.gstatic.com/s/bangers/v24/FeVQS0BTqb0h60ACL5la2bxii28wYQ.woff2)');
     await font.load();
     document.fonts.add(font);
   } catch(e) {}
@@ -1213,7 +1213,7 @@ async function generateShareCard() {
   }
 
   // Тёмный градиент снизу
-  const panelY = H*0.45;
+  const panelY = H*0.38;
   const dg=ctx.createLinearGradient(0,panelY-80,0,H);
   dg.addColorStop(0,'rgba(5,3,20,0)');
   dg.addColorStop(0.2,'rgba(5,3,20,0.93)');
@@ -1251,7 +1251,7 @@ async function generateShareCard() {
 
   // Текст названия
   ctx.fillStyle='#fff';
-  ctx.font='400 34px "Bebas Neue",Inter,sans-serif';
+  ctx.font='400 30px "Bangers",cursive,sans-serif';
   ctx.textAlign='center';
   ctx.shadowColor='rgba(0,0,0,0.6)'; ctx.shadowBlur=6;
   ctx.fillText((participant.codename||'АГЕНТ').toUpperCase(), W/2, PT+30);
@@ -1273,18 +1273,24 @@ async function generateShareCard() {
 
   // ── НИЖНЯЯ ПАНЕЛЬ ──
   const PX=28;
-  const panelContentY = panelY + 20;
+  const panelContentY = panelY + 14;
 
-  // Компания + роль
-  ctx.fillStyle='rgba(255,255,255,0.4)';
-  ctx.font='500 22px Inter,sans-serif';
+  // Компания + роль — с бейджем
+  const coText = ([participant.company,participant.role].filter(Boolean).join(' · ')).toUpperCase();
+  ctx.font='600 18px Inter,sans-serif';
+  const coW = ctx.measureText(coText).width + 24;
+  ctx.fillStyle='rgba(108,92,231,0.2)';
+  roundRect(ctx, PX-4, panelContentY-18, coW, 26, 4); ctx.fill();
+  ctx.strokeStyle='rgba(108,92,231,0.4)'; ctx.lineWidth=0.5;
+  roundRect(ctx, PX-4, panelContentY-18, coW, 26, 4); ctx.stroke();
+  ctx.fillStyle='rgba(162,155,254,0.9)';
   ctx.textAlign='left';
-  ctx.fillText(([participant.company,participant.role].filter(Boolean).join(' · ')), PX, panelContentY);
+  ctx.fillText(coText, PX+8, panelContentY);
 
   // Имя
   ctx.fillStyle='#fff';
-  ctx.font='400 62px "Bebas Neue",Inter,sans-serif';
-  ctx.fillText((participant.name||'').toUpperCase(), PX, panelContentY+58);
+  ctx.font='400 58px "Bangers",cursive,sans-serif';
+  ctx.fillText((participant.name||'').toUpperCase(), PX, panelContentY+56);
 
   // Разделитель
   ctx.strokeStyle='rgba(108,92,231,0.4)'; ctx.lineWidth=1;
@@ -1311,7 +1317,7 @@ async function generateShareCard() {
   ];
 
   const statsY = panelContentY + 84;
-  const rowH = 48;
+  const rowH = 44;
   const barMaxW = W - PX*2 - 70;
 
   stats.forEach((s,i)=>{
@@ -1330,13 +1336,13 @@ async function generateShareCard() {
 
     // Название слева
     ctx.fillStyle='rgba(255,255,255,0.85)';
-    ctx.font='400 22px "Bebas Neue",Inter,sans-serif';
+    ctx.font='400 22px "Bangers",cursive,sans-serif';
     ctx.textAlign='left';
     ctx.fillText(s.name, PX, y+18);
 
     // Цифра справа
     ctx.fillStyle=s.color;
-    ctx.font='400 28px "Bebas Neue",Inter,sans-serif';
+    ctx.font='400 28px "Bangers",cursive,sans-serif';
     ctx.textAlign='right';
     ctx.fillText(s.val, W-PX, y+20);
   });
@@ -1363,7 +1369,7 @@ async function generateShareCard() {
   ctx.strokeStyle='rgba(108,92,231,0.5)'; ctx.lineWidth=1;
   roundRect(ctx, PX, H-70, 160, 42, 21); ctx.stroke();
   ctx.fillStyle='#a29bfe';
-  ctx.font='400 24px "Bebas Neue",Inter,sans-serif';
+  ctx.font='400 24px "Bangers",cursive,sans-serif';
   ctx.textAlign='center';
   ctx.fillText(pts+' БАЛЛОВ', PX+80, H-42);
 
