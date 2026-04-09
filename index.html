@@ -655,7 +655,7 @@ const RARITY=[
 
 const AVATARS={
   male:[
-    {file:'Defense_Grid_Icon.png',codename:'DEFENSE GRID',artFile:'5379679076819343593.jpg'},
+    {file:'Defense_Grid_Icon.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
     {file:'male0.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
     {file:'male1.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
     {file:'male2.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
@@ -671,7 +671,7 @@ const AVATARS={
     {file:'Male12.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'}
   ],
   female:[
-    {file:'Stealth_Tracer_Icon.png',codename:'STEALTH TRACER',artFile:'5379679076819343592.jpg'},
+    {file:'Stealth_Tracer_Icon.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
     {file:'female0.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
     {file:'female1.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
     {file:'female2.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
@@ -936,7 +936,7 @@ function renderAgentCard(){
   const scanned=scannedVendors.size;
   const rarity=getRarity(scanned);
   const gender=participant.gender||'male';
-  const codename=participant.codename||'DEFENSE GRID';
+  const codename=participant.codename||'ФАЙРВОЛ';
   const artFile=participant.artFile||'';
   const stats=AGENT_STATS[gender]?.[codename]||{АНАЛИЗ:75,СКОРОСТЬ:75,КРИПТО:75,ПЕРИМЕТР:75,ВЛИЯНИЕ:75};
   const lastName=participant.name.split(' ').slice(-1)[0]||participant.name;
@@ -1254,7 +1254,7 @@ async function generateShareCard() {
   ctx.beginPath();ctx.moveTo(c,H);ctx.lineTo(0,H);ctx.lineTo(0,H-c);ctx.stroke();
 
   // ── НИЖНЯЯ ЧАСТЬ ──
-  const panelY = H*0.52;
+  const panelY = H*0.44;
 
   // Компания — бейдж
   const coText = ([participant.company,participant.role].filter(Boolean).join(' · ')).toUpperCase();
@@ -1273,14 +1273,14 @@ async function generateShareCard() {
   const firstName = nameParts[0]||'';
   const lastName = nameParts.slice(1).join(' ')||'';
   ctx.fillStyle='#fff';
-  ctx.font='400 86px "Bangers",cursive,sans-serif';
+  ctx.font='400 72px "Bangers",cursive,sans-serif';
   ctx.textAlign='left';
-  ctx.fillText(firstName, PX, panelY+108);
-  ctx.fillText(lastName, PX, panelY+186);
+  ctx.fillText(firstName, PX, panelY+100);
+  ctx.fillText(lastName, PX, panelY+168);
 
   // Разделитель
   ctx.strokeStyle='rgba(108,92,231,0.4)'; ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(PX,panelY+200);ctx.lineTo(W-PX,panelY+200);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(PX,panelY+182);ctx.lineTo(W-PX,panelY+182);ctx.stroke();
 
   // ── СИЛЫ ──
   const pts=participant.points||0;
@@ -1302,8 +1302,8 @@ async function generateShareCard() {
     {name:'ВЛИЯНИЕ', val:Math.min(100,meets*20),                     color:'#f5e642',ge:'#d4a017'},
   ];
 
-  const statsStartY = panelY+218;
-  const rowH = 50;
+  const statsStartY = panelY+196;
+  const rowH = 44;
   const barMaxW = W - PX*2 - 60;
 
   stats.forEach((s,i)=>{
@@ -1545,7 +1545,7 @@ if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
       interests:localStorage.getItem('participant_interests')||'',
       avatar:localStorage.getItem('participant_avatar')||'',
       gender:localStorage.getItem('participant_gender')||'male',
-      codename:localStorage.getItem('participant_codename')||'DEFENSE GRID',
+      codename:localStorage.getItem('participant_codename')||'ФАЙРВОЛ',
       artFile:localStorage.getItem('participant_artfile')||''
     };
     initApp();
