@@ -1157,200 +1157,253 @@ async function generateShareCard() {
   btn.innerHTML = '<svg style="animation:spin 1s linear infinite;width:16px;height:16px;" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,0.3)" stroke-width="2"/><path d="M12 3a9 9 0 019 9" stroke="white" stroke-width="2" stroke-linecap="round"/></svg> Генерируем...';
   btn.disabled = true;
 
+  // Загружаем Bebas Neue
+  try {
+    const font = new FontFace('Bebas Neue', 'url(https://fonts.gstatic.com/s/bebasneu/v14/JTUSjIg69CK48gW7PXoo9Wlhyw.woff2)');
+    await font.load();
+    document.fonts.add(font);
+  } catch(e) {}
+
   const W = 591, H = 1181;
   const canvas = document.getElementById('share-canvas');
   canvas.width = W; canvas.height = H;
   const ctx = canvas.getContext('2d');
 
-  // ── ФОНОВОЕ ИЗОБРАЖЕНИЕ АГЕНТА ──
+  // ── ФОН ──
+  const bgG = ctx.createLinearGradient(0,0,0,H);
+  bgG.addColorStop(0,'#0a0520'); bgG.addColorStop(1,'#1a0a40');
+  ctx.fillStyle = bgG; ctx.fillRect(0,0,W,H);
+
+  // Сетка
+  ctx.strokeStyle='rgba(108,92,231,0.07)'; ctx.lineWidth=0.5;
+  for(let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+  // Глитч полосы
+  const gc=['rgba(108,92,231,0.25)','rgba(0,200,255,0.15)','rgba(238,103,42,0.15)'];
+  for(let i=0;i<8;i++){
+    ctx.fillStyle=gc[i%3];
+    ctx.fillRect(0, Math.random()*H*0.6, Math.random()*W*0.4+20, Math.random()*2+0.5);
+  }
+
+  // Радар
+  ctx.strokeStyle='rgba(108,92,231,0.1)'; ctx.lineWidth=0.5;
+  const RCX=W/2, RCY=320;
+  for(const r of [280,200,130,65]){ctx.beginPath();ctx.arc(RCX,RCY,r,0,Math.PI*2);ctx.stroke();}
+  ctx.beginPath();ctx.moveTo(RCX,40);ctx.lineTo(RCX,600);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(40,RCY);ctx.lineTo(W-40,RCY);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(RCX-200,RCY-200);ctx.lineTo(RCX+200,RCY+200);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(RCX+200,RCY-200);ctx.lineTo(RCX-200,RCY+200);ctx.stroke();
+
+  // ── ИЗОБРАЖЕНИЕ АГЕНТА ──
   const artSrc = participant.artFile
-    ? (participant.artFile.startsWith('http') ? participant.artFile : 'https://proway-event.vercel.app/'+participant.artFile)
+    ? (participant.artFile.startsWith('http')?participant.artFile:'https://proway-event.vercel.app/'+participant.artFile)
     : null;
   const avatarSrc = participant.avatar
-    ? (participant.avatar.startsWith('http') ? participant.avatar : 'https://proway-event.vercel.app/'+participant.avatar)
+    ? (participant.avatar.startsWith('http')?participant.avatar:'https://proway-event.vercel.app/'+participant.avatar)
     : null;
 
-  // Фон — заглушка или изображение
-  if (artSrc) {
-    try {
-      const img = await loadImage(artSrc);
-      ctx.drawImage(img, 0, 0, W, H);
-    } catch(e) { drawCardBg(ctx, W, H); }
-  } else if (avatarSrc) {
-    try {
-      const img = await loadImage(avatarSrc);
-      // Растягиваем аватар на весь фон с блюром эффектом
-      ctx.filter = 'blur(8px)';
-      ctx.drawImage(img, -40, -40, W+80, H+80);
-      ctx.filter = 'none';
-      // Поверх чёткий аватар по центру
-      ctx.drawImage(img, W/2-160, 80, 320, 320);
-    } catch(e) { drawCardBg(ctx, W, H); }
+  if(artSrc){
+    try{
+      const img=await loadImage(artSrc);
+      ctx.drawImage(img,0,0,W,H*0.65);
+    }catch(e){await drawHeroPlaceholder(ctx,W,H,avatarSrc,participant.codename);}
   } else {
-    drawCardBg(ctx, W, H);
+    await drawHeroPlaceholder(ctx,W,H,avatarSrc,participant.codename);
   }
 
-  // Затемнение снизу (для панели)
-  const panelH = 420;
-  const panelY = H - panelH;
-  const darkGrad = ctx.createLinearGradient(0, panelY - 100, 0, H);
-  darkGrad.addColorStop(0, 'rgba(5,5,20,0)');
-  darkGrad.addColorStop(0.3, 'rgba(5,5,20,0.92)');
-  darkGrad.addColorStop(1, 'rgba(5,5,20,0.98)');
-  ctx.fillStyle = darkGrad;
-  ctx.fillRect(0, panelY - 100, W, panelH + 100);
+  // Тёмный градиент снизу
+  const panelY = H*0.45;
+  const dg=ctx.createLinearGradient(0,panelY-80,0,H);
+  dg.addColorStop(0,'rgba(5,3,20,0)');
+  dg.addColorStop(0.2,'rgba(5,3,20,0.93)');
+  dg.addColorStop(1,'rgba(5,3,20,0.99)');
+  ctx.fillStyle=dg; ctx.fillRect(0,panelY-80,W,H-(panelY-80));
 
-  // Затемнение сверху (для названия)
-  const topGrad = ctx.createLinearGradient(0, 0, 0, 120);
-  topGrad.addColorStop(0, 'rgba(5,5,20,0.85)');
-  topGrad.addColorStop(1, 'rgba(5,5,20,0)');
-  ctx.fillStyle = topGrad;
-  ctx.fillRect(0, 0, W, 120);
+  // Затемнение сверху
+  const tg=ctx.createLinearGradient(0,0,0,100);
+  tg.addColorStop(0,'rgba(5,3,20,0.7)'); tg.addColorStop(1,'rgba(5,3,20,0)');
+  ctx.fillStyle=tg; ctx.fillRect(0,0,W,100);
 
-  // ── НАЗВАНИЕ СВЕРХУ (Marvel-стиль) ──
-  // Фоновая плашка
-  const nameGrad = ctx.createLinearGradient(0, 0, W, 0);
-  nameGrad.addColorStop(0, '#4834d4');
-  nameGrad.addColorStop(0.5, '#6c5ce7');
-  nameGrad.addColorStop(1, '#4834d4');
-  ctx.fillStyle = nameGrad;
-  // Скошенная форма
+  // ── ПЛАШКА С НАЗВАНИЕМ (Marvel-стиль) ──
+  const PL=24, PR=W-24, PT=14, PB=54;
+  const skew=16;
   ctx.beginPath();
-  ctx.moveTo(30, 18);
-  ctx.lineTo(W-30, 18);
-  ctx.lineTo(W-15, 46);
-  ctx.lineTo(15, 46);
+  ctx.moveTo(PL+skew,PT); ctx.lineTo(PR-skew,PT);
+  ctx.lineTo(PR,PB); ctx.lineTo(PL,PB);
   ctx.closePath();
-  ctx.fill();
 
-  // Обводка
-  ctx.strokeStyle = 'rgba(162,155,254,0.8)';
-  ctx.lineWidth = 1.5;
+  // Жёлтая обводка
+  ctx.strokeStyle='#f5e642'; ctx.lineWidth=3;
+  ctx.stroke();
+
+  // Фиолетовая заливка
+  const ng=ctx.createLinearGradient(PL,0,PR,0);
+  ng.addColorStop(0,'#2a1a80'); ng.addColorStop(0.5,'#6c5ce7'); ng.addColorStop(1,'#2a1a80');
+  ctx.fillStyle=ng; ctx.fill();
+
+  // Блик
+  ctx.fillStyle='rgba(255,255,255,0.06)';
   ctx.beginPath();
-  ctx.moveTo(30, 18); ctx.lineTo(W-30, 18);
-  ctx.lineTo(W-15, 46); ctx.lineTo(15, 46);
-  ctx.closePath(); ctx.stroke();
+  ctx.moveTo(PL+skew,PT); ctx.lineTo(PR-skew,PT);
+  ctx.lineTo(PR-skew-30,PT+20); ctx.lineTo(PL+skew-30,PT+20);
+  ctx.closePath(); ctx.fill();
 
   // Текст названия
-  ctx.fillStyle = '#fff';
-  ctx.font = '800 22px Inter, sans-serif';
-  ctx.textAlign = 'center';
-  ctx.shadowColor = 'rgba(0,0,0,0.5)';
-  ctx.shadowBlur = 4;
-  ctx.fillText((participant.codename || 'АГЕНТ').toUpperCase(), W/2, 40);
-  ctx.shadowBlur = 0;
+  ctx.fillStyle='#fff';
+  ctx.font='400 34px "Bebas Neue",Inter,sans-serif';
+  ctx.textAlign='center';
+  ctx.shadowColor='rgba(0,0,0,0.6)'; ctx.shadowBlur=6;
+  ctx.fillText((participant.codename||'АГЕНТ').toUpperCase(), W/2, PT+30);
+  ctx.shadowBlur=0;
 
-  // Номер агента (левый угол)
-  ctx.fillStyle = 'rgba(255,255,255,0.5)';
-  ctx.font = '600 14px Inter, sans-serif';
-  ctx.textAlign = 'left';
-  ctx.fillText('001', 18, 14);
+  // Номер и лого
+  ctx.fillStyle='rgba(255,255,255,0.4)';
+  ctx.font='600 16px Inter,sans-serif';
+  ctx.textAlign='left'; ctx.fillText('001', 30, PT+2);
+  ctx.textAlign='right'; ctx.fillText('PROWAY', W-30, PT+2);
 
-  // Логотип (правый угол)
-  ctx.fillStyle = 'rgba(255,255,255,0.5)';
-  ctx.font = '700 11px Inter, sans-serif';
-  ctx.textAlign = 'right';
-  ctx.fillText('PROWAY', W-18, 14);
+  // Жёлтые уголки
+  ctx.strokeStyle='#f5e642'; ctx.lineWidth=3;
+  const c=20;
+  ctx.beginPath();ctx.moveTo(0,c);ctx.lineTo(0,0);ctx.lineTo(c,0);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(W-c,0);ctx.lineTo(W,0);ctx.lineTo(W,c);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(W,H-c);ctx.lineTo(W,H);ctx.lineTo(W-c,H);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(c,H);ctx.lineTo(0,H);ctx.lineTo(0,H-c);ctx.stroke();
 
   // ── НИЖНЯЯ ПАНЕЛЬ ──
-  const PX = 32;
+  const PX=28;
+  const panelContentY = panelY + 20;
 
-  // Имя участника
-  ctx.fillStyle = 'rgba(255,255,255,0.5)';
-  ctx.font = '500 18px Inter, sans-serif';
-  ctx.textAlign = 'left';
-  ctx.fillText(([participant.company, participant.role].filter(Boolean).join(' · ')), PX, panelY + 20);
+  // Компания + роль
+  ctx.fillStyle='rgba(255,255,255,0.4)';
+  ctx.font='500 22px Inter,sans-serif';
+  ctx.textAlign='left';
+  ctx.fillText(([participant.company,participant.role].filter(Boolean).join(' · ')), PX, panelContentY);
 
-  ctx.fillStyle = '#fff';
-  ctx.font = '800 36px Inter, sans-serif';
-  ctx.fillText(participant.name || '', PX, panelY + 60);
+  // Имя
+  ctx.fillStyle='#fff';
+  ctx.font='400 62px "Bebas Neue",Inter,sans-serif';
+  ctx.fillText((participant.name||'').toUpperCase(), PX, panelContentY+58);
 
-  // ── СИЛЫ ──
-  const pts = participant.points||0;
-  const vendors = scannedVendors.size;
-  const polls = Object.keys(pollAnswers).length;
-  let meets = 0;
-  for (let k in localStorage) { if (k.startsWith('met_')) meets++; }
-  const regTime = localStorage.getItem('participant_registered_at');
-  let speedVal = 50;
-  if (regTime) {
-    const eS = new Date('2025-11-16T09:00:00'), eE = new Date('2025-11-16T11:00:00');
-    const reg = new Date(regTime);
-    speedVal = Math.max(20, Math.round((1-Math.max(0,reg-eS)/(eE-eS))*100));
+  // Разделитель
+  ctx.strokeStyle='rgba(108,92,231,0.4)'; ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(PX,panelContentY+68);ctx.lineTo(W-PX,panelContentY+68);ctx.stroke();
+
+  // ── СИЛЫ (горизонтальные бары с цифрой справа) ──
+  const pts=participant.points||0;
+  const vendors=scannedVendors.size;
+  const polls=Object.keys(pollAnswers).length;
+  let meets=0;
+  for(let k in localStorage){if(k.startsWith('met_'))meets++;}
+  const regTime=localStorage.getItem('participant_registered_at');
+  let speedVal=50;
+  if(regTime){
+    const eS=new Date('2025-11-16T09:00:00'),eE=new Date('2025-11-16T11:00:00');
+    speedVal=Math.max(20,Math.round((1-Math.max(0,new Date(regTime)-eS)/(eE-eS))*100));
   }
-  const stats = [
-    {name:'АНАЛИЗ',   val:Math.min(100,polls*34),                      color:'#6c5ce7'},
-    {name:'СКОРОСТЬ', val:speedVal,                                      color:'#ee672a'},
-    {name:'КРИПТО',   val:Math.min(100,Math.round(pts/MAX_PTS*100)),    color:'#00c864'},
-    {name:'ПЕРИМЕТР', val:Math.min(100,vendors*25),                      color:'#005ca8'},
-    {name:'ВЛИЯНИЕ',  val:Math.min(100,meets*20),                        color:'#f5e642'},
+  const stats=[
+    {name:'АНАЛИЗ',   val:Math.min(100,polls*34),                    color:'#a29bfe', gEnd:'#6c5ce7'},
+    {name:'СКОРОСТЬ', val:speedVal,                                    color:'#fab387', gEnd:'#ee672a'},
+    {name:'КРИПТО',   val:Math.min(100,Math.round(pts/MAX_PTS*100)), color:'#6ee7b7', gEnd:'#00c864'},
+    {name:'ПЕРИМЕТР', val:Math.min(100,vendors*25),                    color:'#60a5fa', gEnd:'#005ca8'},
+    {name:'ВЛИЯНИЕ',  val:Math.min(100,meets*20),                      color:'#f5e642', gEnd:'#d4a017'},
   ];
 
-  const statsStartY = panelY + 90;
-  const rowH = 44;
+  const statsY = panelContentY + 84;
+  const rowH = 48;
+  const barMaxW = W - PX*2 - 70;
 
-  stats.forEach((s, i) => {
-    const y = statsStartY + i * rowH;
+  stats.forEach((s,i)=>{
+    const y = statsY + i*rowH;
+    const bW = Math.max(4, Math.round(s.val/100*barMaxW));
 
-    // Бар-фон
-    ctx.fillStyle = 'rgba(255,255,255,0.06)';
-    roundRect(ctx, PX, y, W - PX*2, 30, 4); ctx.fill();
+    // Фон бара
+    ctx.fillStyle='rgba(255,255,255,0.05)';
+    roundRect(ctx, PX+80, y, barMaxW, 22, 4); ctx.fill();
 
-    // Бар-заполнение
-    const barW = Math.max(4, Math.round((s.val/100) * (W - PX*2 - 80)));
-    const bg = ctx.createLinearGradient(PX, 0, PX+barW, 0);
-    bg.addColorStop(0, s.color+'cc'); bg.addColorStop(1, s.color+'44');
-    ctx.fillStyle = bg;
-    roundRect(ctx, PX, y, barW, 30, 4); ctx.fill();
+    // Бар с градиентом
+    const bg=ctx.createLinearGradient(PX+80,0,PX+80+bW,0);
+    bg.addColorStop(0,s.gEnd+'cc'); bg.addColorStop(1,s.color);
+    ctx.fillStyle=bg;
+    roundRect(ctx, PX+80, y, bW, 22, 4); ctx.fill();
 
-    // Название
-    ctx.fillStyle = 'rgba(255,255,255,0.9)';
-    ctx.font = '700 15px Inter, sans-serif';
-    ctx.textAlign = 'left';
-    ctx.fillText(s.name, PX + 10, y + 21);
+    // Название слева
+    ctx.fillStyle='rgba(255,255,255,0.85)';
+    ctx.font='400 22px "Bebas Neue",Inter,sans-serif';
+    ctx.textAlign='left';
+    ctx.fillText(s.name, PX, y+18);
 
-    // Значение
-    ctx.fillStyle = '#fff';
-    ctx.font = '800 18px Inter, sans-serif';
-    ctx.textAlign = 'right';
-    ctx.fillText(s.val, W - PX, y + 21);
+    // Цифра справа
+    ctx.fillStyle=s.color;
+    ctx.font='400 28px "Bebas Neue",Inter,sans-serif';
+    ctx.textAlign='right';
+    ctx.fillText(s.val, W-PX, y+20);
   });
 
   // Разделитель
-  ctx.strokeStyle = 'rgba(108,92,231,0.3)'; ctx.lineWidth = 1;
-  const descY = statsStartY + stats.length * rowH + 16;
-  ctx.beginPath(); ctx.moveTo(PX, descY); ctx.lineTo(W-PX, descY); ctx.stroke();
+  const descY = statsY + stats.length*rowH + 12;
+  ctx.strokeStyle='rgba(108,92,231,0.3)'; ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(PX,descY);ctx.lineTo(W-PX,descY);ctx.stroke();
 
   // Описание
-  const gender = participant.gender||'male';
-  const lastName = (participant.name||'').split(' ').slice(-1)[0];
-  const desc = gender==='female'
-    ? `${lastName} не планировала становиться агентом. Конверт без подписи. Только координаты и время. Она пришла.`
-    : `${lastName} не планировал становиться агентом. Конверт без подписи. Только координаты и время. Он пришёл.`;
+  const gender=participant.gender||'male';
+  const lastName=(participant.name||'').split(' ').slice(-1)[0];
+  const desc=gender==='female'
+    ?`${lastName} не планировала становиться агентом. Конверт без подписи. Только координаты и время. Она пришла.`
+    :`${lastName} не планировал становиться агентом. Конверт без подписи. Только координаты и время. Он пришёл.`;
+  ctx.fillStyle='rgba(255,255,255,0.4)';
+  ctx.font='400 18px Inter,sans-serif';
+  ctx.textAlign='left';
+  wrapText(ctx, desc, PX, descY+26, W-PX*2, 26);
 
-  ctx.fillStyle = 'rgba(255,255,255,0.4)';
-  ctx.font = '400 14px Inter, sans-serif';
-  ctx.textAlign = 'left';
-  wrapText(ctx, desc, PX, descY + 22, W - PX*2, 20);
+  // Баллы
+  ctx.fillStyle='rgba(108,92,231,0.15)';
+  roundRect(ctx, PX, H-70, 160, 42, 21); ctx.fill();
+  ctx.strokeStyle='rgba(108,92,231,0.5)'; ctx.lineWidth=1;
+  roundRect(ctx, PX, H-70, 160, 42, 21); ctx.stroke();
+  ctx.fillStyle='#a29bfe';
+  ctx.font='400 24px "Bebas Neue",Inter,sans-serif';
+  ctx.textAlign='center';
+  ctx.fillText(pts+' БАЛЛОВ', PX+80, H-42);
 
-  // Баллы внизу справа
-  ctx.fillStyle = 'rgba(108,92,231,0.2)';
-  roundRect(ctx, W-PX-120, H-50, 120, 36, 18); ctx.fill();
-  ctx.strokeStyle = 'rgba(108,92,231,0.5)'; ctx.lineWidth = 1;
-  roundRect(ctx, W-PX-120, H-50, 120, 36, 18); ctx.stroke();
-  ctx.fillStyle = '#a29bfe';
-  ctx.font = '700 16px Inter, sans-serif';
-  ctx.textAlign = 'center';
-  ctx.fillText(pts+' б', W-PX-60, H-26);
+  // Нижняя полоса
+  const botG=ctx.createLinearGradient(0,0,W,0);
+  botG.addColorStop(0,'#4834d4');botG.addColorStop(0.5,'#6c5ce7');botG.addColorStop(1,'#4834d4');
+  ctx.fillStyle=botG; ctx.fillRect(0,H-8,W,8);
+
+  // Рамка
+  ctx.strokeStyle='rgba(108,92,231,0.4)'; ctx.lineWidth=2;
+  roundRect(ctx,1,1,W-2,H-2,12); ctx.stroke();
 
   // Скачиваем
-  const a = document.createElement('a');
-  a.download = 'agent-'+(participant.codename||'card').toLowerCase().replace(/ /g,'-')+'.png';
-  a.href = canvas.toDataURL('image/png');
+  const a=document.createElement('a');
+  a.download='agent-'+(participant.codename||'card').toLowerCase().replace(/ /g,'-')+'.png';
+  a.href=canvas.toDataURL('image/png');
   a.click();
 
-  btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 5l3-3 3 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11v2a1 1 0 001 1h10a1 1 0 001-1v-2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg> Скачать карточку агента';
-  btn.disabled = false;
+  btn.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 5l3-3 3 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11v2a1 1 0 001 1h10a1 1 0 001-1v-2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg> Скачать карточку агента';
+  btn.disabled=false;
+}
+
+async function drawHeroPlaceholder(ctx,W,H,avatarSrc,codename){
+  // Свечение по центру
+  const glow=ctx.createRadialGradient(W/2,280,0,W/2,280,220);
+  glow.addColorStop(0,'rgba(108,92,231,0.25)');
+  glow.addColorStop(1,'rgba(108,92,231,0)');
+  ctx.fillStyle=glow; ctx.fillRect(0,0,W,H*0.6);
+
+  if(avatarSrc){
+    try{
+      const img=await loadImage(avatarSrc);
+      ctx.save();
+      ctx.beginPath();ctx.arc(W/2,260,170,0,Math.PI*2);ctx.clip();
+      ctx.drawImage(img,W/2-170,90,340,340);
+      ctx.restore();
+      ctx.strokeStyle='rgba(108,92,231,0.5)';ctx.lineWidth=2;
+      ctx.beginPath();ctx.arc(W/2,260,172,0,Math.PI*2);ctx.stroke();
+    }catch(e){}
+  }
 }
 
 function drawCardBg(ctx, W, H) {
