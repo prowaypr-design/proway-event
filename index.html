@@ -325,6 +325,11 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .qr-modal-code img{width:180px;height:180px;display:block;}
 .qr-modal-pts{display:inline-flex;align-items:center;gap:6px;background:rgba(108,92,231,0.12);border:0.5px solid rgba(108,92,231,0.3);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;color:#a29bfe;margin-bottom:18px;}
 .qr-modal-close{width:100%;padding:12px;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:12px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;font-family:'Inter',sans-serif;}
+
+/* SHARE CARD */
+.share-card-btn{width:100%;padding:13px;background:linear-gradient(135deg,#6c5ce7,#4834d4);border:none;border-radius:14px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;}
+.share-card-btn:active{opacity:0.85;}
+#share-canvas{display:none;}
 </style>
 </head>
 <body>
@@ -1136,6 +1141,170 @@ function answerPoll(pollId,optIdx){
   document.getElementById('s-polls').textContent=Object.keys(pollAnswers).length;
   if(participant)api({action:'addPoints',participant_id:participant.id,action:'poll',points:15});
   showToast('// ГОЛОС ПРИНЯТ · +15 Б');
+}
+
+
+async function generateShareCard() {
+  if (!participant) return;
+  const btn = document.querySelector('.share-card-btn');
+  btn.innerHTML = '<svg style="animation:spin 1s linear infinite;width:16px;height:16px;" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,0.3)" stroke-width="2"/><path d="M12 3a9 9 0 019 9" stroke="white" stroke-width="2" stroke-linecap="round"/></svg> Генерируем...';
+  btn.disabled = true;
+
+  const canvas = document.getElementById('share-canvas');
+  const W = 1416, H = 1035;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // Фон
+  ctx.fillStyle = '#080920';
+  ctx.fillRect(0, 0, W, H);
+
+  // Радар фоном
+  ctx.strokeStyle = 'rgba(108,92,231,0.08)';
+  ctx.lineWidth = 1;
+  for (const r of [320, 220, 140, 70]) {
+    ctx.beginPath(); ctx.arc(W/2, 340, r, 0, Math.PI*2); ctx.stroke();
+  }
+  ctx.beginPath(); ctx.moveTo(W/2, 20); ctx.lineTo(W/2, 660); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(W/2-320, 340); ctx.lineTo(W/2+320, 340); ctx.stroke();
+
+  // Граница карточки
+  ctx.strokeStyle = 'rgba(108,92,231,0.4)';
+  ctx.lineWidth = 2;
+  roundRect(ctx, 40, 40, W-80, H-80, 40);
+  ctx.stroke();
+
+  // Аватар
+  const avatarSrc = participant.avatar
+    ? (participant.avatar.startsWith('http') ? participant.avatar : 'https://proway-event.vercel.app/' + participant.avatar)
+    : null;
+
+  if (avatarSrc) {
+    try {
+      const img = await loadImage(avatarSrc);
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(W/2, 280, 160, 0, Math.PI*2);
+      ctx.clip();
+      ctx.drawImage(img, W/2-160, 120, 320, 320);
+      ctx.restore();
+      // Кольцо вокруг аватара
+      ctx.strokeStyle = 'rgba(108,92,231,0.6)';
+      ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.arc(W/2, 280, 162, 0, Math.PI*2); ctx.stroke();
+    } catch(e) {}
+  }
+
+  // Кодовое имя
+  ctx.fillStyle = '#a29bfe';
+  ctx.font = '600 28px Inter, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText((participant.codename || 'АГЕНТ').toUpperCase(), W/2, 500);
+
+  // Имя
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '800 72px Inter, sans-serif';
+  ctx.fillText(participant.name || '', W/2, 590);
+
+  // Компания
+  ctx.fillStyle = 'rgba(255,255,255,0.45)';
+  ctx.font = '500 32px Inter, sans-serif';
+  const company = [participant.company, participant.role].filter(Boolean).join(' · ');
+  ctx.fillText(company, W/2, 640);
+
+  // Разделитель
+  ctx.strokeStyle = 'rgba(108,92,231,0.2)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(120, 680); ctx.lineTo(W-120, 680); ctx.stroke();
+
+  // Статы
+  const gender = participant.gender || 'male';
+  const codename = participant.codename || 'DEFENSE GRID';
+  const stats = (window.AGENT_STATS[gender]?.[codename]) || {АНАЛИЗ:75,СКОРОСТЬ:75,КРИПТО:75,ПЕРИМЕТР:75,ВЛИЯНИЕ:75};
+  const STAT_C = {АНАЛИЗ:'#6c5ce7',СКОРОСТЬ:'#ee672a',КРИПТО:'#00c864',ПЕРИМЕТР:'#005ca8',ВЛИЯНИЕ:'#f5e642'};
+
+  const statEntries = Object.entries(stats);
+  const statW = (W - 240) / statEntries.length;
+
+  statEntries.forEach(([k, v], i) => {
+    const x = 120 + i * statW + statW/2;
+    const barH = Math.round((v / 100) * 120);
+    const barX = x - 24;
+    const barY = 880 - barH;
+
+    // Фон бара
+    ctx.fillStyle = 'rgba(255,255,255,0.05)';
+    roundRect(ctx, barX, 760, 48, 120, 6);
+    ctx.fill();
+
+    // Бар
+    ctx.fillStyle = STAT_C[k] || '#6c5ce7';
+    roundRect(ctx, barX, barY, 48, barH, 6);
+    ctx.fill();
+
+    // Значение
+    ctx.fillStyle = '#fff';
+    ctx.font = '700 26px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(v, x, 920);
+
+    // Название
+    ctx.fillStyle = 'rgba(255,255,255,0.35)';
+    ctx.font = '500 20px Inter, sans-serif';
+    ctx.fillText(k, x, 955);
+  });
+
+  // Очки
+  ctx.fillStyle = 'rgba(108,92,231,0.15)';
+  roundRect(ctx, W/2 - 120, 970, 240, 50, 25);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(108,92,231,0.4)';
+  ctx.lineWidth = 1;
+  roundRect(ctx, W/2 - 120, 970, 240, 50, 25);
+  ctx.stroke();
+  ctx.fillStyle = '#a29bfe';
+  ctx.font = '700 24px Inter, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText((participant.points || 0) + ' баллов', W/2, 1002);
+
+  // Лого PROWAY
+  ctx.fillStyle = 'rgba(255,255,255,0.2)';
+  ctx.font = '700 22px Inter, sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('PROWAY SECURITY DAY 2025', 80, H-50);
+
+  // Скачиваем
+  const link = document.createElement('a');
+  link.download = 'agent-' + (participant.codename || 'card').replace(' ', '-').toLowerCase() + '.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+
+  btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 5l3-3 3 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11v2a1 1 0 001 1h10a1 1 0 001-1v-2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg> Скачать карточку агента';
+  btn.disabled = false;
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.lineTo(x+w-r, y);
+  ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+  ctx.lineTo(x+w, y+h-r);
+  ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+  ctx.lineTo(x+r, y+h);
+  ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+  ctx.lineTo(x, y+r);
+  ctx.quadraticCurveTo(x, y, x+r, y);
+  ctx.closePath();
+}
+
+function loadImage(src) {
+  return new Promise((res, rej) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => res(img);
+    img.onerror = rej;
+    img.src = src;
+  });
 }
 
 function showQrModal() {
