@@ -764,6 +764,7 @@ const POLLS=[
 ];
 
 let participant=null,selectedTags=[],pollAnswers={};
+let myRank=0;
 let selectedGender=null,assignedAvatar=null;
 let scannedVendors=new Set();
 let lastAnnouncementId=null;
@@ -1082,7 +1083,7 @@ async function loadLeaderboard(){
     const res=await api({action:'getLeaderboard'});
     const wrap=document.getElementById('leaderboard-wrap');
     if(!res.leaderboard||!res.leaderboard.length){wrap.innerHTML='<div class="loader">// АГЕНТОВ НЕТ</div>';return;}
-    let myRank='—';
+    myRank=0;
     wrap.innerHTML=res.leaderboard.map((p,i)=>{
       const isMe=participant&&p.id===participant.id;
       if(isMe){
