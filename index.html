@@ -1152,236 +1152,215 @@ function answerPoll(pollId,optIdx){
 
 
 async function generateShareCard() {
-  if (!participant) { showToast('Нет данных участника'); return; }
+  if (!participant) { showToast('Нет данных'); return; }
   const btn = document.querySelector('.share-card-btn');
   btn.innerHTML = '<svg style="animation:spin 1s linear infinite;width:16px;height:16px;" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,0.3)" stroke-width="2"/><path d="M12 3a9 9 0 019 9" stroke="white" stroke-width="2" stroke-linecap="round"/></svg> Генерируем...';
   btn.disabled = true;
 
-  const W = 1416, H = 1035;
+  const W = 591, H = 1181;
   const canvas = document.getElementById('share-canvas');
   canvas.width = W; canvas.height = H;
   const ctx = canvas.getContext('2d');
 
-  // ── ФОН — тёмный с глитч-эффектом ──
-  ctx.fillStyle = '#07071a';
-  ctx.fillRect(0, 0, W, H);
+  // ── ФОНОВОЕ ИЗОБРАЖЕНИЕ АГЕНТА ──
+  const artSrc = participant.artFile
+    ? (participant.artFile.startsWith('http') ? participant.artFile : 'https://proway-event.vercel.app/'+participant.artFile)
+    : null;
+  const avatarSrc = participant.avatar
+    ? (participant.avatar.startsWith('http') ? participant.avatar : 'https://proway-event.vercel.app/'+participant.avatar)
+    : null;
 
-  // Сетка
-  ctx.strokeStyle = 'rgba(108,92,231,0.06)';
-  ctx.lineWidth = 1;
-  for (let x = 0; x < W; x += 60) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
-  for (let y = 0; y < H; y += 60) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
-
-  // Глитч-полосы
-  const glitchColors = ['rgba(108,92,231,0.15)', 'rgba(0,200,255,0.1)', 'rgba(238,103,42,0.08)'];
-  for (let i = 0; i < 8; i++) {
-    const y = Math.random() * H;
-    const h = Math.random() * 3 + 1;
-    const x = Math.random() * W * 0.3;
-    const w = Math.random() * 200 + 50;
-    ctx.fillStyle = glitchColors[i % 3];
-    ctx.fillRect(x, y, w, h);
-  }
-
-  // Радар справа
-  ctx.strokeStyle = 'rgba(108,92,231,0.12)';
-  ctx.lineWidth = 1;
-  const cx = W * 0.72, cy = H * 0.45;
-  for (const r of [280, 200, 130, 65]) {
-    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.stroke();
-  }
-  ctx.beginPath(); ctx.moveTo(cx, cy-290); ctx.lineTo(cx, cy+290); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(cx-290, cy); ctx.lineTo(cx+290, cy); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(cx-205, cy-205); ctx.lineTo(cx+205, cy+205); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(cx+205, cy-205); ctx.lineTo(cx-205, cy+205); ctx.stroke();
-
-  // Градиентный оверлей слева (для читаемости текста)
-  const grad = ctx.createLinearGradient(0, 0, W*0.65, 0);
-  grad.addColorStop(0, 'rgba(7,7,26,0.97)');
-  grad.addColorStop(0.5, 'rgba(7,7,26,0.85)');
-  grad.addColorStop(1, 'rgba(7,7,26,0)');
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, W, H);
-
-  // ── ПРАВАЯ ЧАСТЬ — изображение агента (заглушка) ──
-  const artSrc = participant.artFile || null;
+  // Фон — заглушка или изображение
   if (artSrc) {
     try {
-      const img = await loadImage(artSrc.startsWith('http') ? artSrc : 'https://proway-event.vercel.app/' + artSrc);
-      ctx.drawImage(img, W*0.52, 0, W*0.48, H);
-      // Затемнение краёв изображения
-      const fadeL = ctx.createLinearGradient(W*0.52, 0, W*0.68, 0);
-      fadeL.addColorStop(0, 'rgba(7,7,26,1)');
-      fadeL.addColorStop(1, 'rgba(7,7,26,0)');
-      ctx.fillStyle = fadeL;
-      ctx.fillRect(W*0.52, 0, W*0.2, H);
-    } catch(e) {
-      // Заглушка
-      drawPlaceholder(ctx, W*0.58, H*0.1, W*0.38, H*0.75, participant.codename || 'АГЕНТ');
-    }
-  } else {
-    drawPlaceholder(ctx, W*0.58, H*0.1, W*0.38, H*0.75, participant.codename || 'АГЕНТ');
-  }
-
-  // ── ЛЕВАЯ ЧАСТЬ — контент ──
-  const PX = 80;
-
-  // Иконка агента
-  const avatarSrc = participant.avatar
-    ? (participant.avatar.startsWith('http') ? participant.avatar : 'https://proway-event.vercel.app/' + participant.avatar)
-    : null;
-  if (avatarSrc) {
+      const img = await loadImage(artSrc);
+      ctx.drawImage(img, 0, 0, W, H);
+    } catch(e) { drawCardBg(ctx, W, H); }
+  } else if (avatarSrc) {
     try {
       const img = await loadImage(avatarSrc);
-      ctx.save();
-      ctx.beginPath(); ctx.arc(PX + 50, 90, 48, 0, Math.PI*2); ctx.clip();
-      ctx.drawImage(img, PX+2, 42, 96, 96);
-      ctx.restore();
-      ctx.strokeStyle = 'rgba(108,92,231,0.6)';
-      ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(PX+50, 90, 49, 0, Math.PI*2); ctx.stroke();
-    } catch(e) {}
+      // Растягиваем аватар на весь фон с блюром эффектом
+      ctx.filter = 'blur(8px)';
+      ctx.drawImage(img, -40, -40, W+80, H+80);
+      ctx.filter = 'none';
+      // Поверх чёткий аватар по центру
+      ctx.drawImage(img, W/2-160, 80, 320, 320);
+    } catch(e) { drawCardBg(ctx, W, H); }
+  } else {
+    drawCardBg(ctx, W, H);
   }
 
-  // PROWAY логотип текстом
-  ctx.fillStyle = 'rgba(255,255,255,0.9)';
-  ctx.font = '800 28px Inter, sans-serif';
-  ctx.textAlign = 'left';
-  ctx.fillText('PROWAY', PX + 116, 82);
-  ctx.fillStyle = 'rgba(162,155,254,0.7)';
-  ctx.font = '600 18px Inter, sans-serif';
-  ctx.fillText('SECURITY DAY 2025', PX + 116, 108);
+  // Затемнение снизу (для панели)
+  const panelH = 420;
+  const panelY = H - panelH;
+  const darkGrad = ctx.createLinearGradient(0, panelY - 100, 0, H);
+  darkGrad.addColorStop(0, 'rgba(5,5,20,0)');
+  darkGrad.addColorStop(0.3, 'rgba(5,5,20,0.92)');
+  darkGrad.addColorStop(1, 'rgba(5,5,20,0.98)');
+  ctx.fillStyle = darkGrad;
+  ctx.fillRect(0, panelY - 100, W, panelH + 100);
 
-  // Разделитель
-  ctx.strokeStyle = 'rgba(108,92,231,0.3)';
-  ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.moveTo(PX, 155); ctx.lineTo(W*0.55, 155); ctx.stroke();
+  // Затемнение сверху (для названия)
+  const topGrad = ctx.createLinearGradient(0, 0, 0, 120);
+  topGrad.addColorStop(0, 'rgba(5,5,20,0.85)');
+  topGrad.addColorStop(1, 'rgba(5,5,20,0)');
+  ctx.fillStyle = topGrad;
+  ctx.fillRect(0, 0, W, 120);
 
-  // Кодовое имя
-  ctx.fillStyle = '#a29bfe';
-  ctx.font = '700 22px Inter, sans-serif';
-  ctx.letterSpacing = '4px';
-  ctx.fillText('// ' + (participant.codename || 'АГЕНТ').toUpperCase(), PX, 210);
+  // ── НАЗВАНИЕ СВЕРХУ (Marvel-стиль) ──
+  // Фоновая плашка
+  const nameGrad = ctx.createLinearGradient(0, 0, W, 0);
+  nameGrad.addColorStop(0, '#4834d4');
+  nameGrad.addColorStop(0.5, '#6c5ce7');
+  nameGrad.addColorStop(1, '#4834d4');
+  ctx.fillStyle = nameGrad;
+  // Скошенная форма
+  ctx.beginPath();
+  ctx.moveTo(30, 18);
+  ctx.lineTo(W-30, 18);
+  ctx.lineTo(W-15, 46);
+  ctx.lineTo(15, 46);
+  ctx.closePath();
+  ctx.fill();
 
-  // Имя
-  ctx.fillStyle = '#ffffff';
-  ctx.font = '800 72px Inter, sans-serif';
-  const name = participant.name || '';
-  ctx.fillText(name, PX, 300);
+  // Обводка
+  ctx.strokeStyle = 'rgba(162,155,254,0.8)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(30, 18); ctx.lineTo(W-30, 18);
+  ctx.lineTo(W-15, 46); ctx.lineTo(15, 46);
+  ctx.closePath(); ctx.stroke();
 
-  // Компания · роль
-  ctx.fillStyle = 'rgba(255,255,255,0.45)';
-  ctx.font = '500 28px Inter, sans-serif';
-  const company = [participant.company, participant.role].filter(Boolean).join(' · ');
-  ctx.fillText(company, PX, 350);
+  // Текст названия
+  ctx.fillStyle = '#fff';
+  ctx.font = '800 22px Inter, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.shadowColor = 'rgba(0,0,0,0.5)';
+  ctx.shadowBlur = 4;
+  ctx.fillText((participant.codename || 'АГЕНТ').toUpperCase(), W/2, 40);
+  ctx.shadowBlur = 0;
 
-  // Описание агента
-  const gender = participant.gender || 'male';
-  const lastName = name.split(' ').slice(-1)[0] || name;
-  const desc = gender === 'female'
-    ? `${lastName} не планировала становиться агентом. Конверт лежал прямо на клавиатуре — без подписи. Только координаты и время. Она пришла.`
-    : `${lastName} не планировал становиться агентом. Конверт лежал прямо на клавиатуре — без подписи. Только координаты и время. Он пришёл.`;
-  
+  // Номер агента (левый угол)
   ctx.fillStyle = 'rgba(255,255,255,0.5)';
-  ctx.font = '400 22px Inter, sans-serif';
-  wrapText(ctx, desc, PX, 410, W*0.5 - PX - 40, 34);
+  ctx.font = '600 14px Inter, sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('001', 18, 14);
 
-  // Разделитель
-  ctx.strokeStyle = 'rgba(108,92,231,0.2)';
-  ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.moveTo(PX, 560); ctx.lineTo(W*0.55, 560); ctx.stroke();
+  // Логотип (правый угол)
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.font = '700 11px Inter, sans-serif';
+  ctx.textAlign = 'right';
+  ctx.fillText('PROWAY', W-18, 14);
 
-  // ── ДИНАМИЧЕСКИЕ СИЛЫ ──
-  const pts = participant.points || 0;
+  // ── НИЖНЯЯ ПАНЕЛЬ ──
+  const PX = 32;
+
+  // Имя участника
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.font = '500 18px Inter, sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText(([participant.company, participant.role].filter(Boolean).join(' · ')), PX, panelY + 20);
+
+  ctx.fillStyle = '#fff';
+  ctx.font = '800 36px Inter, sans-serif';
+  ctx.fillText(participant.name || '', PX, panelY + 60);
+
+  // ── СИЛЫ ──
+  const pts = participant.points||0;
   const vendors = scannedVendors.size;
   const polls = Object.keys(pollAnswers).length;
-  const metCount = [...Array.from({length:100})].filter((_,i) => localStorage.getItem('met_' + i)).length;
-  // Считаем знакомства из localStorage
   let meets = 0;
   for (let k in localStorage) { if (k.startsWith('met_')) meets++; }
-
-  // Скорость — по времени регистрации (чем раньше, тем выше)
   const regTime = localStorage.getItem('participant_registered_at');
-  let speedVal = 50; // дефолт
+  let speedVal = 50;
   if (regTime) {
-    const eventStart = new Date('2025-11-16T09:00:00');
-    const eventEnd = new Date('2025-11-16T11:00:00');
+    const eS = new Date('2025-11-16T09:00:00'), eE = new Date('2025-11-16T11:00:00');
     const reg = new Date(regTime);
-    const range = eventEnd - eventStart;
-    const elapsed = Math.max(0, reg - eventStart);
-    speedVal = Math.max(20, Math.round((1 - elapsed/range) * 100));
+    speedVal = Math.max(20, Math.round((1-Math.max(0,reg-eS)/(eE-eS))*100));
   }
-
-  const dynamicStats = [
-    { name: 'АНАЛИЗ',    val: Math.min(100, polls * 34),       color: '#6c5ce7' },
-    { name: 'СКОРОСТЬ',  val: speedVal,                         color: '#ee672a' },
-    { name: 'КРИПТО',    val: Math.min(100, Math.round(pts / MAX_PTS * 100)), color: '#00c864' },
-    { name: 'ПЕРИМЕТР',  val: Math.min(100, vendors * 25),      color: '#005ca8' },
-    { name: 'ВЛИЯНИЕ',   val: Math.min(100, meets * 20),        color: '#f5e642' },
+  const stats = [
+    {name:'АНАЛИЗ',   val:Math.min(100,polls*34),                      color:'#6c5ce7'},
+    {name:'СКОРОСТЬ', val:speedVal,                                      color:'#ee672a'},
+    {name:'КРИПТО',   val:Math.min(100,Math.round(pts/MAX_PTS*100)),    color:'#00c864'},
+    {name:'ПЕРИМЕТР', val:Math.min(100,vendors*25),                      color:'#005ca8'},
+    {name:'ВЛИЯНИЕ',  val:Math.min(100,meets*20),                        color:'#f5e642'},
   ];
 
-  const statCount = dynamicStats.length;
-  const statAreaW = W * 0.52 - PX * 2;
-  const statW = statAreaW / statCount;
-  const statStartY = 600;
+  const statsStartY = panelY + 90;
+  const rowH = 44;
 
-  // Заголовок секции
-  ctx.fillStyle = 'rgba(255,255,255,0.25)';
-  ctx.font = '600 16px Inter, sans-serif';
-  ctx.fillText('ХАРАКТЕРИСТИКИ АГЕНТА', PX, statStartY - 20);
+  stats.forEach((s, i) => {
+    const y = statsStartY + i * rowH;
 
-  dynamicStats.forEach((s, i) => {
-    const x = PX + i * statW + statW/2;
-    const barH = Math.round((s.val / 100) * 200);
-    const barX = x - 30;
-    const barBottom = statStartY + 280;
+    // Бар-фон
+    ctx.fillStyle = 'rgba(255,255,255,0.06)';
+    roundRect(ctx, PX, y, W - PX*2, 30, 4); ctx.fill();
 
-    // Фон бара
-    ctx.fillStyle = 'rgba(255,255,255,0.04)';
-    roundRect(ctx, barX, statStartY + 60, 60, 200, 8);
-    ctx.fill();
+    // Бар-заполнение
+    const barW = Math.max(4, Math.round((s.val/100) * (W - PX*2 - 80)));
+    const bg = ctx.createLinearGradient(PX, 0, PX+barW, 0);
+    bg.addColorStop(0, s.color+'cc'); bg.addColorStop(1, s.color+'44');
+    ctx.fillStyle = bg;
+    roundRect(ctx, PX, y, barW, 30, 4); ctx.fill();
 
-    // Бар с градиентом
-    const barGrad = ctx.createLinearGradient(0, barBottom - barH, 0, barBottom);
-    barGrad.addColorStop(0, s.color);
-    barGrad.addColorStop(1, s.color + '66');
-    ctx.fillStyle = barGrad;
-    roundRect(ctx, barX, barBottom - barH, 60, barH, 8);
-    ctx.fill();
+    // Название
+    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+    ctx.font = '700 15px Inter, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(s.name, PX + 10, y + 21);
 
     // Значение
     ctx.fillStyle = '#fff';
-    ctx.font = '700 28px Inter, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText(s.val, x, statStartY + 48);
-
-    // Название
-    ctx.fillStyle = 'rgba(255,255,255,0.35)';
-    ctx.font = '500 17px Inter, sans-serif';
-    ctx.fillText(s.name, x, barBottom + 30);
+    ctx.font = '800 18px Inter, sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText(s.val, W - PX, y + 21);
   });
 
-  // Очки внизу
-  ctx.fillStyle = 'rgba(108,92,231,0.15)';
-  roundRect(ctx, PX, H - 100, 260, 56, 28);
-  ctx.fill();
-  ctx.strokeStyle = 'rgba(108,92,231,0.4)';
-  ctx.lineWidth = 1;
-  roundRect(ctx, PX, H - 100, 260, 56, 28);
-  ctx.stroke();
+  // Разделитель
+  ctx.strokeStyle = 'rgba(108,92,231,0.3)'; ctx.lineWidth = 1;
+  const descY = statsStartY + stats.length * rowH + 16;
+  ctx.beginPath(); ctx.moveTo(PX, descY); ctx.lineTo(W-PX, descY); ctx.stroke();
+
+  // Описание
+  const gender = participant.gender||'male';
+  const lastName = (participant.name||'').split(' ').slice(-1)[0];
+  const desc = gender==='female'
+    ? `${lastName} не планировала становиться агентом. Конверт без подписи. Только координаты и время. Она пришла.`
+    : `${lastName} не планировал становиться агентом. Конверт без подписи. Только координаты и время. Он пришёл.`;
+
+  ctx.fillStyle = 'rgba(255,255,255,0.4)';
+  ctx.font = '400 14px Inter, sans-serif';
+  ctx.textAlign = 'left';
+  wrapText(ctx, desc, PX, descY + 22, W - PX*2, 20);
+
+  // Баллы внизу справа
+  ctx.fillStyle = 'rgba(108,92,231,0.2)';
+  roundRect(ctx, W-PX-120, H-50, 120, 36, 18); ctx.fill();
+  ctx.strokeStyle = 'rgba(108,92,231,0.5)'; ctx.lineWidth = 1;
+  roundRect(ctx, W-PX-120, H-50, 120, 36, 18); ctx.stroke();
   ctx.fillStyle = '#a29bfe';
-  ctx.font = '700 26px Inter, sans-serif';
+  ctx.font = '700 16px Inter, sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText(pts + ' баллов', PX + 130, H - 65);
+  ctx.fillText(pts+' б', W-PX-60, H-26);
 
   // Скачиваем
-  const link = document.createElement('a');
-  link.download = 'agent-' + (participant.codename || 'card').toLowerCase().replace(' ', '-') + '.png';
-  link.href = canvas.toDataURL('image/png');
-  link.click();
+  const a = document.createElement('a');
+  a.download = 'agent-'+(participant.codename||'card').toLowerCase().replace(/ /g,'-')+'.png';
+  a.href = canvas.toDataURL('image/png');
+  a.click();
 
   btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 5l3-3 3 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11v2a1 1 0 001 1h10a1 1 0 001-1v-2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg> Скачать карточку агента';
   btn.disabled = false;
+}
+
+function drawCardBg(ctx, W, H) {
+  ctx.fillStyle = '#0a0b1e';
+  ctx.fillRect(0, 0, W, H);
+  ctx.strokeStyle = 'rgba(108,92,231,0.08)'; ctx.lineWidth = 1;
+  for (let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for (let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  ctx.fillStyle = 'rgba(108,92,231,0.15)';
+  ctx.beginPath(); ctx.arc(W/2, H*0.35, 180, 0, Math.PI*2); ctx.fill();
 }
 
 function drawPlaceholder(ctx, x, y, w, h, codename) {
@@ -1432,6 +1411,21 @@ function loadImage(src) {
     img.onerror = rej;
     img.src = src;
   });
+}
+
+
+function wrapTextCenter(ctx, text, cx, y, maxW, lineH) {
+  const words = text.split(' ');
+  let line = '';
+  for (const word of words) {
+    const test = line + word + ' ';
+    if (ctx.measureText(test).width > maxW && line) {
+      ctx.fillText(line.trim(), cx, y);
+      line = word + ' ';
+      y += lineH;
+    } else { line = test; }
+  }
+  if (line) ctx.fillText(line.trim(), cx, y);
 }
 
 function showQrModal() {
