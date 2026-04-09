@@ -2,6 +2,13 @@
   "routes": [
     { "src": "/live-admin", "dest": "/live-admin.html" },
     { "src": "/live-admin.html", "dest": "/live-admin.html" },
+    { "src": "/live", "dest": "/live.html" },
+    { "src": "/live.html", "dest": "/live.html" },
+    { "src": "/(.*\\.png)", "dest": "/$1" },
+    { "src": "/(.*\\.jpg)", "dest": "/$1" },
+    { "src": "/(.*\\.ico)", "dest": "/$1" },
+    { "src": "/(.*\\.json)", "dest": "/$1" },
+    { "src": "/(.*\\.js)", "dest": "/$1" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
