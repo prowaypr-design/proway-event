@@ -355,12 +355,12 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     <div class="agent-grid">
       <div class="agent-card" onclick="selectGender('male')">
         <div class="ac-top"><div class="ac-label">// DEFENDER</div></div>
-        <div class="ac-face" style="background:#0a1525;"><img src="Defense_Grid_Icon.png" alt="defender" onerror="this.parentElement.innerHTML='<span style=font-size:50px>🦸‍♂️</span>'"></div>
+        <div class="ac-face" style="background:#0a1525;"><img src="https://proway-event.vercel.app/Defense_Grid_Icon.png" alt="defender" onerror="this.parentElement.innerHTML='<span style=font-size:50px>🦸‍♂️</span>'"></div>
         <div class="ac-name" style="color:var(--cyan);">БОЕЦ</div>
       </div>
       <div class="agent-card" onclick="selectGender('female')">
         <div class="ac-top"><div class="ac-label" style="color:#e879f9;">// TRACER</div></div>
-        <div class="ac-face" style="background:#150a25;"><img src="Stealth_Tracer_Icon.png" alt="tracer" onerror="this.parentElement.innerHTML='<span style=font-size:50px>🦸‍♀️</span>'"></div>
+        <div class="ac-face" style="background:#150a25;"><img src="https://proway-event.vercel.app/Stealth_Tracer_Icon.png" alt="tracer" onerror="this.parentElement.innerHTML='<span style=font-size:50px>🦸‍♀️</span>'"></div>
         <div class="ac-name" style="color:#e879f9;">АГЕНТ</div>
       </div>
     </div>
@@ -679,7 +679,7 @@ function selectGender(g){
   selectedGender=g;
   const pool=AVATARS[g];
   assignedAvatar=pool[Math.floor(Math.random()*pool.length)];
-  document.getElementById('reveal-img').src=assignedAvatar.file;
+  document.getElementById('reveal-img').src='https://proway-event.vercel.app/'+assignedAvatar.file;
   document.getElementById('reveal-codename').textContent=assignedAvatar.codename;
   goTo('ob-reveal');
 }
@@ -719,7 +719,7 @@ async function register(){
 }
 
 function setAvatarUI(){
-  const av=participant&&participant.avatar?participant.avatar:'';
+  const av=participant&&participant.avatar?(participant.avatar.startsWith('http')?participant.avatar:'https://proway-event.vercel.app/'+participant.avatar):'';
   ['p-av-img','p-av-img2','p-av-img3'].forEach(id=>{
     const el=document.getElementById(id);
     if(el&&av){el.src=av;el.style.display='block';}
