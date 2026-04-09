@@ -668,6 +668,15 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 
 <script>
 const API='https://script.google.com/macros/s/AKfycbyDyYFwHvLPwHZSqd2abQCLhr9RaoqgVTA96OIw4-mxvRSRkioSe2Th2MD8LYiKhRFstw/exec';
+const ACHIEVEMENTS = [
+  { id:'register', icon:'🎖️', name:'Первый шаг',      check: ()=> !!participant },
+  { id:'vendors',  icon:'🗺️', name:'Картограф',       check: ()=> scannedVendors.size >= 4 },
+  { id:'polls',    icon:'🧠', name:'Аналитик',         check: ()=> Object.keys(pollAnswers).length >= 3 },
+  { id:'network',  icon:'🤝', name:'Связной',          check: ()=> { let m=0; for(let k in localStorage){if(k.startsWith('met_'))m++;} return m>=5; }},
+  { id:'top3',     icon:'🏆', name:'Топ-3',            check: ()=> myRank > 0 && myRank <= 3 },
+  { id:'100pts',   icon:'⚡', name:'100 баллов',       check: ()=> (participant?.points||0) >= 100 },
+];
+const unlockedAchs = new Set(JSON.parse(localStorage.getItem('unlocked_achs')||'[]'));
 const MAX_PTS=430;
 const STORY_UNLOCK_DATE=new Date('2025-11-16T00:00:00');
 
@@ -1564,16 +1573,7 @@ function wrapTextCenter(ctx, text, cx, y, maxW, lineH) {
 
 // ── ACHIEVEMENTS ─────────────────────────────────────────────────
 
-const ACHIEVEMENTS = [
-  { id:'register', icon:'🎖️', name:'Первый шаг',      check: ()=> !!participant },
-  { id:'vendors',  icon:'🗺️', name:'Картограф',       check: ()=> scannedVendors.size >= 4 },
-  { id:'polls',    icon:'🧠', name:'Аналитик',         check: ()=> Object.keys(pollAnswers).length >= 3 },
-  { id:'network',  icon:'🤝', name:'Связной',          check: ()=> { let m=0; for(let k in localStorage){if(k.startsWith('met_'))m++;} return m>=5; }},
-  { id:'top3',     icon:'🏆', name:'Топ-3',            check: ()=> myRank > 0 && myRank <= 3 },
-  { id:'100pts',   icon:'⚡', name:'100 баллов',       check: ()=> (participant?.points||0) >= 100 },
-];
 
-const unlockedAchs = new Set(JSON.parse(localStorage.getItem('unlocked_achs')||'[]'));
 
 function checkAchievements() {
   if (!participant) return;
