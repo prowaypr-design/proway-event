@@ -31,6 +31,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .ticker-track{overflow:hidden;flex:1;}
 .ticker-inner{display:inline-flex;white-space:nowrap;animation:ticker 25s linear infinite;}
 @keyframes ticker{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
 .ticker-msg{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);padding:0 32px;letter-spacing:1px;opacity:0.8;}
 .ticker-sep{color:var(--border2);}
 
@@ -306,6 +307,13 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .feed-how-item:last-child{margin-bottom:0;}
 .feed-how-num{width:22px;height:22px;border-radius:50%;background:rgba(108,92,231,0.2);border:0.5px solid rgba(108,92,231,0.4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#a29bfe;flex-shrink:0;}
 .feed-how-text{font-size:12px;color:rgba(255,255,255,0.6);line-height:1.5;padding-top:2px;}
+
+/* NETWORK ACTIONS */
+.net-actions{display:flex;gap:6px;margin-top:8px;}
+.net-btn{flex:1;padding:7px 10px;border-radius:10px;border:0.5px solid rgba(108,92,231,0.25);background:transparent;font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;}
+.net-btn:active{opacity:0.7;}
+.net-btn.liked{background:rgba(108,92,231,0.12);color:#a29bfe;border-color:rgba(108,92,231,0.4);}
+.net-btn.contact{background:rgba(0,200,100,0.08);color:#00c864;border-color:rgba(0,200,100,0.3);}
 </style>
 </head>
 <body>
@@ -698,7 +706,7 @@ async function register(){
   const role=document.getElementById('reg-role').value.trim();
   if(!name||!company){showToast('// ЗАПОЛНИ ПОЗЫВНОЙ И ОРГАНИЗАЦИЮ');return;}
   const btn=document.querySelector('#ob-reveal .ob-btn');
-  btn.textContent='// АВТОРИЗАЦИЯ...';btn.disabled=true;
+  btn.innerHTML='<span style="display:inline-flex;align-items:center;gap:10px;justify-content:center;"><svg style="animation:spin 1s linear infinite;width:16px;height:16px;flex-shrink:0;" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,0.3)" stroke-width="2"/><path d="M12 3a9 9 0 019 9" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>Авторизация...</span>';btn.disabled=true;
   try{
     const res=await api({action:'register',name,email,company,role,interests:selectedTags.join(','),avatar:assignedAvatar?assignedAvatar.file:'',codename:assignedAvatar?assignedAvatar.codename:''});
     if(res.success){
@@ -714,8 +722,8 @@ async function register(){
         codename:assignedAvatar?assignedAvatar.codename:'',artFile:assignedAvatar?assignedAvatar.artFile:''};
       initApp();
       showToast('// ДОБРО ПОЖАЛОВАТЬ, АГЕНТ! +15 Б');
-    }else{showToast('// ОШИБКА АВТОРИЗАЦИИ');btn.textContent='ПРИСТУПИТЬ К МИССИИ ›';btn.disabled=false;}
-  }catch(e){showToast('// НЕТ СВЯЗИ');btn.textContent='ПРИСТУПИТЬ К МИССИИ ›';btn.disabled=false;}
+    }else{showToast('// ОШИБКА АВТОРИЗАЦИИ');btn.innerHTML='ПРИСТУПИТЬ К МИССИИ ›';btn.disabled=false;}
+  }catch(e){showToast('// НЕТ СВЯЗИ');btn.innerHTML='ПРИСТУПИТЬ К МИССИИ ›';btn.disabled=false;}
 }
 
 function setAvatarUI(){
@@ -1007,6 +1015,21 @@ async function loadLeaderboard(){
   }catch(e){}
 }
 
+const likedProfiles = new Set(JSON.parse(localStorage.getItem('liked_profiles')||'[]'));
+
+function toggleLike(id, btn) {
+  if (likedProfiles.has(id)) {
+    likedProfiles.delete(id);
+    btn.className = 'net-btn';
+    btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 14s-6-3.5-6-8a4 4 0 018 0 4 4 0 018 0c0 4.5-6 8-6 8z" stroke="rgba(255,255,255,0.4)" stroke-width="1.3"/></svg> Отметить';
+  } else {
+    likedProfiles.add(id);
+    btn.className = 'net-btn liked';
+    btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 16 16" fill="#a29bfe"><path d="M8 14s-6-3.5-6-8a4 4 0 018 0 4 4 0 018 0c0 4.5-6 8-6 8z" stroke="#a29bfe" stroke-width="1.3"/></svg> Интересно';
+  }
+  localStorage.setItem('liked_profiles', JSON.stringify([...likedProfiles]));
+}
+
 async function loadNetwork(){
   if(!participant)return;
   try{
@@ -1026,12 +1049,23 @@ async function loadNetwork(){
       const mySet=new Set(myInterests);
       const tagsHtml=their.map(t=>`<span class="net-tag${mySet.has(t)?' match':''}">${t}</span>`).join('');
       const avHtml=p.avatar?`<img src="${p.avatar.startsWith('http')?p.avatar:'https://proway-event.vercel.app/'+p.avatar}" alt="">`:`<span style="font-size:18px;color:var(--text2);">◈</span>`;
+      const liked = likedProfiles.has(p.id);
       return`<div class="net-card${p.score>0?' top-match':''}">
         <div class="net-av">${avHtml}</div>
         <div class="net-info">
           <div class="net-name">${p.name}</div>
           <div class="net-co">${p.company||''}${p.role?' · '+p.role:''}</div>
           <div class="net-tags">${tagsHtml}</div>
+          <div class="net-actions">
+            <button class="net-btn${liked?' liked':''}" onclick="toggleLike('${p.id}',this)">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="${liked?'#a29bfe':'none'}"><path d="M8 14s-6-3.5-6-8a4 4 0 018 0 4 4 0 018 0c0 4.5-6 8-6 8z" stroke="${liked?'#a29bfe':'rgba(255,255,255,0.4)'}" stroke-width="1.3"/></svg>
+              ${liked?'Интересно':'Отметить'}
+            </button>
+            ${p.email?`<button class="net-btn contact" onclick="window.location.href='mailto:${p.email}'">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="#00c864" stroke-width="1.3"/><path d="M1 5l7 5 7-5" stroke="#00c864" stroke-width="1.3" stroke-linecap="round"/></svg>
+              Написать
+            </button>`:''}
+          </div>
         </div>
         <div>
           <div class="net-match-n${p.score>0?' hot':''}">${p.score}</div>
