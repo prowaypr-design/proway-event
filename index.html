@@ -18,16 +18,9 @@
 html,body{height:100%;background:var(--black);color:var(--white);font-family:'Space Grotesk',sans-serif;overflow:hidden}
 .screen{position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden;transition:opacity .3s,transform .3s}
 .screen.hidden{opacity:0;pointer-events:none;transform:translateX(30px)}
-
-/* ── HALFTONE & TEXTURES ── */
 .halftone{background-image:radial-gradient(rgba(255,255,255,.08) 1px,transparent 0);background-size:8px 8px}
-.halftone-dark{background-image:radial-gradient(rgba(0,0,0,.2) 1px,transparent 0);background-size:6px 6px}
-
-/* ── TYPOGRAPHY ── */
 .font-headline{font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900}
 .font-bang{font-family:'Bangers',cursive;letter-spacing:.05em}
-
-/* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:3px solid #000;font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:1.2rem;text-transform:uppercase;cursor:pointer;transition:transform .1s,box-shadow .1s;box-shadow:var(--ink);padding:14px 28px;letter-spacing:.02em}
 .btn:active{transform:translate(3px,3px);box-shadow:var(--ink-sm)}
 .btn-red{background:var(--red);color:#fff}
@@ -36,31 +29,21 @@ html,body{height:100%;background:var(--black);color:var(--white);font-family:'Sp
 .btn-white{background:var(--white);color:#000}
 .btn-black{background:#000;color:#fff}
 .btn-full{width:100%}
-
-/* ── INPUTS ── */
 .field{display:flex;flex-direction:column;gap:6px}
 .field label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gray)}
 .field input,.field select{background:#1a1a1a;border:3px solid #333;color:var(--white);font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:500;padding:12px 14px;outline:none;transition:border-color .2s;width:100%;border-radius:0;-webkit-appearance:none;appearance:none}
 .field input:focus,.field select:focus{border-color:var(--yellow)}
-.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23d7dee1' stroke-width='2' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:40px}
-
-/* ── BOTTOM NAV ── */
 .bottom-nav{position:absolute;bottom:0;left:0;right:0;display:flex;background:#000;border-top:3px solid #222;z-index:100;height:64px}
 .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#666;cursor:pointer;transition:color .15s;font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;border:none;background:none;font-family:'Space Grotesk',sans-serif}
 .nav-btn.active{color:var(--yellow)}
 .nav-btn.active .nav-icon{background:var(--yellow);color:#000;transform:translateY(-6px);box-shadow:0 4px 0 #000}
 .nav-icon{width:40px;height:40px;display:flex;align-items:center;justify-content:center;transition:transform .2s,background .2s;font-size:20px}
 .material-symbols-outlined{font-size:22px;font-variation-settings:'FILL' 0,'wght' 400}
-
-/* ── TOAST ── */
 #toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#000;color:var(--yellow);border:3px solid var(--yellow);padding:10px 20px;font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:.9rem;text-transform:uppercase;opacity:0;transition:opacity .3s,transform .3s;z-index:999;pointer-events:none;white-space:nowrap;box-shadow:var(--ink)}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* ── PROGRESS BAR ── */
 .progress-wrap{background:#1a1a1a;border:2px solid #333;height:8px;overflow:hidden}
 .progress-bar{height:100%;background:var(--yellow);transition:width .5s}
-
-/* ── SCREEN: WELCOME ── */
+/* WELCOME */
 #screen-welcome{background:var(--red);justify-content:center;align-items:center;text-align:center;padding:32px 24px}
 #screen-welcome .bg-burst{position:absolute;inset:0;overflow:hidden;pointer-events:none}
 .burst-text{position:absolute;font-family:'Bangers',cursive;font-size:clamp(80px,25vw,200px);opacity:.07;letter-spacing:.05em;white-space:nowrap;line-height:1;color:#000}
@@ -69,11 +52,10 @@ html,body{height:100%;background:var(--black);color:var(--white);font-family:'Sp
 .welcome-date{font-family:'Bangers',cursive;font-size:clamp(1.4rem,6vw,2.5rem);letter-spacing:.1em;color:var(--yellow);text-shadow:3px 3px 0 #000;margin-bottom:8px}
 .welcome-place{font-size:.8rem;font-weight:500;color:rgba(255,255,255,.7);letter-spacing:.05em;margin-bottom:40px}
 .ticker-wrap{position:absolute;bottom:0;left:0;right:0;background:#000;border-top:3px solid #222;height:36px;overflow:hidden;display:flex;align-items:center}
-.ticker-inner{display:flex;gap:48px;white-space:nowrap;animation:ticker 20s linear infinite}
+.ticker-inner{display:flex;gap:48px;white-space:nowrap;animation:ticker 30s linear infinite}
 .ticker-inner span{font-family:'Bangers',cursive;font-size:.85rem;letter-spacing:.15em;color:rgba(255,255,255,.5)}
 @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-/* ── SCREEN: CHOOSE AGENT ── */
+/* AGENT */
 #screen-agent{background:var(--black)}
 .agent-split{position:absolute;inset:0;display:flex}
 .agent-half{flex:1;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:20px 12px;cursor:pointer;transition:flex .3s}
@@ -90,8 +72,7 @@ html,body{height:100%;background:var(--black);color:var(--white);font-family:'Sp
 .agent-vs{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:20;background:var(--yellow);border:4px solid #000;width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Bangers',cursive;font-size:1.4rem;box-shadow:var(--ink)}
 .agent-selected{position:absolute;inset:0;background:rgba(0,0,0,0);transition:background .2s;pointer-events:none}
 .agent-half.chosen .agent-selected{background:rgba(0,0,0,.3)}
-
-/* ── SCREEN: REGISTRATION ── */
+/* REG */
 #screen-reg{background:var(--black);overflow-y:auto;padding-bottom:80px}
 .reg-header{background:var(--red);padding:20px 20px 24px;position:relative;overflow:hidden}
 .reg-header .halftone{position:absolute;inset:0}
@@ -100,37 +81,33 @@ html,body{height:100%;background:var(--black);color:var(--white);font-family:'Sp
 .role-chips{display:flex;gap:8px;flex-wrap:wrap}
 .role-chip{border:3px solid #333;background:transparent;color:var(--gray);font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:.8rem;text-transform:uppercase;padding:8px 14px;cursor:pointer;transition:all .15s;letter-spacing:.02em}
 .role-chip.active{border-color:var(--yellow);background:var(--yellow);color:#000;box-shadow:var(--ink-sm)}
+.interest-chips{display:flex;gap:8px;flex-wrap:wrap}
+.interest-chip{border:2px solid #333;background:transparent;color:var(--gray);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.75rem;text-transform:uppercase;padding:6px 12px;cursor:pointer;transition:all .15s}
+.interest-chip.active{border-color:var(--blue);background:rgba(0,97,140,.2);color:#7ad4ff}
 .avatar-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .avatar-opt{border:3px solid #333;overflow:hidden;cursor:pointer;transition:border-color .15s,transform .1s;aspect-ratio:1;position:relative}
 .avatar-opt img{width:100%;height:100%;object-fit:cover;display:block}
 .avatar-opt.active{border-color:var(--yellow);transform:scale(1.05)}
 .avatar-opt.active::after{content:'✓';position:absolute;top:2px;right:4px;color:var(--yellow);font-size:1rem;font-weight:900;text-shadow:1px 1px 0 #000}
-
-/* ── SCREEN: APP MAIN ── */
+/* MAIN */
 #screen-main{background:var(--black);overflow-y:auto;padding-bottom:64px}
 .app-header{background:#000;border-bottom:3px solid #1a1a1a;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
 .app-logo{font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:1.4rem;text-transform:uppercase;color:var(--red);letter-spacing:-.02em;text-shadow:2px 2px 0 #000}
 .section-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
 .section-title{font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:1.5rem;text-transform:uppercase;color:var(--white)}
 .section-line{flex:1;height:3px;background:#222}
-.sponsor-block{background:#111;border:3px solid var(--yellow);padding:14px 16px;margin:16px}
-.sponsor-title{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--yellow);margin-bottom:10px}
-.sponsor-logos{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-.sponsor-name{font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:.05em;color:#fff;background:#000;border:2px solid #333;padding:4px 12px}
-.program-item{display:flex;gap:14px;padding:12px 16px;border-bottom:1px solid #1a1a1a}
-.program-time{font-family:'Bangers',cursive;font-size:1.1rem;color:var(--yellow);white-space:nowrap;min-width:48px}
-.program-desc{font-size:.85rem;color:var(--gray);line-height:1.4}
-.program-desc strong{color:var(--white);font-weight:700}
-.program-item.now{background:#111;border-left:3px solid var(--yellow)}
 .announce-card{margin:8px 16px;border:3px solid #222;padding:14px;background:#111;position:relative}
-.announce-card.alert{border-color:var(--red)}
-.announce-card.success{border-color:#22c55e}
+.announce-card.urgent{border-color:var(--red)}
+.announce-card.event{border-color:var(--yellow)}
 .announce-tag{position:absolute;top:-10px;left:12px;font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:.7rem;text-transform:uppercase;padding:2px 8px;border:2px solid #000}
 .announce-tag.info{background:var(--blue);color:#fff}
-.announce-tag.alert{background:var(--red);color:#fff}
+.announce-tag.urgent{background:var(--red);color:#fff}
+.announce-tag.event{background:var(--yellow);color:#000}
 .announce-msg{font-size:.9rem;color:var(--gray);line-height:1.5;margin-top:4px}
-
-/* ── SCREEN: PROFILE ── */
+.notif-panel{position:fixed;top:0;right:0;bottom:0;width:min(320px,100vw);background:#0a0a0a;border-left:3px solid #222;z-index:200;transform:translateX(100%);transition:transform .3s;overflow-y:auto;padding-bottom:40px}
+.notif-panel.open{transform:translateX(0)}
+.notif-badge{position:absolute;top:2px;right:2px;background:var(--red);color:#fff;border-radius:50%;width:16px;height:16px;font-size:.6rem;font-weight:900;display:flex;align-items:center;justify-content:center;border:1px solid #000}
+/* PROFILE */
 #screen-profile{background:var(--black);overflow-y:auto;padding-bottom:80px}
 .profile-card{margin:16px;border:4px solid #000;background:#111;box-shadow:var(--ink);position:relative;overflow:hidden}
 .profile-card-left{background:var(--blue);padding:20px;display:flex;flex-direction:column;align-items:center;gap:12px;border-right:4px solid #000}
@@ -140,33 +117,32 @@ html,body{height:100%;background:var(--black);color:var(--white);font-family:'Sp
 .stat-bar-label{display:flex;justify-content:space-between;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;color:var(--gray)}
 .stat-bar-track{height:18px;background:#1a1a1a;border:2px solid #333;overflow:hidden}
 .stat-bar-fill{height:100%;transition:width .8s;background-image:radial-gradient(rgba(0,0,0,.15) 1px,transparent 0);background-size:4px 4px}
-.ach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px}
+.share-card-btn{display:flex;align-items:center;gap:8px;width:100%;justify-content:center;border:3px solid #000;background:var(--yellow);color:#000;font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:1.1rem;text-transform:uppercase;cursor:pointer;padding:14px;box-shadow:var(--ink);transition:transform .1s,box-shadow .1s}
+.share-card-btn:active{transform:translate(3px,3px);box-shadow:var(--ink-sm)}
+.ach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 16px 16px}
 .ach-item{border:3px solid #222;background:#111;padding:10px 8px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;transition:border-color .2s}
 .ach-item.unlocked{border-color:var(--yellow);background:#1a1600}
 .ach-icon{font-size:1.5rem;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:2px solid #333;background:#0a0a0a}
 .ach-item.unlocked .ach-icon{border-color:var(--yellow)}
 .ach-name{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;line-height:1.3}
 .ach-item.unlocked .ach-name{color:var(--yellow)}
-
-/* ── SCREEN: LEADERBOARD ── */
+/* LEADERBOARD */
 #screen-top{background:var(--black);overflow-y:auto;padding-bottom:80px}
 .lb-hero{background:var(--red);padding:20px;text-align:center;border-bottom:4px solid #000;position:relative;overflow:hidden}
 .lb-rank1{display:flex;flex-direction:column;align-items:center;gap:8px}
-.lb-crown{font-size:2rem;display:block}
-.lb-avatar1{width:80px;height:80px;border:4px solid var(--yellow);object-fit:cover;box-shadow:0 0 0 3px #000}
+.lb-avatar1{width:80px;height:80px;border:4px solid var(--yellow);object-fit:cover;box-shadow:0 0 0 3px #000;filter:grayscale(1)}
 .lb-name1{font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:1.4rem;text-transform:uppercase;color:#fff;text-shadow:2px 2px 0 #000}
 .lb-pts1{font-family:'Bangers',cursive;font-size:2rem;color:var(--yellow);text-shadow:2px 2px 0 #000}
-.lb-row{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #1a1a1a;transition:background .15s}
+.lb-row{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #1a1a1a}
 .lb-row.me{background:#0d1a00;border-left:4px solid var(--yellow)}
 .lb-rank{font-family:'Bangers',cursive;font-size:1.3rem;color:#444;min-width:28px;text-align:center}
-.lb-avatar{width:40px;height:40px;border:2px solid #333;object-fit:cover;flex-shrink:0}
+.lb-avatar{width:40px;height:40px;border:2px solid #333;object-fit:cover;flex-shrink:0;filter:grayscale(1)}
 .lb-info{flex:1;min-width:0}
 .lb-uname{font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:1rem;text-transform:uppercase;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lb-company{font-size:.7rem;color:#555;font-weight:500}
 .lb-pts{font-family:'Bangers',cursive;font-size:1.3rem;color:var(--red);text-align:right}
 .lb-row.me .lb-pts{color:var(--yellow)}
-
-/* ── SCREEN: STANDS ── */
+/* STANDS */
 #screen-stands{background:var(--black);overflow-y:auto;padding-bottom:80px}
 .stands-progress{background:#111;border-bottom:3px solid #222;padding:14px 16px}
 .stands-prog-label{display:flex;justify-content:space-between;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gray);margin-bottom:6px}
@@ -183,22 +159,19 @@ html,body{height:100%;background:var(--black);color:var(--white);font-family:'Sp
 .vendor-status{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#444}
 .vendor-card.scanned .vendor-status{color:#22c55e}
 .vendor-done-seal{position:absolute;top:-4px;right:-4px;background:var(--yellow);border:2px solid #000;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:.8rem;transform:rotate(12deg)}
-
-/* ── SCREEN: NETWORKING ── */
+/* NETWORK */
 #screen-network{background:var(--black);overflow-y:auto;padding-bottom:80px}
-.net-card{margin:8px 16px;border:3px solid #222;background:#111;display:flex;gap:12px;padding:12px;cursor:pointer;transition:border-color .2s}
-.net-card:active{border-color:var(--yellow)}
-.net-avatar{width:56px;height:56px;border:2px solid #333;object-fit:cover;flex-shrink:0}
+.net-card{margin:8px 16px;border:3px solid #222;background:#111;display:flex;gap:12px;padding:12px;transition:border-color .2s}
+.net-avatar{width:56px;height:56px;border:2px solid #333;object-fit:cover;flex-shrink:0;filter:grayscale(1)}
 .net-info{flex:1;min-width:0}
 .net-codename{font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:1rem;text-transform:uppercase;color:var(--white)}
 .net-role{font-size:.7rem;color:#555;font-weight:500;margin-top:2px}
-.net-type{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:2px 8px;border:1px solid;margin-top:4px;display:inline-block}
-.net-type.proway{color:var(--red);border-color:var(--red)}
-.net-type.вендор{color:var(--blue);border-color:var(--blue)}
-.net-type.интегратор{color:#888;border-color:#444}
-.net-pts{font-family:'Bangers',cursive;font-size:1.2rem;color:#444;white-space:nowrap}
-
-/* ── SCREEN: POLLS ── */
+.net-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+.net-tag{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:2px 6px;border:1px solid #333;color:#555}
+.net-tag.match{border-color:var(--blue);color:#7ad4ff;background:rgba(0,97,140,.15)}
+.net-actions{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.net-match{font-family:'Bangers',cursive;font-size:1rem;color:var(--yellow)}
+/* POLLS */
 #screen-polls{background:var(--black);overflow-y:auto;padding-bottom:80px}
 .poll-card{margin:16px;border:4px solid #222;background:#111;padding:20px;position:relative}
 .poll-q{font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:1.2rem;text-transform:uppercase;color:var(--white);line-height:1.3;margin-bottom:16px}
@@ -210,16 +183,34 @@ html,body{height:100%;background:var(--black);color:var(--white);font-family:'Sp
 .poll-result-track{height:24px;background:#1a1a1a;border:2px solid #333;overflow:hidden}
 .poll-result-fill{height:100%;background:var(--blue);transition:width .6s;background-image:radial-gradient(rgba(0,0,0,.15) 1px,transparent 0);background-size:4px 4px}
 .poll-result-fill.winner{background:var(--yellow)}
-.poll-no-q{text-align:center;padding:60px 20px;color:#444}
-.poll-no-q .font-bang{font-size:2rem;color:#222;display:block;margin-bottom:8px}
-
-/* ── LOADING ── */
+/* ACH BANNER */
+.ach-banner{position:fixed;top:70px;left:14px;right:14px;background:#0a0a0a;border:3px solid var(--yellow);border-left:6px solid var(--yellow);padding:12px 16px;z-index:350;opacity:0;transform:translateY(-20px);transition:all .4s;pointer-events:none;display:flex;align-items:center;gap:12px;box-shadow:var(--ink)}
+.ach-banner.show{opacity:1;transform:translateY(0)}
+.ach-banner-title{font-size:.6rem;font-weight:700;color:var(--yellow);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px}
+.ach-banner-name{font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:1rem;text-transform:uppercase;color:#fff}
+/* FINALE */
+.finale-overlay{position:fixed;inset:0;background:#0a0a0a;z-index:600;display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center}
+.finale-overlay.show{display:flex}
+.finale-badge{background:var(--red);color:#fff;border:3px solid #000;padding:4px 16px;font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:.8rem;text-transform:uppercase;letter-spacing:2px;margin-bottom:20px;display:inline-block;box-shadow:var(--ink-sm)}
+.finale-title{font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:clamp(2.5rem,12vw,5rem);color:#fff;text-transform:uppercase;text-shadow:4px 4px 0 #000;line-height:1;margin-bottom:12px}
+.finale-stars{display:flex;justify-content:center;gap:8px;margin-bottom:24px}
+.finale-star{width:32px;height:32px;background:var(--yellow);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);animation:starPop .5s ease both;border:2px solid #000}
+.finale-star:nth-child(2){animation-delay:.15s}
+.finale-star:nth-child(3){animation-delay:.3s}
+/* QR MODAL */
+.qr-modal{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:500;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.qr-modal.show{display:flex}
+/* LOADING */
 #loading{position:fixed;inset:0;background:var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .4s}
 #loading.fade{opacity:0;pointer-events:none}
 .loading-logo{font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:2.5rem;text-transform:uppercase;color:var(--red);text-shadow:4px 4px 0 #000;margin-bottom:24px}
 .loading-bar{width:200px;height:6px;background:#1a1a1a;border:2px solid #333;overflow:hidden}
 .loading-fill{height:100%;background:var(--yellow);animation:load 1.5s ease forwards}
 @keyframes load{from{width:0}to{width:100%}}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes starPop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 </style>
 </head>
 <body>
@@ -232,6 +223,44 @@ html,body{height:100%;background:var(--black);color:var(--white);font-family:'Sp
 
 <!-- TOAST -->
 <div id="toast"></div>
+
+<!-- FINALE -->
+<div class="finale-overlay" id="finale-overlay">
+  <div class="finale-stars"><div class="finale-star"></div><div class="finale-star"></div><div class="finale-star"></div></div>
+  <div class="finale-badge">МИССИЯ ВЫПОЛНЕНА</div>
+  <div class="finale-title">СПАСИБО,<br>АГЕНТ!</div>
+  <div style="font-size:.9rem;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:8px;max-width:300px">Ты сделал этот день особенным.</div>
+  <div style="font-family:'Bangers',cursive;font-size:2.5rem;color:var(--yellow);margin-bottom:4px;text-shadow:3px 3px 0 #000" id="finale-pts">0 Б</div>
+  <div style="font-size:.8rem;color:rgba(255,255,255,.4);margin-bottom:24px" id="finale-rank">Место в рейтинге: —</div>
+  <div style="display:flex;gap:8px;justify-content:center;margin-bottom:24px;flex-wrap:wrap" id="finale-achs"></div>
+  <button class="share-card-btn" style="max-width:320px" onclick="generateShareCard()"><span class="material-symbols-outlined">download</span>Скачать карточку</button>
+  <button style="margin-top:8px;background:transparent;border:2px solid #333;color:#555;padding:12px 24px;font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:.9rem;text-transform:uppercase;cursor:pointer;width:100%;max-width:320px" onclick="document.getElementById('finale-overlay').classList.remove('show')">Вернуться</button>
+</div>
+
+<!-- ACH BANNER -->
+<div class="ach-banner" id="ach-banner">
+  <div style="font-size:1.8rem" id="ach-banner-icon">🏆</div>
+  <div><div class="ach-banner-title">Достижение разблокировано!</div><div class="ach-banner-name" id="ach-banner-name"></div></div>
+</div>
+
+<!-- QR MODAL -->
+<div class="qr-modal" id="qr-modal">
+  <div style="font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:1.5rem;text-transform:uppercase;color:var(--yellow);margin-bottom:16px;text-shadow:3px 3px 0 #000">МОЙ QR-КОД</div>
+  <div id="qr-modal-img" style="background:#fff;padding:16px;border:4px solid #000;box-shadow:var(--ink)"></div>
+  <div style="margin-top:12px;font-size:.75rem;color:#555;text-transform:uppercase;letter-spacing:.08em">Покажи другому участнику</div>
+  <button class="btn btn-yellow" style="margin-top:20px" onclick="closeQrModal()">Закрыть</button>
+</div>
+
+<canvas id="share-canvas" style="display:none"></canvas>
+
+<!-- NOTIFICATIONS PANEL -->
+<div class="notif-panel" id="notif-panel">
+  <div style="padding:16px;border-bottom:2px solid #222;display:flex;justify-content:space-between;align-items:center">
+    <span style="font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:1.1rem;text-transform:uppercase">Уведомления</span>
+    <button style="background:none;border:none;color:#555;cursor:pointer;font-size:1.2rem" onclick="closeNotifPanel()">✕</button>
+  </div>
+  <div id="notif-list" style="padding:8px"></div>
+</div>
 
 <!-- ══ SCREEN: WELCOME ══ -->
 <div id="screen-welcome" class="screen hidden">
@@ -246,8 +275,7 @@ html,body{height:100%;background:var(--black);color:var(--white);font-family:'Sp
     <div class="welcome-date">PROWAY</div>
     <div class="welcome-place">Пространство «Connect» · 5-й Донской проезд, д. 17</div>
     <button class="btn btn-yellow btn-full" style="font-size:1.4rem;padding:18px" onclick="showScreen('screen-agent')">
-      <span class="material-symbols-outlined">arrow_forward</span>
-      Начать миссию
+      <span class="material-symbols-outlined">arrow_forward</span>Начать миссию
     </button>
     <p style="margin-top:16px;font-size:.75rem;color:rgba(255,255,255,.4);letter-spacing:.05em">Уже зарегистрирован? <span style="color:var(--yellow);cursor:pointer;text-decoration:underline" onclick="tryRestoreSession()">Войти</span></p>
   </div>
@@ -257,8 +285,8 @@ html,body{height:100%;background:var(--black);color:var(--white);font-family:'Sp
       <span>КОД БЕЗОПАСНОСТИ</span><span>CHECK POINT</span><span>ИНФОТЕКС</span>
       <span>POSITIVE TECHNOLOGIES</span><span>NGR SOFTLAB</span><span>TRAFFICSOFT</span>
       <span>F6</span><span>IDECO</span><span>PROWAY SECURITY DAY</span>
-      <span>21.04.2026</span><span>ПРОСТРАНСТВО CONNECT</span><span>КОД БЕЗОПАСНОСТИ</span>
-      <span>CHECK POINT</span><span>ИНФОТЕКС</span><span>POSITIVE TECHNOLOGIES</span>
+      <span>21.04.2026</span><span>ПРОСТРАНСТВО CONNECT</span>
+      <span>КОД БЕЗОПАСНОСТИ</span><span>CHECK POINT</span><span>ИНФОТЕКС</span>
     </div>
   </div>
 </div>
@@ -271,10 +299,10 @@ html,body{height:100%;background:var(--black);color:var(--white);font-family:'Sp
   <div class="agent-split">
     <div class="agent-half" id="agent-defender" onclick="selectAgent('male')">
       <div class="halftone" style="opacity:.15"></div>
-      <div class="agent-bg-text">DEFENCE</div>
-      <img src="Defense_Grid_Icon.png" alt="Defense Grid" class="agent-img" id="img-defender"
-           onerror="this.src='https://via.placeholder.com/140x180/b90c01/fff?text=D'"/>
-      <div class="agent-label">Defense Grid</div>
+      <div class="agent-bg-text">ФАЙРВОЛ</div>
+      <img src="Defense_Grid_Icon.png" alt="Файрвол" class="agent-img"
+           onerror="this.src='https://via.placeholder.com/140x180/b90c01/fff?text=Ф'"/>
+      <div class="agent-label">Файрвол</div>
       <div class="agent-class">Tactical Front-Line</div>
       <div class="agent-selected"></div>
     </div>
@@ -282,10 +310,10 @@ html,body{height:100%;background:var(--black);color:var(--white);font-family:'Sp
     <div class="agent-vs">VS</div>
     <div class="agent-half" id="agent-tracer" onclick="selectAgent('female')">
       <div class="halftone" style="opacity:.15"></div>
-      <div class="agent-bg-text">STEALTH</div>
-      <img src="Stealth_Tracer_Icon.png" alt="Stealth Tracer" class="agent-img" id="img-tracer"
-           onerror="this.src='https://via.placeholder.com/140x180/00618c/fff?text=S'"/>
-      <div class="agent-label">Stealth Tracer</div>
+      <div class="agent-bg-text">ХАКЕР</div>
+      <img src="Stealth_Tracer_Icon.png" alt="Хакер" class="agent-img"
+           onerror="this.src='https://via.placeholder.com/140x180/00618c/fff?text=Х'"/>
+      <div class="agent-label">Хакер</div>
       <div class="agent-class">Intel Acquisition</div>
       <div class="agent-selected"></div>
     </div>
@@ -299,31 +327,18 @@ html,body{height:100%;background:var(--black);color:var(--white);font-family:'Sp
       <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px">
         <img id="reg-avatar-preview" class="reg-avatar-preview" src="" alt=""/>
         <div>
-          <div style="font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:1.3rem;text-transform:uppercase;color:#fff;text-shadow:2px 2px 0 #000" id="reg-codename-label">DEFENSE GRID</div>
+          <div style="font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:1.3rem;text-transform:uppercase;color:#fff;text-shadow:2px 2px 0 #000" id="reg-codename-label">ФАЙРВОЛ</div>
           <div style="font-size:.7rem;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.08em">Оперативник выбран</div>
         </div>
       </div>
       <div style="font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:1.8rem;text-transform:uppercase;color:#fff;text-shadow:3px 3px 0 #000">Регистрация</div>
-      <div style="font-size:.75rem;color:rgba(255,255,255,.6);margin-top:4px">Заполни данные для участия в миссии</div>
     </div>
   </div>
   <div style="padding:20px;display:flex;flex-direction:column;gap:16px">
-    <div class="field">
-      <label>Имя и Фамилия</label>
-      <input type="text" id="reg-name" placeholder="Иван Иванов" autocomplete="name"/>
-    </div>
-    <div class="field">
-      <label>Компания</label>
-      <input type="text" id="reg-company" placeholder="Название компании" autocomplete="organization"/>
-    </div>
-    <div class="field">
-      <label>Должность</label>
-      <input type="text" id="reg-role" placeholder="Менеджер, директор..." autocomplete="organization-title"/>
-    </div>
-    <div class="field">
-      <label>Email</label>
-      <input type="email" id="reg-email" placeholder="name@company.ru" autocomplete="email"/>
-    </div>
+    <div class="field"><label>Имя и Фамилия</label><input type="text" id="reg-name" placeholder="Иван Иванов" autocomplete="name"/></div>
+    <div class="field"><label>Компания</label><input type="text" id="reg-company" placeholder="Название компании" autocomplete="organization"/></div>
+    <div class="field"><label>Должность</label><input type="text" id="reg-role" placeholder="Менеджер, директор..." autocomplete="organization-title"/></div>
+    <div class="field"><label>Email</label><input type="email" id="reg-email" placeholder="name@company.ru" autocomplete="email"/></div>
     <div class="field">
       <label>Вы представляете</label>
       <div class="role-chips" id="role-chips">
@@ -333,12 +348,15 @@ html,body{height:100%;background:var(--black);color:var(--white);font-family:'Sp
       </div>
     </div>
     <div class="field">
+      <label>Интересы</label>
+      <div class="interest-chips" id="interests-container"></div>
+    </div>
+    <div class="field">
       <label>Аватар агента</label>
       <div class="avatar-grid" id="avatar-grid"></div>
     </div>
-    <button class="btn btn-red btn-full" style="margin-top:8px;font-size:1.2rem;padding:18px" onclick="doRegister()">
-      <span class="material-symbols-outlined">check</span>
-      Принять миссию
+    <button class="btn btn-red btn-full" style="margin-top:8px;font-size:1.2rem;padding:18px" id="reg-btn" onclick="doRegister()">
+      <span class="material-symbols-outlined">check</span>Принять миссию
     </button>
   </div>
 </div>
@@ -349,23 +367,27 @@ html,body{height:100%;background:var(--black);color:var(--white);font-family:'Sp
     <div class="app-logo">PROWAY Security</div>
     <div style="display:flex;align-items:center;gap:10px">
       <div id="header-pts" style="font-family:'Bangers',cursive;font-size:1.1rem;color:var(--yellow)">0 pts</div>
-      <img id="header-avatar" style="width:36px;height:36px;border:2px solid #333;object-fit:cover" src="" alt="" onclick="showScreen('screen-profile')"/>
+      <div style="position:relative">
+        <button style="background:none;border:none;cursor:pointer;color:var(--gray);padding:4px" onclick="openNotifPanel()">
+          <span class="material-symbols-outlined">notifications</span>
+          <span class="notif-badge" id="notif-badge" style="display:none">!</span>
+        </button>
+      </div>
+      <img id="header-avatar" style="width:36px;height:36px;border:2px solid #333;object-fit:cover;cursor:pointer" src="" alt="" onclick="navTo('screen-profile','nav-profile')"/>
     </div>
   </div>
-  <div style="padding:16px">
-    <!-- Спонсоры -->
-    <div class="sponsor-block">
-      <div class="sponsor-title">★ Спонсоры мероприятия</div>
-      <div class="sponsor-logos">
-        <span class="sponsor-name">Эвритег</span>
-        <span class="sponsor-name">Xello</span>
-        <span class="sponsor-name">WMX</span>
-      </div>
+  <!-- Бегущая строка -->
+  <div id="ticker-wrap" style="background:#000;border-bottom:2px solid #1a1a1a;height:28px;overflow:hidden;display:flex;align-items:center;flex-shrink:0">
+    <div style="background:var(--red);padding:0 8px;height:100%;display:flex;align-items:center;flex-shrink:0;border-right:2px solid #000">
+      <span style="font-family:'Bangers',cursive;font-size:.75rem;letter-spacing:.1em;color:#fff">LIVE</span>
     </div>
+    <div id="ticker-text" style="flex:1;padding:0 12px;font-family:'Space Grotesk',sans-serif;font-size:.75rem;color:#555;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Добро пожаловать на PROWAY Security Day!</div>
+  </div>
+  <div style="padding:16px;overflow-y:auto;flex:1">
     <!-- Объявления -->
     <div id="announcements-list"></div>
     <!-- Программа -->
-    <div style="margin-top:16px">
+    <div style="margin-top:8px">
       <div class="section-header">
         <div class="section-title">Программа</div>
         <div class="section-line"></div>
@@ -378,13 +400,12 @@ html,body{height:100%;background:var(--black);color:var(--white);font-family:'Sp
 <!-- ══ SCREEN: PROFILE ══ -->
 <div id="screen-profile" class="screen hidden">
   <div class="app-header">
-    <button style="background:none;border:none;color:var(--gray);cursor:pointer;display:flex;align-items:center;gap:4px;font-family:'Space Grotesk',sans-serif;font-size:.85rem" onclick="goBack()">
-      <span class="material-symbols-outlined" style="font-size:18px">arrow_back</span>Назад
-    </button>
-    <div class="app-logo">Профиль</div>
-    <div style="width:60px"></div>
+    <div class="app-logo">Мой профиль</div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div id="profile-rank-badge" style="font-family:'Bangers',cursive;font-size:1rem;color:var(--yellow)"></div>
+    </div>
   </div>
-  <div style="padding:0 0 16px">
+  <div style="overflow-y:auto;flex:1;padding-bottom:16px">
     <div class="profile-card">
       <div style="display:flex">
         <div class="profile-card-left" style="min-width:120px">
@@ -414,21 +435,27 @@ html,body{height:100%;background:var(--black);color:var(--white);font-family:'Sp
         </div>
       </div>
     </div>
+    <!-- QR кнопка -->
+    <div style="padding:0 16px;margin-bottom:12px">
+      <button class="btn btn-blue btn-full" onclick="showQrModal()">
+        <span class="material-symbols-outlined">qr_code_2</span>Показать мой QR
+      </button>
+    </div>
+    <!-- Скачать карточку -->
+    <div style="padding:0 16px;margin-bottom:16px">
+      <button class="share-card-btn" onclick="generateShareCard()">
+        <svg style="width:16px;height:16px" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 5l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11v2a1 1 0 001 1h10a1 1 0 001-1v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Скачать карточку агента
+      </button>
+    </div>
     <!-- Ачивки -->
     <div style="padding:0 16px">
       <div class="section-header" style="margin-bottom:12px">
-        <div class="section-title" style="font-size:1.1rem">Ачивки</div>
+        <div class="section-title" style="font-size:1.1rem">Достижения</div>
         <div class="section-line"></div>
       </div>
     </div>
     <div class="ach-grid" id="ach-grid"></div>
-    <!-- QR кнопка -->
-    <div style="padding:0 16px;margin-top:8px">
-      <button class="btn btn-yellow btn-full" onclick="showQR()">
-        <span class="material-symbols-outlined">qr_code_2</span>
-        Показать мой QR
-      </button>
-    </div>
   </div>
 </div>
 
@@ -439,12 +466,12 @@ html,body{height:100%;background:var(--black);color:var(--white);font-family:'Sp
     <div style="position:relative;z-index:1">
       <div style="font-family:'Bangers',cursive;font-size:.9rem;letter-spacing:.15em;color:rgba(255,255,255,.6);margin-bottom:12px">ТОП ОПЕРАТИВНИКОВ</div>
       <div class="lb-rank1" id="lb-rank1">
-        <span class="lb-crown">👑</span>
+        <span style="font-size:2rem">👑</span>
         <div style="font-size:.8rem;color:rgba(255,255,255,.5)">Загрузка...</div>
       </div>
     </div>
   </div>
-  <div id="lb-list" style="padding-bottom:16px"></div>
+  <div id="lb-list" style="overflow-y:auto;flex:1;padding-bottom:16px"></div>
 </div>
 
 <!-- ══ SCREEN: STANDS ══ -->
@@ -455,32 +482,19 @@ html,body{height:100%;background:var(--black);color:var(--white);font-family:'Sp
   </div>
   <div class="stands-progress">
     <div class="stands-prog-label">
-      <span>Прогресс миссии</span>
-      <span id="stands-prog-text">0 из 8 стендов</span>
+      <span>Прогресс миссии</span><span id="stands-prog-text">0 из 8 стендов</span>
     </div>
     <div class="progress-wrap"><div class="progress-bar" id="stands-prog-bar" style="width:0%"></div></div>
   </div>
-  <div class="vendor-grid" id="vendor-grid"></div>
-  <div style="margin:0 16px 16px;background:#111;border:3px solid var(--yellow);padding:14px;display:flex;align-items:center;gap:12px">
-    <span class="material-symbols-outlined" style="font-size:32px;color:var(--yellow)">qr_code_scanner</span>
-    <div>
-      <div style="font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;text-transform:uppercase;font-size:.95rem">Сканировать QR</div>
-      <div style="font-size:.75rem;color:#555;margin-top:2px">Подойди к стенду и отсканируй код</div>
-    </div>
-  </div>
+  <div class="vendor-grid" id="vendor-grid" style="overflow-y:auto"></div>
 </div>
 
 <!-- ══ SCREEN: NETWORKING ══ -->
 <div id="screen-network" class="screen hidden">
   <div class="app-header">
     <div class="app-logo">Нетворкинг</div>
-    <div style="display:flex;gap:6px">
-      <button class="btn btn-black" style="padding:6px 10px;font-size:.7rem;border-width:2px" onclick="filterNet('')">Все</button>
-      <button class="btn btn-black" style="padding:6px 10px;font-size:.7rem;border-width:2px;color:var(--red);border-color:var(--red)" onclick="filterNet('PROWAY')">PROWAY</button>
-      <button class="btn btn-black" style="padding:6px 10px;font-size:.7rem;border-width:2px;color:var(--blue);border-color:var(--blue)" onclick="filterNet('вендор')">Вендор</button>
-    </div>
   </div>
-  <div id="net-list"></div>
+  <div id="net-list" style="overflow-y:auto;flex:1"></div>
 </div>
 
 <!-- ══ SCREEN: POLLS ══ -->
@@ -492,9 +506,8 @@ html,body{height:100%;background:var(--black);color:var(--white);font-family:'Sp
       <span style="font-size:.7rem;color:#555;font-weight:700;text-transform:uppercase;letter-spacing:.06em">Live</span>
     </div>
   </div>
-  <div id="poll-content" style="padding:16px"></div>
+  <div id="poll-content" style="overflow-y:auto;flex:1;padding:16px"></div>
 </div>
-<style>@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}</style>
 
 <!-- ══ BOTTOM NAV ══ -->
 <nav class="bottom-nav" id="bottom-nav" style="display:none">
@@ -502,13 +515,13 @@ html,body{height:100%;background:var(--black);color:var(--white);font-family:'Sp
     <div class="nav-icon"><span class="material-symbols-outlined">dynamic_feed</span></div>
     <span>Лента</span>
   </button>
-  <button class="nav-btn" id="nav-stands" onclick="navTo('screen-stands','nav-stands')">
-    <div class="nav-icon"><span class="material-symbols-outlined">storefront</span></div>
-    <span>Стенды</span>
-  </button>
   <button class="nav-btn" id="nav-top" onclick="navTo('screen-top','nav-top');loadLeaderboard()">
     <div class="nav-icon"><span class="material-symbols-outlined">leaderboard</span></div>
     <span>Топ</span>
+  </button>
+  <button class="nav-btn" id="nav-stands" onclick="navTo('screen-stands','nav-stands')">
+    <div class="nav-icon"><span class="material-symbols-outlined">storefront</span></div>
+    <span>Стенды</span>
   </button>
   <button class="nav-btn" id="nav-network" onclick="navTo('screen-network','nav-network');loadNetwork()">
     <div class="nav-icon"><span class="material-symbols-outlined">hub</span></div>
@@ -521,25 +534,17 @@ html,body{height:100%;background:var(--black);color:var(--white);font-family:'Sp
 </nav>
 
 <script>
-const API = 'https://script.google.com/macros/s/AKfycbyYuilmUoMlTsWc_M0GeuOxmsbJ7QWK9cyOg20j-uUD8HvHBxzsyW5lm-o0kFT0G53tVA/exec';
 
-// ── СОСТОЯНИЕ ─────────────────────────────────────────────────────────
-let participant = null;
-let selectedGender = 'male';
-let selectedType = 'PROWAY';
-let selectedAvatar = '';
-let scannedVendors = new Set();
-let pollAnswers = {};
-let netFilter = '';
-let prevScreen = 'screen-main';
+const API = 'https://script.google.com/macros/s/AKfycbyDyYFwHvLPwHZSqd2abQCLhr9RaoqgVTA96OIw4-mxvRSRkioSe2Th2MD8LYiKhRFstw/exec';
+const MAX_PTS = 430;
 
-// ── АВАТАРЫ ────────────────────────────────────────────────────────────
-const AVATARS_MALE   = ['male1.png','male2.png','male3.png','male4.png'];
-const AVATARS_FEMALE = ['female1.png','female2.png','female3.png','female4.png','female5.png','female6.png','female7.png','female8.png','female9.png','female10.png','female11.png'];
-const CODENAMES_MALE   = ['DEFENSE GRID','IRON SHIELD','DARK VECTOR','CYBER HAWK'];
-const CODENAMES_FEMALE = ['STEALTH TRACER','GHOST SIGNAL','PHANTOM BYTE','CIPHER QUEEN','NOVA CORE','SHADOW NET','VIPER STRIKE','ZERO DAY','NEXUS PRIME','DARK PULSE','ECHO BREACH'];
+const INTERESTS = ['Пентест','Zero Trust','DLP','SOC/SIEM','PAM','Криптография','NGFW','Threat Intelligence'];
 
-// ── ВЕНДОРЫ ────────────────────────────────────────────────────────────
+const AVATARS_MALE   = ['male0.png','male1.png','male2.png','male3.png','male4.png','male5.png','male6.png','male7.png'];
+const AVATARS_FEMALE = ['female0.png','female1.png','female2.png','female3.png','female4.png','female5.png','female6.png','female7.png','female8.png','female9.png','female10.png','female11.png','female12.png'];
+const CODENAMES_MALE   = ['ФАЙРВОЛ','ФАЙРВОЛ','ФАЙРВОЛ','ФАЙРВОЛ','ФАЙРВОЛ','ФАЙРВОЛ','ФАЙРВОЛ','ФАЙРВОЛ'];
+const CODENAMES_FEMALE = ['ХАКЕР','ХАКЕР','ХАКЕР','ХАКЕР','ХАКЕР','ХАКЕР','ХАКЕР','ХАКЕР','ХАКЕР','ХАКЕР','ХАКЕР','ХАКЕР','ХАКЕР'];
+
 const VENDORS = [
   {id:'kod_bezopasnosti', name:'Код Безопасности', tag:'NGFW/SOC'},
   {id:'checkpoint',       name:'Check Point',       tag:'FW/VPN'},
@@ -551,7 +556,6 @@ const VENDORS = [
   {id:'ideco',            name:'Ideco',               tag:'UTM'}
 ];
 
-// ── ПРОГРАММА ──────────────────────────────────────────────────────────
 const PROGRAM = [
   {time:'13:00', title:'Регистрация', desc:'Приветственный кофе, PROWAY Security Экспо'},
   {time:'13:55', title:'Приветственное слово', desc:''},
@@ -563,186 +567,267 @@ const PROGRAM = [
   {time:'22:00', title:'Завершение', desc:''}
 ];
 
-// ── АЧИВКИ ─────────────────────────────────────────────────────────────
 const ACHIEVEMENTS = [
-  {key:'all_stands',     icon:'★', name:'Все стенды',     pts:'+25'},
-  {key:'share_card',     icon:'↗', name:'Поделился картой', pts:'+15'},
-  {key:'networking_add', icon:'⊕', name:'В нетворкинг',   pts:'+15'},
-  {key:'top10',          icon:'◈', name:'Топ-10',          pts:'+10'},
-  {key:'early_reg',      icon:'⚡', name:'Ранняя рег.',    pts:'+20'},
-  {key:'view_5profiles', icon:'◎', name:'5 профилей',      pts:'+20'},
+  {id:'register', icon:'🎖️', name:'Первый шаг',    check: ()=> !!participant },
+  {id:'vendors',  icon:'🗺️', name:'Картограф',     check: ()=> scannedVendors.size >= 8 },
+  {id:'polls',    icon:'🧠', name:'Аналитик',       check: ()=> Object.keys(pollAnswers).length >= 3 },
+  {id:'network',  icon:'🤝', name:'Связной',        check: ()=> { let m=0; for(let k in localStorage){if(k.startsWith('met_'))m++;} return m>=5; }},
+  {id:'top3',     icon:'🏆', name:'Топ-3',          check: ()=> myRank > 0 && myRank <= 3 },
+  {id:'100pts',   icon:'⚡', name:'100 баллов',     check: ()=> (participant?.points||0) >= 100 },
 ];
 
-// ── API ────────────────────────────────────────────────────────────────
-async function api(params) {
-  const url = API + '?' + new URLSearchParams(params);
-  const r = await fetch(url);
-  return r.json();
+let participant = null;
+let myRank = 0;
+let selectedGender = 'male';
+let selectedType = 'PROWAY';
+let selectedAvatar = '';
+let scannedVendors = new Set(JSON.parse(localStorage.getItem('scanned_vendors')||'[]'));
+let pollAnswers = JSON.parse(localStorage.getItem('poll_answers')||'{}');
+let announcements = [];
+let unlockedAchs = new Set(JSON.parse(localStorage.getItem('unlocked_achs')||'[]'));
+
+// ── API ──
+async function api(p){return fetch(API+'?'+new URLSearchParams(p)).then(r=>r.json());}
+
+// ── TOAST ──
+let toastTimer;
+function showToast(m,d=2800){
+  const t=document.getElementById('toast');
+  t.textContent=m; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),d);
 }
 
-// ── НАВИГАЦИЯ ──────────────────────────────────────────────────────────
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+// ── НАВИГАЦИЯ ──
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
 }
 
-function navTo(screenId, navId) {
-  prevScreen = screenId;
+function navTo(screenId, navId){
   showScreen(screenId);
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById(navId).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  if(navId) document.getElementById(navId)?.classList.add('active');
 }
 
-function goBack() { showScreen(prevScreen); }
-
-// ── ВЫБОР АГЕНТА ───────────────────────────────────────────────────────
-function selectAgent(gender) {
+// ── ВЫБОР АГЕНТА ──
+function selectAgent(gender){
   selectedGender = gender;
   document.getElementById('agent-defender').classList.toggle('chosen', gender==='male');
   document.getElementById('agent-tracer').classList.toggle('chosen', gender==='female');
-  setTimeout(() => {
-    buildRegForm();
-    showScreen('screen-reg');
-  }, 300);
+  setTimeout(()=>{ buildRegForm(); showScreen('screen-reg'); }, 300);
 }
 
-function buildRegForm() {
-  const avatars = selectedGender === 'male' ? AVATARS_MALE : AVATARS_FEMALE;
-  const codenames = selectedGender === 'male' ? CODENAMES_MALE : CODENAMES_FEMALE;
+function buildRegForm(){
+  const avatars = selectedGender==='male' ? AVATARS_MALE : AVATARS_FEMALE;
+  const codenames = selectedGender==='male' ? CODENAMES_MALE : CODENAMES_FEMALE;
   selectedAvatar = avatars[0];
 
-  // Превью
   const preview = document.getElementById('reg-avatar-preview');
   preview.src = selectedAvatar;
-  preview.onerror = () => { preview.src = `https://via.placeholder.com/80x80/1a1a1a/fff?text=${selectedGender==='male'?'M':'F'}`; };
+  preview.onerror = ()=>{ preview.src=`https://via.placeholder.com/80x80/1a1a1a/fff?text=?`; };
   document.getElementById('reg-codename-label').textContent = codenames[0];
 
-  // Грид аватаров
+  // Интересы
+  const ic = document.getElementById('interests-container');
+  if(ic) ic.innerHTML = INTERESTS.map(i=>
+    `<div class="interest-chip" data-val="${i}" onclick="toggleInterest(this)">${i}</div>`
+  ).join('');
+
+  // Аватары
   const grid = document.getElementById('avatar-grid');
   grid.innerHTML = '';
-  avatars.forEach((av, i) => {
+  avatars.forEach((av,i)=>{
     const d = document.createElement('div');
-    d.className = 'avatar-opt' + (i===0?' active':'');
-    d.onclick = () => {
+    d.className = 'avatar-opt'+(i===0?' active':'');
+    d.onclick = ()=>{
       document.querySelectorAll('.avatar-opt').forEach(x=>x.classList.remove('active'));
       d.classList.add('active');
       selectedAvatar = av;
       preview.src = av;
-      document.getElementById('reg-codename-label').textContent = codenames[i] || codenames[0];
+      document.getElementById('reg-codename-label').textContent = codenames[i]||codenames[0];
     };
     const img = document.createElement('img');
     img.src = av;
-    img.onerror = () => { img.src = `https://via.placeholder.com/80x80/1a1a1a/fff?text=${i+1}`; };
-    d.appendChild(img);
-    grid.appendChild(d);
+    img.onerror = ()=>{ img.src=`https://via.placeholder.com/80x80/1a1a1a/fff?text=${i+1}`; };
+    d.appendChild(img); grid.appendChild(d);
   });
 }
 
-function selectType(el) {
+function toggleInterest(el){ el.classList.toggle('active'); }
+function getSelectedInterests(){ return [...document.querySelectorAll('.interest-chip.active')].map(el=>el.dataset.val); }
+function selectType(el){
   document.querySelectorAll('.role-chip').forEach(c=>c.classList.remove('active'));
   el.classList.add('active');
   selectedType = el.dataset.val;
 }
 
-// ── РЕГИСТРАЦИЯ ────────────────────────────────────────────────────────
-async function doRegister() {
+// ── РЕГИСТРАЦИЯ ──
+async function doRegister(){
   const name    = document.getElementById('reg-name').value.trim();
   const company = document.getElementById('reg-company').value.trim();
   const role    = document.getElementById('reg-role').value.trim();
   const email   = document.getElementById('reg-email').value.trim();
+  if(!name||!company){showToast('Заполни имя и компанию!');return;}
 
-  if (!name || !company) { toast('Заполни имя и компанию!'); return; }
-
-  const codenames = selectedGender === 'male' ? CODENAMES_MALE : CODENAMES_FEMALE;
-  const avatars   = selectedGender === 'male' ? AVATARS_MALE : AVATARS_FEMALE;
+  const codenames = selectedGender==='male'?CODENAMES_MALE:CODENAMES_FEMALE;
+  const avatars   = selectedGender==='male'?AVATARS_MALE:AVATARS_FEMALE;
   const idx = avatars.indexOf(selectedAvatar);
-  const codename = codenames[idx] || codenames[0];
+  const codename = codenames[idx]||codenames[0];
+  const interests = getSelectedInterests();
 
-  toast('Регистрируем...');
+  const btn = document.getElementById('reg-btn');
+  btn.innerHTML='<svg style="animation:spin 1s linear infinite;width:18px;height:18px" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(0,0,0,.3)" stroke-width="2"/><path d="M12 3a9 9 0 019 9" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg> Регистрируем...';
+  btn.disabled=true;
+
   try {
     const res = await api({
-      action:'register', name, company, role,
-      email, participant_type: selectedType,
-      avatar: selectedAvatar, codename
+      action:'register', name, company, role, email,
+      participant_type: selectedType,
+      avatar: selectedAvatar, codename,
+      interests: interests.join(',')
     });
-    if (res.success) {
-      participant = { id:res.id, name, company, role, email,
-        participant_type: selectedType, avatar: selectedAvatar,
-        codename, points:15, achievements:{}, profiles_viewed:0 };
+    if(res.success){
+      participant = {id:res.id, name, company, role, email,
+        participant_type:selectedType, avatar:selectedAvatar,
+        codename, points:15, interests};
       localStorage.setItem('participant', JSON.stringify(participant));
-      if (res.early_reg) toast('⚡ Ранняя регистрация! +20 баллов');
-      else toast('Добро пожаловать, агент!');
+      localStorage.setItem('participant_registered_at', new Date().toISOString());
       initApp();
     } else {
-      toast('Ошибка: ' + (res.error||'попробуй ещё раз'));
+      showToast('Ошибка: '+(res.error||'попробуй ещё раз'));
+      btn.innerHTML='<span class="material-symbols-outlined">check</span>Принять миссию';
+      btn.disabled=false;
     }
-  } catch(e) {
-    toast('Нет соединения');
+  } catch(e){
+    showToast('Нет соединения');
+    btn.innerHTML='<span class="material-symbols-outlined">check</span>Принять миссию';
+    btn.disabled=false;
   }
 }
 
-// ── ИНИЦИАЛИЗАЦИЯ ПРИЛОЖЕНИЯ ───────────────────────────────────────────
-function initApp() {
-  document.getElementById('bottom-nav').style.display = 'flex';
-  // Шапка
-  const hAvatar = document.getElementById('header-avatar');
-  hAvatar.src = participant.avatar;
-  hAvatar.onerror = () => { hAvatar.src = `https://via.placeholder.com/36x36/1a1a1a/fff?text=${participant.name[0]}`; };
-  document.getElementById('header-pts').textContent = (participant.points||0) + ' pts';
-  // Программа
+// ── ИНИЦИАЛИЗАЦИЯ ──
+function initApp(){
+  document.getElementById('bottom-nav').style.display='flex';
+  const hAv = document.getElementById('header-avatar');
+  hAv.src = participant.avatar;
+  hAv.onerror=()=>{hAv.src=`https://via.placeholder.com/36x36/1a1a1a/fff?text=${participant.name[0]}`;};
+  document.getElementById('header-pts').textContent=(participant.points||0)+' pts';
   renderProgram();
-  // Стенды
   renderVendors();
-  // Профиль
   renderProfile();
-  // Объявления
-  loadAnnouncements();
+  checkAnnouncements();
+  checkAchievements();
+  setInterval(checkAnnouncements, 20000);
+  setInterval(checkAchievements, 20000);
+  setInterval(loadLeaderboard, 15000);
+  setInterval(checkFinale, 15000);
+  checkFinale();
   navTo('screen-main','nav-feed');
 }
 
-// ── ПРОГРАММА ──────────────────────────────────────────────────────────
-function renderProgram() {
+// ── ПРОГРАММА ──
+function renderProgram(){
   const now = new Date();
   const list = document.getElementById('program-list');
-  list.innerHTML = PROGRAM.map(item => {
+  if(!list) return;
+  list.innerHTML = PROGRAM.map(item=>{
     const [h,m] = item.time.split(':').map(Number);
-    const t = new Date('2026-04-21');
-    t.setHours(h,m,0,0);
-    const isNow = now >= t;
-    return `<div class="program-item${isNow&&h<22?' now':''}">
-      <div class="program-time">${item.time}</div>
-      <div class="program-desc"><strong>${item.title}</strong>${item.desc?'<br>'+item.desc:''}</div>
+    const t = new Date('2026-04-21'); t.setHours(h,m,0,0);
+    const isNow = now>=t && h<22;
+    return `<div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid #1a1a1a${isNow?';background:#0d0d00;padding-left:8px;border-left:3px solid var(--yellow)':''}">
+      <div style="font-family:'Bangers',cursive;font-size:1.1rem;color:var(--yellow);white-space:nowrap;min-width:48px">${item.time}</div>
+      <div style="font-size:.85rem;color:var(--gray);line-height:1.4"><strong style="color:var(--white)">${item.title}</strong>${item.desc?'<br>'+item.desc:''}</div>
     </div>`;
   }).join('');
 }
 
-// ── ОБЪЯВЛЕНИЯ ─────────────────────────────────────────────────────────
-async function loadAnnouncements() {
+// ── ОБЪЯВЛЕНИЯ ──
+async function checkAnnouncements(){
   try {
     const res = await api({action:'getAnnouncements'});
-    const list = document.getElementById('announcements-list');
-    if (!res.announcements || !res.announcements.length) { list.innerHTML=''; return; }
-    list.innerHTML = res.announcements.map(a => `
-      <div class="announce-card ${a.type||'info'}">
-        <div class="announce-tag ${a.type||'info'}">${a.type==='alert'?'❗ Срочно':'ℹ️ Инфо'}</div>
-        <div class="announce-msg">${a.message}</div>
-      </div>`).join('');
+    const list = res.announcements||[];
+
+    // Финальный сигнал
+    const finaleMsg = list.find(a=>a.message==='__FINALE_START__');
+    const finaleEnd = list.find(a=>a.message==='__FINALE_END__');
+    if(finaleMsg && !finaleEnd){ localStorage.setItem('finale_active','true'); checkFinale(); }
+    else { localStorage.setItem('finale_active','false'); }
+
+    // Видимые сообщения
+    const visible = list.filter(a=>!a.message.startsWith('__'));
+    announcements = visible;
+
+    // Бегущая строка
+    const ticker = document.getElementById('ticker-text');
+    if(ticker && visible.length) ticker.textContent = visible[0].message;
+
+    // Бейдж уведомлений
+    const badge = document.getElementById('notif-badge');
+    if(badge) badge.style.display = visible.length ? 'flex' : 'none';
+
+    // Список в ленте
+    const annoList = document.getElementById('announcements-list');
+    if(annoList){
+      annoList.innerHTML = visible.map(a=>`
+        <div class="announce-card ${a.type||'info'}" style="margin-bottom:8px">
+          <div class="announce-tag ${a.type||'info'}">${a.type==='urgent'?'❗ Срочно':a.type==='event'?'★ Событие':'ℹ️ Инфо'}</div>
+          <div class="announce-msg">${a.message}</div>
+        </div>`).join('');
+    }
   } catch(e){}
 }
 
-// ── СТЕНДЫ ─────────────────────────────────────────────────────────────
-function renderVendors() {
-  // Загружаем отсканированные из localStorage
-  const saved = localStorage.getItem('scanned_vendors');
-  if (saved) try { JSON.parse(saved).forEach(v=>scannedVendors.add(v)); } catch(e){}
+function openNotifPanel(){
+  document.getElementById('notif-panel').classList.add('open');
+  const nl = document.getElementById('notif-list');
+  if(nl) nl.innerHTML = announcements.length
+    ? announcements.map(a=>`<div style="padding:10px;border-bottom:1px solid #1a1a1a;font-size:.85rem;color:var(--gray)">${a.message}</div>`).join('')
+    : '<div style="padding:20px;text-align:center;color:#444">Нет уведомлений</div>';
+}
+function closeNotifPanel(){ document.getElementById('notif-panel').classList.remove('open'); }
 
-  const grid = document.getElementById('vendor-grid');
-  grid.innerHTML = VENDORS.map(v => {
-    const done = scannedVendors.has(v.id);
-    return `<div class="vendor-card${done?' scanned':''}" id="vc-${v.id}" onclick="openVendor('${v.id}')">
+// ── ЛИДЕРБОРД ──
+async function loadLeaderboard(){
+  try {
+    const res = await api({action:'getLeaderboard'});
+    if(!res.leaderboard) return;
+    const lb = res.leaderboard;
+    myRank = 0;
+    lb.forEach((r,i)=>{ if(participant && r.id===participant.id){ myRank=i+1; participant.points=r.points; document.getElementById('header-pts').textContent=r.points+' pts'; } });
+    if(lb[0]){
+      const r1=lb[0];
+      document.getElementById('lb-rank1').innerHTML=`
+        <span style="font-size:2rem">👑</span>
+        <img class="lb-avatar1" src="${r1.avatar}" onerror="this.src='https://via.placeholder.com/80x80/b90c01/fff?text=${encodeURIComponent(r1.name[0])}'"/>
+        <div class="lb-name1">${r1.codename||r1.name}</div>
+        <div class="lb-pts1">${r1.points} pts</div>`;
+    }
+    const list=document.getElementById('lb-list');
+    if(list) list.innerHTML=lb.slice(1).map((r,i)=>{
+      const isMe=participant&&r.id===participant.id;
+      return `<div class="lb-row${isMe?' me':''}">
+        <div class="lb-rank">${i+2}</div>
+        <img class="lb-avatar" src="${r.avatar}" onerror="this.src='https://via.placeholder.com/40x40/1a1a1a/fff?text=${encodeURIComponent(r.name[0])}'"/>
+        <div class="lb-info">
+          <div class="lb-uname">${r.codename||r.name}${isMe?' <span style="color:var(--yellow);font-size:.7rem">[ВЫ]</span>':''}</div>
+          <div class="lb-company">${r.company}</div>
+        </div>
+        <div class="lb-pts">${r.points}</div>
+      </div>`;
+    }).join('');
+  } catch(e){}
+}
+
+// ── СТЕНДЫ ──
+function renderVendors(){
+  const grid=document.getElementById('vendor-grid');
+  if(!grid) return;
+  grid.innerHTML=VENDORS.map(v=>{
+    const done=scannedVendors.has(v.id);
+    return `<div class="vendor-card${done?' scanned':''}" id="vc-${v.id}" onclick="handleVendorScan('${v.id}')">
       <div class="vendor-card-img">
-        <img src="vendors/${v.id}.png" alt="${v.name}"
-             onerror="this.src='https://via.placeholder.com/120x50/1a1a1a/fff?text=${encodeURIComponent(v.name)}'"/>
+        <img src="vendors/${v.id}.png" alt="${v.name}" onerror="this.style.display='none'"/>
         <div class="vendor-tag">${v.tag}</div>
       </div>
       <div class="vendor-card-body">
@@ -755,274 +840,441 @@ function renderVendors() {
   updateStandsProgress();
 }
 
-function updateStandsProgress() {
-  const n = scannedVendors.size;
-  document.getElementById('stands-count').textContent = n+'/8';
-  document.getElementById('stands-prog-text').textContent = n+' из 8 стендов';
-  document.getElementById('stands-prog-bar').style.width = (n/8*100)+'%';
+function updateStandsProgress(){
+  const n=scannedVendors.size;
+  document.getElementById('stands-count').textContent=n+'/8';
+  document.getElementById('stands-prog-text').textContent=n+' из 8 стендов';
+  document.getElementById('stands-prog-bar').style.width=(n/8*100)+'%';
 }
 
-async function openVendor(vendorId) {
-  if (scannedVendors.has(vendorId)) { toast('Стенд уже отсканирован'); return; }
-  if (!participant) return;
+async function handleVendorScan(vendorId){
+  if(scannedVendors.has(vendorId)){showToast('Стенд уже отсканирован');return;}
+  if(!participant) return;
   try {
     const res = await api({action:'scanVendor', participant_id:participant.id, vendor_id:vendorId});
-    if (res.success) {
+    if(res.success||res.already){
       scannedVendors.add(vendorId);
       localStorage.setItem('scanned_vendors', JSON.stringify([...scannedVendors]));
-      participant.points = (participant.points||0) + 20;
+      participant.points=(participant.points||0)+20;
+      document.getElementById('header-pts').textContent=participant.points+' pts';
       localStorage.setItem('participant', JSON.stringify(participant));
-      document.getElementById('header-pts').textContent = participant.points + ' pts';
-      const card = document.getElementById('vc-'+vendorId);
-      if (card) {
+      const card=document.getElementById('vc-'+vendorId);
+      if(card){
         card.classList.add('scanned');
-        card.querySelector('.vendor-status').textContent = '✓ Посещено · +20 pts';
-        card.innerHTML += '<div class="vendor-done-seal">✓</div>';
+        card.querySelector('.vendor-status').textContent='✓ Посещено · +20 pts';
+        if(!card.querySelector('.vendor-done-seal')) card.innerHTML+='<div class="vendor-done-seal">✓</div>';
       }
       updateStandsProgress();
-      if (res.ach_all_stands) toast('★ Все стенды! +25 бонусных баллов!');
-      else toast('+20 баллов за стенд!');
-    } else if (res.already) {
-      toast('Стенд уже отсканирован');
+      showToast('+20 баллов за стенд!');
+      checkAchievements();
     }
-  } catch(e) { toast('Ошибка соединения'); }
+  } catch(e){ showToast('Ошибка соединения'); }
 }
 
-// ── ЛИДЕРБОРД ──────────────────────────────────────────────────────────
-async function loadLeaderboard() {
+// ── НЕТВОРКИНГ ──
+async function loadNetwork(){
+  const list=document.getElementById('net-list');
+  if(!list) return;
+  list.innerHTML='<div style="text-align:center;padding:40px;color:#444">Загрузка...</div>';
   try {
-    const res = await api({action:'getLeaderboard'});
-    if (!res.leaderboard) return;
-    const lb = res.leaderboard;
-    // Топ-1
-    if (lb[0]) {
-      const r1 = lb[0];
-      document.getElementById('lb-rank1').innerHTML = `
-        <span class="lb-crown">👑</span>
-        <img class="lb-avatar1" src="${r1.avatar}" onerror="this.src='https://via.placeholder.com/80x80/b90c01/fff?text=${encodeURIComponent(r1.name[0])}'"/>
-        <div class="lb-name1">${r1.codename||r1.name}</div>
-        <div class="lb-pts1">${r1.points} pts</div>`;
-    }
-    // Список
-    const list = document.getElementById('lb-list');
-    list.innerHTML = lb.slice(1).map((r,i) => {
-      const isMe = participant && r.id === participant.id;
-      return `<div class="lb-row${isMe?' me':''}">
-        <div class="lb-rank">${i+2}</div>
-        <img class="lb-avatar" src="${r.avatar}" onerror="this.src='https://via.placeholder.com/40x40/1a1a1a/fff?text=${encodeURIComponent(r.name[0])}'"/>
-        <div class="lb-info">
-          <div class="lb-uname">${r.codename||r.name}${isMe?' <span style="color:var(--yellow);font-size:.7rem">[ВЫ]</span>':''}</div>
-          <div class="lb-company">${r.company}</div>
+    const res = await api({action:'getParticipants', exclude:participant?.id||''});
+    if(!res.participants){list.innerHTML='<div style="text-align:center;padding:40px;color:#444">Нет данных</div>';return;}
+    const people = res.participants;
+    const myInts = participant?.interests||[];
+    people.sort((a,b)=>{
+      const am=(a.interests||[]).filter(i=>myInts.includes(i)).length;
+      const bm=(b.interests||[]).filter(i=>myInts.includes(i)).length;
+      return bm-am;
+    });
+    if(!people.length){list.innerHTML='<div style="text-align:center;padding:40px;color:#444">Никого нет</div>';return;}
+    list.innerHTML=people.map(p=>{
+      const pInts=(typeof p.interests==='string'?p.interests.split(','):p.interests)||[];
+      const matches=pInts.filter(i=>myInts.includes(i));
+      const isLiked=localStorage.getItem('liked_'+p.id);
+      const isMet=localStorage.getItem('met_'+p.id);
+      return `<div class="net-card" id="nc-${p.id}">
+        <img class="net-avatar" src="${p.avatar}" onerror="this.src='https://via.placeholder.com/56x56/1a1a1a/fff?text=${encodeURIComponent(p.name[0])}'"/>
+        <div class="net-info">
+          <div class="net-codename">${p.codename||p.name}</div>
+          <div class="net-role">${p.name} · ${p.company}</div>
+          <div class="net-tags">${pInts.map(t=>`<span class="net-tag${matches.includes(t)?' match':''}">${t}</span>`).join('')}</div>
         </div>
-        <div class="lb-pts">${r.points}</div>
+        <div class="net-actions">
+          ${matches.length?`<div class="net-match">${matches.length}⚡</div>`:''}
+          <button style="background:${isLiked?'var(--yellow)':'none'};border:2px solid ${isLiked?'var(--yellow)':'#333'};color:${isLiked?'#000':'#555'};padding:4px 8px;cursor:pointer;font-size:.7rem;font-family:'Space Grotesk',sans-serif" onclick="toggleLike('${p.id}',this)">${isLiked?'♥':'♡'}</button>
+          ${p.email?`<button style="background:none;border:2px solid #333;color:#555;padding:4px 8px;cursor:pointer;font-size:.7rem;font-family:'Space Grotesk',sans-serif" onclick="window.location='mailto:${p.email}'">✉</button>`:''}
+        </div>
       </div>`;
     }).join('');
-  } catch(e) {}
+  } catch(e){ list.innerHTML='<div style="text-align:center;padding:40px;color:#444">Ошибка</div>'; }
 }
 
-// ── НЕТВОРКИНГ ─────────────────────────────────────────────────────────
-async function loadNetwork() {
+function toggleLike(id, btn){
+  const k='liked_'+id;
+  if(localStorage.getItem(k)){ localStorage.removeItem(k); btn.textContent='♡'; btn.style.background='none'; btn.style.borderColor='#333'; btn.style.color='#555'; }
+  else { localStorage.setItem(k,'1'); btn.textContent='♥'; btn.style.background='var(--yellow)'; btn.style.borderColor='var(--yellow)'; btn.style.color='#000'; }
+}
+
+// ── ОПРОСЫ ──
+async function loadPoll(){
+  const content=document.getElementById('poll-content');
+  if(!content) return;
+  content.innerHTML='<div style="color:#444;text-align:center;padding:40px">Загрузка...</div>';
   try {
-    const res = await api({action:'getParticipants', exclude: participant?.id||''});
-    if (!res.participants) return;
-    renderNetwork(res.participants);
-  } catch(e) {}
-}
-
-function filterNet(type) {
-  netFilter = type;
-  loadNetwork();
-}
-
-function renderNetwork(people) {
-  const filtered = netFilter ? people.filter(p=>p.participant_type===netFilter) : people;
-  const list = document.getElementById('net-list');
-  if (!filtered.length) { list.innerHTML = '<div style="text-align:center;padding:40px;color:#444">Никого нет</div>'; return; }
-  list.innerHTML = filtered.map(p => `
-    <div class="net-card" onclick="viewNetProfile('${p.id}')">
-      <img class="net-avatar" src="${p.avatar}" onerror="this.src='https://via.placeholder.com/56x56/1a1a1a/fff?text=${encodeURIComponent(p.name[0])}'"/>
-      <div class="net-info">
-        <div class="net-codename">${p.codename||p.name}</div>
-        <div class="net-role">${p.name} · ${p.company}</div>
-        <div class="net-type ${p.participant_type||'интегратор'}">${p.participant_type||'интегратор'}</div>
-      </div>
-      <div class="net-pts">${p.points} pts</div>
-    </div>`).join('');
-}
-
-async function viewNetProfile(viewedId) {
-  if (!participant) return;
-  try {
-    await api({action:'viewProfile', participant_id:participant.id, viewed_id:viewedId});
-    // Можно открыть мини-профиль — пока просто toast
-    toast('Профиль открыт');
-  } catch(e){}
-}
-
-// ── ОПРОСЫ ─────────────────────────────────────────────────────────────
-async function loadPoll() {
-  const content = document.getElementById('poll-content');
-  content.innerHTML = '<div style="color:#444;text-align:center;padding:40px">Загрузка...</div>';
-  try {
-    const res = await api({action:'getActiveQuestion'});
-    if (!res.question) {
-      content.innerHTML = `<div class="poll-no-q">
-        <span class="font-bang">STANDBY</span>
-        <div style="font-size:.85rem;color:#555">Вопросов пока нет. Следи за лентой!</div>
-      </div>`;
+    const res = await api({action:'getPolls'});
+    if(!res.polls||!res.polls.length){
+      content.innerHTML='<div style="text-align:center;padding:60px 20px"><div style="font-family:'Bangers',cursive;font-size:2rem;color:#222;margin-bottom:8px">STANDBY</div><div style="font-size:.85rem;color:#555">Вопросов пока нет</div></div>';
       return;
     }
-    renderPoll(res.question);
-  } catch(e) {
-    content.innerHTML = '<div style="color:#444;text-align:center;padding:40px">Ошибка загрузки</div>';
-  }
+    renderPolls(res.polls);
+  } catch(e){ content.innerHTML='<div style="color:#444;text-align:center;padding:40px">Ошибка</div>'; }
 }
 
-function renderPoll(q) {
-  const content = document.getElementById('poll-content');
-  const answered = pollAnswers[q.id] !== undefined;
-  if (answered) {
-    // Показываем результаты
-    loadPollResults(q.id);
-    return;
-  }
-  content.innerHTML = `
-    <div class="poll-card">
-      <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--red);margin-bottom:10px">Вопрос миссии · +15 pts</div>
-      <div class="poll-q">${q.question}</div>
-      ${q.options.map((opt,i) => `
-        <button class="poll-opt" onclick="submitVote('${q.id}',${i},'${encodeURIComponent(opt)}')">${opt}</button>
-      `).join('')}
-    </div>`;
-}
-
-async function submitVote(questionId, optionIndex, optLabel) {
-  if (!participant) return;
-  pollAnswers[questionId] = optionIndex;
-  try {
-    await api({action:'submitVote', participant_id:participant.id, question_id:questionId, option_index:optionIndex});
-    participant.points = (participant.points||0) + 15;
-    document.getElementById('header-pts').textContent = participant.points + ' pts';
-    localStorage.setItem('participant', JSON.stringify(participant));
-    toast('+15 баллов за ответ!');
-    loadPollResults(questionId);
-  } catch(e) { toast('Ошибка'); }
-}
-
-async function loadPollResults(questionId) {
-  const content = document.getElementById('poll-content');
-  try {
-    const res = await api({action:'getQuestionResults', question_id:questionId});
-    if (!res.question) return;
-    const q = res.question;
-    const myAnswer = pollAnswers[questionId];
-    content.innerHTML = `
-      <div class="poll-card">
-        <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#22c55e;margin-bottom:10px">✓ Ответ принят · Результаты</div>
+function renderPolls(polls){
+  const content=document.getElementById('poll-content');
+  if(!content) return;
+  content.innerHTML=polls.map(q=>{
+    const answered=pollAnswers[q.id]!==undefined;
+    if(answered){
+      return `<div class="poll-card">
+        <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#22c55e;margin-bottom:8px">✓ Ответ принят</div>
         <div class="poll-q">${q.question}</div>
-        <div style="margin-top:16px">
-          ${q.results.map((r,i) => {
-            const isWinner = r.percent === Math.max(...q.results.map(x=>x.percent));
-            const isMine = i === myAnswer;
-            return `<div class="poll-result-bar">
-              <div class="poll-result-label">
-                <span style="${isMine?'color:var(--yellow)':''}">${isMine?'▶ ':''}${r.option}</span>
-                <span>${r.percent}%</span>
-              </div>
-              <div class="poll-result-track">
-                <div class="poll-result-fill${isWinner?' winner':''}" style="width:${r.percent}%"></div>
-              </div>
-            </div>`;
-          }).join('')}
-        </div>
-        <div style="font-size:.75rem;color:#444;margin-top:12px;text-align:right">Всего голосов: ${q.total_votes}</div>
+        ${(q.results||q.options.map((o,i)=>({option:o,percent:0,votes:0}))).map((r,i)=>{
+          const isWinner=q.results&&r.percent===Math.max(...q.results.map(x=>x.percent));
+          const isMine=i===pollAnswers[q.id];
+          return `<div class="poll-result-bar">
+            <div class="poll-result-label"><span style="${isMine?'color:var(--yellow)':''}">${isMine?'▶ ':''}${r.option}</span><span>${r.percent||0}%</span></div>
+            <div class="poll-result-track"><div class="poll-result-fill${isWinner?' winner':''}" style="width:${r.percent||0}%"></div></div>
+          </div>`;
+        }).join('')}
       </div>`;
-  } catch(e) {}
-}
-
-// ── ПРОФИЛЬ ────────────────────────────────────────────────────────────
-function renderProfile() {
-  if (!participant) return;
-  const av = document.getElementById('profile-avatar');
-  av.src = participant.avatar;
-  av.onerror = () => { av.src = `https://via.placeholder.com/80x80/1a1a1a/fff?text=${participant.name[0]}`; };
-  document.getElementById('profile-name').textContent = participant.name;
-  document.getElementById('profile-codename').textContent = participant.codename;
-  document.getElementById('profile-pts').textContent = participant.points||0;
-  document.getElementById('profile-company').textContent = participant.role + ' · ' + participant.company;
-
-  // Барs
-  const stands = scannedVendors.size;
-  document.getElementById('bar-stands-val').textContent = stands+'/8';
-  document.getElementById('bar-stands').style.width = (stands/8*100)+'%';
-
-  const ach = participant.achievements||{};
-  const achCount = Object.values(ach).filter(Boolean).length;
-  document.getElementById('bar-ach-val').textContent = achCount+'/6';
-  document.getElementById('bar-ach').style.width = (achCount/6*100)+'%';
-
-  // Ачивки
-  const grid = document.getElementById('ach-grid');
-  grid.innerHTML = ACHIEVEMENTS.map(a => {
-    const unlocked = ach[a.key];
-    return `<div class="ach-item${unlocked?' unlocked':''}">
-      <div class="ach-icon">${a.icon}</div>
-      <div class="ach-name">${a.name}</div>
-      <div style="font-size:.65rem;color:${unlocked?'var(--yellow)':'#333'};font-weight:700">${a.pts}</div>
+    }
+    return `<div class="poll-card">
+      <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--red);margin-bottom:8px">Вопрос миссии · +15 pts</div>
+      <div class="poll-q">${q.question}</div>
+      ${q.options.map((opt,i)=>`<button class="poll-opt" onclick="answerPoll('${q.id}',${i},this.parentElement)">${opt}</button>`).join('')}
     </div>`;
   }).join('');
 }
 
-function showQR() {
-  if (!participant) return;
-  // Просто показываем toast с id пока QR не реализован
-  toast('QR: ' + participant.id.slice(0,8) + '...');
-  // Отмечаем шаринг
-  api({action:'shareCard', participant_id:participant.id}).then(res => {
-    if (res.ach_share_card) { toast('↗ Ачивка: Поделился картой! +15 pts'); }
+async function answerPoll(pollId, optIdx, card){
+  if(!participant||pollAnswers[pollId]!==undefined) return;
+  pollAnswers[pollId]=optIdx;
+  localStorage.setItem('poll_answers',JSON.stringify(pollAnswers));
+  try {
+    await api({action:'addPoints', participant_id:participant.id, reason:'poll', points:15, poll_id:pollId, option_index:optIdx});
+    participant.points=(participant.points||0)+15;
+    document.getElementById('header-pts').textContent=participant.points+' pts';
+    localStorage.setItem('participant',JSON.stringify(participant));
+    showToast('+15 баллов за ответ!');
+    loadPoll();
+    checkAchievements();
+  } catch(e){ showToast('Ошибка'); }
+}
+
+// ── ПРОФИЛЬ ──
+function renderProfile(){
+  if(!participant) return;
+  const av=document.getElementById('profile-avatar');
+  if(av){ av.src=participant.avatar; av.onerror=()=>{ av.src=`https://via.placeholder.com/80x80/1a1a1a/fff?text=${participant.name[0]}`; }; }
+  const pn=document.getElementById('profile-name'); if(pn) pn.textContent=participant.name;
+  const pc=document.getElementById('profile-codename'); if(pc) pc.textContent=participant.codename;
+  const pp=document.getElementById('profile-pts'); if(pp) pp.textContent=participant.points||0;
+  const pco=document.getElementById('profile-company'); if(pco) pco.textContent=(participant.role?participant.role+' · ':'')+participant.company;
+  const rb=document.getElementById('profile-rank-badge'); if(rb&&myRank) rb.textContent='#'+myRank;
+
+  const stands=scannedVendors.size;
+  const bs=document.getElementById('bar-stands'); if(bs) bs.style.width=(stands/8*100)+'%';
+  const bsv=document.getElementById('bar-stands-val'); if(bsv) bsv.textContent=stands+'/8';
+
+  const polls=Object.keys(pollAnswers).length;
+  const bp=document.getElementById('bar-polls'); if(bp) bp.style.width=Math.min(100,polls/3*100)+'%';
+  const bpv=document.getElementById('bar-polls-val'); if(bpv) bpv.textContent=polls;
+
+  const achCount=unlockedAchs.size;
+  const ba=document.getElementById('bar-ach'); if(ba) ba.style.width=(achCount/6*100)+'%';
+  const bav=document.getElementById('bar-ach-val'); if(bav) bav.textContent=achCount+'/6';
+
+  // Ачивки грид
+  const grid=document.getElementById('ach-grid');
+  if(grid) grid.innerHTML=ACHIEVEMENTS.map(a=>{
+    const unlocked=unlockedAchs.has(a.id);
+    return `<div class="ach-item${unlocked?' unlocked':''}">
+      <div class="ach-icon">${a.icon}</div>
+      <div class="ach-name">${a.name}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── АЧИВКИ ──
+function checkAchievements(){
+  if(!participant) return;
+  ACHIEVEMENTS.forEach(a=>{
+    const el=document.getElementById('ach-'+a.id);
+    const isUnlocked=a.check();
+    if(isUnlocked){
+      if(el) el.classList.add('unlocked');
+      if(!unlockedAchs.has(a.id)){
+        unlockedAchs.add(a.id);
+        localStorage.setItem('unlocked_achs',JSON.stringify([...unlockedAchs]));
+        showAchievementBanner(a.icon, a.name);
+      }
+    }
+  });
+  renderProfile();
+}
+
+function showAchievementBanner(icon, name){
+  const b=document.getElementById('ach-banner');
+  document.getElementById('ach-banner-icon').textContent=icon;
+  document.getElementById('ach-banner-name').textContent=name;
+  b.classList.add('show');
+  setTimeout(()=>b.classList.remove('show'),4000);
+}
+
+// ── ФИНАЛ ──
+function showFinale(){
+  if(!participant) return;
+  document.getElementById('finale-pts').textContent=(participant.points||0)+' Б';
+  document.getElementById('finale-rank').textContent=myRank?'Место в рейтинге: #'+myRank:'Место в рейтинге: —';
+  const achEl=document.getElementById('finale-achs');
+  if(achEl) achEl.innerHTML=ACHIEVEMENTS.filter(a=>unlockedAchs.has(a.id)).map(a=>`<span style="font-size:1.8rem">${a.icon}</span>`).join('');
+  document.getElementById('finale-overlay').classList.add('show');
+}
+
+function checkFinale(){
+  if(localStorage.getItem('finale_active')==='true') showFinale();
+}
+
+// ── QR MODAL ──
+function showQrModal(){
+  if(!participant) return;
+  const modal=document.getElementById('qr-modal');
+  const img=document.getElementById('qr-modal-img');
+  if(img){
+    const qrUrl=`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent('https://proway-event.vercel.app/profile-scan.html?id='+participant.id)}`;
+    img.innerHTML=`<img src="${qrUrl}" width="200" height="200" alt="QR"/>`;
+  }
+  modal.classList.add('show');
+}
+function closeQrModal(){ document.getElementById('qr-modal').classList.remove('show'); }
+
+// ── ВОССТАНОВЛЕНИЕ СЕССИИ ──
+function tryRestoreSession(){
+  const saved=localStorage.getItem('participant');
+  if(saved){
+    try{ participant=JSON.parse(saved); initApp(); return; }catch(e){}
+  }
+  showToast('Сессия не найдена — зарегистрируйся');
+}
+
+// ── CANVAS HELPERS ──
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);
+  ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);
+  ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);
+  ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);
+  ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
+}
+
+function loadImage(src){
+  return new Promise((res,rej)=>{
+    const img=new Image(); img.crossOrigin='anonymous';
+    img.onload=()=>res(img); img.onerror=()=>rej(new Error('Failed to load '+src));
+    img.src=src;
   });
 }
 
-// ── ВОССТАНОВЛЕНИЕ СЕССИИ ──────────────────────────────────────────────
-function tryRestoreSession() {
-  const saved = localStorage.getItem('participant');
-  if (saved) {
-    try {
-      participant = JSON.parse(saved);
-      const savedScans = localStorage.getItem('scanned_vendors');
-      if (savedScans) JSON.parse(savedScans).forEach(v=>scannedVendors.add(v));
-      initApp();
-      return;
-    } catch(e){}
+function wrapText(ctx,text,x,y,maxW,lineH){
+  const words=text.split(' '); let line='';
+  for(const word of words){
+    const test=line+word+' ';
+    if(ctx.measureText(test).width>maxW&&line){ ctx.fillText(line.trim(),x,y); line=word+' '; y+=lineH; }
+    else line=test;
   }
-  toast('Сессия не найдена — зарегистрируйся');
+  if(line) ctx.fillText(line.trim(),x,y);
 }
 
-// ── TOAST ──────────────────────────────────────────────────────────────
-let toastTimer;
-function toast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+// ── КАРТОЧКА АГЕНТА ──
+async function generateShareCard(){
+  if(!participant){showToast('Нет данных');return;}
+  const btn=document.querySelector('.share-card-btn');
+  btn.innerHTML='<svg style="animation:spin 1s linear infinite;width:16px;height:16px" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(0,0,0,.3)" stroke-width="2"/><path d="M12 3a9 9 0 019 9" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg> Генерируем...';
+  btn.disabled=true;
+
+  try {
+    const font=new FontFace('Bangers','url(https://fonts.gstatic.com/s/bangers/v24/FeVQS0BTqb0h60ACL5la2bxii28wYQ.woff2)');
+    await font.load(); document.fonts.add(font);
+  } catch(e){}
+
+  const W=591, H=1181;
+  const canvas=document.getElementById('share-canvas');
+  canvas.width=W; canvas.height=H;
+  const ctx=canvas.getContext('2d');
+
+  // Фон
+  ctx.fillStyle='#0a0a0a'; ctx.fillRect(0,0,W,H);
+
+  // Сетка
+  ctx.strokeStyle='rgba(255,255,255,.04)'; ctx.lineWidth=.5;
+  for(let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+  // Аватар
+  const avatarSrc=participant.avatar?.startsWith('http')?participant.avatar:'https://proway-event.vercel.app/'+participant.avatar;
+  try {
+    const img=await loadImage(avatarSrc);
+    ctx.save();
+    ctx.beginPath();ctx.arc(W/2,300,200,0,Math.PI*2);ctx.clip();
+    ctx.drawImage(img,W/2-200,100,400,400);
+    ctx.restore();
+    ctx.strokeStyle='rgba(185,12,1,.6)';ctx.lineWidth=4;
+    ctx.beginPath();ctx.arc(W/2,300,202,0,Math.PI*2);ctx.stroke();
+  } catch(e){}
+
+  // Градиент снизу
+  const dg=ctx.createLinearGradient(0,H*.4,0,H);
+  dg.addColorStop(0,'rgba(10,10,10,0)');dg.addColorStop(.25,'rgba(10,10,10,.95)');dg.addColorStop(1,'rgba(10,10,10,1)');
+  ctx.fillStyle=dg; ctx.fillRect(0,H*.4,W,H*.6);
+
+  // Плашка с кодовым именем
+  const PL=28,PR=W-28,PT=52,PB=96,sk=24;
+  ctx.beginPath();ctx.moveTo(PL+sk,PT);ctx.lineTo(PR-sk,PT);ctx.lineTo(PR,PB);ctx.lineTo(PL,PB);ctx.closePath();
+  ctx.strokeStyle='#f5e642';ctx.lineWidth=4;ctx.stroke();
+  const ng=ctx.createLinearGradient(PL,0,PR,0);
+  ng.addColorStop(0,'#6b0000');ng.addColorStop(.5,'#b90c01');ng.addColorStop(1,'#6b0000');
+  ctx.fillStyle=ng;ctx.fill();
+  ctx.fillStyle='#fff';ctx.font='400 34px "Bangers",cursive';ctx.textAlign='center';
+  ctx.shadowColor='rgba(0,0,0,.7)';ctx.shadowBlur=6;
+  ctx.fillText((participant.codename||'АГЕНТ').toUpperCase(),W/2,PT+32);
+  ctx.shadowBlur=0;
+
+  // 001 / PROWAY
+  ctx.fillStyle='rgba(255,255,255,.4)';ctx.font='700 14px sans-serif';
+  ctx.textAlign='left';ctx.fillText('001',30,44);
+  ctx.textAlign='right';ctx.fillText('PROWAY',W-30,44);
+
+  // Жёлтые уголки
+  ctx.strokeStyle='#f5e642';ctx.lineWidth=4;
+  const c=28;
+  ctx.beginPath();ctx.moveTo(0,c);ctx.lineTo(0,0);ctx.lineTo(c,0);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(W-c,0);ctx.lineTo(W,0);ctx.lineTo(W,c);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(W,H-c);ctx.lineTo(W,H);ctx.lineTo(W-c,H);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(c,H);ctx.lineTo(0,H);ctx.lineTo(0,H-c);ctx.stroke();
+
+  // Имя
+  const panelY=H*.52;
+  const coText=([participant.company,participant.role].filter(Boolean).join(' · ')).toUpperCase();
+  ctx.font='600 18px sans-serif';
+  const coW=ctx.measureText(coText).width+24;
+  ctx.fillStyle='rgba(185,12,1,.2)';
+  roundRect(ctx,PL,panelY,coW,28,0);ctx.fill();
+  ctx.strokeStyle='rgba(185,12,1,.4)';ctx.lineWidth=1;
+  roundRect(ctx,PL,panelY,coW,28,0);ctx.stroke();
+  ctx.fillStyle='rgba(255,150,150,.9)';ctx.font='600 18px sans-serif';ctx.textAlign='left';
+  ctx.fillText(coText,PL+12,panelY+20);
+
+  const nameParts=(participant.name||'').toUpperCase().split(' ');
+  ctx.fillStyle='#fff';ctx.font='400 72px "Bangers",cursive';ctx.textAlign='left';
+  ctx.fillText(nameParts[0]||'',PL,panelY+96);
+  if(nameParts.length>1) ctx.fillText(nameParts.slice(1).join(' '),PL,panelY+162);
+
+  // Разделитель
+  ctx.strokeStyle='rgba(255,255,255,.15)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(PL,panelY+176);ctx.lineTo(W-PL,panelY+176);ctx.stroke();
+
+  // Силы
+  const pts=participant.points||0;
+  const vendors=scannedVendors.size;
+  const polls=Object.keys(pollAnswers).length;
+  let meets=0; for(let k in localStorage){if(k.startsWith('met_'))meets++;}
+  const regTime=localStorage.getItem('participant_registered_at');
+  let speedVal=50;
+  if(regTime){ const eS=new Date('2026-04-21T13:00:00'),eE=new Date('2026-04-21T14:00:00');
+    speedVal=Math.max(20,Math.round((1-Math.max(0,new Date(regTime)-eS)/(eE-eS))*100)); }
+
+  const stats=[
+    {name:'АНАЛИЗ',   val:Math.min(100,polls*34),                   color:'#a29bfe'},
+    {name:'СКОРОСТЬ', val:speedVal,                                   color:'#fab387'},
+    {name:'КРИПТО',   val:Math.min(100,Math.round(pts/MAX_PTS*100)),color:'#6ee7b7'},
+    {name:'ПЕРИМЕТР', val:Math.min(100,vendors/8*100),               color:'#60a5fa'},
+    {name:'ВЛИЯНИЕ',  val:Math.min(100,meets*20),                     color:'#f5e642'},
+  ];
+
+  const statsY=panelY+194, rowH=44, barMaxW=W-PL*2-60;
+  stats.forEach((s,i)=>{
+    const y=statsY+i*rowH;
+    const bW=Math.max(4,Math.round(s.val/100*barMaxW));
+    ctx.fillStyle='rgba(255,255,255,.05)';
+    roundRect(ctx,PL,y+6,barMaxW,18,0);ctx.fill();
+    ctx.fillStyle=s.color+'99';
+    roundRect(ctx,PL,y+6,bW,18,0);ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,.7)';ctx.font='400 18px "Bangers",cursive';ctx.textAlign='left';
+    ctx.fillText(s.name,PL,y+2);
+    ctx.fillStyle=s.color;ctx.font='400 24px "Bangers",cursive';ctx.textAlign='right';
+    ctx.fillText(s.val,W-PL,y+22);
+  });
+
+  // Описание
+  const descY=statsY+stats.length*rowH+10;
+  ctx.strokeStyle='rgba(255,255,255,.1)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(PL,descY);ctx.lineTo(W-PL,descY);ctx.stroke();
+  const gender=participant.gender||'male';
+  const lName=(participant.name||'').split(' ').slice(-1)[0];
+  const desc=gender==='female'
+    ?`${lName} не планировала становиться агентом. Конверт без подписи. Только координаты и время. Она пришла.`
+    :`${lName} не планировал становиться агентом. Конверт без подписи. Только координаты и время. Он пришёл.`;
+  ctx.fillStyle='rgba(255,255,255,.35)';ctx.font='400 17px sans-serif';ctx.textAlign='left';
+  wrapText(ctx,desc,PL,descY+26,W-PL*2,24);
+
+  // Баллы + QR
+  const bottomY=H-110;
+  ctx.fillStyle='rgba(185,12,1,.15)';
+  roundRect(ctx,PL,bottomY,170,42,0);ctx.fill();
+  ctx.strokeStyle='rgba(185,12,1,.5)';ctx.lineWidth=2;
+  roundRect(ctx,PL,bottomY,170,42,0);ctx.stroke();
+  ctx.fillStyle='#ff8080';ctx.font='400 26px "Bangers",cursive';ctx.textAlign='center';
+  ctx.fillText(pts+' БАЛЛОВ',PL+85,bottomY+28);
+
+  // "Сканируй меня" над QR
+  const qrX=W-PL-76,qrY=bottomY+2;
+  ctx.fillStyle='rgba(255,255,255,.3)';ctx.font='400 13px sans-serif';ctx.textAlign='center';
+  ctx.fillText('сканируй меня',qrX+38,qrY-4);
+  try {
+    const qrUrl=`https://api.qrserver.com/v1/create-qr-code/?size=76x76&data=${encodeURIComponent('https://proway-event.vercel.app/profile-scan.html?id='+participant.id)}`;
+    const qrImg=await loadImage(qrUrl);
+    ctx.fillStyle='#fff';roundRect(ctx,qrX,qrY+4,76,76,0);ctx.fill();
+    ctx.drawImage(qrImg,qrX+4,qrY+8,68,68);
+  } catch(e){}
+
+  // Нижняя полоса
+  ctx.fillStyle='#b90c01';ctx.fillRect(0,H-10,W,10);
+  ctx.fillStyle='rgba(0,0,0,.5)';ctx.fillRect(0,H-44,W,34);
+  ctx.fillStyle='rgba(255,255,255,.5)';ctx.font='700 16px sans-serif';ctx.textAlign='center';
+  ctx.fillText('PROWAY SECURITY DAY',W/2,H-20);
+
+  const a=document.createElement('a');
+  a.download='agent-'+(participant.codename||'card').toLowerCase().replace(/ /g,'-')+'.png';
+  a.href=canvas.toDataURL('image/png'); a.click();
+
+  btn.innerHTML='<span class="material-symbols-outlined">download</span>Скачать карточку агента';
+  btn.disabled=false;
 }
 
-// ── СТАРТ ──────────────────────────────────────────────────────────────
-window.addEventListener('load', () => {
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
-  setTimeout(() => {
+// ── СТАРТ ──
+window.addEventListener('load',()=>{
+  if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
+  setTimeout(()=>{
     document.getElementById('loading').classList.add('fade');
-    setTimeout(() => {
-      document.getElementById('loading').style.display = 'none';
-      const saved = localStorage.getItem('participant');
-      if (saved) {
-        try { participant = JSON.parse(saved); initApp(); return; } catch(e){}
-      }
+    setTimeout(()=>{
+      document.getElementById('loading').style.display='none';
+      const saved=localStorage.getItem('participant');
+      if(saved){ try{ participant=JSON.parse(saved); initApp(); return; }catch(e){} }
       showScreen('screen-welcome');
-    }, 400);
-  }, 1500);
+    },400);
+  },1500);
 });
+
 </script>
 </body>
 </html>
