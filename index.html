@@ -457,18 +457,28 @@
           <div id="profile-name" style="font-family:'Space Grotesk',sans-serif;font-size:.85rem;font-weight:700;color:#2b2f31;margin-bottom:2px"></div>
           <div id="profile-company" style="font-size:.75rem;color:#737779;margin-bottom:16px"></div>
 
-          <!-- Stats bars -->
-          <div style="margin-bottom:8px">
-            <div style="display:flex;justify-content:space-between;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;color:#575c5e"><span>Стенды</span><span id="bar-stands-val">0/8</span></div>
-            <div style="height:14px;background:#d7dee1;border:2px solid #000;overflow:hidden"><div id="bar-stands" style="height:100%;background:#b90c01;width:0%;transition:width .8s;background-image:radial-gradient(rgba(0,0,0,.1) 1px,transparent 0);background-size:4px 4px"></div></div>
-          </div>
-          <div style="margin-bottom:8px">
-            <div style="display:flex;justify-content:space-between;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;color:#575c5e"><span>Опросы</span><span id="bar-polls-val">0</span></div>
-            <div style="height:14px;background:#d7dee1;border:2px solid #000;overflow:hidden"><div id="bar-polls" style="height:100%;background:#00618c;width:0%;transition:width .8s;background-image:radial-gradient(rgba(0,0,0,.1) 1px,transparent 0);background-size:4px 4px"></div></div>
-          </div>
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;color:#575c5e"><span>Ачивки</span><span id="bar-ach-val">0/6</span></div>
-            <div style="height:14px;background:#d7dee1;border:2px solid #000;overflow:hidden"><div id="bar-ach" style="height:100%;background:#f5e642;width:0%;transition:width .8s;background-image:radial-gradient(rgba(0,0,0,.1) 1px,transparent 0);background-size:4px 4px"></div></div>
+          <!-- Силы агента -->
+          <div id="agent-stats-wrap">
+            <div class="stat-row" style="margin-bottom:7px">
+              <div style="display:flex;justify-content:space-between;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;color:#575c5e"><span>АНАЛИЗ</span><span id="stat-val-АНАЛИЗ">—</span></div>
+              <div style="height:10px;background:#d7dee1;border:2px solid #000;overflow:hidden"><div id="stat-bar-АНАЛИЗ" style="height:100%;background:#00aeee;width:0%;transition:width .8s"></div></div>
+            </div>
+            <div class="stat-row" style="margin-bottom:7px">
+              <div style="display:flex;justify-content:space-between;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;color:#575c5e"><span>СКОРОСТЬ</span><span id="stat-val-СКОРОСТЬ">—</span></div>
+              <div style="height:10px;background:#d7dee1;border:2px solid #000;overflow:hidden"><div id="stat-bar-СКОРОСТЬ" style="height:100%;background:#f5e642;width:0%;transition:width .8s"></div></div>
+            </div>
+            <div class="stat-row" style="margin-bottom:7px">
+              <div style="display:flex;justify-content:space-between;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;color:#575c5e"><span>КРИПТО</span><span id="stat-val-КРИПТО">—</span></div>
+              <div style="height:10px;background:#d7dee1;border:2px solid #000;overflow:hidden"><div id="stat-bar-КРИПТО" style="height:100%;background:#ee672a;width:0%;transition:width .8s"></div></div>
+            </div>
+            <div class="stat-row" style="margin-bottom:7px">
+              <div style="display:flex;justify-content:space-between;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;color:#575c5e"><span>ПЕРИМЕТР</span><span id="stat-val-ПЕРИМЕТР">—</span></div>
+              <div style="height:10px;background:#d7dee1;border:2px solid #000;overflow:hidden"><div id="stat-bar-ПЕРИМЕТР" style="height:100%;background:#005ca8;width:0%;transition:width .8s"></div></div>
+            </div>
+            <div class="stat-row">
+              <div style="display:flex;justify-content:space-between;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;color:#575c5e"><span>ВЛИЯНИЕ</span><span id="stat-val-ВЛИЯНИЕ">—</span></div>
+              <div style="height:10px;background:#d7dee1;border:2px solid #000;overflow:hidden"><div id="stat-bar-ВЛИЯНИЕ" style="height:100%;background:#8e44ad;width:0%;transition:width .8s"></div></div>
+            </div>
           </div>
 
           <!-- Points big -->
@@ -969,11 +979,49 @@ function closeBanner(){document.getElementById('announce-banner').classList.remo
 function renderProfile(){
   if(!participant)return;
   const pts=participant.points||0;
-  document.getElementById('p-pts').textContent=pts;
-  const pct=Math.min(Math.round(pts/MAX_PTS*100),100);
-  document.getElementById('p-pct').textContent=pct+'%';
-  document.getElementById('s-vendors').textContent=scannedVendors.size;
-  document.getElementById('s-polls').textContent=Object.keys(pollAnswers).length;
+  const gender=participant.gender||'male';
+  const codename=participant.codename||'ФАЙРВОЛ';
+
+  // Аватар
+  const av=document.getElementById('profile-avatar');
+  if(av){av.src=participant.avatar||'';av.onerror=()=>{av.style.background='#dde3e6';};}
+
+  // Имя и кодовое имя
+  const pn=document.getElementById('profile-name');if(pn)pn.textContent=participant.name||'';
+  const pc=document.getElementById('profile-codename');if(pc)pc.textContent=codename;
+  const pl=document.getElementById('profile-level-badge');if(pl)pl.textContent=getRarity(pts).name;
+  const pco=document.getElementById('profile-company');
+  if(pco)pco.textContent=(participant.role?participant.role+' · ':'')+participant.company;
+
+  // Баллы
+  const pp=document.getElementById('profile-pts');if(pp)pp.textContent=pts;
+  const rb=document.getElementById('profile-rank-badge');if(rb&&myRank)rb.textContent='#'+myRank;
+
+  // Силы агента из AGENT_STATS
+  const stats=AGENT_STATS[gender]?.[codename]||{АНАЛИЗ:75,СКОРОСТЬ:75,КРИПТО:75,ПЕРИМЕТР:75,ВЛИЯНИЕ:75};
+  ['АНАЛИЗ','СКОРОСТЬ','КРИПТО','ПЕРИМЕТР','ВЛИЯНИЕ'].forEach(s=>{
+    const val=stats[s]||0;
+    const bar=document.getElementById('stat-bar-'+s);
+    const valEl=document.getElementById('stat-val-'+s);
+    if(bar)bar.style.width=val+'%';
+    if(valEl)valEl.textContent=val;
+  });
+
+  // Ачивки грид
+  const grid=document.getElementById('ach-grid');
+  if(grid)grid.innerHTML=ACHIEVEMENTS.map(a=>{
+    const unlocked=unlockedAchs.has(a.id);
+    return `<div style="border:${unlocked?'4px solid #000':'3px solid #d7dee1'};background:${unlocked?'#fff3cd':'#fff'};padding:12px 8px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;${unlocked?'box-shadow:4px 4px 0 #000':''}">
+      <div style="font-size:1.6rem;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:${unlocked?'3px solid #000':'2px solid #d7dee1'};background:${unlocked?'#f5e642':'#f3f7f9'}">${a.icon}</div>
+      <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:${unlocked?'#2b2f31':'#a9aeb0'};line-height:1.3">${a.name}</div>
+    </div>`;
+  }).join('');
+
+  // Обновляем legacy элементы
+  const ppts=document.getElementById('p-pts');if(ppts)ppts.textContent=pts;
+  const ppct=document.getElementById('p-pct');if(ppct)ppct.textContent=Math.min(Math.round(pts/MAX_PTS*100),100)+'%';
+  const sv=document.getElementById('s-vendors');if(sv)sv.textContent=scannedVendors.size;
+  const sp=document.getElementById('s-polls');if(sp)sp.textContent=Object.keys(pollAnswers).length;
 }
 
 function getRarity(n){let r=RARITY[0];for(const l of RARITY){if(n>=l.min)r=l;}return r;}
