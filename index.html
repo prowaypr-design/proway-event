@@ -803,10 +803,9 @@ function initApp(){
     const el = document.getElementById('ach-'+id);
     if(el) el.classList.add('unlocked');
   });
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('app').style.display='block';
-  document.getElementById('navbar').style.display='flex';
-  document.getElementById('ticker-wrap').style.display='flex';
+  // Показываем навбар и ticker
+  const bn=document.getElementById('bottom-nav');if(bn)bn.style.display='flex';
+  const tw=document.getElementById('ticker-wrap');if(tw)tw.style.display='flex';
   setAvatarUI();
   renderProfile(); checkAchievements();
   renderAgentCard();
@@ -821,6 +820,9 @@ function initApp(){
   setInterval(checkFinale,15000);
   checkFinale();
   setTimeout(()=>{const b=document.getElementById('p-bar');if(b)b.style.width=(Math.min((participant.points||0)/MAX_PTS,1)*100)+'%';},300);
+  // Показываем главный экран
+  showScreen('screen-main');
+  const nf=document.getElementById('nav-feed');if(nf)nf.classList.add('active');
 }
 
 function showScreen(n){
@@ -1627,28 +1629,57 @@ function closeQrModal() {
 }
 
 window.addEventListener('load',()=>{
-if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
+  if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
+
+  // Загружаем отсканированные вендоры
   const savedScans=localStorage.getItem('scanned_vendors');
   if(savedScans){try{JSON.parse(savedScans).forEach(id=>scannedVendors.add(id));}catch(e){}}
-  const id=localStorage.getItem('participant_id');
-  if(id){
-    participant={
-      id,
-      name:localStorage.getItem('participant_name')||'—',
-      email:localStorage.getItem('participant_email')||'',
-      company:localStorage.getItem('participant_company')||'—',
-      points:0,
-      interests:localStorage.getItem('participant_interests')||'',
-      avatar:localStorage.getItem('participant_avatar')||'',
-      gender:localStorage.getItem('participant_gender')||'male',
-      codename:localStorage.getItem('participant_codename')||'ФАЙРВОЛ',
-      artFile:localStorage.getItem('participant_artfile')||''
-    };
-    initApp();
-  }
-  const urlParams=new URLSearchParams(window.location.search);
-  const vendorId=urlParams.get('id');
-  if(vendorId&&id)handleVendorScan(vendorId);
+
+  // Скрываем loading
+  setTimeout(()=>{
+    const loading=document.getElementById('loading');
+    if(loading){loading.classList.add('fade');setTimeout(()=>{loading.style.display='none';},400);}
+
+    // Пробуем восстановить сессию — сначала новый формат, потом старый
+    const savedNew = localStorage.getItem('participant');
+    const savedOldId = localStorage.getItem('participant_id');
+
+    if(savedNew){
+      try{
+        participant = JSON.parse(savedNew);
+        // Загружаем отсканированных вендоров
+        const sv=localStorage.getItem('scanned_vendors');
+        if(sv)JSON.parse(sv).forEach(id=>scannedVendors.add(id));
+        initApp();
+        return;
+      }catch(e){}
+    }
+
+    if(savedOldId){
+      participant={
+        id:savedOldId,
+        name:localStorage.getItem('participant_name')||'—',
+        email:localStorage.getItem('participant_email')||'',
+        company:localStorage.getItem('participant_company')||'—',
+        points:parseInt(localStorage.getItem('participant_points')||'0'),
+        interests:localStorage.getItem('participant_interests')||'',
+        avatar:localStorage.getItem('participant_avatar')||'',
+        gender:localStorage.getItem('participant_gender')||'male',
+        codename:localStorage.getItem('participant_codename')||'ФАЙРВОЛ',
+        artFile:localStorage.getItem('participant_artfile')||''
+      };
+      initApp();
+      return;
+    }
+
+    // Нет сессии — показываем приветствие
+    showScreen('screen-welcome');
+
+    // QR-вендор в URL
+    const urlParams=new URLSearchParams(window.location.search);
+    const vendorId=urlParams.get('id');
+    if(vendorId&&participant)handleVendorScan(vendorId);
+  }, 1500);
 });
 
 </script>
