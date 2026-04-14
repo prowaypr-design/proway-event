@@ -8,33 +8,6 @@
 <link rel="manifest" href="/manifest.json"/>
 <link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,900;1,900&family=Space+Grotesk:wght@400;500;700&family=Bangers&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,0..1&display=swap" rel="stylesheet"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script id="tailwind-config">
-tailwind.config = {
-  darkMode:"class",
-  theme:{
-    extend:{
-      colors:{
-        "primary":"#b90c01","primary-dim":"#a30800","primary-container":"#ff7762",
-        "on-primary":"#ffefed","on-primary-fixed":"#000000",
-        "secondary":"#00618c","secondary-dim":"#00557b",
-        "on-secondary":"#e9f4ff",
-        "tertiary":"#725812","tertiary-container":"#fbd684","on-tertiary-container":"#624901",
-        "surface":"#f3f7f9","surface-container":"#e4e9eb","surface-container-low":"#edf1f4",
-        "surface-container-lowest":"#ffffff","surface-container-high":"#dde3e6",
-        "surface-container-highest":"#d7dee1","surface-variant":"#d7dee1",
-        "on-surface":"#2b2f31","on-surface-variant":"#575c5e",
-        "outline":"#737779","outline-variant":"#a9aeb0",
-        "background":"#f3f7f9","on-background":"#2b2f31",
-        "inverse-primary":"#ff553e","inverse-surface":"#0a0f11",
-        "error":"#b41340","error-container":"#f74b6d","on-error":"#ffefef",
-      },
-      borderRadius:{"DEFAULT":"0px","lg":"0px","xl":"0px","full":"9999px"},
-      fontFamily:{"headline":["Epilogue"],"body":["Space Grotesk"],"label":["Space Grotesk"]}
-    }
-  }
-}
-</script>
 <style>
 .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
 .halftone{background-image:radial-gradient(rgba(0,0,0,.08) 1px,transparent 0);background-size:8px 8px}
@@ -46,8 +19,8 @@ tailwind.config = {
 .ink-border{border:4px solid #000}
 .ink-border-sm{border:2px solid #000}
 .skew-heading{transform:skewX(-5deg)}
-.screen{position:absolute;inset:0;overflow:hidden}
-.screen.hidden{display:none}
+.screen{position:absolute;inset:0;overflow:hidden;display:flex;flex-direction:column}
+.screen.hidden{display:none !important}
 /* Bottom nav */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-around;align-items:center;padding:0 8px;height:88px;background:#00618c;border-top:4px solid #000;z-index:100}
 .nav-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;color:rgba(255,255,255,.7);cursor:pointer;padding:8px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;border:none;background:none;font-family:'Space Grotesk',sans-serif;gap:2px;transition:color .15s}
@@ -116,7 +89,7 @@ tailwind.config = {
 .field input:focus{border-color:#000;box-shadow:3px 3px 0 #000}
 </style>
 </head>
-<body class="bg-background text-on-background font-body" style="overflow:hidden;height:100vh">
+<body style="overflow:hidden;height:100vh;background:#f3f7f9;color:#2b2f31;font-family:'Space Grotesk',sans-serif">
 
 <!-- LOADING -->
 <div id="loading">
@@ -165,6 +138,18 @@ tailwind.config = {
 </div>
 
 <canvas id="share-canvas" style="display:none"></canvas>
+
+<!-- LEGACY COMPAT ELEMENTS (скрытые, нужны для старого JS) -->
+<span id="p-pts" style="display:none"></span>
+<span id="p-pct" style="display:none"></span>
+<div id="p-bar" style="display:none"></div>
+<span id="s-vendors" style="display:none"></span>
+<span id="s-polls" style="display:none"></span>
+<div id="p-av-img" style="display:none"></div>
+<span id="p-av-emoji" style="display:none">◈</span>
+<div id="app" style="display:none"></div>
+<div id="navbar" style="display:none"></div>
+<div id="announce-banner" style="display:none"><div id="announce-text"></div></div>
 
 <!-- NOTIF PANEL -->
 <div class="notif-panel" id="notif-panel">
@@ -258,7 +243,7 @@ tailwind.config = {
       <div class="halftone" style="position:absolute;inset:0;opacity:.2"></div>
       <div style="position:absolute;bottom:-20px;left:-10px;font-family:'Bangers',cursive;font-size:120px;opacity:.1;color:#000;line-height:1">ФАЙРВОЛ</div>
       <div style="position:absolute;bottom:20px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px">
-        <img src="Defense_Grid_Icon.png" alt="Файрвол" style="width:120px;object-fit:contain;filter:drop-shadow(4px 4px 0 #000)" onerror="this.src='https://via.placeholder.com/120x140/b90c01/fff?text=Ф'"/>
+        <img src="Defense_Grid_Icon.png" alt="Файрвол" style="width:120px;object-fit:contain;filter:drop-shadow(4px 4px 0 #000)" onerror="this.style.display='none'"/>
         <div style="background:#b90c01;color:#fff;border:3px solid #000;padding:4px 12px;font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:1.1rem;text-transform:uppercase;box-shadow:3px 3px 0 #000">ФАЙРВОЛ</div>
       </div>
     </div>
@@ -269,7 +254,7 @@ tailwind.config = {
       <div class="halftone" style="position:absolute;inset:0;opacity:.2"></div>
       <div style="position:absolute;bottom:-20px;right:-10px;font-family:'Bangers',cursive;font-size:120px;opacity:.1;color:#000;line-height:1">ХАКЕР</div>
       <div style="position:absolute;bottom:20px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px">
-        <img src="Stealth_Tracer_Icon.png" alt="Хакер" style="width:120px;object-fit:contain;filter:drop-shadow(4px 4px 0 #000)" onerror="this.src='https://via.placeholder.com/120x140/00618c/fff?text=Х'"/>
+        <img src="Stealth_Tracer_Icon.png" alt="Хакер" style="width:120px;object-fit:contain;filter:drop-shadow(4px 4px 0 #000)" onerror="this.style.display='none'"/>
         <div style="background:#00618c;color:#fff;border:3px solid #000;padding:4px 12px;font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:1.1rem;text-transform:uppercase;box-shadow:3px 3px 0 #000">ХАКЕР</div>
       </div>
     </div>
@@ -291,7 +276,7 @@ tailwind.config = {
       onmouseup="this.style.transform='';this.style.boxShadow='8px 8px 0 #000'">
       <div style="height:160px;background:#b90c01;position:relative;overflow:hidden;border-bottom:4px solid #000">
         <div class="halftone" style="position:absolute;inset:0;opacity:.15"></div>
-        <img src="Defense_Grid_Icon.png" style="width:100%;height:100%;object-fit:cover;opacity:.9" onerror="this.src='https://via.placeholder.com/200x160/b90c01/fff?text=Ф'"/>
+        <img src="Defense_Grid_Icon.png" style="width:100%;height:100%;object-fit:cover;opacity:.9" onerror="this.style.display='none'"/>
         <div style="position:absolute;top:8px;right:8px;background:#b90c01;color:#fff;border:2px solid #000;padding:2px 8px;font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:.75rem;text-transform:uppercase;transform:rotate(-4deg)">ФАЙРВОЛ</div>
       </div>
       <div style="padding:12px">
@@ -309,7 +294,7 @@ tailwind.config = {
       onmouseup="this.style.transform='';this.style.boxShadow='8px 8px 0 #000'">
       <div style="height:160px;background:#00618c;position:relative;overflow:hidden;border-bottom:4px solid #000">
         <div class="halftone" style="position:absolute;inset:0;opacity:.15"></div>
-        <img src="Stealth_Tracer_Icon.png" style="width:100%;height:100%;object-fit:cover;opacity:.9" onerror="this.src='https://via.placeholder.com/200x160/00618c/fff?text=Х'"/>
+        <img src="Stealth_Tracer_Icon.png" style="width:100%;height:100%;object-fit:cover;opacity:.9" onerror="this.style.display='none'"/>
         <div style="position:absolute;top:8px;right:8px;background:#00618c;color:#fff;border:2px solid #000;padding:2px 8px;font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:.75rem;text-transform:uppercase;transform:rotate(4deg)">ХАКЕР</div>
       </div>
       <div style="padding:12px">
@@ -389,7 +374,7 @@ tailwind.config = {
 <!-- ══════════════════════════════════════════════════
      SCREEN: MAIN (FEED)
 ══════════════════════════════════════════════════ -->
-<div id="screen-main" class="screen hidden" style="background:#f3f7f9;display:flex;flex-direction:column">
+<div id="screen-main" class="screen hidden" style="background:#f3f7f9;flex-direction:column">
   <!-- Header -->
   <header style="background:#f3f7f9;border-bottom:4px solid #000;box-shadow:0 4px 0 #000;padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:72px;position:sticky;top:0;z-index:50;flex-shrink:0">
     <div style="font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:1.6rem;text-transform:uppercase;color:#b90c01">PROWAY</div>
@@ -410,7 +395,7 @@ tailwind.config = {
     <div style="background:#b90c01;padding:0 10px;height:100%;display:flex;align-items:center;flex-shrink:0;border-right:2px solid #333">
       <span style="font-family:'Bangers',cursive;font-size:.8rem;letter-spacing:.12em;color:#fff">LIVE</span>
     </div>
-    <div id="ticker-text" style="flex:1;padding:0 12px;font-family:'Space Grotesk',sans-serif;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Добро пожаловать на PROWAY Security Day!</div>
+    <div id="ticker-inner" style="flex:1;padding:0 12px;font-family:'Space Grotesk',sans-serif;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Добро пожаловать на PROWAY Security Day!</div>
   </div>
 
   <div style="overflow-y:auto;flex:1;padding-bottom:100px">
@@ -441,7 +426,7 @@ tailwind.config = {
 <!-- ══════════════════════════════════════════════════
      SCREEN: PROFILE
 ══════════════════════════════════════════════════ -->
-<div id="screen-profile" class="screen hidden" style="background:#f3f7f9;display:flex;flex-direction:column">
+<div id="screen-profile" class="screen hidden" style="background:#f3f7f9;flex-direction:column">
   <header style="background:#f3f7f9;border-bottom:4px solid #000;box-shadow:0 4px 0 #000;padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:72px;flex-shrink:0">
     <div style="font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:1.6rem;text-transform:uppercase;color:#b90c01">МОЙ ПРОФИЛЬ</div>
     <div id="profile-rank-badge" style="font-family:'Bangers',cursive;font-size:1.2rem;color:#b90c01;background:#fbd684;border:2px solid #000;padding:2px 10px;box-shadow:2px 2px 0 #000"></div>
@@ -521,7 +506,7 @@ tailwind.config = {
 <!-- ══════════════════════════════════════════════════
      SCREEN: LEADERBOARD
 ══════════════════════════════════════════════════ -->
-<div id="screen-top" class="screen hidden" style="background:#f3f7f9;display:flex;flex-direction:column">
+<div id="screen-top" class="screen hidden" style="background:#f3f7f9;flex-direction:column">
   <header style="background:#f3f7f9;border-bottom:4px solid #000;box-shadow:0 4px 0 #000;padding:0 20px;height:72px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
     <div style="display:flex;align-items:center;gap:12px">
       <div style="background:#b90c01;color:#fff;border:4px solid #000;padding:6px 16px;box-shadow:4px 4px 0 #000;transform:rotate(-1deg)">
@@ -546,7 +531,7 @@ tailwind.config = {
 <!-- ══════════════════════════════════════════════════
      SCREEN: STANDS
 ══════════════════════════════════════════════════ -->
-<div id="screen-stands" class="screen hidden" style="background:#f3f7f9;display:flex;flex-direction:column">
+<div id="screen-stands" class="screen hidden" style="background:#f3f7f9;flex-direction:column">
   <header style="background:#f3f7f9;border-bottom:4px solid #000;box-shadow:0 4px 0 #000;padding:0 20px;height:72px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
     <div style="font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:1.6rem;text-transform:uppercase;color:#b90c01">СТЕНДЫ</div>
     <div id="stands-count" style="font-family:'Bangers',cursive;font-size:1.3rem;color:#b90c01;background:#fbd684;border:3px solid #000;padding:2px 12px;box-shadow:3px 3px 0 #000">0/8</div>
@@ -582,7 +567,7 @@ tailwind.config = {
 <!-- ══════════════════════════════════════════════════
      SCREEN: NETWORKING
 ══════════════════════════════════════════════════ -->
-<div id="screen-network" class="screen hidden" style="background:#f3f7f9;display:flex;flex-direction:column">
+<div id="screen-network" class="screen hidden" style="background:#f3f7f9;flex-direction:column">
   <header style="background:#00618c;border-bottom:4px solid #000;box-shadow:0 4px 0 #000;padding:0 20px;height:72px;display:flex;align-items:center;flex-shrink:0">
     <div class="halftone" style="position:absolute;inset:0;opacity:.15;pointer-events:none"></div>
     <div style="position:relative;z-index:1;width:100%">
@@ -599,7 +584,7 @@ tailwind.config = {
 <!-- ══════════════════════════════════════════════════
      SCREEN: POLLS (MISSION)
 ══════════════════════════════════════════════════ -->
-<div id="screen-polls" class="screen hidden" style="background:#f3f7f9;display:flex;flex-direction:column">
+<div id="screen-polls" class="screen hidden" style="background:#f3f7f9;flex-direction:column">
   <header style="background:#f3f7f9;border-bottom:4px solid #000;box-shadow:0 4px 0 #000;padding:0 20px;height:72px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
     <div>
       <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#737779;margin-bottom:2px">PRIORITY BRAVO</div>
@@ -641,618 +626,1031 @@ tailwind.config = {
 </nav>
 
 <script>
-const API = 'https://script.google.com/macros/s/AKfycbyDyYFwHvLPwHZSqd2abQCLhr9RaoqgVTA96OIw4-mxvRSRkioSe2Th2MD8LYiKhRFstw/exec';
-const MAX_PTS = 430;
-const INTERESTS = ['Пентест','Zero Trust','DLP','SOC/SIEM','PAM','Криптография','NGFW','Threat Intelligence'];
-const AVATARS_MALE   = ['male0.png','male1.png','male2.png','male3.png','male4.png','male5.png','male6.png','male7.png'];
-const AVATARS_FEMALE = ['female0.png','female1.png','female2.png','female3.png','female4.png','female5.png','female6.png','female7.png','female8.png','female9.png','female10.png','female11.png','female12.png'];
-const CODENAMES_MALE   = ['ФАЙРВОЛ','ФАЙРВОЛ','ФАЙРВОЛ','ФАЙРВОЛ','ФАЙРВОЛ','ФАЙРВОЛ','ФАЙРВОЛ','ФАЙРВОЛ'];
-const CODENAMES_FEMALE = ['ХАКЕР','ХАКЕР','ХАКЕР','ХАКЕР','ХАКЕР','ХАКЕР','ХАКЕР','ХАКЕР','ХАКЕР','ХАКЕР','ХАКЕР','ХАКЕР','ХАКЕР'];
-const VENDORS = [
-  {id:'kod_bezopasnosti', name:'Код Безопасности', tag:'NGFW/SOC'},
-  {id:'checkpoint',       name:'Check Point',       tag:'FW/VPN'},
-  {id:'infoteks',         name:'ИнфоТеКС',          tag:'VPN/КРИПТО'},
-  {id:'positive',         name:'Positive Technologies', tag:'SIEM/PT'},
-  {id:'ngr_softlab',      name:'NGR Softlab',        tag:'DLP'},
-  {id:'trafficsoft',      name:'TrafficSoft',         tag:'ANTI-DDOS'},
-  {id:'f6',               name:'F6 / Эфшесть',       tag:'EDR'},
-  {id:'ideco',            name:'Ideco',               tag:'UTM'}
-];
-const PROGRAM = [
-  {time:'13:00', title:'Регистрация', desc:'Приветственный кофе, PROWAY Security Экспо'},
-  {time:'13:55', title:'Приветственное слово', desc:''},
-  {time:'14:00', title:'Панельная дискуссия', desc:'Check Point, Код Безопасности, ИнфоТеКС, Positive Technologies, Ideco'},
-  {time:'15:30', title:'Кофе-брейк', desc:'PROWAY Security Экспо'},
-  {time:'16:00', title:'Прямая линия', desc:'Check Point, Код Безопасности, ИнфоТеКС, F6, TrafficSoft, NGR Softlab'},
-  {time:'17:30', title:'PROWAY Security Экспо', desc:''},
-  {time:'18:30', title:'Фуршет & Награждение', desc:'Развлекательная программа, DJ'},
-  {time:'22:00', title:'Завершение', desc:''}
-];
-const ACHIEVEMENTS = [
-  {id:'register', icon:'🎖️', name:'Первый шаг',  check:()=>!!participant},
-  {id:'vendors',  icon:'🗺️', name:'Картограф',   check:()=>scannedVendors.size>=8},
-  {id:'polls',    icon:'🧠', name:'Аналитик',     check:()=>Object.keys(pollAnswers).length>=3},
-  {id:'network',  icon:'🤝', name:'Связной',      check:()=>{let m=0;for(let k in localStorage){if(k.startsWith('met_'))m++;}return m>=5;}},
-  {id:'top3',     icon:'🏆', name:'Топ-3',        check:()=>myRank>0&&myRank<=3},
-  {id:'100pts',   icon:'⚡', name:'100 баллов',   check:()=>(participant?.points||0)>=100},
-];
-
-let participant=null, myRank=0, selectedGender='male', selectedType='PROWAY', selectedAvatar='';
-let scannedVendors=new Set(JSON.parse(localStorage.getItem('scanned_vendors')||'[]'));
-let pollAnswers=JSON.parse(localStorage.getItem('poll_answers')||'{}');
-let announcements=[];
-let unlockedAchs=new Set(JSON.parse(localStorage.getItem('unlocked_achs')||'[]'));
-
-async function api(p){return fetch(API+'?'+new URLSearchParams(p)).then(r=>r.json());}
-
+// ── TOAST ──
 let toastTimer;
 function showToast(m,d=2800){
   const t=document.getElementById('toast');
+  if(!t)return;
   t.textContent=m;t.classList.add('show');
   clearTimeout(toastTimer);
   toastTimer=setTimeout(()=>t.classList.remove('show'),d);
 }
 
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
-  document.getElementById(id).classList.remove('hidden');
+
+const API='https://script.google.com/macros/s/AKfycbyDyYFwHvLPwHZSqd2abQCLhr9RaoqgVTA96OIw4-mxvRSRkioSe2Th2MD8LYiKhRFstw/exec';
+const ACHIEVEMENTS = [
+  { id:'register', icon:'🎖️', name:'Первый шаг',      check: ()=> !!participant },
+  { id:'vendors',  icon:'🗺️', name:'Картограф',       check: ()=> scannedVendors.size >= 4 },
+  { id:'polls',    icon:'🧠', name:'Аналитик',         check: ()=> Object.keys(pollAnswers).length >= 3 },
+  { id:'network',  icon:'🤝', name:'Связной',          check: ()=> { let m=0; for(let k in localStorage){if(k.startsWith('met_'))m++;} return m>=5; }},
+  { id:'top3',     icon:'🏆', name:'Топ-3',            check: ()=> myRank > 0 && myRank <= 3 },
+  { id:'100pts',   icon:'⚡', name:'100 баллов',       check: ()=> (participant?.points||0) >= 100 },
+];
+const unlockedAchs = new Set(JSON.parse(localStorage.getItem('unlocked_achs')||'[]'));
+const MAX_PTS=430;
+const STORY_UNLOCK_DATE=new Date('2025-11-16T00:00:00');
+
+const VENDORS=[
+  {id:'vendor_ngfw',name:'Positive Technologies',system:'NGFW',color:'#c0392b',icon:'PT',desc:'Межсетевой экран нового поколения. Глубокий анализ трафика, блокировка угроз до проникновения в сеть.',chapterMale:'Иванов не ожидал что первое задание окажется таким... визуальным. Поток данных на экране выглядел как город с высоты птичьего полёта. Каждый пакет — человек. Каждая угроза — незнакомец в толпе. Он указал пальцем на аномалию. "Вот." Куратор молча сделал пометку в досье.',chapterFemale:'Козлова не ожидала что первое задание окажется таким... визуальным. Поток данных на экране выглядел как город с высоты птичьего полёта. Каждый пакет — человек. Каждая угроза — незнакомец в толпе. Она указала пальцем на аномалию. "Вот." Куратор молча сделал пометку в досье.'},
+  {id:'vendor_dlp',name:'Гарда',system:'DLP',color:'#8e44ad',icon:'Г',desc:'Система предотвращения утечек данных. Контроль всех каналов передачи информации в реальном времени.',chapterMale:'«Данные уходят тихо» — сообщение пришло в 6 утра. Иванов налил кофе. Данные всегда куда-то уходят — это он знал ещё до всей этой истории с конвертом. Но теперь он видел как именно. Одна флешка. Один человек. Канал был найден до второй чашки.',chapterFemale:'«Данные уходят тихо» — сообщение пришло в 6 утра. Козлова налила кофе. Данные всегда куда-то уходят — это она знала ещё до всей этой истории с конвертом. Но теперь она видела как именно. Одна флешка. Один человек. Канал был найден до второй чашки.'},
+  {id:'vendor_pam',name:'АВ Софт',system:'PAM',color:'#ee672a',icon:'АВ',desc:'Управление привилегированным доступом. Контроль действий администраторов и защита критических систем.',chapterMale:'Привилегированный доступ — это власть. Иванов понял это за первые тридцать секунд. Кто контролирует учётные записи администраторов — контролирует всё. Остальные девять минут он просто наслаждался осознанием. И как его найти.',chapterFemale:'Привилегированный доступ — это власть. Козлова поняла это за первые тридцать секунд. Кто контролирует учётные записи администраторов — контролирует всё. Остальные девять минут она просто наслаждалась осознанием. И как его найти.'},
+  {id:'vendor_crypto',name:'ИнфоТеКС',system:'VPN / Крипто',color:'#005ca8',icon:'ИТ',desc:'Криптографическая защита каналов связи. ViPNet — стандарт защищённых коммуникаций.',chapterMale:'Новое задание пришло зашифрованным. Разумеется. Иванов расшифровал его за четыре минуты. "Как?" — спросили его. "Просто знаю где искать ключ." Теперь его каналы связи непробиваемы.',chapterFemale:'Новое задание пришло зашифрованным. Разумеется. Козлова расшифровала его за четыре минуты. "Как?" — спросили её. "Просто знаю где искать ключ." Теперь её каналы связи непробиваемы.'},
+];
+
+const AGENT_STATS={
+  male:{'ФАЙРВОЛ':{АНАЛИЗ:79,СКОРОСТЬ:62,КРИПТО:91,ПЕРИМЕТР:96,ВЛИЯНИЕ:55}},
+  female:{'ХАКЕР':{АНАЛИЗ:88,СКОРОСТЬ:94,КРИПТО:71,ПЕРИМЕТР:65,ВЛИЯНИЕ:97}}
+};
+const STAT_COLORS={АНАЛИЗ:'#00aeee',СКОРОСТЬ:'#f5e642',КРИПТО:'#ee672a',ПЕРИМЕТР:'#005ca8',ВЛИЯНИЕ:'#8e44ad'};
+
+const RARITY=[
+  {min:0,label:'НОВОБРАНЕЦ',bg:'rgba(255,255,255,0.06)',color:'#ffffff44',stars:0},
+  {min:1,label:'АГЕНТ',bg:'rgba(0,255,255,0.1)',color:'#00ffff',stars:2},
+  {min:3,label:'МАСТЕР',bg:'rgba(255,107,53,0.12)',color:'#ff6b35',stars:3},
+  {min:5,label:'ЛЕГЕНДА',bg:'rgba(255,204,0,0.12)',color:'#ffcc00',stars:4},
+];
+
+const AVATARS={
+  male:[
+    {file:'Defense_Grid_Icon.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'male0.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'male1.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'male2.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'male3.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'male4.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'male5.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'male6.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'male7.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'Male8.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'Male9.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'Male10.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'Male11.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'Male12.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'}
+  ],
+  female:[
+    {file:'Stealth_Tracer_Icon.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female0.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female1.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female2.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female3.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female4.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female5.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female6.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female7.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female8.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female9.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female10.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female11.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female12.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'Female13.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'}
+  ]
+};
+
+const PROGRAM=[
+  {time:'13:50',title:'Приветственное слово экипажа',speaker:'Алексей Матвеев, PROWAY Security',tag:'ВЗЛЁТ',tagColor:'#005ca8',done:true},
+  {time:'14:00',title:'Панельная дискуссия «Security Talks»',speaker:'Конкуренция на российском рынке ИБ',tag:'ДЕЛОВАЯ',tagColor:'#ee672a',done:true},
+  {time:'15:30',title:'Кофе-брейк и Lounge Expo',speaker:'Первый этаж и веранда',tag:'ПАУЗА',tagColor:'#555',done:false},
+  {time:'16:00',title:'Прямая линия PROWAY Security',speaker:'Экспресс-опросы · результаты на экран',tag:'ДЕЛОВАЯ',tagColor:'#ee672a',done:false},
+  {time:'17:30',title:'Нетворкинг',speaker:'VIP-кабина канатной дороги',tag:'НЕТВОРК',tagColor:'#27ae60',done:false},
+  {time:'18:30',title:'Вечерняя программа',speaker:'Фуршет · Кавер-авиашоу · DJ',tag:'ФИНАЛ',tagColor:'#8e44ad',done:false},
+  {time:'22:00',title:'Приземление. До новых рейсов!',speaker:'Спасибо что выбрали PROWAY Security Day',tag:'',tagColor:'',done:false},
+];
+
+const SPEAKERS=[
+  {name:'Роман Бочкарёв',co:'Positive Technologies',role:'Зам. директора по работе с партнёрами',color:'#c0392b'},
+  {name:'Роман Набережный',co:'ИнфоТеКС (ViPNet)',role:'Зам. коммерческого директора',color:'#005ca8'},
+  {name:'Дмитрий Ивашкин',co:'Код Безопасности',role:'Менеджер по работе с партнёрами',color:'#27ae60'},
+  {name:'Вячеслав Гребнев',co:'Гарда',role:'Бизнес-архитектор',color:'#8e44ad'},
+  {name:'Антон Чухнов',co:'AV Soft',role:'Генеральный директор',color:'#ee672a'},
+  {name:'Александр Корзников',co:'ЭВРИТЕГ',role:'Технический директор',color:'#16a085'},
+  {name:'Алексей Матвеев',co:'PROWAY Security',role:'Директор департамента · Модератор',color:'#005ca8'},
+  {name:'Дмитрий Захаренко',co:'PROWAY Security',role:'Технический директор · Модератор',color:'#005ca8'},
+];
+
+const POLLS=[
+  {id:'poll1',session:'// SECURITY_TALKS',question:'Что будет основным «рецептом» выживаемости вендоров на российском рынке?',options:['Регуляторка — соответствие требованиям','Технологии — развитие до мировых решений','Комплексный подход — экосистемы','Маркетинг — расширение аудитории'],votes:[0,0,0,0]},
+  {id:'poll2',session:'// ПРЯМАЯ_ЛИНИЯ',question:'Что является решающим фактором при выборе NGFW?',options:['Цена','Производительность','Функциональность','Сертификация','Другое'],votes:[0,0,0,0,0]},
+  {id:'poll3',session:'// ПРЯМАЯ_ЛИНИЯ',question:'Готовы ли российские ИБ-решения полностью заменить зарубежные?',options:['Полностью готовы','В большинстве сегментов','Есть пробелы','Пока не готовы'],votes:[0,0,0,0]},
+];
+
+let participant=null,selectedTags=[],pollAnswers={};
+let myRank=0;
+let selectedGender=null,assignedAvatar=null;
+let scannedVendors=new Set();
+let lastAnnouncementId=null;
+
+function api(p){return fetch(API+'?'+new URLSearchParams(p)).then(r=>r.json());}
+function showToastOLD(m,d=2500){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),d);}
+function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+
+function selectGender(g){
+  selectedGender=g;
+  const pool=AVATARS[g];
+  assignedAvatar=pool[Math.floor(Math.random()*pool.length)];
+  document.getElementById('reveal-img').src='https://proway-event.vercel.app/'+assignedAvatar.file;
+  document.getElementById('reveal-codename').textContent=assignedAvatar.codename;
+  showScreen('screen-reg');
 }
 
-function navTo(screenId,navId){
-  showScreen(screenId);
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  if(navId)document.getElementById(navId)?.classList.add('active');
-}
-
-function selectAgent(gender){
-  selectedGender=gender;
-  setTimeout(()=>{buildRegForm();showScreen('screen-reg');},200);
-}
-
-function buildRegForm(){
-  const avatars=selectedGender==='male'?AVATARS_MALE:AVATARS_FEMALE;
-  const codenames=selectedGender==='male'?CODENAMES_MALE:CODENAMES_FEMALE;
-  selectedAvatar=avatars[0];
-  const preview=document.getElementById('reg-avatar-preview');
-  preview.src=selectedAvatar;
-  preview.onerror=()=>{preview.src='https://via.placeholder.com/72x72/1a1a1a/fff?text=?';};
-  document.getElementById('reg-codename-label').textContent=codenames[0];
-
-  const ic=document.getElementById('interests-container');
-  if(ic)ic.innerHTML=INTERESTS.map(i=>`<div class="interest-chip" data-val="${i}" onclick="toggleInterest(this)">${i}</div>`).join('');
-
-  const grid=document.getElementById('avatar-grid');
-  grid.innerHTML='';
-  avatars.forEach((av,i)=>{
-    const d=document.createElement('div');
-    d.className='avatar-opt'+(i===0?' active':'');
-    d.onclick=()=>{
-      document.querySelectorAll('.avatar-opt').forEach(x=>x.classList.remove('active'));
-      d.classList.add('active');selectedAvatar=av;
-      preview.src=av;
-      document.getElementById('reg-codename-label').textContent=codenames[i]||codenames[0];
-    };
-    const img=document.createElement('img');
-    img.src=av;img.onerror=()=>{img.src=`https://via.placeholder.com/80x80/1a1a1a/fff?text=${i+1}`;};
-    d.appendChild(img);grid.appendChild(d);
+document.querySelectorAll('.itag').forEach(t=>{
+  t.addEventListener('click',()=>{
+    if(t.classList.contains('sel')){t.classList.remove('sel');selectedTags=selectedTags.filter(v=>v!==t.dataset.val);}
+    else if(selectedTags.length<3){t.classList.add('sel');selectedTags.push(t.dataset.val);}
   });
-}
+});
 
-function toggleInterest(el){el.classList.toggle('active');}
-function getSelectedInterests(){return[...document.querySelectorAll('.interest-chip.active')].map(el=>el.dataset.val);}
-function selectType(el){
-  document.querySelectorAll('.role-chip').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');selectedType=el.dataset.val;
-}
-
-async function doRegister(){
+async function register(){
   const name=document.getElementById('reg-name').value.trim();
+  const email=document.getElementById('reg-email').value.trim();
   const company=document.getElementById('reg-company').value.trim();
   const role=document.getElementById('reg-role').value.trim();
-  const email=document.getElementById('reg-email').value.trim();
-  if(!name||!company){showToast('Заполни имя и компанию!');return;}
-  const codenames=selectedGender==='male'?CODENAMES_MALE:CODENAMES_FEMALE;
-  const avatars=selectedGender==='male'?AVATARS_MALE:AVATARS_FEMALE;
-  const idx=avatars.indexOf(selectedAvatar);
-  const codename=codenames[idx]||codenames[0];
-  const interests=getSelectedInterests();
-  const btn=document.getElementById('reg-btn');
-  btn.innerHTML='<svg style="animation:spin 1s linear infinite;width:18px;height:18px" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,.3)" stroke-width="2"/><path d="M12 3a9 9 0 019 9" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg> Регистрируем...';
-  btn.disabled=true;
+  if(!name||!company){showToast('// ЗАПОЛНИ ПОЗЫВНОЙ И ОРГАНИЗАЦИЮ');return;}
+  const btn=document.querySelector('#ob-reveal .ob-btn');
+  btn.innerHTML='<span style="display:inline-flex;align-items:center;gap:10px;justify-content:center;"><svg style="animation:spin 1s linear infinite;width:16px;height:16px;flex-shrink:0;" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,0.3)" stroke-width="2"/><path d="M12 3a9 9 0 019 9" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>Авторизация...</span>';btn.disabled=true;
   try{
-    const res=await api({action:'register',name,company,role,email,participant_type:selectedType,avatar:selectedAvatar,codename,interests:interests.join(',')});
+    const res=await api({action:'register',name,email,company,role,interests:selectedTags.join(','),avatar:assignedAvatar?assignedAvatar.file:'',codename:assignedAvatar?assignedAvatar.codename:''});
     if(res.success){
-      participant={id:res.id,name,company,role,email,participant_type:selectedType,avatar:selectedAvatar,codename,points:15,interests};
-      localStorage.setItem('participant',JSON.stringify(participant));
-      localStorage.setItem('participant_registered_at',new Date().toISOString());
+      const save=(k,v)=>localStorage.setItem(k,v);
+      save('participant_id',res.id);save('participant_name',name);save('participant_email',email);
+      save('participant_company',company);save('participant_interests',selectedTags.join(','));
+      save('participant_avatar',assignedAvatar?assignedAvatar.file:'');
+      save('participant_gender',selectedGender||'male');
+      save('participant_codename',assignedAvatar?assignedAvatar.codename:'');
+      save('participant_artfile',assignedAvatar?assignedAvatar.artFile:'');
+      participant={id:res.id,name,email,company,role,points:15,interests:selectedTags.join(','),
+        avatar:assignedAvatar?assignedAvatar.file:'',gender:selectedGender,
+        codename:assignedAvatar?assignedAvatar.codename:'',artFile:assignedAvatar?assignedAvatar.artFile:''};
       initApp();
-    }else{
-      showToast('Ошибка: '+(res.error||'попробуй ещё раз'));
-      btn.innerHTML='<span class="material-symbols-outlined">check</span>Принять миссию';btn.disabled=false;
-    }
-  }catch(e){
-    showToast('Нет соединения');
-    btn.innerHTML='<span class="material-symbols-outlined">check</span>Принять миссию';btn.disabled=false;
-  }
+      showToast('// ДОБРО ПОЖАЛОВАТЬ, АГЕНТ! +15 Б');
+    }else{showToast('// ОШИБКА АВТОРИЗАЦИИ');btn.innerHTML='ПРИСТУПИТЬ К МИССИИ ›';btn.disabled=false;}
+  }catch(e){showToast('// НЕТ СВЯЗИ');btn.innerHTML='ПРИСТУПИТЬ К МИССИИ ›';btn.disabled=false;}
+}
+
+function setAvatarUI(){
+  const av=participant&&participant.avatar?(participant.avatar.startsWith('http')?participant.avatar:'https://proway-event.vercel.app/'+participant.avatar):'';
+  ['p-av-img','p-av-img2','p-av-img3'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&av){el.src=av;el.style.display='block';}
+  });
+  if(av){['p-av-emoji','p-av-emoji2','p-av-emoji3'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.style.display='none';
+  });}
 }
 
 function initApp(){
-  document.getElementById('bottom-nav').style.display='flex';
-  const hAv=document.getElementById('header-avatar');
-  hAv.src=participant.avatar;
-  hAv.onerror=()=>{hAv.src=`https://via.placeholder.com/40x40/1a1a1a/fff?text=${participant.name[0]}`;};
-  document.getElementById('header-pts').textContent=(participant.points||0)+' pts';
-  renderProgram();renderVendors();renderProfile();
-  checkAnnouncements();checkAchievements();
-  setInterval(checkAnnouncements,20000);setInterval(checkAchievements,20000);
-  setInterval(loadLeaderboard,15000);setInterval(checkFinale,15000);
-  checkFinale();navTo('screen-main','nav-feed');
+  // Восстанавливаем ачивки
+  unlockedAchs.forEach(id => {
+    const el = document.getElementById('ach-'+id);
+    if(el) el.classList.add('unlocked');
+  });
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('app').style.display='block';
+  document.getElementById('navbar').style.display='flex';
+  document.getElementById('ticker-wrap').style.display='flex';
+  setAvatarUI();
+  renderProfile(); checkAchievements();
+  renderAgentCard();
+  renderPolls();
+  renderVendors();
+  loadLeaderboard();
+  loadNetwork();
+  checkAnnouncements();
+  setInterval(loadLeaderboard,15000); setInterval(checkAchievements,20000);
+  setInterval(loadNetwork,30000);
+  setInterval(checkAnnouncements,20000);
+  setInterval(checkFinale,15000);
+  checkFinale();
+  setTimeout(()=>{const b=document.getElementById('p-bar');if(b)b.style.width=(Math.min((participant.points||0)/MAX_PTS,1)*100)+'%';},300);
 }
 
-function renderProgram(){
-  const now=new Date();
-  const list=document.getElementById('program-list');
-  if(!list)return;
-  list.innerHTML=PROGRAM.map(item=>{
-    const[h,m]=item.time.split(':').map(Number);
-    const t=new Date('2026-04-21');t.setHours(h,m,0,0);
-    const isNow=now>=t&&h<22;
-    return `<div style="display:flex;gap:14px;padding:12px 16px;border-bottom:2px solid #d7dee1${isNow?';background:#fff9e4;border-left:4px solid #b90c01':''}">
-      <div style="font-family:'Bangers',cursive;font-size:1.1rem;color:#b90c01;white-space:nowrap;min-width:52px">${item.time}</div>
-      <div style="font-size:.85rem;color:#575c5e;line-height:1.4"><strong style="color:#2b2f31;font-weight:700">${item.title}</strong>${item.desc?'<br>'+item.desc:''}</div>
-    </div>`;
-  }).join('');
+function showScreen(n){
+  // Поддержка обоих форматов: 'screen-main' и 'main'
+  const fullId = n.startsWith('screen-') ? n : 'screen-'+n;
+  const shortId = n.startsWith('screen-') ? n.replace('screen-','') : n;
+  
+  document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
+  const el = document.getElementById(fullId);
+  if(el) el.classList.remove('hidden');
+  
+  // Обновляем навбар
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  const nb = document.getElementById('nav-'+shortId) || document.getElementById('nav-feed');
+  if(nb) nb.classList.add('active');
+  
+  window.scrollTo(0,0);
 }
+
+// Алиас для обратной совместимости
+function goTo(id){ showScreen(id); }
+function navTo(screenId, navId){
+  showScreen(screenId);
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  if(navId){const nb=document.getElementById(navId);if(nb)nb.classList.add('active');}
+}
+
+// ── ANNOUNCEMENTS & NOTIFICATIONS ────────────────────────────────
+
+let announcements = [];
 
 async function checkAnnouncements(){
   try{
     const res=await api({action:'getAnnouncements'});
-    const list=res.announcements||[];
-    const finaleMsg=list.find(a=>a.message==='__FINALE_START__');
-    const finaleEnd=list.find(a=>a.message==='__FINALE_END__');
-    if(finaleMsg&&!finaleEnd){localStorage.setItem('finale_active','true');checkFinale();}
-    else localStorage.setItem('finale_active','false');
-    const visible=list.filter(a=>!a.message.startsWith('__'));
-    announcements=visible;
-    const ticker=document.getElementById('ticker-text');
-    if(ticker&&visible.length)ticker.textContent=visible[0].message;
-    const badge=document.getElementById('notif-badge');
-    if(badge)badge.style.display=visible.length?'flex':'none';
-    const annoList=document.getElementById('announcements-list');
-    if(annoList){
-      annoList.innerHTML=visible.map(a=>`
-        <div style="border:4px solid #000;background:#fff;padding:16px;margin-bottom:12px;position:relative;box-shadow:5px 5px 0 #000${a.type==='urgent'?';border-color:#b90c01':''}">
-          <div style="position:absolute;top:-12px;left:12px;background:${a.type==='urgent'?'#b90c01':a.type==='event'?'#f5e642':'#00618c'};color:${a.type==='event'?'#000':'#fff'};border:2px solid #000;padding:2px 10px;font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:.7rem;text-transform:uppercase">
-            ${a.type==='urgent'?'❗ СРОЧНО':a.type==='event'?'★ СОБЫТИЕ':'ℹ️ ИНФО'}
-          </div>
-          <div style="font-size:.9rem;color:#2b2f31;line-height:1.5;margin-top:4px">${a.message}</div>
-        </div>`).join('');
+    if(!res.announcements) return;
+    const list = res.announcements;
+
+    // Проверяем финальный сигнал
+    const finaleMsg = list.find(a => a.message === '__FINALE_START__');
+    const finaleEnd = list.find(a => a.message === '__FINALE_END__');
+    if (finaleMsg && !finaleEnd) {
+      localStorage.setItem('finale_active', 'true');
+      checkFinale();
+    } else {
+      localStorage.setItem('finale_active', 'false');
     }
+
+    // Фильтруем спец-сообщения из ленты
+    const visibleList = list.filter(a => !a.message.startsWith('__'));
+
+    // Бегущая строка — последнее сообщение
+    if(visibleList.length){
+      const msgs = visibleList.map(a=>`<span class="ticker-msg">${a.message}</span><span class="ticker-sep"> · </span>`).join('');
+      document.getElementById('ticker-inner').innerHTML = msgs;
+    }
+
+    // Новые сообщения → баннер + бейдж
+    const latest = visibleList[0];
+    if(latest && latest.id !== lastAnnouncementId){
+      lastAnnouncementId = latest.id;
+      showBanner(latest.message);
+    }
+
+    announcements = visibleList;
+
+    // Обновляем бейдж колокольчика
+    const badge = document.getElementById('bell-badge');
+    const dot = document.getElementById('nav-feed-dot');
+    if(visibleList.length > 0){
+      badge.textContent = list.length > 9 ? '9+' : list.length;
+      badge.classList.add('show');
+      if(dot) dot.style.display = 'block';
+    } else {
+      badge.classList.remove('show');
+      if(dot) dot.style.display = 'none';
+    }
+
+    // Если панель открыта — обновляем
+    if(document.getElementById('notif-panel').classList.contains('show')) renderNotifPanel();
+    // Если экран ленты открыт — обновляем
+    if(document.getElementById('screen-feed').classList.contains('active')) renderFeedScreen();
+
   }catch(e){}
 }
 
 function openNotifPanel(){
-  document.getElementById('notif-panel').classList.add('open');
-  const nl=document.getElementById('notif-list');
-  if(nl)nl.innerHTML=announcements.length
-    ?announcements.map(a=>`<div style="padding:12px;border-bottom:2px solid #d7dee1;font-size:.85rem;color:#2b2f31">${a.message}</div>`).join('')
-    :'<div style="padding:24px;text-align:center;color:#737779">Нет уведомлений</div>';
+  document.getElementById('notif-overlay').classList.add('show');
+  document.getElementById('notif-panel').classList.add('show');
+  renderNotifPanel();
+  // Убираем бейдж пока открыто
+  document.getElementById('bell-badge').classList.remove('show');
+  const dot = document.getElementById('nav-feed-dot');
+  if(dot) dot.style.display='none';
 }
-function closeNotifPanel(){document.getElementById('notif-panel').classList.remove('open');}
 
-async function loadLeaderboard(){
-  try{
-    const res=await api({action:'getLeaderboard'});
-    if(!res.leaderboard)return;
-    const lb=res.leaderboard;
-    myRank=0;
-    lb.forEach((r,i)=>{if(participant&&r.id===participant.id){myRank=i+1;participant.points=r.points;document.getElementById('header-pts').textContent=r.points+' pts';}});
-    if(lb[0]){
-      const r1=lb[0];
-      document.getElementById('lb-rank1').innerHTML=`
-        <div style="position:relative;display:inline-block;margin-bottom:8px">
-          <div style="position:absolute;top:-16px;left:50%;transform:translateX(-50%);background:#fff;border:3px solid #000;padding:2px 8px;z-index:1"><span class="material-symbols-outlined" style="color:#f5e642;font-size:20px" style="font-variation-settings:'FILL' 1">crown</span></div>
-          <img style="width:80px;height:80px;border:4px solid #f5e642;object-fit:cover;box-shadow:0 0 0 3px #000;display:block;filter:grayscale(0)" src="${r1.avatar}" onerror="this.src='https://via.placeholder.com/80x80/b90c01/fff?text=${encodeURIComponent(r1.name[0])}'"/>
-        </div>
-        <div style="background:#fff;border:3px solid #000;padding:4px 16px;box-shadow:4px 4px 0 #000;display:inline-block">
-          <div style="font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:1.2rem;text-transform:uppercase;color:#b90c01">${r1.codename||r1.name}</div>
-        </div>
-        <div style="font-family:'Bangers',cursive;font-size:2rem;color:#f5e642;text-shadow:2px 2px 0 #000;margin-top:4px">${r1.points} pts</div>`;
+function closeNotifPanel(){
+  document.getElementById('notif-overlay').classList.remove('show');
+  document.getElementById('notif-panel').classList.remove('show');
+}
+
+function renderNotifPanel(){
+  const el = document.getElementById('notif-list');
+  if(!announcements.length){
+    el.innerHTML='<div class="notif-empty">Пока тихо — следите за обновлениями</div>';
+    return;
+  }
+  el.innerHTML = announcements.map(a=>{
+    const type = a.type||'info';
+    const time = a.created_at ? new Date(a.created_at).toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'}) : '';
+    return `<div class="notif-item ${type}">
+      <div class="notif-dot ${type}"></div>
+      <div class="notif-body">
+        <div class="notif-text">${a.message}</div>
+        <div class="notif-time">${time}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderFeedScreen(){
+  const el = document.getElementById('feed-screen-list');
+  if(!announcements.length){
+    el.innerHTML='<div class="loader" style="color:rgba(255,255,255,0.25);font-size:12px;">Сообщений пока нет</div>';
+    return;
+  }
+  el.innerHTML = announcements.map(a=>{
+    const type = a.type||'info';
+    const time = a.created_at ? new Date(a.created_at).toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'}) : '';
+    return `<div class="feed-card ${type}">
+      <div class="feed-card-text">${a.message}</div>
+      <div class="feed-card-time">${time}</div>
+    </div>`;
+  }).join('');
+}
+
+function showBanner(msg){
+  const b=document.getElementById('announce-banner');
+  document.getElementById('announce-text').textContent=msg;
+  b.classList.add('show');
+  setTimeout(()=>b.classList.remove('show'),8000);
+}
+function closeBanner(){document.getElementById('announce-banner').classList.remove('show');}
+
+function renderProfile(){
+  if(!participant)return;
+  const pts=participant.points||0;
+  document.getElementById('p-pts').textContent=pts;
+  const pct=Math.min(Math.round(pts/MAX_PTS*100),100);
+  document.getElementById('p-pct').textContent=pct+'%';
+  document.getElementById('s-vendors').textContent=scannedVendors.size;
+  document.getElementById('s-polls').textContent=Object.keys(pollAnswers).length;
+}
+
+function getRarity(n){let r=RARITY[0];for(const l of RARITY){if(n>=l.min)r=l;}return r;}
+
+function renderAgentCard(){
+  if(!participant)return;
+  const scanned=scannedVendors.size;
+  const rarity=getRarity(scanned);
+  const gender=participant.gender||'male';
+  const codename=participant.codename||'ФАЙРВОЛ';
+  const artFile=participant.artFile||'';
+  const stats=AGENT_STATS[gender]?.[codename]||{АНАЛИЗ:75,СКОРОСТЬ:75,КРИПТО:75,ПЕРИМЕТР:75,ВЛИЯНИЕ:75};
+  const lastName=participant.name.split(' ').slice(-1)[0]||participant.name;
+  const unlocked=new Date()>STORY_UNLOCK_DATE;
+
+  let starsHtml='';
+  for(let i=0;i<4;i++)starsHtml+=`<div class="acf-star${i<rarity.stars?'':' empty'}"></div>`;
+
+  let statsHtml=Object.entries(stats).map(([k,v])=>`
+    <div class="acf-stat-row">
+      <span class="acf-stat-lbl">${k}</span>
+      <div class="acf-bar-wrap"><div class="acf-bar" style="width:${v}%;background:${STAT_COLORS[k]};"></div></div>
+      <span class="acf-stat-val">${v}</span>
+    </div>`).join('');
+
+  const baseStory=gender==='female'
+    ?`${lastName} не планировала становиться агентом. Конверт лежал прямо на клавиатуре — без подписи, без обратного адреса. Только координаты и время. Она пришла. Конечно пришла.`
+    :`${lastName} не планировал становиться агентом. Конверт лежал прямо на клавиатуре — без подписи, без обратного адреса. Только координаты и время. Он пришёл. Конечно пришёл.`;
+
+  let chaptersHtml=`<div class="acf-chapter-badge">НАЧАЛО</div><div class="acf-chapter-text">${baseStory}</div>`;
+  VENDORS.forEach((v,idx)=>{
+    const wasScanned=scannedVendors.has(v.id);
+    if(wasScanned||unlocked){
+      const text=gender==='female'?v.chapterFemale:v.chapterMale;
+      chaptersHtml+=`<div class="acf-chapter-badge">ГЛАВА ${idx+1} · ${v.system}</div><div class="acf-chapter-text">${text}</div>`;
+    }else{
+      chaptersHtml+=`<div class="acf-locked"><div class="acf-lock"></div><span class="acf-locked-text">ГЛАВА ${idx+1} · СТЕНД ${v.system}</span></div>`;
     }
-    const list=document.getElementById('lb-list');
-    if(list)list.innerHTML=lb.slice(1).map((r,i)=>{
-      const isMe=participant&&r.id===participant.id;
-      return `<div class="lb-row${isMe?' me':''}" style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:2px solid #d7dee1${isMe?';background:#fff3cd;border-left:6px solid #b90c01':''}">
-        <div style="font-family:'Bangers',cursive;font-size:1.4rem;color:${isMe?'#b90c01':'#a9aeb0'};min-width:32px;text-align:center">${i+2}</div>
-        <img style="width:44px;height:44px;border:3px solid #000;object-fit:cover;flex-shrink:0;filter:grayscale(1)" src="${r.avatar}" onerror="this.src='https://via.placeholder.com/44x44/1a1a1a/fff?text=${encodeURIComponent(r.name[0])}'"/>
-        <div style="flex:1;min-width:0">
-          <div style="font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:1rem;text-transform:uppercase;color:#2b2f31;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.codename||r.name}${isMe?' <span style="color:#b90c01;font-size:.7rem">[ВЫ]</span>':''}</div>
-          <div style="font-size:.7rem;color:#737779">${r.company}</div>
-        </div>
-        <div style="font-family:'Bangers',cursive;font-size:1.4rem;color:${isMe?'#b90c01':'#2b2f31'}">${r.points}</div>
-      </div>`;
-    }).join('');
-  }catch(e){}
+  });
+
+  const artHtml=artFile?`<img src="${artFile}" alt="${codename}">`:`<span style="font-family:'Bangers',cursive;font-size:28px;color:var(--cyan);letter-spacing:4px;">${codename}</span>`;
+
+  document.getElementById('agent-full-card').innerHTML=`
+    <div class="acf-namebar">
+      <span class="acf-codename">${codename}</span>
+      <span class="acf-badge" style="background:${rarity.bg};color:${rarity.color};border-color:${rarity.color}44;">${rarity.label}</span>
+    </div>
+    <div class="acf-art">${artHtml}<div class="acf-rarity">${starsHtml}</div></div>
+    <div class="acf-stats">${statsHtml}</div>
+    <div class="acf-story">
+      <div class="acf-story-lbl">// ДОСЬЕ</div>
+      ${chaptersHtml}
+    </div>
+    <div class="acf-footer">
+      <span class="acf-footer-name">${participant.name.toUpperCase()}</span>
+      <span class="acf-footer-pts">${participant.points||0} Б</span>
+    </div>`;
 }
 
 function renderVendors(){
-  const grid=document.getElementById('vendor-grid');
-  if(!grid)return;
-  grid.innerHTML=VENDORS.map(v=>{
-    const done=scannedVendors.has(v.id);
-    return `<div style="border:4px solid ${done?'#000':'#a9aeb0'};background:#fff;overflow:hidden;position:relative;cursor:pointer;transition:all .15s;${done?'box-shadow:5px 5px 0 #000':''}" id="vc-${v.id}" onclick="handleVendorScan('${v.id}')"
-      onmousedown="if(!this.classList.contains('done'))this.style.transform='translate(3px,3px)'"
-      onmouseup="this.style.transform=''">
-      <div style="height:72px;background:${done?'#e4e9eb':'#f3f7f9'};display:flex;align-items:center;justify-content:center;border-bottom:${done?'3px':'2px'} solid ${done?'#000':'#d7dee1'};overflow:hidden;position:relative">
-        <img src="vendors/${v.id}.png" alt="${v.name}" style="max-width:80%;max-height:52px;object-fit:contain;${done?'':'filter:grayscale(1);opacity:.5'}" onerror="this.style.display='none'"/>
-        <div style="position:absolute;top:5px;left:5px;font-size:.5rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:2px 6px;background:#00618c;color:#fff;border:1px solid #000">${v.tag}</div>
+  const total=VENDORS.length;
+  let starsHtml='';
+  for(let i=0;i<total;i++)starsHtml+=`<div class="vp-star${i<scannedVendors.size?'':' empty'}"></div>`;
+  document.getElementById('vendor-stars').innerHTML=starsHtml;
+  document.getElementById('vendor-count').textContent=`${scannedVendors.size} / ${total}`;
+  document.getElementById('vendor-list').innerHTML=VENDORS.map((v,idx)=>{
+    const scanned=scannedVendors.has(v.id);
+    return`<div class="vendor-card${scanned?' scanned':''}">
+      <div class="vendor-top">
+        <div class="vendor-icon" style="background:${v.color}18;border-color:${v.color}44;color:${v.color};">${v.icon}</div>
+        <div class="vendor-info"><div class="vendor-name">${v.name}</div><div class="vendor-system">${v.system}</div></div>
+        <div><div class="vendor-pts${scanned?' done':''}">${scanned?'ПОЛУЧЕНО':'+20 Б'}</div><div class="vendor-pts-lbl">${scanned?'✓':'ЗА СКАН'}</div></div>
       </div>
-      <div style="padding:10px">
-        <div style="font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:.9rem;text-transform:uppercase;color:#2b2f31;margin-bottom:3px">${v.name}</div>
-        <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:${done?'#22c55e':'#a9aeb0'}">${done?'✓ Посещено · +20 pts':'Не посещено'}</div>
-      </div>
-      ${done?'<div style="position:absolute;top:-4px;right:-4px;background:#f5e642;border:2px solid #000;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:.75rem;transform:rotate(12deg);box-shadow:2px 2px 0 #000">✓</div>':''}
+      <div class="vendor-desc">${v.desc}</div>
+      ${scanned
+        ?`<div class="vendor-chapter"><span class="vc-badge">ГЛАВА ${idx+1} · ОТКРЫТА</span><span class="vc-text">Фрагмент досье добавлен в карточку агента</span></div>`
+        :`<div class="vendor-locked"><span class="vl-text">// ГЛАВА ${idx+1} · ОТСКАНИРУЙ QR НА СТЕНДЕ</span></div>`}
     </div>`;
   }).join('');
-  updateStandsProgress();
-}
-
-function updateStandsProgress(){
-  const n=scannedVendors.size;
-  document.getElementById('stands-count').textContent=n+'/8';
-  document.getElementById('stands-prog-text').textContent=n+' из 8 стендов';
-  document.getElementById('stands-prog-bar').style.width=(n/8*100)+'%';
 }
 
 async function handleVendorScan(vendorId){
-  if(scannedVendors.has(vendorId)){showToast('Стенд уже отсканирован');return;}
-  if(!participant)return;
+  if(!participant){showToast('// СНАЧАЛА ЗАРЕГИСТРИРУЙСЯ');return;}
+  if(scannedVendors.has(vendorId)){showToast('// СТЕНД УЖЕ ОТСКАНИРОВАН');showScreen('screen-stands');return;}
   try{
     const res=await api({action:'scanVendor',participant_id:participant.id,vendor_id:vendorId});
     if(res.success||res.already){
       scannedVendors.add(vendorId);
       localStorage.setItem('scanned_vendors',JSON.stringify([...scannedVendors]));
-      participant.points=(participant.points||0)+20;
-      document.getElementById('header-pts').textContent=participant.points+' pts';
-      localStorage.setItem('participant',JSON.stringify(participant));
-      renderVendors();updateStandsProgress();
-      showToast('+20 баллов за стенд!');checkAchievements();
+      if(res.success)participant.points=(participant.points||0)+20;
+      document.getElementById('s-vendors').textContent=scannedVendors.size;
+      renderVendors();renderProfile();renderAgentCard();
+      showToast(res.already?'// СТЕНД УЖЕ БЫЛ ЗАСЧИТАН':'// СТЕНД ЗАСЧИТАН! +20 Б · ГЛАВА ОТКРЫТА');
+      showScreen('screen-stands');
     }
-  }catch(e){showToast('Ошибка соединения');}
+  }catch(e){showToast('// НЕТ СВЯЗИ');}
+}
+
+async function loadLeaderboard(){
+  try{
+    const res=await api({action:'getLeaderboard'});
+    const wrap=document.getElementById('leaderboard-wrap');
+    if(!res.leaderboard||!res.leaderboard.length){wrap.innerHTML='<div class="loader">// АГЕНТОВ НЕТ</div>';return;}
+    myRank=0;
+    wrap.innerHTML=res.leaderboard.map((p,i)=>{
+      const isMe=participant&&p.id===participant.id;
+      if(isMe){
+        myRank=i+1;participant.points=p.points;renderProfile();
+        const b=document.getElementById('p-bar');
+        if(b)b.style.width=(Math.min(p.points/MAX_PTS,1)*100)+'%';
+        document.getElementById('p-pts').textContent=p.points;
+        document.getElementById('p-pct').textContent=Math.min(Math.round(p.points/MAX_PTS*100),100)+'%';
+        document.getElementById('s-rank2').textContent=i+1;
+      }
+      const avHtml=p.avatar?`<img src="${p.avatar.startsWith('http')?p.avatar:'https://proway-event.vercel.app/'+p.avatar}" alt="">`:`<span style="font-size:13px;color:var(--text2);">◈</span>`;
+      return`<div class="lb-row${isMe?' me':''}">
+        ${i===0?'<div class="lb-leader">ЛИДЕР</div>':''}
+        <span class="lb-pos${i===0?' gold':''}${isMe?' me-c':''}">${i+1}</span>
+        <div class="lb-av${isMe?' me':''}">${avHtml}</div>
+        <div class="lb-info">
+          <div class="lb-name${isMe?' me':''}">${p.name}${isMe?' · ВЫ':''}</div>
+          <div class="lb-co">${p.company||''}</div>
+        </div>
+        <span class="lb-pts${isMe?' me':''}">${p.points} б</span>
+      </div>`;
+    }).join('');
+    document.getElementById('p-rank').textContent='#'+myRank;
+  }catch(e){}
+}
+
+const likedProfiles = new Set(JSON.parse(localStorage.getItem('liked_profiles')||'[]'));
+
+function toggleLike(id, btn) {
+  if (likedProfiles.has(id)) {
+    likedProfiles.delete(id);
+    btn.className = 'net-btn';
+    btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 14s-6-3.5-6-8a4 4 0 018 0 4 4 0 018 0c0 4.5-6 8-6 8z" stroke="rgba(255,255,255,0.4)" stroke-width="1.3"/></svg> Отметить';
+  } else {
+    likedProfiles.add(id);
+    btn.className = 'net-btn liked';
+    btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 16 16" fill="#a29bfe"><path d="M8 14s-6-3.5-6-8a4 4 0 018 0 4 4 0 018 0c0 4.5-6 8-6 8z" stroke="#a29bfe" stroke-width="1.3"/></svg> Интересно';
+  }
+  localStorage.setItem('liked_profiles', JSON.stringify([...likedProfiles]));
 }
 
 async function loadNetwork(){
-  const list=document.getElementById('net-list');
-  if(!list)return;
-  list.innerHTML='<div style="text-align:center;padding:40px;color:#737779">Загрузка...</div>';
+  if(!participant)return;
   try{
-    const res=await api({action:'getParticipants',exclude:participant?.id||''});
-    if(!res.participants){list.innerHTML='<div style="text-align:center;padding:40px;color:#737779">Нет данных</div>';return;}
-    const people=res.participants;
-    const myInts=participant?.interests||[];
-    people.sort((a,b)=>{
-      const am=(a.interests||[]).filter(i=>myInts.includes(i)).length;
-      const bm=(b.interests||[]).filter(i=>myInts.includes(i)).length;
-      return bm-am;
-    });
-    if(!people.length){list.innerHTML='<div style="text-align:center;padding:40px;color:#737779">Никого нет</div>';return;}
-    list.innerHTML=people.map(p=>{
-      const pInts=(typeof p.interests==='string'?p.interests.split(','):p.interests)||[];
-      const matches=pInts.filter(i=>myInts.includes(i));
-      const isLiked=localStorage.getItem('liked_'+p.id);
-      return `<div class="net-card">
-        <div style="display:flex;gap:0">
-          <div style="width:100px;flex-shrink:0;border-right:4px solid #000;overflow:hidden">
-            <img src="${p.avatar}" style="width:100%;height:100%;min-height:100px;object-fit:cover;filter:grayscale(1)" onerror="this.src='https://via.placeholder.com/100x100/1a1a1a/fff?text=${encodeURIComponent(p.name[0])}'"/>
+    const res=await api({action:'getParticipants',exclude:participant.id});
+    const wrap=document.getElementById('network-list');
+    if(!res.participants||!res.participants.length){
+      wrap.innerHTML='<div class="empty-state"><div class="empty-text">// ДРУГИХ АГЕНТОВ ПОКА НЕТ</div></div>';return;
+    }
+    const myInterests=(participant.interests||'').split(',').filter(Boolean);
+    const scored=res.participants.map(p=>{
+      const their=(p.interests||'').split(',').filter(Boolean);
+      const matches=myInterests.filter(i=>their.includes(i));
+      return{...p,matches,score:matches.length};
+    }).sort((a,b)=>b.score-a.score||b.points-a.points);
+    wrap.innerHTML=scored.map(p=>{
+      const their=(p.interests||'').split(',').filter(Boolean);
+      const mySet=new Set(myInterests);
+      const tagsHtml=their.map(t=>`<span class="net-tag${mySet.has(t)?' match':''}">${t}</span>`).join('');
+      const avHtml=p.avatar?`<img src="${p.avatar.startsWith('http')?p.avatar:'https://proway-event.vercel.app/'+p.avatar}" alt="">`:`<span style="font-size:18px;color:var(--text2);">◈</span>`;
+      const liked = likedProfiles.has(p.id);
+      return`<div class="net-card${p.score>0?' top-match':''}">
+        <div class="net-av">${avHtml}</div>
+        <div class="net-info">
+          <div class="net-name">${p.name}</div>
+          <div class="net-co">${p.company||''}${p.role?' · '+p.role:''}</div>
+          <div class="net-tags">${tagsHtml}</div>
+          <div class="net-actions">
+            <button class="net-btn${liked?' liked':''}" onclick="toggleLike('${p.id}',this)">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="${liked?'#a29bfe':'none'}"><path d="M8 14s-6-3.5-6-8a4 4 0 018 0 4 4 0 018 0c0 4.5-6 8-6 8z" stroke="${liked?'#a29bfe':'rgba(255,255,255,0.4)'}" stroke-width="1.3"/></svg>
+              ${liked?'Интересно':'Отметить'}
+            </button>
+            ${p.email?`<button class="net-btn contact" onclick="window.location.href='mailto:${p.email}'">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="#00c864" stroke-width="1.3"/><path d="M1 5l7 5 7-5" stroke="#00c864" stroke-width="1.3" stroke-linecap="round"/></svg>
+              Написать
+            </button>`:''}
           </div>
-          <div style="padding:12px;flex:1">
-            <div style="font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:1rem;text-transform:uppercase;color:#2b2f31">${p.codename||p.name}</div>
-            <div style="font-size:.75rem;color:#737779;margin-top:2px">${p.name} · ${p.company}</div>
-            <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:8px">
-              ${pInts.map(t=>`<span style="font-size:.55rem;font-weight:700;text-transform:uppercase;padding:2px 6px;border:2px solid ${matches.includes(t)?'#000':'#d7dee1'};background:${matches.includes(t)?'#00618c':'transparent'};color:${matches.includes(t)?'#fff':'#a9aeb0'}">${t}</span>`).join('')}
-            </div>
-            <div style="display:flex;gap:8px;margin-top:10px;align-items:center">
-              ${matches.length?`<div style="font-family:'Bangers',cursive;font-size:1rem;color:#b90c01;background:#fbd684;border:2px solid #000;padding:0 8px">${matches.length}⚡ совпадений</div>`:''}
-              <button style="background:${isLiked?'#f5e642':'#fff'};border:2px solid #000;padding:4px 10px;cursor:pointer;font-size:.8rem;font-weight:700;box-shadow:${isLiked?'2px 2px 0 #000':'none'}" onclick="toggleLike('${p.id}',this)">${isLiked?'♥':'♡'}</button>
-              ${p.email?`<button style="background:#fff;border:2px solid #000;padding:4px 10px;cursor:pointer;font-size:.8rem" onclick="window.location='mailto:${p.email}'">✉</button>`:''}
-            </div>
-          </div>
+        </div>
+        <div>
+          <div class="net-match-n${p.score>0?' hot':''}">${p.score}</div>
+          <div class="net-match-l">СОВП.</div>
         </div>
       </div>`;
     }).join('');
-  }catch(e){list.innerHTML='<div style="text-align:center;padding:40px;color:#737779">Ошибка</div>';}
+  }catch(e){document.getElementById('network-list').innerHTML='<div class="loader">// ОШИБКА СВЯЗИ</div>';}
 }
 
-function toggleLike(id,btn){
-  const k='liked_'+id;
-  if(localStorage.getItem(k)){localStorage.removeItem(k);btn.textContent='♡';btn.style.background='#fff';btn.style.boxShadow='none';}
-  else{localStorage.setItem(k,'1');btn.textContent='♥';btn.style.background='#f5e642';btn.style.boxShadow='2px 2px 0 #000';}
-}
-
-async function loadPoll(){
-  const content=document.getElementById('poll-content');
-  if(!content)return;
-  content.innerHTML='<div style="text-align:center;padding:40px;color:#737779">Загрузка...</div>';
-  try{
-    const res=await api({action:'getPolls'});
-    if(!res.polls||!res.polls.length){
-      content.innerHTML=`<div style="text-align:center;padding:60px 20px">
-        <div style="font-family:'Bangers',cursive;font-size:2.5rem;color:#d7dee1;margin-bottom:8px">STANDBY</div>
-        <div style="font-size:.85rem;color:#737779">Вопросов пока нет</div>
-      </div>`;
-      return;
-    }
-    renderPolls(res.polls);
-  }catch(e){content.innerHTML='<div style="text-align:center;padding:40px;color:#737779">Ошибка</div>';}
-}
-
-function renderPolls(polls){
-  const content=document.getElementById('poll-content');
-  if(!content)return;
-  content.innerHTML=polls.map(q=>{
-    const answered=pollAnswers[q.id]!==undefined;
+function renderPolls(){
+  document.getElementById('polls-list').innerHTML=POLLS.map(poll=>{
+    const answered=pollAnswers[poll.id]!==undefined;
     if(answered){
-      return `<div style="background:#fff;border:4px solid #000;padding:20px;margin-bottom:16px;box-shadow:6px 6px 0 #000;position:relative">
-        <div style="position:absolute;top:-12px;left:12px;background:#22c55e;color:#fff;border:2px solid #000;padding:2px 10px;font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:.7rem;text-transform:uppercase">✓ ОТВЕТ ПРИНЯТ</div>
-        <div style="font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:1.1rem;text-transform:uppercase;color:#2b2f31;margin:8px 0 16px;line-height:1.3">${q.question}</div>
-        ${(q.results||q.options.map((o,i)=>({option:o,percent:0}))).map((r,i)=>{
-          const isWinner=q.results&&r.percent===Math.max(...q.results.map(x=>x.percent));
-          const isMine=i===pollAnswers[q.id];
-          return `<div style="margin-bottom:10px">
-            <div style="display:flex;justify-content:space-between;font-size:.75rem;font-weight:700;text-transform:uppercase;margin-bottom:4px;color:${isMine?'#b90c01':'#575c5e'}">
-              <span>${isMine?'▶ ':''}${r.option}</span><span>${r.percent||0}%</span>
-            </div>
-            <div style="height:20px;background:#d7dee1;border:2px solid #000;overflow:hidden">
-              <div style="height:100%;background:${isWinner?'#f5e642':'#00618c'};width:${r.percent||0}%;border-right:${r.percent>0?'2px solid #000':''};transition:width .6s;background-image:radial-gradient(rgba(0,0,0,.1) 1px,transparent 0);background-size:4px 4px"></div>
-            </div>
-          </div>`;
-        }).join('')}
+      const total=poll.votes.reduce((a,b)=>a+b,0)||1;
+      return`<div class="poll-card"><div class="poll-session">${poll.session}</div><div class="poll-q">${poll.question}</div>
+        ${poll.options.map((opt,i)=>{
+          const pct=Math.round(poll.votes[i]/total*100);
+          const isMe=pollAnswers[poll.id]===i;
+          return`<div class="poll-opt poll-result" style="${isMe?'border-color:var(--cyan);':''}">
+            <div class="poll-bar${isMe?' me-bar':''}" style="width:${pct}%"></div>
+            <div class="poll-content"><span style="${isMe?'color:var(--cyan);':''}">${opt}</span><span class="poll-pct${isMe?' me':''}">${pct}%</span></div>
+          </div>`;}).join('')}
       </div>`;
     }
-    return `<div style="background:#fff;border:4px solid #000;padding:20px;margin-bottom:16px;box-shadow:6px 6px 0 #000;position:relative">
-      <div style="position:absolute;top:-12px;left:12px;background:#b90c01;color:#fff;border:2px solid #000;padding:2px 10px;font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:.7rem;text-transform:uppercase">ВОПРОС МИССИИ · +15 pts</div>
-      <div style="font-family:'Epilogue',sans-serif;font-style:italic;font-weight:900;font-size:1.1rem;text-transform:uppercase;color:#2b2f31;margin:8px 0 16px;line-height:1.3">${q.question}</div>
-      ${q.options.map((opt,i)=>`<button class="poll-opt" onclick="answerPoll('${q.id}',${i},this.parentElement)">${opt}</button>`).join('')}
+    return`<div class="poll-card"><div class="poll-session">${poll.session}</div><div class="poll-q">${poll.question}</div>
+      ${poll.options.map((opt,i)=>`<button class="poll-opt" onclick="answerPoll('${poll.id}',${i})">${opt}</button>`).join('')}
     </div>`;
   }).join('');
 }
 
-async function answerPoll(pollId,optIdx,card){
-  if(!participant||pollAnswers[pollId]!==undefined)return;
+function answerPoll(pollId,optIdx){
+  if(pollAnswers[pollId]!==undefined)return;
   pollAnswers[pollId]=optIdx;
-  localStorage.setItem('poll_answers',JSON.stringify(pollAnswers));
-  try{
-    await api({action:'addPoints',participant_id:participant.id,reason:'poll',points:15,poll_id:pollId,option_index:optIdx});
-    participant.points=(participant.points||0)+15;
-    document.getElementById('header-pts').textContent=participant.points+' pts';
-    localStorage.setItem('participant',JSON.stringify(participant));
-    showToast('+15 баллов за ответ!');loadPoll();checkAchievements();
-  }catch(e){showToast('Ошибка');}
+  const poll=POLLS.find(p=>p.id===pollId);
+  poll.votes[optIdx]++;
+  renderPolls();
+  document.getElementById('s-polls').textContent=Object.keys(pollAnswers).length;
+  if(participant)api({action:'addPoints',participant_id:participant.id,action:'poll',points:15});
+  showToast('// ГОЛОС ПРИНЯТ · +15 Б');
 }
 
-function renderProfile(){
-  if(!participant)return;
-  const av=document.getElementById('profile-avatar');
-  if(av){av.src=participant.avatar;av.onerror=()=>{av.src=`https://via.placeholder.com/140x160/1a1a1a/fff?text=${participant.name[0]}`;}}
-  const pn=document.getElementById('profile-name');if(pn)pn.textContent=participant.name;
-  const pc=document.getElementById('profile-codename');if(pc)pc.textContent=participant.codename;
-  const pp=document.getElementById('profile-pts');if(pp)pp.textContent=participant.points||0;
-  const pco=document.getElementById('profile-company');if(pco)pco.textContent=(participant.role?participant.role+' · ':'')+participant.company;
-  const rb=document.getElementById('profile-rank-badge');if(rb&&myRank)rb.textContent='#'+myRank;
-  const lb=document.getElementById('profile-level-badge');if(lb)lb.textContent=participant.codename||'АГЕНТ';
 
-  const stands=scannedVendors.size;
-  const bs=document.getElementById('bar-stands');if(bs)bs.style.width=(stands/8*100)+'%';
-  const bsv=document.getElementById('bar-stands-val');if(bsv)bsv.textContent=stands+'/8';
-  const polls=Object.keys(pollAnswers).length;
-  const bp=document.getElementById('bar-polls');if(bp)bp.style.width=Math.min(100,polls/3*100)+'%';
-  const bpv=document.getElementById('bar-polls-val');if(bpv)bpv.textContent=polls;
-  const achCount=unlockedAchs.size;
-  const ba=document.getElementById('bar-ach');if(ba)ba.style.width=(achCount/6*100)+'%';
-  const bav=document.getElementById('bar-ach-val');if(bav)bav.textContent=achCount+'/6';
+async function generateShareCard() {
+  if (!participant) { showToast('Нет данных'); return; }
+  const btn = document.querySelector('.share-card-btn');
+  btn.innerHTML = '<svg style="animation:spin 1s linear infinite;width:16px;height:16px;" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,0.3)" stroke-width="2"/><path d="M12 3a9 9 0 019 9" stroke="white" stroke-width="2" stroke-linecap="round"/></svg> Генерируем...';
+  btn.disabled = true;
 
-  const grid=document.getElementById('ach-grid');
-  if(grid)grid.innerHTML=ACHIEVEMENTS.map(a=>{
-    const unlocked=unlockedAchs.has(a.id);
-    return `<div style="border:${unlocked?'4px solid #000':'3px solid #d7dee1'};background:${unlocked?'#fff3cd':'#fff'};padding:12px 8px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;${unlocked?'box-shadow:4px 4px 0 #000':''}">
-      <div style="font-size:1.6rem;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:${unlocked?'3px solid #000':'2px solid #d7dee1'};background:${unlocked?'#f5e642':'#f3f7f9'}">${a.icon}</div>
-      <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:${unlocked?'#2b2f31':'#a9aeb0'};line-height:1.3">${a.name}</div>
-    </div>`;
-  }).join('');
-}
+  // Загружаем Bangers
+  try {
+    const font = new FontFace('Bangers', 'url(https://fonts.gstatic.com/s/bangers/v24/FeVQS0BTqb0h60ACL5la2bxii28wYQ.woff2)');
+    await font.load();
+    document.fonts.add(font);
+  } catch(e) {}
 
-function checkAchievements(){
-  if(!participant)return;
-  ACHIEVEMENTS.forEach(a=>{
-    const isUnlocked=a.check();
-    if(isUnlocked&&!unlockedAchs.has(a.id)){
-      unlockedAchs.add(a.id);
-      localStorage.setItem('unlocked_achs',JSON.stringify([...unlockedAchs]));
-      showAchievementBanner(a.icon,a.name);
-    }
-  });
-  renderProfile();
-}
+  // 5x10 cm @ 300dpi
+  const W = 591, H = 1181;
+  const canvas = document.getElementById('share-canvas');
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
 
-function showAchievementBanner(icon,name){
-  const b=document.getElementById('ach-banner');
-  document.getElementById('ach-banner-icon').textContent=icon;
-  document.getElementById('ach-banner-name').textContent=name;
-  b.classList.add('show');
-  setTimeout(()=>b.classList.remove('show'),4000);
-}
+  // ── ФОН ──
+  const bgG = ctx.createLinearGradient(0,0,0,H);
+  bgG.addColorStop(0,'#0a0520'); bgG.addColorStop(1,'#120830');
+  ctx.fillStyle = bgG; ctx.fillRect(0,0,W,H);
 
-function showFinale(){
-  if(!participant)return;
-  document.getElementById('finale-pts').textContent=(participant.points||0)+' Б';
-  document.getElementById('finale-rank').textContent=myRank?'Место в рейтинге: #'+myRank:'Место в рейтинге: —';
-  const achEl=document.getElementById('finale-achs');
-  if(achEl)achEl.innerHTML=ACHIEVEMENTS.filter(a=>unlockedAchs.has(a.id)).map(a=>`<span style="font-size:2rem">${a.icon}</span>`).join('');
-  document.getElementById('finale-overlay').classList.add('show');
-}
-function checkFinale(){if(localStorage.getItem('finale_active')==='true')showFinale();}
+  // Сетка
+  ctx.strokeStyle='rgba(108,92,231,0.07)'; ctx.lineWidth=0.5;
+  for(let x=0;x<W;x+=80){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<H;y+=80){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
 
-function showQrModal(){
-  if(!participant)return;
-  const img=document.getElementById('qr-modal-img');
-  if(img){
-    const qrUrl=`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent('https://proway-event.vercel.app/profile-scan.html?id='+participant.id)}`;
-    img.innerHTML=`<img src="${qrUrl}" width="200" height="200" alt="QR" style="display:block"/>`;
+  // Глитч
+  ctx.fillStyle='rgba(108,92,231,0.25)'; ctx.fillRect(0,186,100,2);
+  ctx.fillStyle='rgba(0,200,255,0.18)'; ctx.fillRect(400,310,70,1.5);
+
+  // Радар
+  ctx.strokeStyle='rgba(108,92,231,0.1)'; ctx.lineWidth=0.5;
+  const RX=W/2, RY=300;
+  for(const r of [260,180,110,50]){ctx.beginPath();ctx.arc(RX,RY,r,0,Math.PI*2);ctx.stroke();}
+  ctx.beginPath();ctx.moveTo(RX,40);ctx.lineTo(RX,560);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(20,RY);ctx.lineTo(W-20,RY);ctx.stroke();
+
+  // ── ИЗОБРАЖЕНИЕ АГЕНТА ──
+  const artSrc = participant.artFile
+    ? (participant.artFile.startsWith('http')?participant.artFile:'https://proway-event.vercel.app/'+participant.artFile)
+    : null;
+  const avatarSrc = participant.avatar
+    ? (participant.avatar.startsWith('http')?participant.avatar:'https://proway-event.vercel.app/'+participant.avatar)
+    : null;
+
+  if(artSrc){
+    try{
+      const img=await loadImage(artSrc);
+      ctx.drawImage(img,0,0,W,H*0.6);
+    }catch(e){ await drawCardHero(ctx,W,avatarSrc,participant.codename); }
+  } else {
+    await drawCardHero(ctx,W,avatarSrc,participant.codename);
   }
-  document.getElementById('qr-modal').classList.add('show');
-}
-function closeQrModal(){document.getElementById('qr-modal').classList.remove('show');}
 
-function tryRestoreSession(){
-  const saved=localStorage.getItem('participant');
-  if(saved){try{participant=JSON.parse(saved);initApp();return;}catch(e){}}
-  showToast('Сессия не найдена — зарегистрируйся');
-}
+  // Градиент снизу
+  const dg=ctx.createLinearGradient(0,H*0.3,0,H);
+  dg.addColorStop(0,'rgba(5,3,20,0)');
+  dg.addColorStop(0.25,'rgba(5,3,20,0.93)');
+  dg.addColorStop(1,'rgba(5,3,20,0.99)');
+  ctx.fillStyle=dg; ctx.fillRect(0,H*0.3,W,H*0.7);
 
-function roundRect(ctx,x,y,w,h,r){
-  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);
-  ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);
-  ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);
-  ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);
-  ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
-}
-function loadImage(src){
-  return new Promise((res,rej)=>{
-    const img=new Image();img.crossOrigin='anonymous';
-    img.onload=()=>res(img);img.onerror=()=>rej(new Error('fail'));
-    img.src=src;
-  });
-}
-function wrapText(ctx,text,x,y,maxW,lineH){
-  const words=text.split(' ');let line='';
-  for(const word of words){
-    const test=line+word+' ';
-    if(ctx.measureText(test).width>maxW&&line){ctx.fillText(line.trim(),x,y);line=word+' ';y+=lineH;}
-    else line=test;
-  }
-  if(line)ctx.fillText(line.trim(),x,y);
-}
+  // Затемнение сверху
+  const tg=ctx.createLinearGradient(0,0,0,120);
+  tg.addColorStop(0,'rgba(5,3,20,0.75)'); tg.addColorStop(1,'rgba(5,3,20,0)');
+  ctx.fillStyle=tg; ctx.fillRect(0,0,W,120);
 
-async function generateShareCard(){
-  if(!participant){showToast('Нет данных');return;}
-  const btn=document.querySelector('.share-card-btn');
-  btn.innerHTML='<svg style="animation:spin 1s linear infinite;width:16px;height:16px" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(0,0,0,.3)" stroke-width="2"/><path d="M12 3a9 9 0 019 9" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg> Генерируем...';
-  btn.disabled=true;
-  try{const font=new FontFace('Bangers','url(https://fonts.gstatic.com/s/bangers/v24/FeVQS0BTqb0h60ACL5la2bxii28wYQ.woff2)');await font.load();document.fonts.add(font);}catch(e){}
-  const W=591,H=1181;
-  const canvas=document.getElementById('share-canvas');
-  canvas.width=W;canvas.height=H;
-  const ctx=canvas.getContext('2d');
-  // Background
-  ctx.fillStyle='#f3f7f9';ctx.fillRect(0,0,W,H);
-  // Halftone
-  ctx.fillStyle='rgba(0,0,0,.04)';
-  for(let x=0;x<W;x+=8)for(let y=0;y<H;y+=8)ctx.fillRect(x,y,1,1);
-  // Red top bar
-  ctx.fillStyle='#b90c01';ctx.fillRect(0,0,W,12);
-  // Avatar
-  const avatarSrc=participant.avatar?.startsWith('http')?participant.avatar:'https://proway-event.vercel.app/'+participant.avatar;
-  try{
-    const img=await loadImage(avatarSrc);
-    ctx.drawImage(img,0,0,W,W*1.2);
-    // Gradient over image
-    const dg=ctx.createLinearGradient(0,H*.35,0,H*.65);
-    dg.addColorStop(0,'rgba(243,247,249,0)');dg.addColorStop(1,'rgba(243,247,249,1)');
-    ctx.fillStyle=dg;ctx.fillRect(0,H*.35,W,H*.3);
-  }catch(e){
-    ctx.fillStyle='#dde3e6';ctx.fillRect(0,12,W,W*1.2);
-  }
-  // Bottom white panel
-  ctx.fillStyle='#f3f7f9';ctx.fillRect(0,H*.55,W,H*.45);
-  // Top border of panel
-  ctx.fillStyle='#000';ctx.fillRect(0,H*.55-4,W,4);
-  // Codename badge
-  const PL=28,PT=H*.55+20;
-  ctx.fillStyle='#b90c01';ctx.fillRect(PL,PT,W-PL*2,56);
-  ctx.strokeStyle='#000';ctx.lineWidth=4;ctx.strokeRect(PL,PT,W-PL*2,56);
-  ctx.fillStyle='#fff';ctx.font='400 36px "Bangers",cursive';ctx.textAlign='center';
-  ctx.fillText((participant.codename||'АГЕНТ').toUpperCase(),W/2,PT+38);
-  // Name
-  const nameParts=(participant.name||'').toUpperCase().split(' ');
-  ctx.fillStyle='#2b2f31';ctx.font='900 68px Epilogue,sans-serif';ctx.textAlign='left';
-  ctx.font='italic 900 68px Epilogue,sans-serif';
-  ctx.fillText(nameParts[0]||'',PL,PT+116);
-  if(nameParts.length>1)ctx.fillText(nameParts.slice(1).join(' '),PL,PT+178);
-  // Company badge
-  const coText=([participant.company,participant.role].filter(Boolean).join(' · ')).toUpperCase();
-  ctx.font='700 16px sans-serif';
-  const coW=ctx.measureText(coText).width+24;
-  ctx.fillStyle='#fbd684';ctx.fillRect(PL,PT+192,coW,26);
-  ctx.strokeStyle='#000';ctx.lineWidth=2;ctx.strokeRect(PL,PT+192,coW,26);
-  ctx.fillStyle='#725812';ctx.textAlign='left';ctx.fillText(coText,PL+12,PT+210);
-  // Divider
-  ctx.fillStyle='#000';ctx.fillRect(PL,PT+228,W-PL*2,3);
-  // Stats
+  const PX=28;
+
+  // ── 001 и PROWAY над плашкой ──
+  ctx.fillStyle='rgba(255,255,255,0.4)';
+  ctx.font='600 18px Inter,sans-serif';
+  ctx.textAlign='left'; ctx.fillText('001', PX, 36);
+  ctx.textAlign='right'; ctx.fillText('PROWAY', W-PX, 36);
+
+  // ── ПЛАШКА С НАЗВАНИЕМ ──
+  const PL=28, PR=W-28, PT=44, PB=96, skew=32;
+  ctx.beginPath();
+  ctx.moveTo(PL+skew,PT); ctx.lineTo(PR-skew,PT);
+  ctx.lineTo(PR,PB); ctx.lineTo(PL,PB);
+  ctx.closePath();
+  ctx.strokeStyle='#f5e642'; ctx.lineWidth=4; ctx.stroke();
+  const ng=ctx.createLinearGradient(PL,0,PR,0);
+  ng.addColorStop(0,'#2a1a80'); ng.addColorStop(0.5,'#6c5ce7'); ng.addColorStop(1,'#2a1a80');
+  ctx.fillStyle=ng; ctx.fill();
+  ctx.fillStyle='#fff';
+  ctx.font='400 42px "Bangers",cursive,sans-serif';
+  ctx.textAlign='center';
+  ctx.shadowColor='rgba(0,0,0,0.6)'; ctx.shadowBlur=8;
+  ctx.fillText((participant.codename||'АГЕНТ').toUpperCase(), W/2, PT+36);
+  ctx.shadowBlur=0;
+
+  // Жёлтые уголки
+  ctx.strokeStyle='#f5e642'; ctx.lineWidth=4;
+  const c=36;
+  ctx.beginPath();ctx.moveTo(0,c);ctx.lineTo(0,0);ctx.lineTo(c,0);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(W-c,0);ctx.lineTo(W,0);ctx.lineTo(W,c);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(W,H-c);ctx.lineTo(W,H);ctx.lineTo(W-c,H);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(c,H);ctx.lineTo(0,H);ctx.lineTo(0,H-c);ctx.stroke();
+
+  // ── НИЖНЯЯ ЧАСТЬ ──
+  const panelY = H*0.44;
+
+  // Компания — бейдж
+  const coText = ([participant.company,participant.role].filter(Boolean).join(' · ')).toUpperCase();
+  ctx.font='600 20px Inter,sans-serif';
+  const coW = ctx.measureText(coText).width + 28;
+  ctx.fillStyle='rgba(108,92,231,0.2)';
+  roundRect(ctx, PX, panelY, coW, 32, 6); ctx.fill();
+  ctx.strokeStyle='rgba(108,92,231,0.5)'; ctx.lineWidth=1;
+  roundRect(ctx, PX, panelY, coW, 32, 6); ctx.stroke();
+  ctx.fillStyle='rgba(162,155,254,0.9)';
+  ctx.textAlign='left';
+  ctx.fillText(coText, PX+14, panelY+22);
+
+  // Имя — две строки
+  const nameParts = (participant.name||'').toUpperCase().split(' ');
+  const firstName = nameParts[0]||'';
+  const lastName = nameParts.slice(1).join(' ')||'';
+  ctx.fillStyle='#fff';
+  ctx.font='400 72px "Bangers",cursive,sans-serif';
+  ctx.textAlign='left';
+  ctx.fillText(firstName, PX, panelY+100);
+  ctx.fillText(lastName, PX, panelY+168);
+
+  // Разделитель
+  ctx.strokeStyle='rgba(108,92,231,0.4)'; ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(PX,panelY+182);ctx.lineTo(W-PX,panelY+182);ctx.stroke();
+
+  // ── СИЛЫ ──
   const pts=participant.points||0;
   const vendors=scannedVendors.size;
   const polls=Object.keys(pollAnswers).length;
-  let meets=0;for(let k in localStorage){if(k.startsWith('met_'))meets++;}
+  let meets=0;
+  for(let k in localStorage){if(k.startsWith('met_'))meets++;}
   const regTime=localStorage.getItem('participant_registered_at');
   let speedVal=50;
-  if(regTime){const eS=new Date('2026-04-21T13:00:00'),eE=new Date('2026-04-21T14:00:00');speedVal=Math.max(20,Math.round((1-Math.max(0,new Date(regTime)-eS)/(eE-eS))*100));}
+  if(regTime){
+    const eS=new Date('2025-11-16T09:00:00'),eE=new Date('2025-11-16T11:00:00');
+    speedVal=Math.max(20,Math.round((1-Math.max(0,new Date(regTime)-eS)/(eE-eS))*100));
+  }
   const stats=[
-    {name:'АНАЛИЗ',  val:Math.min(100,polls*34),                   color:'#00618c'},
-    {name:'СКОРОСТЬ',val:speedVal,                                   color:'#b90c01'},
-    {name:'КРИПТО',  val:Math.min(100,Math.round(pts/MAX_PTS*100)),color:'#725812'},
-    {name:'ПЕРИМЕТР',val:Math.min(100,vendors/8*100),               color:'#00618c'},
-    {name:'ВЛИЯНИЕ', val:Math.min(100,meets*20),                     color:'#b90c01'},
+    {name:'АНАЛИЗ',  val:Math.min(100,polls*34),                   color:'#a29bfe',ge:'#6c5ce7'},
+    {name:'СКОРОСТЬ',val:speedVal,                                   color:'#fab387',ge:'#ee672a'},
+    {name:'КРИПТО',  val:Math.min(100,Math.round(pts/MAX_PTS*100)),color:'#6ee7b7',ge:'#00c864'},
+    {name:'ПЕРИМЕТР',val:Math.min(100,vendors*25),                   color:'#60a5fa',ge:'#005ca8'},
+    {name:'ВЛИЯНИЕ', val:Math.min(100,meets*20),                     color:'#f5e642',ge:'#d4a017'},
   ];
-  const statsY=PT+244,rowH=46,barMaxW=W-PL*2-52;
+
+  const statsStartY = panelY+196;
+  const rowH = 44;
+  const barMaxW = W - PX*2 - 60;
+
   stats.forEach((s,i)=>{
-    const y=statsY+i*rowH;
-    const bW=Math.max(4,Math.round(s.val/100*barMaxW));
-    ctx.fillStyle='#d7dee1';ctx.fillRect(PL,y+18,barMaxW,14);
-    ctx.strokeStyle='#a9aeb0';ctx.lineWidth=1;ctx.strokeRect(PL,y+18,barMaxW,14);
-    ctx.fillStyle=s.color;ctx.fillRect(PL,y+18,bW,14);
-    if(bW>2){ctx.strokeStyle='#000';ctx.lineWidth=1;ctx.strokeRect(PL,y+18,bW,14);}
-    ctx.fillStyle='#2b2f31';ctx.font='700 13px sans-serif';ctx.textAlign='left';ctx.fillText(s.name,PL,y+14);
-    ctx.fillStyle=s.color;ctx.font='italic 900 20px Epilogue,sans-serif';ctx.textAlign='right';ctx.fillText(s.val,W-PL,y+33);
+    const y = statsStartY + i*rowH;
+    const bW = Math.max(4, Math.round(s.val/100*barMaxW));
+
+    // Название над баром
+    ctx.fillStyle='rgba(255,255,255,0.55)';
+    ctx.font='400 22px "Bangers",cursive,sans-serif';
+    ctx.textAlign='left';
+    ctx.fillText(s.name, PX, y+2);
+
+    // Фон бара
+    ctx.fillStyle='rgba(255,255,255,0.05)';
+    roundRect(ctx, PX, y+6, barMaxW, 20, 4); ctx.fill();
+
+    // Бар
+    const bg=ctx.createLinearGradient(PX,0,PX+bW,0);
+    bg.addColorStop(0,s.ge+'cc'); bg.addColorStop(1,s.color);
+    ctx.fillStyle=bg;
+    roundRect(ctx, PX, y+6, bW, 20, 4); ctx.fill();
+
+    // Цифра справа
+    ctx.fillStyle=s.color;
+    ctx.font='400 28px "Bangers",cursive,sans-serif';
+    ctx.textAlign='right';
+    ctx.fillText(s.val, W-PX, y+24);
   });
-  // Points + QR
-  const bottomY=H-100;
-  ctx.fillStyle='#f5e642';ctx.fillRect(PL,bottomY,160,40);
-  ctx.strokeStyle='#000';ctx.lineWidth=3;ctx.strokeRect(PL,bottomY,160,40);
-  ctx.fillStyle='#000';ctx.font='italic 900 22px Epilogue,sans-serif';ctx.textAlign='center';
-  ctx.fillText(pts+' БАЛЛОВ',PL+80,bottomY+26);
-  const qrX=W-PL-72,qrY=bottomY-4;
-  ctx.fillStyle='#575c5e';ctx.font='700 11px sans-serif';ctx.textAlign='center';ctx.fillText('сканируй меня',qrX+36,qrY-4);
-  try{
-    const qrUrl=`https://api.qrserver.com/v1/create-qr-code/?size=72x72&data=${encodeURIComponent('https://proway-event.vercel.app/profile-scan.html?id='+participant.id)}`;
-    const qrImg=await loadImage(qrUrl);
-    ctx.fillStyle='#fff';ctx.fillRect(qrX,qrY,72,72);
-    ctx.strokeStyle='#000';ctx.lineWidth=2;ctx.strokeRect(qrX,qrY,72,72);
-    ctx.drawImage(qrImg,qrX+2,qrY+2,68,68);
-  }catch(e){}
-  // Red bottom bar
-  ctx.fillStyle='#b90c01';ctx.fillRect(0,H-8,W,8);
-  // 001/PROWAY
-  ctx.fillStyle='rgba(0,0,0,.3)';ctx.font='700 11px sans-serif';
-  ctx.textAlign='left';ctx.fillText('001',PL,H-14);
-  ctx.textAlign='right';ctx.fillText('PROWAY SECURITY DAY',W-PL,H-14);
+
+  // Разделитель
+  const descY = statsStartY + stats.length*rowH + 10;
+  ctx.strokeStyle='rgba(108,92,231,0.25)'; ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(PX,descY);ctx.lineTo(W-PX,descY);ctx.stroke();
+
+  // Описание
+  const gender=participant.gender||'male';
+  const lName=(participant.name||'').split(' ').slice(-1)[0];
+  const desc=gender==='female'
+    ?`${lName} не планировала становиться агентом. Конверт без подписи. Только координаты и время. Она пришла.`
+    :`${lName} не планировал становиться агентом. Конверт без подписи. Только координаты и время. Он пришёл.`;
+  ctx.fillStyle='rgba(255,255,255,0.4)';
+  ctx.font='400 20px Inter,sans-serif';
+  ctx.textAlign='left';
+  wrapText(ctx, desc, PX, descY+28, W-PX*2, 28);
+
+  // ── НИЖНИЙ БЛОК: баллы + QR ──
+  const bottomY = H - 110;
+
+  // Баллы
+  ctx.fillStyle='rgba(108,92,231,0.15)';
+  roundRect(ctx, PX, bottomY, 180, 56, 28); ctx.fill();
+  ctx.strokeStyle='rgba(108,92,231,0.5)'; ctx.lineWidth=1;
+  roundRect(ctx, PX, bottomY, 180, 56, 28); ctx.stroke();
+  ctx.fillStyle='#a29bfe';
+  ctx.font='400 32px "Bangers",cursive,sans-serif';
+  ctx.textAlign='center';
+  ctx.fillText(pts+' БАЛЛОВ', PX+90, bottomY+38);
+
+  // QR — подпись сверху, код снизу
+  const qrX = W-PX-76, qrY = bottomY+2;
+  ctx.fillStyle='rgba(255,255,255,0.35)';
+  ctx.font='400 16px Inter,sans-serif';
+  ctx.textAlign='center';
+  ctx.fillText('сканируй меня', qrX+38, qrY-4);
+
+  // QR через API
+  try {
+    const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=76x76&data='+encodeURIComponent('https://proway-event.vercel.app/profile-scan.html?id='+participant.id);
+    const qrImg = await loadImage(qrUrl);
+    ctx.fillStyle='#fff';
+    roundRect(ctx, qrX, qrY+4, 76, 76, 6); ctx.fill();
+    ctx.drawImage(qrImg, qrX+4, qrY+8, 68, 68);
+  } catch(e) {
+    ctx.fillStyle='rgba(255,255,255,0.8)';
+    roundRect(ctx, qrX, qrY+4, 76, 76, 6); ctx.fill();
+    ctx.fillStyle='rgba(108,92,231,0.5)';
+    ctx.font='400 12px Inter,sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText('QR', qrX+38, qrY+46);
+  }
+
+  // Нижняя полоса
+  const botG=ctx.createLinearGradient(0,0,W,0);
+  botG.addColorStop(0,'#4834d4');botG.addColorStop(0.5,'#6c5ce7');botG.addColorStop(1,'#4834d4');
+  ctx.fillStyle=botG; ctx.fillRect(0,H-12,W,12);
+
+  // Рамка
+  ctx.strokeStyle='rgba(108,92,231,0.4)'; ctx.lineWidth=3;
+  roundRect(ctx,2,2,W-4,H-4,16); ctx.stroke();
+
+  // Скачиваем
   const a=document.createElement('a');
   a.download='agent-'+(participant.codename||'card').toLowerCase().replace(/ /g,'-')+'.png';
-  a.href=canvas.toDataURL('image/png');a.click();
-  btn.innerHTML='<svg style="width:16px;height:16px" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 5l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11v2a1 1 0 001 1h10a1 1 0 001-1v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Скачать карточку агента';
+  a.href=canvas.toDataURL('image/png');
+  a.click();
+
+  btn.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 5l3-3 3 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11v2a1 1 0 001 1h10a1 1 0 001-1v-2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg> Скачать карточку агента';
   btn.disabled=false;
 }
 
+async function drawCardHero(ctx, W, avatarSrc, codename) {
+  const glow=ctx.createRadialGradient(W/2,300,0,W/2,300,260);
+  glow.addColorStop(0,'rgba(108,92,231,0.2)');
+  glow.addColorStop(1,'rgba(108,92,231,0)');
+  ctx.fillStyle=glow; ctx.fillRect(0,0,W,600);
+
+  if(avatarSrc){
+    try{
+      const img=await loadImage(avatarSrc);
+      ctx.save();
+      ctx.beginPath();ctx.arc(W/2,300,200,0,Math.PI*2);ctx.clip();
+      ctx.drawImage(img,W/2-200,100,400,400);
+      ctx.restore();
+      ctx.strokeStyle='rgba(108,92,231,0.5)';ctx.lineWidth=2;
+      ctx.beginPath();ctx.arc(W/2,300,202,0,Math.PI*2);ctx.stroke();
+    }catch(e){}
+  }
+}
+
+async function drawHeroPlaceholder(ctx,W,H,avatarSrc,codename){
+  // Свечение по центру
+  const glow=ctx.createRadialGradient(W/2,280,0,W/2,280,220);
+  glow.addColorStop(0,'rgba(108,92,231,0.25)');
+  glow.addColorStop(1,'rgba(108,92,231,0)');
+  ctx.fillStyle=glow; ctx.fillRect(0,0,W,H*0.6);
+
+  if(avatarSrc){
+    try{
+      const img=await loadImage(avatarSrc);
+      ctx.save();
+      ctx.beginPath();ctx.arc(W/2,260,170,0,Math.PI*2);ctx.clip();
+      ctx.drawImage(img,W/2-170,90,340,340);
+      ctx.restore();
+      ctx.strokeStyle='rgba(108,92,231,0.5)';ctx.lineWidth=2;
+      ctx.beginPath();ctx.arc(W/2,260,172,0,Math.PI*2);ctx.stroke();
+    }catch(e){}
+  }
+}
+
+function drawCardBg(ctx, W, H) {
+  ctx.fillStyle = '#0a0b1e';
+  ctx.fillRect(0, 0, W, H);
+  ctx.strokeStyle = 'rgba(108,92,231,0.08)'; ctx.lineWidth = 1;
+  for (let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for (let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  ctx.fillStyle = 'rgba(108,92,231,0.15)';
+  ctx.beginPath(); ctx.arc(W/2, H*0.35, 180, 0, Math.PI*2); ctx.fill();
+}
+
+function drawPlaceholder(ctx, x, y, w, h, codename) {
+  ctx.fillStyle = 'rgba(108,92,231,0.06)';
+  ctx.strokeStyle = 'rgba(108,92,231,0.2)';
+  ctx.lineWidth = 1;
+  roundRect(ctx, x, y, w, h, 20);
+  ctx.fill(); ctx.stroke();
+  ctx.fillStyle = 'rgba(108,92,231,0.3)';
+  ctx.font = '700 32px Inter, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(codename, x + w/2, y + h/2);
+}
+
+function wrapText(ctx, text, x, y, maxW, lineH) {
+  const words = text.split(' ');
+  let line = '';
+  for (const word of words) {
+    const test = line + word + ' ';
+    if (ctx.measureText(test).width > maxW && line) {
+      ctx.fillText(line.trim(), x, y);
+      line = word + ' ';
+      y += lineH;
+    } else { line = test; }
+  }
+  if (line) ctx.fillText(line.trim(), x, y);
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.lineTo(x+w-r, y);
+  ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+  ctx.lineTo(x+w, y+h-r);
+  ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+  ctx.lineTo(x+r, y+h);
+  ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+  ctx.lineTo(x, y+r);
+  ctx.quadraticCurveTo(x, y, x+r, y);
+  ctx.closePath();
+}
+
+function loadImage(src) {
+  return new Promise((res, rej) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => res(img);
+    img.onerror = rej;
+    img.src = src;
+  });
+}
+
+
+function wrapTextCenter(ctx, text, cx, y, maxW, lineH) {
+  const words = text.split(' ');
+  let line = '';
+  for (const word of words) {
+    const test = line + word + ' ';
+    if (ctx.measureText(test).width > maxW && line) {
+      ctx.fillText(line.trim(), cx, y);
+      line = word + ' ';
+      y += lineH;
+    } else { line = test; }
+  }
+  if (line) ctx.fillText(line.trim(), cx, y);
+}
+
+
+// ── ACHIEVEMENTS ─────────────────────────────────────────────────
+
+
+
+function checkAchievements() {
+  if (!participant) return;
+  ACHIEVEMENTS.forEach(a => {
+    const el = document.getElementById('ach-'+a.id);
+    if (!el) return;
+    const isUnlocked = a.check();
+    if (isUnlocked) {
+      el.classList.add('unlocked');
+      if (!unlockedAchs.has(a.id)) {
+        unlockedAchs.add(a.id);
+        localStorage.setItem('unlocked_achs', JSON.stringify([...unlockedAchs]));
+        showAchievementBanner(a.icon, a.name);
+      }
+    }
+  });
+}
+
+function showAchievementBanner(icon, name) {
+  const banner = document.getElementById('ach-banner');
+  document.getElementById('ach-banner-icon').textContent = icon;
+  document.getElementById('ach-banner-name').textContent = name;
+  banner.classList.add('show');
+  setTimeout(() => banner.classList.remove('show'), 4000);
+}
+
+
+function showFinale() {
+  if (!participant) return;
+  // Обновляем данные
+  document.getElementById('finale-pts').textContent = (participant.points||0) + ' Б';
+  document.getElementById('finale-rank').textContent = myRank ? 'Место в рейтинге: #' + myRank : 'Место в рейтинге: —';
+  // Ачивки
+  const achEl = document.getElementById('finale-achs');
+  achEl.innerHTML = ACHIEVEMENTS.filter(a => unlockedAchs.has(a.id)).map(a => `<div class="finale-ach">${a.icon}</div>`).join('');
+  // Показываем
+  document.getElementById('finale-overlay').classList.add('show');
+}
+
+function checkFinale() {
+  try {
+    if (localStorage.getItem('finale_active') === 'true') {
+      showFinale();
+    }
+  } catch(e) {}
+}
+
+function showQrModal() {
+  const id = participant ? participant.id : localStorage.getItem('participant_id');
+  if (!id) { showToast('Сначала зарегистрируйся'); return; }
+  const url = 'https://proway-event.vercel.app/profile-scan.html?id=' + id;
+  const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' + encodeURIComponent(url);
+  document.getElementById('qr-modal-img').src = qrUrl;
+  document.getElementById('qr-modal-overlay').classList.add('show');
+}
+function closeQrModal() {
+  document.getElementById('qr-modal-overlay').classList.remove('show');
+}
+
 window.addEventListener('load',()=>{
-  if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
-  setTimeout(()=>{
-    document.getElementById('loading').classList.add('fade');
-    setTimeout(()=>{
-      document.getElementById('loading').style.display='none';
-      const saved=localStorage.getItem('participant');
-      if(saved){try{participant=JSON.parse(saved);initApp();return;}catch(e){}}
-      showScreen('screen-welcome');
-    },400);
-  },1500);
+if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
+  const savedScans=localStorage.getItem('scanned_vendors');
+  if(savedScans){try{JSON.parse(savedScans).forEach(id=>scannedVendors.add(id));}catch(e){}}
+  const id=localStorage.getItem('participant_id');
+  if(id){
+    participant={
+      id,
+      name:localStorage.getItem('participant_name')||'—',
+      email:localStorage.getItem('participant_email')||'',
+      company:localStorage.getItem('participant_company')||'—',
+      points:0,
+      interests:localStorage.getItem('participant_interests')||'',
+      avatar:localStorage.getItem('participant_avatar')||'',
+      gender:localStorage.getItem('participant_gender')||'male',
+      codename:localStorage.getItem('participant_codename')||'ФАЙРВОЛ',
+      artFile:localStorage.getItem('participant_artfile')||''
+    };
+    initApp();
+  }
+  const urlParams=new URLSearchParams(window.location.search);
+  const vendorId=urlParams.get('id');
+  if(vendorId&&id)handleVendorScan(vendorId);
 });
+
 </script>
 </body>
 </html>
