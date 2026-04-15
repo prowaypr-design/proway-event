@@ -1,1137 +1,1927 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<meta name="theme-color" content="#b90c01"/>
-<meta name="apple-mobile-web-app-capable" content="yes"/>
-<link rel="manifest" href="manifest.json"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#050a12">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
 <title>PROWAY Security Day</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,900;1,900&family=Bangers&family=Inter:wght@400;600;700&family=Space+Grotesk:wght@500;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-tailwind.config = {
-  darkMode: "class",
-  theme: {
-    extend: {
-      colors: {
-        "primary": "#b90c01", "primary-dim": "#a30800",
-        "primary-container": "#ff7762", "on-primary": "#ffefed",
-        "on-primary-container": "#4e0200",
-        "secondary": "#00618c", "secondary-dim": "#00557b",
-        "secondary-container": "#a4d8ff", "on-secondary": "#e9f4ff",
-        "on-secondary-container": "#004c6f",
-        "tertiary": "#725812", "tertiary-dim": "#654c04",
-        "tertiary-container": "#fbd684", "on-tertiary": "#fff1da",
-        "on-tertiary-container": "#624901",
-        "background": "#f3f7f9", "surface": "#f3f7f9",
-        "surface-bright": "#f3f7f9", "surface-dim": "#ced6d9",
-        "surface-variant": "#d7dee1",
-        "surface-container": "#e4e9eb",
-        "surface-container-low": "#edf1f4",
-        "surface-container-high": "#dde3e6",
-        "surface-container-highest": "#d7dee1",
-        "surface-container-lowest": "#ffffff",
-        "on-surface": "#2b2f31", "on-surface-variant": "#575c5e",
-        "on-background": "#2b2f31",
-        "outline": "#737779", "outline-variant": "#a9aeb0",
-        "error": "#b41340", "error-container": "#f74b6d",
-        "on-error": "#ffefef",
-        "inverse-surface": "#0a0f11", "inverse-on-surface": "#999ea0",
-        "inverse-primary": "#ff553e",
-      },
-      borderRadius: { DEFAULT: "0px", lg: "0px", xl: "0px", full: "9999px" },
-      fontFamily: {
-        headline: ["Epilogue", "sans-serif"],
-        bangers: ["Bangers", "cursive"],
-        body: ["Inter", "sans-serif"],
-        label: ["Space Grotesk", "monospace"],
-      }
-    }
-  }
-}
-</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
-.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-.fill-icon { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-.halftone { background-image: radial-gradient(#000 15%, transparent 16%); background-size: 8px 8px; }
-.halftone-light { background-image: radial-gradient(rgba(0,0,0,0.08) 15%, transparent 16%); background-size: 8px 8px; }
-.ink4 { box-shadow: 4px 4px 0 0 #000; }
-.ink8 { box-shadow: 8px 8px 0 0 #000; }
-.ink12 { box-shadow: 12px 12px 0 0 #000; }
-.skew-title { transform: skew(-6deg); }
-.burst-text { -webkit-text-stroke: 2px black; text-shadow: 6px 6px 0 rgba(0,0,0,1); }
-.jagged { clip-path: polygon(0 0,100% 0,100% 88%,97% 100%,93% 90%,89% 100%,85% 90%,81% 100%,77% 90%,73% 100%,69% 90%,65% 100%,61% 90%,57% 100%,53% 90%,49% 100%,45% 90%,41% 100%,37% 90%,33% 100%,29% 90%,25% 100%,21% 90%,17% 100%,13% 90%,9% 100%,5% 90%,0 100%); }
-.comic-burst { clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%); }
-.ticker-wrap { overflow: hidden; white-space: nowrap; }
-.ticker-content { display: inline-block; animation: ticker 22s linear infinite; }
-@keyframes ticker { 0%{transform:translateX(100%)} 100%{transform:translateX(-100%)} }
-@keyframes pop-in { 0%{transform:translateY(-20px) scale(0.9);opacity:0} 80%{transform:translateY(4px) scale(1.02)} 100%{transform:translateY(0) scale(1);opacity:1} }
-.pop-in { animation: pop-in 0.4s cubic-bezier(0.175,0.885,0.32,1.275) forwards; }
-@keyframes spin-ring { to { transform: rotate(360deg); } }
-.spin-ring { animation: spin-ring 4s linear infinite; }
-.screen { display: none; }
-.screen.active { display: flex; flex-direction: column; min-height: 100dvh; }
-.app-screen { display: none; }
-.app-screen.active { display: block; }
-body { min-height: 100dvh; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
+:root{
+  --bg:#080920;--bg2:#0e0f28;--bg3:#13152f;
+  --cyan:#a29bfe;--orange:#ee672a;--yellow:#f5e642;
+  --blue:#4834d4;--violet:#6c5ce7;--white:#fff;
+  --border:#6c5ce722;--border2:#6c5ce744;
+  --text:#ffffffcc;--text2:#ffffff66;--text3:#ffffff22;
+  --grad:linear-gradient(135deg,#6c5ce7,#4834d4);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+.screen{display:none;min-height:100vh;flex-direction:column;}
+.screen.active{display:flex;}
+.app-screen{display:none;padding-bottom:72px;min-height:100vh;}
+.app-screen.active{display:block;}
 
-/* Modal */
-.modal-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity 0.2s; }
-.modal-overlay.open { opacity:1;pointer-events:all; }
+/* TICKER */
+.ticker-wrap{background:#06071a;border-bottom:1px solid var(--border);overflow:hidden;height:26px;display:flex;align-items:center;position:sticky;top:0;z-index:200;}
+.ticker-label{background:var(--violet);padding:0 10px;font-family:'Inter',sans-serif;font-size:10px;font-weight:700;color:#fff;letter-spacing:2px;white-space:nowrap;height:100%;display:flex;align-items:center;flex-shrink:0;}
+.ticker-track{overflow:hidden;flex:1;}
+.ticker-inner{display:inline-flex;white-space:nowrap;animation:ticker 25s linear infinite;}
+@keyframes ticker{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.ticker-msg{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);padding:0 32px;letter-spacing:1px;opacity:0.8;}
+.ticker-sep{color:var(--border2);}
 
-/* Toast */
-.toast { position:fixed;bottom:100px;left:16px;right:16px;z-index:300;opacity:0;transition:opacity 0.25s;pointer-events:none; }
-.toast.show { opacity:1; }
+/* BANNER */
+.announce-banner{position:fixed;top:26px;left:0;right:0;z-index:190;background:#0e0f28;border-left:3px solid var(--violet);border-bottom:1px solid #00ff8833;padding:10px 16px;display:flex;align-items:center;gap:10px;transform:translateY(-120%);transition:transform 0.3s;}
+.announce-banner.show{transform:translateY(0);}
+.announce-text{flex:1;font-size:13px;font-weight:600;color:var(--cyan);line-height:1.4;}
+.announce-close{background:none;border:none;font-size:16px;color:#00ff8866;cursor:pointer;padding:4px;}
 
-/* Nav active */
-.nav-btn.active { background: #b90c01; color: white; }
-.nav-btn.active .nav-icon { color: white; }
-.nav-btn.active .nav-label { color: white; }
+/* ONBOARDING */
+#ob-welcome{background:var(--bg);}
+.ob-hero{flex:1;padding:60px 24px 24px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;}
+.ob-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;}
+.ob-glow{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(0,255,255,0.07),transparent 70%);top:-80px;right:-60px;}
+.ob-eyebrow{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:3px;opacity:0.8;margin-bottom:12px;position:relative;z-index:1;}
+.ob-title{font-family:'Inter',sans-serif;font-size:54px;font-weight:800;color:#fff;line-height:0.95;letter-spacing:-1px;position:relative;z-index:1;}
+.ob-title .accent{color:var(--cyan);}
+.ob-line{width:60px;height:2px;background:var(--violet);margin:16px 0;position:relative;z-index:1;}
+.ob-speech{background:rgba(108,92,231,0.04);border:1px solid var(--border2);border-left:3px solid var(--cyan);border-radius:4px;padding:14px 16px;position:relative;z-index:1;}
+.ob-speech-text{font-size:14px;color:var(--text);line-height:1.6;font-weight:500;}
+.ob-bottom{background:#06071a;padding:20px 24px 40px;border-top:0.5px solid var(--border);}
+.ob-desc{font-size:14px;font-weight:500;color:var(--text2);line-height:1.6;margin-bottom:16px;}
+.ob-btn{background:linear-gradient(135deg,#6c5ce7,#4834d4);border:none;border-radius:14px;padding:16px;width:100%;font-family:'Inter',sans-serif;font-size:16px;font-weight:700;color:#fff;letter-spacing:1px;cursor:pointer;display:block;text-align:center;}
+.ob-btn:active{opacity:0.7;}
+
+#ob-choose{background:var(--bg);}
+.ob-choose-header{background:#06071a;padding:52px 20px 16px;border-bottom:0.5px solid var(--border);}
+.ob-choose-title{font-family:'Inter',sans-serif;font-size:24px;font-weight:800;color:#fff;letter-spacing:1px;}
+.ob-choose-sub{font-size:11px;font-weight:600;color:var(--text2);letter-spacing:2px;margin-top:4px;}
+.ob-choose-body{flex:1;padding:20px;display:flex;flex-direction:column;gap:16px;background:var(--bg);}
+.ob-choose-q{font-family:'Inter',sans-serif;font-size:18px;font-weight:700;color:#fff;letter-spacing:0px;text-align:center;}
+.agent-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.agent-card{border:0.5px solid rgba(108,92,231,0.3);border-radius:16px;overflow:hidden;cursor:pointer;background:var(--bg2);}
+.agent-card:active{border-color:var(--violet);}
+.ac-top{padding:10px;text-align:center;border-bottom:0.5px solid var(--border);}
+.ac-label{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:1px;opacity:0.8;}
+.ac-face{height:110px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-bottom:0.5px solid var(--border);}
+.ac-face img{width:100%;height:100%;object-fit:cover;}
+.ac-name{font-family:'Inter',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;padding:10px 8px;text-align:center;}
+.ob-tip{background:rgba(108,92,231,0.03);border:1px solid var(--border);border-radius:4px;padding:12px 14px;}
+.ob-tip-text{font-size:12px;font-weight:500;color:var(--text2);line-height:1.5;}
+
+#ob-reveal{background:var(--bg);}
+.ob-reveal-header{background:#06071a;border-bottom:0.5px solid var(--border);padding:52px 20px 14px;}
+.ob-reveal-title{font-family:'Inter',sans-serif;font-size:22px;font-weight:800;color:#fff;letter-spacing:1px;}
+.ob-reveal-body{flex:1;padding:16px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;background:var(--bg);}
+.av-ring{width:130px;height:130px;border-radius:50%;border:2px solid var(--violet);overflow:hidden;background:var(--bg2);display:flex;align-items:center;justify-content:center;}
+.av-ring img{width:100%;height:100%;object-fit:cover;}
+.codename-wrap{background:rgba(108,92,231,0.05);border:1px solid var(--border2);border-radius:4px;padding:8px 24px;}
+.codename{font-family:'Inter',sans-serif;font-size:16px;font-weight:800;color:var(--cyan);letter-spacing:3px;text-align:center;}
+.form-section{width:100%;display:flex;flex-direction:column;gap:10px;}
+.field-label{font-size:11px;font-weight:600;color:var(--text2);margin-bottom:4px;letter-spacing:1px;}
+.field-input{width:100%;padding:12px 16px;border:0.5px solid rgba(108,92,231,0.3);border-radius:10px;font-size:15px;font-family:'Rajdhani',sans-serif;font-weight:600;background:var(--bg2);color:var(--white);outline:none;}
+.field-input:focus{border-color:var(--violet);}
+.field-input::placeholder{color:var(--text3);}
+.tags-wrap{display:flex;flex-wrap:wrap;gap:8px;}
+.itag{padding:6px 14px;border-radius:20px;background:transparent;font-size:12px;font-family:'Inter',sans-serif;font-weight:600;color:var(--text2);border:0.5px solid rgba(108,92,231,0.25);cursor:pointer;letter-spacing:0px;}
+.itag.sel{background:rgba(108,92,231,0.08);color:var(--cyan);border-color:var(--cyan);}
+
+/* TOPBAR */
+.topbar{background:#06071a;padding:46px 16px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:26px;z-index:50;}
+.topbar-logo{font-family:'Inter',sans-serif;font-size:16px;font-weight:700;color:#fff;letter-spacing:2px;}
+.topbar-sub{font-size:9px;font-weight:600;color:var(--text2);letter-spacing:2px;margin-top:2px;}
+.topbar-right{display:flex;align-items:center;gap:6px;}
+.topbar-dosye{font-size:9px;font-weight:600;color:var(--cyan);letter-spacing:2px;opacity:0.7;}
+.topbar-av{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--violet);overflow:hidden;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text2);}
+.topbar-av img{width:100%;height:100%;object-fit:cover;}
+
+/* HERO */
+.hero-block{background:#06071a;padding:16px 16px;border-bottom:1px solid var(--border);}
+.pts-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:12px;}
+.pts-label{font-size:10px;font-weight:600;color:var(--text2);letter-spacing:2px;margin-bottom:4px;text-transform:uppercase;}
+.pts-big{font-family:'Inter',sans-serif;font-size:48px;font-weight:700;color:#fff;line-height:1;}
+.pts-unit{font-family:'Inter',sans-serif;font-size:16px;font-weight:600;color:var(--cyan);opacity:0.7;margin-left:4px;letter-spacing:1px;}
+.rank-box{background:rgba(108,92,231,0.1);border:1px solid rgba(108,92,231,0.3);border-radius:10px;padding:8px 14px;text-align:center;}
+.rank-n{font-family:'Inter',sans-serif;font-size:24px;font-weight:700;color:var(--cyan);line-height:1;}
+.rank-l{font-size:9px;font-weight:600;color:rgba(162,155,254,0.5);letter-spacing:2px;margin-top:2px;}
+.prog-row{display:flex;justify-content:space-between;margin-bottom:6px;}
+.prog-lbl{font-size:10px;font-weight:600;color:var(--text2);letter-spacing:1px;}
+.prog-pct{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);}
+.prog-track{height:3px;background:var(--bg3);border-radius:2px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:2px;width:0;transition:width 1.2s ease;}
+
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 14px;border-bottom:1px solid var(--border);}
+.sg-cell{background:rgba(255,255,255,0.02);border:0.5px solid rgba(108,92,231,0.2);border-radius:12px;padding:10px 8px;text-align:center;}
+.sg-n{font-family:'Inter',sans-serif;font-size:22px;font-weight:700;color:#fff;line-height:1;}
+.sg-n.accent{color:var(--cyan);}
+.sg-l{font-size:9px;font-weight:600;color:var(--text2);letter-spacing:2px;margin-top:4px;text-transform:uppercase;}
+
+/* SECTION HDR */
+.section-hdr{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.section-hdr-title{font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:#fff;letter-spacing:1px;text-transform:uppercase;}
+.section-hdr-sub{font-size:9px;font-weight:600;color:var(--cyan);letter-spacing:2px;opacity:0.7;}
+
+/* AGENT CARD */
+.agent-card-full{margin:12px 14px;background:var(--bg2);border:0.5px solid rgba(108,92,231,0.3);border-radius:16px;overflow:hidden;}
+.acf-namebar{background:rgba(108,92,231,0.08);border-bottom:0.5px solid var(--border);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;}
+.acf-codename{font-family:'Inter',sans-serif;font-size:15px;font-weight:700;color:#fff;letter-spacing:2px;text-transform:uppercase;}
+.acf-badge{border:0.5px solid rgba(108,92,231,0.4);border-radius:20px;padding:3px 10px;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--cyan);}
+.acf-art{width:100%;height:180px;overflow:hidden;border-bottom:0.5px solid var(--border);background:var(--bg3);display:flex;align-items:center;justify-content:center;position:relative;}
+.acf-art img{width:100%;height:100%;object-fit:cover;object-position:top;}
+.acf-rarity{position:absolute;bottom:8px;right:10px;display:flex;gap:3px;}
+.acf-star{width:12px;height:12px;background:var(--yellow);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);}
+.acf-star.empty{background:var(--text3);}
+.acf-stats{padding:12px 14px;border-bottom:0.5px solid var(--border);}
+.acf-stat-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.acf-stat-row:last-child{margin-bottom:0;}
+.acf-stat-lbl{font-size:10px;font-weight:600;color:var(--text2);letter-spacing:2px;min-width:100px;text-transform:uppercase;}
+.acf-bar-wrap{flex:1;height:3px;background:var(--bg3);border-radius:2px;overflow:hidden;}
+.acf-bar{height:100%;border-radius:2px;}
+.acf-stat-val{font-family:'Share Tech Mono',monospace;font-size:11px;color:#fff;min-width:26px;text-align:right;}
+.acf-story{padding:12px 14px;background:rgba(255,255,255,0.02);}
+.acf-story-lbl{font-size:9px;font-weight:700;color:var(--orange);letter-spacing:3px;margin-bottom:8px;text-transform:uppercase;}
+.acf-chapter-badge{display:inline-block;background:rgba(238,103,42,0.12);border:0.5px solid rgba(238,103,42,0.35);border-radius:20px;padding:3px 10px;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--orange);letter-spacing:2px;margin-bottom:6px;}
+.acf-chapter-text{font-size:12px;font-weight:500;color:var(--text2);line-height:1.6;margin-bottom:10px;}
+.acf-locked{display:flex;align-items:center;gap:6px;margin-bottom:4px;opacity:0.35;}
+.acf-lock{width:14px;height:14px;border:1px solid var(--text3);border-radius:4px;flex-shrink:0;}
+.acf-locked-text{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:2px;}
+.acf-footer{background:rgba(108,92,231,0.05);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border-top:0.5px solid var(--border);}
+.acf-footer-name{font-size:11px;font-weight:600;color:var(--text2);letter-spacing:1px;}
+.acf-footer-pts{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--cyan);}
+
+/* INFO */
+.info-block{margin:12px 14px;background:var(--bg2);border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;overflow:hidden;}
+.info-row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-bottom:0.5px solid var(--border);}
+.info-row:last-child{border-bottom:none;}
+.info-icon{width:32px;height:32px;border-radius:8px;border:0.5px solid rgba(108,92,231,0.3);background:rgba(108,92,231,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;}
+.info-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px;}
+.info-text{font-size:11px;color:var(--text2);line-height:1.5;}
+
+/* LEADERBOARD */
+.lb-wrap{margin:12px 14px;background:var(--bg2);border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;overflow:hidden;}
+.lb-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:0.5px solid var(--border);background:var(--bg2);position:relative;}
+.lb-row:last-child{border-bottom:none;}
+.lb-row.me{background:rgba(108,92,231,0.05);border-left:2px solid var(--cyan);}
+.lb-pos{font-family:'Inter',sans-serif;font-size:16px;font-weight:700;min-width:20px;color:var(--text3);line-height:1;}
+.lb-pos.gold{color:var(--yellow);}
+.lb-pos.me-c{color:var(--cyan);}
+.lb-av{width:34px;height:34px;border-radius:50%;border:0.5px solid var(--border2);overflow:hidden;flex-shrink:0;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text2);}
+.lb-av.me{border-color:var(--violet);}
+.lb-av img{width:100%;height:100%;object-fit:cover;}
+.lb-info{flex:1;min-width:0;}
+.lb-name{font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lb-name.me{color:var(--cyan);}
+.lb-co{font-size:10px;color:var(--text2);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lb-pts{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text);white-space:nowrap;}
+.lb-pts.me{color:var(--cyan);}
+.lb-leader{position:absolute;top:-1px;right:10px;background:rgba(245,230,66,0.1);border:0.5px solid rgba(245,230,66,0.3);border-top:none;border-radius:0 0 6px 6px;padding:1px 6px;font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--yellow);letter-spacing:2px;}
+
+/* NET */
+.net-card{background:var(--bg2);border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;padding:12px 14px;margin:0 14px 10px;display:flex;align-items:center;gap:12px;}
+.net-av{width:46px;height:46px;border-radius:50%;border:0.5px solid var(--border2);overflow:hidden;flex-shrink:0;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--text2);}
+.net-av img{width:100%;height:100%;object-fit:cover;}
+.net-info{flex:1;min-width:0;}
+.net-name{font-size:14px;font-weight:600;color:#fff;margin-bottom:2px;}
+.net-co{font-size:11px;color:var(--text2);}
+.net-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;}
+.net-tag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--bg3);color:var(--text2);border:0.5px solid var(--border);}
+.net-tag.match{background:rgba(108,92,231,0.1);color:var(--cyan);border-color:var(--border2);}
+.net-match-n{font-family:'Inter',sans-serif;font-size:22px;font-weight:700;color:var(--text3);line-height:1;text-align:center;}
+.net-match-n.hot{color:var(--orange);}
+.net-match-l{font-size:8px;font-weight:600;color:var(--text3);letter-spacing:1px;text-align:center;}
+
+/* PROGRAM */
+.prog-list{padding:0 14px;}
+.prog-item{background:var(--bg2);border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;padding:12px;margin-bottom:10px;display:flex;gap:12px;}
+.prog-time-col{display:flex;flex-direction:column;align-items:center;min-width:44px;}
+.prog-time{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--cyan);}
+.prog-line{width:1px;flex:1;background:var(--border);margin:5px 0;}
+.prog-dot{width:8px;height:8px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);}
+.prog-dot.done{background:var(--orange);border-color:var(--orange);}
+.prog-tag{display:inline-block;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;padding:2px 8px;border-radius:20px;border:0.5px solid;margin-bottom:5px;}
+.prog-title{font-size:13px;font-weight:600;color:#fff;line-height:1.3;margin-bottom:2px;}
+.prog-speaker{font-size:11px;color:var(--text2);}
+
+/* SPEAKERS */
+.speaker-list{padding:0 14px;}
+.speaker-card{background:var(--bg2);border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;padding:11px 13px;margin-bottom:8px;display:flex;align-items:center;gap:12px;}
+.sp-av{width:40px;height:40px;border-radius:50%;border:0.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
+.sp-name{font-size:13px;font-weight:600;color:#fff;}
+.sp-co{font-size:11px;font-weight:600;margin-top:1px;}
+.sp-role{font-size:10px;color:var(--text2);margin-top:1px;}
+
+/* VENDORS */
+.vendor-prog{margin:12px 14px;background:var(--bg2);border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;}
+.vp-label{font-size:10px;font-weight:700;color:var(--text2);letter-spacing:2px;}
+.vp-right{display:flex;align-items:center;gap:8px;}
+.vp-count{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--cyan);}
+.vp-stars{display:flex;gap:3px;}
+.vp-star{width:12px;height:12px;background:var(--yellow);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);}
+.vp-star.empty{background:var(--text3);}
+.vendor-list{padding:0 14px;display:flex;flex-direction:column;gap:10px;}
+.vendor-card{background:var(--bg2);border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;overflow:hidden;}
+.vendor-card.scanned{border-color:rgba(108,92,231,0.5);}
+.vendor-top{padding:12px 14px;display:flex;align-items:center;gap:12px;}
+.vendor-icon{width:44px;height:44px;border-radius:10px;border:0.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:16px;font-weight:700;flex-shrink:0;}
+.vendor-info{flex:1;}
+.vendor-name{font-size:14px;font-weight:600;color:#fff;margin-bottom:2px;}
+.vendor-system{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:2px;}
+.vendor-pts{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--orange);text-align:right;}
+.vendor-pts.done{color:#00ff88;}
+.vendor-pts-lbl{font-size:8px;font-weight:600;color:var(--text2);letter-spacing:1px;text-align:right;}
+.vendor-desc{padding:0 14px 12px;font-size:11px;font-weight:500;color:var(--text2);line-height:1.5;border-top:0.5px solid var(--border);padding-top:10px;}
+.vendor-chapter{background:rgba(238,103,42,0.05);border-top:0.5px solid rgba(238,103,42,0.2);padding:8px 14px;display:flex;align-items:center;gap:8px;}
+.vc-badge{background:rgba(238,103,42,0.12);border:0.5px solid rgba(238,103,42,0.35);border-radius:20px;padding:2px 8px;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--orange);letter-spacing:2px;flex-shrink:0;}
+.vc-text{font-size:11px;font-weight:500;color:rgba(255,107,53,0.6);line-height:1.4;}
+.vendor-locked{background:var(--bg3);border-top:0.5px solid var(--border);padding:8px 14px;display:flex;align-items:center;gap:8px;}
+.vl-text{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:2px;}
+
+/* POLLS */
+.poll-card{background:var(--bg2);border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;padding:14px;margin:0 14px 12px;}
+.poll-session{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--cyan);letter-spacing:3px;margin-bottom:8px;}
+.poll-q{font-size:14px;font-weight:700;color:var(--white);line-height:1.4;margin-bottom:12px;}
+.poll-opt{width:100%;text-align:left;padding:10px 14px;border-radius:10px;border:0.5px solid rgba(108,92,231,0.25);background:transparent;font-size:12px;font-weight:600;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;margin-bottom:7px;display:block;}
+.poll-opt:last-child{margin-bottom:0;}
+.poll-opt.selected{background:rgba(108,92,231,0.1);color:var(--cyan);border-color:var(--violet);}
+.poll-result{position:relative;overflow:hidden;cursor:default;}
+.poll-bar{position:absolute;left:0;top:0;bottom:0;background:rgba(108,92,231,0.07);transition:width 0.6s;z-index:0;}
+.poll-bar.me-bar{background:rgba(108,92,231,0.13);}
+.poll-content{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;}
+.poll-pct{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text2);}
+.poll-pct.me{color:var(--cyan);}
+
+/* NAVBAR */
+.navbar{position:fixed;bottom:0;left:0;right:0;background:#06071a;border-top:0.5px solid var(--border);display:flex;padding:6px 0 16px;z-index:100;}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;border:none;background:none;cursor:pointer;padding:4px 0;}
+.nb svg{width:18px;height:18px;}
+.nb-lbl{font-family:'Inter',sans-serif;font-size:7px;font-weight:600;color:var(--text3);letter-spacing:0.3px;text-transform:uppercase;}
+.nb.act .nb-lbl{color:var(--cyan);}
+
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:14px;right:14px;background:#0e0f28;color:var(--cyan);border:0.5px solid rgba(108,92,231,0.4);border-left:3px solid var(--violet);border-radius:12px;padding:12px 16px;font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:2px;text-align:center;z-index:300;opacity:0;transition:opacity 0.25s;pointer-events:none;}
+.toast.show{opacity:1;}
+.loader{text-align:center;padding:32px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text3);letter-spacing:3px;}
+.empty-state{text-align:center;padding:40px 20px;}
+.empty-text{font-size:12px;font-weight:600;color:var(--text2);letter-spacing:1px;}
+
+/* BELL & NOTIFICATION PANEL */
+.bell-wrap{position:relative;cursor:pointer;}
+.bell-btn{width:36px;height:36px;border-radius:50%;border:1.5px solid rgba(108,92,231,0.4);background:rgba(108,92,231,0.08);display:flex;align-items:center;justify-content:center;}
+.bell-badge{position:absolute;top:-3px;right:-3px;width:16px;height:16px;background:#ee672a;border-radius:50%;font-size:9px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;display:none;}
+.bell-badge.show{display:flex;}
+
+.notif-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:400;opacity:0;pointer-events:none;transition:opacity 0.2s;}
+.notif-overlay.show{opacity:1;pointer-events:auto;}
+.notif-panel{position:fixed;top:0;right:0;bottom:0;width:min(340px,100vw);background:#0e0f28;border-left:0.5px solid rgba(108,92,231,0.3);z-index:401;transform:translateX(100%);transition:transform 0.3s ease;display:flex;flex-direction:column;}
+.notif-panel.show{transform:translateX(0);}
+.notif-header{padding:52px 16px 14px;border-bottom:0.5px solid rgba(108,92,231,0.15);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.notif-title{font-size:16px;font-weight:700;color:#fff;}
+.notif-close{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.05);border:none;color:rgba(255,255,255,0.4);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.notif-list{flex:1;overflow-y:auto;padding:12px 14px;}
+.notif-item{background:#13152f;border-radius:12px;padding:12px 14px;margin-bottom:8px;border-left:3px solid #6c5ce7;display:flex;gap:10px;}
+.notif-item.alert{border-left-color:#ee672a;}
+.notif-item.success{border-left-color:#00c864;}
+.notif-dot{width:8px;height:8px;border-radius:50%;background:#6c5ce7;flex-shrink:0;margin-top:5px;}
+.notif-dot.alert{background:#ee672a;}
+.notif-dot.success{background:#00c864;}
+.notif-body{}
+.notif-text{font-size:13px;color:rgba(255,255,255,0.85);line-height:1.5;margin-bottom:3px;}
+.notif-time{font-size:10px;color:rgba(255,255,255,0.3);}
+.notif-empty{text-align:center;padding:40px 20px;font-size:12px;color:rgba(255,255,255,0.25);}
+
+/* ЭКРАН ЛЕНТА */
+.feed-card{background:#0e0f28;border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;padding:12px 14px;margin:0 14px 10px;border-left:3px solid #6c5ce7;}
+.feed-card.alert{border-left-color:#ee672a;}
+.feed-card.success{border-left-color:#00c864;}
+.feed-card-text{font-size:14px;color:rgba(255,255,255,0.85);line-height:1.5;margin-bottom:4px;}
+.feed-card-time{font-size:11px;color:rgba(255,255,255,0.3);}
+.feed-how-block{background:rgba(108,92,231,0.06);border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;margin:0 14px 12px;padding:14px;}
+.feed-how-title{font-size:12px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
+.feed-how-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
+.feed-how-item:last-child{margin-bottom:0;}
+.feed-how-num{width:22px;height:22px;border-radius:50%;background:rgba(108,92,231,0.2);border:0.5px solid rgba(108,92,231,0.4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#a29bfe;flex-shrink:0;}
+.feed-how-text{font-size:12px;color:rgba(255,255,255,0.6);line-height:1.5;padding-top:2px;}
+
+/* NETWORK ACTIONS */
+.net-actions{display:flex;gap:6px;margin-top:8px;}
+.net-btn{flex:1;padding:7px 10px;border-radius:10px;border:0.5px solid rgba(108,92,231,0.25);background:transparent;font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;}
+.net-btn:active{opacity:0.7;}
+.net-btn.liked{background:rgba(108,92,231,0.12);color:#a29bfe;border-color:rgba(108,92,231,0.4);}
+.net-btn.contact{background:rgba(0,200,100,0.08);color:#00c864;border-color:rgba(0,200,100,0.3);}
+
+/* QR MODAL */
+.qr-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity 0.2s;}
+.qr-modal-overlay.show{opacity:1;pointer-events:auto;}
+.qr-modal{background:#0e0f28;border:0.5px solid rgba(108,92,231,0.3);border-radius:24px;padding:28px 24px;width:100%;max-width:320px;text-align:center;}
+.qr-modal-title{font-size:16px;font-weight:700;color:#fff;margin-bottom:4px;}
+.qr-modal-sub{font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:20px;}
+.qr-modal-code{background:#fff;border-radius:16px;padding:16px;display:inline-block;margin-bottom:16px;}
+.qr-modal-code img{width:180px;height:180px;display:block;}
+.qr-modal-pts{display:inline-flex;align-items:center;gap:6px;background:rgba(108,92,231,0.12);border:0.5px solid rgba(108,92,231,0.3);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;color:#a29bfe;margin-bottom:18px;}
+.qr-modal-close{width:100%;padding:12px;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:12px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;font-family:'Inter',sans-serif;}
+
+/* SHARE CARD */
+.share-card-btn{width:100%;padding:13px;background:linear-gradient(135deg,#6c5ce7,#4834d4);border:none;border-radius:14px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;}
+.share-card-btn:active{opacity:0.85;}
+#share-canvas{display:none;}
+
+/* ACHIEVEMENTS */
+.ach-section{margin:0 14px 14px;}
+.ach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.ach-item{background:rgba(255,255,255,0.02);border:0.5px solid rgba(108,92,231,0.15);border-radius:12px;padding:10px 8px;text-align:center;transition:all 0.3s;}
+.ach-item.unlocked{background:rgba(108,92,231,0.1);border-color:rgba(108,92,231,0.4);}
+.ach-icon{font-size:24px;margin-bottom:4px;filter:grayscale(1);opacity:0.3;}
+.ach-item.unlocked .ach-icon{filter:none;opacity:1;}
+.ach-name{font-size:9px;font-weight:700;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.5px;line-height:1.3;}
+.ach-item.unlocked .ach-name{color:rgba(162,155,254,0.9);}
+
+/* ACHIEVEMENT BANNER */
+.ach-banner{position:fixed;top:80px;left:14px;right:14px;background:#0e0f28;border:0.5px solid rgba(108,92,231,0.4);border-left:3px solid #f5e642;border-radius:14px;padding:14px 16px;z-index:350;opacity:0;transform:translateY(-20px);transition:all 0.4s;pointer-events:none;display:flex;align-items:center;gap:12px;}
+.ach-banner.show{opacity:1;transform:translateY(0);}
+.ach-banner-icon{font-size:28px;flex-shrink:0;}
+.ach-banner-body{}
+.ach-banner-title{font-size:11px;font-weight:700;color:#f5e642;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;}
+.ach-banner-name{font-size:14px;font-weight:700;color:#fff;}
+
+/* FINALE */
+.finale-overlay{position:fixed;inset:0;background:#07071a;z-index:600;display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;}
+.finale-overlay.show{display:flex;}
+.finale-stars{display:flex;justify-content:center;gap:8px;margin-bottom:24px;}
+.finale-star{width:32px;height:32px;background:#f5e642;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);animation:starPop 0.5s ease both;}
+.finale-star:nth-child(2){animation-delay:0.15s;}
+.finale-star:nth-child(3){animation-delay:0.3s;}
+@keyframes starPop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.finale-badge{background:linear-gradient(135deg,#6c5ce7,#4834d4);border-radius:20px;padding:4px 16px;font-size:11px;font-weight:700;color:#fff;letter-spacing:2px;margin-bottom:20px;display:inline-block;}
+.finale-title{font-family:'Bangers',cursive;font-size:52px;color:#fff;letter-spacing:3px;line-height:1;margin-bottom:12px;}
+.finale-sub{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:8px;max-width:300px;}
+.finale-pts{font-family:'Bangers',cursive;font-size:36px;color:#a29bfe;margin-bottom:8px;}
+.finale-rank{font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:32px;}
+.finale-achs{display:flex;gap:8px;justify-content:center;margin-bottom:32px;flex-wrap:wrap;}
+.finale-ach{font-size:24px;}
+.finale-btn{width:100%;max-width:320px;padding:16px;background:linear-gradient(135deg,#6c5ce7,#4834d4);border:none;border-radius:16px;font-size:15px;font-weight:700;color:#fff;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;}
+.finale-btn-sec{width:100%;max-width:320px;padding:14px;background:transparent;border:0.5px solid rgba(108,92,231,0.4);border-radius:16px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;font-family:'Inter',sans-serif;}
+.finale-radar{position:absolute;opacity:0.05;pointer-events:none;}
+
+/* ── PRE-LAUNCH SCREENS ─────────────────────────────── */
+.prelaunch-screen{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;overflow-y:auto;z-index:1000;}
+.prelaunch-screen.hidden{display:none;}
+
+/* Countdown */
+#countdown{display:flex;gap:12px;justify-content:center;margin:20px 0;}
+.cd-block{display:flex;flex-direction:column;align-items:center;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:12px 16px;min-width:64px;}
+.cd-num{font-family:'Bangers',cursive;font-size:2.4rem;color:var(--cyan);line-height:1;letter-spacing:2px;}
+.cd-lbl{font-size:.6rem;font-weight:700;color:var(--text2);letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
+
+/* Grid bg */
+.pl-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.pl-glow{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(108,92,231,.12),transparent 70%);top:-100px;left:50%;transform:translateX(-50%);pointer-events:none;}
+
+/* Mechanic cards */
+.mech-card{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:12px 14px;display:flex;align-items:flex-start;gap:12px;margin-bottom:8px;}
+.mech-icon{width:36px;height:36px;border-radius:6px;background:rgba(108,92,231,.15);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;}
+.mech-title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:3px;}
+.mech-text{font-size:12px;color:var(--text2);line-height:1.5;}
+
+/* Done screen */
+.agent-done-card{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:20px;display:flex;align-items:center;gap:16px;margin:0 16px;}
+.agent-done-av{width:72px;height:72px;border-radius:50%;border:2px solid var(--violet);overflow:hidden;flex-shrink:0;}
+.agent-done-av img{width:100%;height:100%;object-fit:cover;}
 </style>
 </head>
-<body class="bg-background text-on-surface font-body overflow-x-hidden">
+<body>
 
-<!-- ═══════════════════════════════════
-     ЭКРАН 1: WELCOME
-═══════════════════════════════════ -->
-<div class="screen active" id="screen-welcome">
-  <div class="relative flex-1 bg-primary overflow-hidden">
-    <div class="absolute inset-0 halftone opacity-10 pointer-events-none"></div>
-    <div class="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none select-none">
-      <span class="text-[10rem] font-headline italic font-black text-white burst-text leading-none">SECURITY</span>
+<div class="ticker-wrap" id="ticker-wrap" style="display:none;">
+  <div class="ticker-label">LIVE</div>
+  <div class="ticker-track">
+    <div class="ticker-inner" id="ticker-inner">
+      <span class="ticker-msg">ДОБРО ПОЖАЛОВАТЬ НА БОРТ PROWAY SECURITY DAY 2025</span>
+      <span class="ticker-sep"> · </span>
+      <span class="ticker-msg">СКАНИРУЙ QR-КОДЫ НА СТЕНДАХ И ОТКРЫВАЙ ГЛАВЫ СВОЕГО ДОСЬЕ</span>
+      <span class="ticker-sep"> · </span>
     </div>
-    <!-- Header -->
-    <header class="relative z-10 flex justify-between items-center px-5 pt-12 pb-4">
-      <div class="flex items-center gap-2">
-        <span class="material-symbols-outlined text-white fill-icon">shield</span>
-        <span class="font-headline italic font-black text-white text-xl uppercase tracking-tight -skew-x-6">SECURITY DAY</span>
-      </div>
-      <button onclick="openLoginModal()" class="font-label font-bold text-xs uppercase text-yellow-400 border-2 border-yellow-400 px-3 py-1 hover:bg-yellow-400 hover:text-black transition-all">ВОЙТИ</button>
-    </header>
-    <!-- Main -->
-    <main class="relative z-10 flex flex-col items-center justify-center px-6 pt-8 pb-6">
-      <div class="bg-tertiary-container border-4 border-black px-4 py-2 mb-6 -rotate-2 ink4">
-        <span class="font-label font-bold text-on-tertiary-container uppercase tracking-widest text-sm">21 апреля 2026</span>
-      </div>
-      <div class="text-center mb-8">
-        <h2 class="font-bangers text-5xl text-black uppercase tracking-wider leading-none mb-1">PROWAY</h2>
-        <h3 class="font-headline italic font-black text-8xl text-white uppercase skew-title burst-text leading-none">Security<br/>Day</h3>
-      </div>
-      <div class="bg-white border-4 border-black p-5 mb-8 w-full max-w-xs rotate-1 ink8">
-        <p class="font-body font-bold text-lg text-center text-on-surface">Пространство Connect<br/><span class="text-sm font-normal text-on-surface-variant">5-й Донской проезд, д. 17</span></p>
-      </div>
-      <div class="flex flex-col gap-3 w-full max-w-xs">
-        <button onclick="showScreen('screen-agent')" class="w-full bg-yellow-400 border-4 border-black py-4 px-6 flex items-center justify-center gap-3 ink8 hover:-translate-y-1 hover:shadow-[10px_10px_0_#000] transition-all active:translate-y-1 active:shadow-none">
-          <span class="font-headline italic font-black text-2xl text-black uppercase">Начать миссию</span>
-          <span class="material-symbols-outlined text-black font-black text-3xl">arrow_forward</span>
-        </button>
-        <button onclick="openLoginModal()" class="w-full bg-white border-4 border-black py-3 px-6 flex items-center justify-center gap-2 ink4 hover:-translate-y-1 transition-all active:translate-y-1 active:shadow-none">
-          <span class="material-symbols-outlined text-primary">login</span>
-          <span class="font-label font-bold text-sm text-primary uppercase tracking-wide">Уже зарегистрирован?</span>
-        </button>
-      </div>
-    </main>
-    <!-- Decor -->
-    <div class="absolute top-16 -left-8 w-32 h-32 bg-secondary border-4 border-black rotate-12 opacity-40 pointer-events-none"></div>
-    <div class="absolute bottom-16 -right-8 w-24 h-24 bg-tertiary border-4 border-black -rotate-12 opacity-40 pointer-events-none"></div>
   </div>
-  <!-- Ticker -->
-  <footer class="bg-black border-t-4 border-black h-10 flex items-center overflow-hidden flex-shrink-0">
-    <div class="ticker-wrap w-full"><div class="ticker-content">
-      <span class="text-yellow-400 font-label font-bold text-xs tracking-widest uppercase">• PROWAY SECURITY DAY 2026 • КИБЕРБЕЗОПАСНОСТЬ ДЛЯ БИЗНЕСА • 21 АПРЕЛЯ • ПРОСТРАНСТВО CONNECT • PROWAY SECURITY DAY 2026 • КИБЕРБЕЗОПАСНОСТЬ ДЛЯ БИЗНЕСА •</span>
-    </div></div>
-  </footer>
 </div>
 
-<!-- ═══════════════════════════════════
-     ЭКРАН 2: ВЫБОР АГЕНТА
-═══════════════════════════════════ -->
-<div class="screen" id="screen-agent">
-  <header class="flex justify-between items-center px-5 h-16 bg-surface-container-lowest border-b-4 border-black ink4 flex-shrink-0 sticky top-0 z-50">
-    <button onclick="showScreen('screen-welcome')" class="material-symbols-outlined text-black text-2xl">arrow_back</button>
-    <h1 class="font-headline italic font-black text-2xl text-primary uppercase tracking-tighter -skew-x-3">PROWAY SEC-DAY</h1>
-    <div class="w-8"></div>
-  </header>
-  <main class="relative flex-1 overflow-hidden">
-    <!-- Split background -->
-    <div class="absolute inset-0 flex pointer-events-none">
-      <div class="w-1/2 bg-primary relative overflow-hidden"><div class="absolute inset-0 halftone opacity-15 text-white"></div><div class="absolute bottom-0 left-0 text-[12rem] font-headline italic font-black text-black/10 select-none uppercase leading-none">DEF</div></div>
-      <div class="w-1/2 bg-secondary relative overflow-hidden"><div class="absolute inset-0 halftone opacity-15 text-white"></div><div class="absolute top-0 right-0 text-[12rem] font-headline italic font-black text-black/10 select-none uppercase leading-none">TRA</div></div>
-    </div>
-    <div class="relative z-10 flex flex-col items-center px-4 pt-6 pb-8">
-      <div class="mb-6 text-center">
-        <h2 class="font-headline italic font-black text-4xl text-white uppercase -rotate-1 drop-shadow-[4px_4px_0_rgba(0,0,0,1)]">ВЫБЕРИ АГЕНТА</h2>
-        <div class="h-2 w-48 mx-auto bg-yellow-400 border-2 border-black mt-2 ink4"></div>
-      </div>
-      <div class="grid grid-cols-2 gap-4 w-full max-w-sm mb-6">
-        <!-- DEFENDER -->
-        <div onclick="selectGender('male')" class="group bg-white border-4 border-black ink8 hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-pointer active:scale-95">
-          <div class="bg-blue-50 border-b-4 border-black px-3 py-2">
-            <span class="font-label font-bold text-xs text-secondary uppercase tracking-widest">DEFENDER</span>
-          </div>
-          <div class="h-36 overflow-hidden border-b-4 border-black bg-blue-100 flex items-center justify-center relative">
-            <img src="Defense_Grid_Icon.png" alt="Защитник" class="w-full h-full object-cover transition-transform duration-500 scale-110 group-hover:scale-100" onerror="this.style.fontSize='4rem';this.style.display='flex';this.parentElement.innerHTML='<span style=font-size:4rem>🦸‍♂️</span>'"/>
-            <div class="absolute top-2 right-2 bg-primary text-white font-headline italic font-black text-xs px-2 py-1 border-2 border-black -rotate-3 ink4">ЗАЩИТНИК</div>
-          </div>
-          <div class="bg-yellow-400 border-t-0 px-3 py-2 text-center">
-            <span class="font-headline italic font-black text-base uppercase text-black">БОЕЦ</span>
-          </div>
-        </div>
-        <!-- TRACER -->
-        <div onclick="selectGender('female')" class="group bg-white border-4 border-black ink8 hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-pointer active:scale-95">
-          <div class="bg-pink-50 border-b-4 border-black px-3 py-2">
-            <span class="font-label font-bold text-xs text-pink-700 uppercase tracking-widest">TRACER</span>
-          </div>
-          <div class="h-36 overflow-hidden border-b-4 border-black bg-pink-100 flex items-center justify-center relative">
-            <img src="Stealth_Tracer_Icon.png" alt="Следопыт" class="w-full h-full object-cover transition-transform duration-500 scale-110 group-hover:scale-100" onerror="this.parentElement.innerHTML='<span style=font-size:4rem>🦸‍♀️</span>'"/>
-            <div class="absolute top-2 right-2 bg-secondary text-white font-headline italic font-black text-xs px-2 py-1 border-2 border-black rotate-3 ink4">СЛЕДОПЫТ</div>
-          </div>
-          <div class="bg-yellow-400 border-t-0 px-3 py-2 text-center">
-            <span class="font-headline italic font-black text-base uppercase text-black">АГЕНТ</span>
-          </div>
-        </div>
-      </div>
-      <!-- Briefing box -->
-      <div class="w-full max-w-sm bg-surface-container border-4 border-black ink4 p-4 relative">
-        <div class="absolute -top-3 -left-2 bg-yellow-400 border-2 border-black px-3 py-1 font-headline italic font-bold text-xs uppercase -rotate-2 ink4">РАЗВЕДДАННЫЕ</div>
-        <p class="font-body text-sm text-on-surface-variant mt-2">После выбора система случайно назначит одного из агентов. Каждый герой получит уникальное кодовое имя.</p>
-      </div>
-    </div>
-  </main>
+<div class="announce-banner" id="announce-banner">
+  <div class="announce-text" id="announce-text"></div>
+  <button class="announce-close" onclick="closeBanner()">✕</button>
 </div>
 
-<!-- ═══════════════════════════════════
-     ЭКРАН 3: РЕГИСТРАЦИЯ
-═══════════════════════════════════ -->
-<div class="screen" id="screen-register">
-  <header class="flex justify-between items-center px-5 h-16 bg-surface-container-lowest border-b-4 border-black flex-shrink-0 sticky top-0 z-50">
-    <button onclick="showScreen('screen-agent')" class="material-symbols-outlined text-black text-2xl">arrow_back</button>
-    <h1 class="font-headline italic font-black text-xl text-primary uppercase -skew-x-3">АГЕНТ НАЗНАЧЕН</h1>
-    <div class="w-8"></div>
-  </header>
-  <main class="flex-1 overflow-y-auto pb-8">
-    <!-- Agent reveal -->
-    <div class="bg-secondary relative overflow-hidden border-b-4 border-black">
-      <div class="absolute inset-0 halftone opacity-10"></div>
-      <div class="relative z-10 flex flex-col items-center py-8 px-4">
-        <div class="relative w-32 h-32 mb-4">
-          <div class="absolute inset-0 border-4 border-yellow-400 rounded-full spin-ring opacity-60"></div>
-          <div class="w-32 h-32 rounded-full border-4 border-black overflow-hidden bg-secondary-container relative z-10">
-            <img id="reveal-img" src="" alt="" class="w-full h-full object-cover"/>
-            <span id="reveal-emoji" class="absolute inset-0 flex items-center justify-center text-5xl hidden">🦸</span>
-          </div>
-        </div>
-        <div class="bg-black px-6 py-2 mb-1">
-          <span id="reveal-codename" class="font-bangers text-yellow-400 text-xl tracking-[0.3em]">...</span>
-        </div>
-        <span class="font-label text-xs text-white/60 uppercase tracking-widest">Кодовое имя</span>
+<!-- ONBOARDING -->
+<div id="ob-welcome" class="screen active">
+  <div class="ob-hero">
+    <div class="ob-grid"></div>
+    <div class="ob-glow"></div>
+    <div class="ob-eyebrow">// PROWAY_SECURITY_DAY_2025</div>
+    <div class="ob-title">МИР<br><span class="accent">ПОД</span><br>УГРОЗОЙ</div>
+    <div class="ob-line"></div>
+    <div class="ob-speech">
+      <div class="ob-speech-text">Кибератаки участились. Старые методы защиты не работают. Нужны новые герои, способные противостоять угрозам цифрового мира.</div>
+    </div>
+  </div>
+  <div class="ob-bottom">
+    <div class="ob-desc">Конференция PROWAY Security Day — место где рождаются герои кибербезопасности. Пройди регистрацию, получи своего агента и начни миссию.</div>
+    <button class="ob-btn" onclick="goTo('ob-choose')">ПРИНЯТЬ МИССИЮ ›</button>
+  </div>
+</div>
+
+<div id="ob-choose" class="screen">
+  <div class="ob-choose-header">
+    <div class="ob-choose-title">ВЫБЕРИ АГЕНТА</div>
+    <div class="ob-choose-sub">// СИСТЕМА НАЗНАЧИТ СЛУЧАЙНОГО ГЕРОЯ</div>
+  </div>
+  <div class="ob-choose-body">
+    <div class="ob-choose-q">КТО ТЫ В КОМАНДЕ?</div>
+    <div class="agent-grid">
+      <div class="agent-card" onclick="selectGender('male')">
+        <div class="ac-top"><div class="ac-label">// DEFENDER</div></div>
+        <div class="ac-face" style="background:#0a1525;"><img src="https://proway-event.vercel.app/Defense_Grid_Icon.png" alt="defender" onerror="this.parentElement.innerHTML='<span style=font-size:50px>🦸‍♂️</span>'"></div>
+        <div class="ac-name" style="color:var(--cyan);">БОЕЦ</div>
+      </div>
+      <div class="agent-card" onclick="selectGender('female')">
+        <div class="ac-top"><div class="ac-label" style="color:#e879f9;">// TRACER</div></div>
+        <div class="ac-face" style="background:#150a25;"><img src="https://proway-event.vercel.app/Stealth_Tracer_Icon.png" alt="tracer" onerror="this.parentElement.innerHTML='<span style=font-size:50px>🦸‍♀️</span>'"></div>
+        <div class="ac-name" style="color:#e879f9;">АГЕНТ</div>
       </div>
     </div>
-    <!-- Form -->
-    <div class="px-4 pt-6 space-y-4">
+    <div class="ob-tip"><div class="ob-tip-text">// После выбора система назначит случайного персонажа. Каждый герой уникален и получит своё кодовое имя.</div></div>
+  </div>
+</div>
+
+<div id="ob-reveal" class="screen">
+  <div class="ob-reveal-header"><div class="ob-reveal-title">// АГЕНТ_НАЗНАЧЕН</div></div>
+  <div class="ob-reveal-body">
+    <div class="av-ring"><img id="reveal-img" src="" alt=""></div>
+    <div class="codename-wrap"><div class="codename" id="reveal-codename">...</div></div>
+    <div class="form-section">
+      <div><div class="field-label">// ПОЗЫВНОЙ (имя и фамилия)</div><input type="text" id="reg-name" class="field-input" placeholder="Анна Козлова"></div>
+      <div><div class="field-label">// КОРПОРАТИВНАЯ ПОЧТА</div><input type="email" id="reg-email" class="field-input" placeholder="name@company.ru"></div>
+      <div><div class="field-label">// ОРГАНИЗАЦИЯ</div><input type="text" id="reg-company" class="field-input" placeholder="Название компании"></div>
+      <div><div class="field-label">// ДОЛЖНОСТЬ</div><input type="text" id="reg-role" class="field-input" placeholder="ИТ-директор"></div>
       <div>
-        <label class="font-label font-bold text-xs uppercase tracking-widest text-on-surface-variant block mb-1">Позывной — имя и фамилия *</label>
-        <input type="text" id="reg-name" placeholder="Анна Козлова" class="w-full border-4 border-black px-4 py-3 font-body text-base bg-white focus:outline-none focus:border-primary focus:bg-yellow-50 transition-colors ink4"/>
-      </div>
-      <div>
-        <label class="font-label font-bold text-xs uppercase tracking-widest text-on-surface-variant block mb-1">Корпоративная почта</label>
-        <input type="email" id="reg-email" placeholder="name@company.ru" class="w-full border-4 border-black px-4 py-3 font-body text-base bg-white focus:outline-none focus:border-primary focus:bg-yellow-50 transition-colors ink4"/>
-      </div>
-      <div>
-        <label class="font-label font-bold text-xs uppercase tracking-widest text-on-surface-variant block mb-1">Организация *</label>
-        <input type="text" id="reg-company" placeholder="Название компании" class="w-full border-4 border-black px-4 py-3 font-body text-base bg-white focus:outline-none focus:border-primary focus:bg-yellow-50 transition-colors ink4"/>
-      </div>
-      <div>
-        <label class="font-label font-bold text-xs uppercase tracking-widest text-on-surface-variant block mb-1">Должность</label>
-        <input type="text" id="reg-role" placeholder="ИТ-директор" class="w-full border-4 border-black px-4 py-3 font-body text-base bg-white focus:outline-none focus:border-primary focus:bg-yellow-50 transition-colors ink4"/>
-      </div>
-      <div>
-        <label class="font-label font-bold text-xs uppercase tracking-widest text-on-surface-variant block mb-2">Роль на мероприятии</label>
-        <div class="flex gap-2 flex-wrap" id="role-tags">
-          <button onclick="selectRole(this,'PROWAY')" class="role-tag border-4 border-black px-4 py-2 font-label font-bold text-xs uppercase ink4 bg-white hover:bg-secondary hover:text-white transition-all">PROWAY</button>
-          <button onclick="selectRole(this,'Вендор')" class="role-tag border-4 border-black px-4 py-2 font-label font-bold text-xs uppercase ink4 bg-white hover:bg-secondary hover:text-white transition-all">Вендор</button>
-          <button onclick="selectRole(this,'Интегратор')" class="role-tag border-4 border-black px-4 py-2 font-label font-bold text-xs uppercase ink4 bg-white hover:bg-secondary hover:text-white transition-all">Интегратор</button>
+        <div class="field-label">// СПЕЦИАЛИЗАЦИЯ (до 3)</div>
+        <div class="tags-wrap" id="tags-wrap">
+          <button class="itag" data-val="NGFW">NGFW</button>
+          <button class="itag" data-val="SOC/SIEM">SOC/SIEM</button>
+          <button class="itag" data-val="Пентест">Пентест</button>
+          <button class="itag" data-val="Zero Trust">Zero Trust</button>
+          <button class="itag" data-val="DLP">DLP</button>
+          <button class="itag" data-val="PAM">PAM</button>
+          <button class="itag" data-val="Криптография">Крипто</button>
+          <button class="itag" data-val="Compliance">Compliance</button>
         </div>
       </div>
-      <div id="reg-error" class="hidden bg-error-container border-4 border-black px-4 py-3">
-        <p class="font-label font-bold text-sm text-white uppercase" id="reg-error-text">Ошибка</p>
+      <button class="ob-btn" onclick="register()">ПРИСТУПИТЬ К МИССИИ ›</button>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none;">
+
+  <!-- ПРОФИЛЬ -->
+  
+
+<!-- QR MODAL -->
+<div class="qr-modal-overlay" id="qr-modal-overlay" onclick="closeQrModal()">
+  <div class="qr-modal" onclick="event.stopPropagation()">
+    <div class="qr-modal-title">Мой QR-код</div>
+    <div class="qr-modal-sub">Попроси другого участника отсканировать</div>
+    <div class="qr-modal-code">
+      <img id="qr-modal-img" src="" alt="QR">
+    </div>
+    <div class="qr-modal-pts">+10 баллов за знакомство</div>
+    <button class="qr-modal-close" onclick="closeQrModal()">Закрыть</button>
+  </div>
+</div>
+
+
+<!-- FINALE SCREEN -->
+<div class="finale-overlay" id="finale-overlay">
+  <svg class="finale-radar" width="400" height="400" viewBox="0 0 400 400" fill="none">
+    <circle cx="200" cy="200" r="180" stroke="white" stroke-width="0.5"/>
+    <circle cx="200" cy="200" r="130" stroke="white" stroke-width="0.5"/>
+    <circle cx="200" cy="200" r="80" stroke="white" stroke-width="0.5"/>
+    <circle cx="200" cy="200" r="40" stroke="white" stroke-width="0.5"/>
+    <line x1="200" y1="20" x2="200" y2="380" stroke="white" stroke-width="0.5"/>
+    <line x1="20" y1="200" x2="380" y2="200" stroke="white" stroke-width="0.5"/>
+    <line x1="73" y1="73" x2="327" y2="327" stroke="white" stroke-width="0.5"/>
+    <line x1="327" y1="73" x2="73" y2="327" stroke="white" stroke-width="0.5"/>
+  </svg>
+  <div class="finale-stars">
+    <div class="finale-star"></div>
+    <div class="finale-star"></div>
+    <div class="finale-star"></div>
+  </div>
+  <div class="finale-badge">МИССИЯ ВЫПОЛНЕНА</div>
+  <div class="finale-title">СПАСИБО,<br>АГЕНТ!</div>
+  <div class="finale-sub">Ты сделал этот день особенным.<br>Твой вклад в безопасность цифрового мира бесценен.</div>
+  <div class="finale-pts" id="finale-pts">0 Б</div>
+  <div class="finale-rank" id="finale-rank">Место в рейтинге: —</div>
+  <div class="finale-achs" id="finale-achs"></div>
+  <button class="finale-btn" onclick="generateShareCard()">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 5l3-3 3 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11v2a1 1 0 001 1h10a1 1 0 001-1v-2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+    Скачать карточку агента
+  </button>
+  <button class="finale-btn-sec" onclick="document.getElementById('finale-overlay').classList.remove('show')">Вернуться в приложение</button>
+</div>
+<!-- ACHIEVEMENT BANNER -->
+<div class="ach-banner" id="ach-banner">
+  <div class="ach-banner-icon" id="ach-banner-icon">🏆</div>
+  <div class="ach-banner-body">
+    <div class="ach-banner-title">Достижение разблокировано!</div>
+    <div class="ach-banner-name" id="ach-banner-name"></div>
+  </div>
+</div>
+<!-- NOTIFICATION PANEL -->
+<div class="notif-overlay" id="notif-overlay" onclick="closeNotifPanel()"></div>
+<div class="notif-panel" id="notif-panel">
+  <div class="notif-header">
+    <div class="notif-title">Уведомления</div>
+    <button class="notif-close" onclick="closeNotifPanel()">✕</button>
+  </div>
+  <div class="notif-list" id="notif-list">
+    <div class="notif-empty">Пока тихо — следите за обновлениями</div>
+  </div>
+</div>
+
+<div id="screen-profile" class="app-screen active">
+    <div class="topbar">
+      <div><div class="topbar-logo">PROWAY</div><div class="topbar-sub">SECURITY DAY 2025</div></div>
+      <div class="topbar-right">
+        <div class="bell-wrap" onclick="openNotifPanel()">
+          <div class="bell-btn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 2a5 5 0 00-5 5v3l-1 1.5h12L13 10V7a5 5 0 00-5-5z" stroke="#a29bfe" stroke-width="1.3" stroke-linejoin="round"/>
+              <path d="M6.5 13.5a1.5 1.5 0 003 0" stroke="#a29bfe" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="bell-badge" id="bell-badge">0</div>
+        </div>
+        <div class="topbar-av"><img id="p-av-img" src="" alt="" style="display:none;"><span id="p-av-emoji">◈</span></div>
       </div>
-      <button id="reg-btn" onclick="register()" class="w-full bg-primary border-4 border-black py-4 flex items-center justify-center gap-2 ink8 hover:-translate-y-1 hover:shadow-[12px_12px_0_#000] transition-all active:translate-y-1 active:shadow-none mt-2">
-        <span class="font-headline italic font-black text-xl text-white uppercase">Приступить к миссии</span>
-        <span class="material-symbols-outlined text-white">arrow_forward</span>
+    </div>
+    <div class="hero-block">
+      <div class="pts-row">
+        <div><div class="pts-label">// БАЛЛЫ</div><div><span class="pts-big" id="p-pts">0</span><span class="pts-unit">Б</span></div></div>
+        <div class="rank-box"><div class="rank-n" id="p-rank">#—</div><div class="rank-l">МЕСТО</div></div>
+      </div>
+      <div class="prog-row"><span class="prog-lbl">ДО ПРИЗА</span><span class="prog-pct" id="p-pct">0%</span></div>
+      <div class="prog-track"><div class="prog-fill" id="p-bar"></div></div>
+    </div>
+    <div class="stats-grid">
+      <div class="sg-cell"><div class="sg-n" id="s-vendors">0</div><div class="sg-l">СТЕНДЫ</div></div>
+      <div class="sg-cell"><div class="sg-n" id="s-polls">0</div><div class="sg-l">ОПРОСЫ</div></div>
+      <div class="sg-cell"><div class="sg-n accent" id="s-rank2">—</div><div class="sg-l">МЕСТО</div></div>
+    </div>
+    <div style="height:12px;"></div>
+    <div style="padding:0 14px 12px;">
+      <button onclick="showQrModal()" style="width:100%;padding:12px;background:rgba(108,92,231,0.1);border:0.5px solid rgba(108,92,231,0.3);border-radius:14px;font-size:13px;font-weight:700;color:#a29bfe;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1" stroke="#a29bfe" stroke-width="1.3"/><rect x="9" y="1" width="6" height="6" rx="1" stroke="#a29bfe" stroke-width="1.3"/><rect x="1" y="9" width="6" height="6" rx="1" stroke="#a29bfe" stroke-width="1.3"/><rect x="10" y="10" width="2" height="2" fill="#a29bfe"/><rect x="13" y="10" width="2" height="2" fill="#a29bfe"/><rect x="10" y="13" width="2" height="2" fill="#a29bfe"/><rect x="13" y="13" width="2" height="2" fill="#a29bfe"/></svg>
+        Показать мой QR
       </button>
     </div>
-  </main>
-</div>
-
-<!-- ═══════════════════════════════════
-     ОСНОВНОЕ ПРИЛОЖЕНИЕ
-═══════════════════════════════════ -->
-<div class="screen" id="app">
-
-  <!-- ── Профиль ── -->
-  <div class="app-screen active pb-24" id="screen-profile">
-    <!-- Topbar -->
-    <header class="sticky top-0 z-50 flex justify-between items-center px-5 h-16 bg-surface-container-lowest border-b-4 border-black ink4">
-      <div class="flex items-center gap-3">
-        <div onclick="scrollToCard()" class="w-9 h-9 rounded-full border-2 border-black overflow-hidden bg-secondary-container cursor-pointer flex items-center justify-center">
-          <img id="p-av-top" src="" alt="" class="w-full h-full object-cover hidden"/>
-          <span id="p-av-top-emoji" class="text-xl">🦸</span>
-        </div>
-        <div>
-          <span class="font-label text-[10px] uppercase font-bold tracking-widest text-secondary block leading-none">БАЛЛЫ</span>
-          <span id="p-pts-top" class="font-headline font-black italic uppercase text-primary text-sm leading-none">0 PTS</span>
-        </div>
+    <div class="section-hdr"><div class="section-hdr-title">МОЯ КАРТОЧКА</div><div class="section-hdr-sub">// ДОСЬЕ АГЕНТА</div></div>
+    <div class="agent-card-full" id="agent-full-card"><div class="loader">ЗАГРУЗКА...</div></div>
+    <div class="section-hdr" style="margin-top:0;"><div class="section-hdr-title">ДОСТИЖЕНИЯ</div><div class="section-hdr-sub">// РАЗБЛОКИРОВАНО</div></div>
+    <div class="ach-section">
+      <div class="ach-grid" id="ach-grid">
+        <div class="ach-item" id="ach-register"><div class="ach-icon">🎖️</div><div class="ach-name">Первый шаг</div></div>
+        <div class="ach-item" id="ach-vendors"><div class="ach-icon">🗺️</div><div class="ach-name">Все стенды</div></div>
+        <div class="ach-item" id="ach-polls"><div class="ach-icon">🧠</div><div class="ach-name">Аналитик</div></div>
+        <div class="ach-item" id="ach-network"><div class="ach-icon">🤝</div><div class="ach-name">Связной</div></div>
+        <div class="ach-item" id="ach-top3"><div class="ach-icon">🏆</div><div class="ach-name">Топ-3</div></div>
+        <div class="ach-item" id="ach-100pts"><div class="ach-icon">⚡</div><div class="ach-name">100 баллов</div></div>
       </div>
-      <h1 class="font-headline italic font-black text-xl text-primary uppercase tracking-tight -skew-x-3">SEC-DAY</h1>
-      <div class="relative cursor-pointer">
-        <span class="material-symbols-outlined text-black text-2xl">notifications</span>
-        <span id="notif-badge" class="absolute -top-1 -right-1 w-4 h-4 bg-primary border-2 border-black rounded-full text-[8px] font-bold text-white flex items-center justify-center hidden">!</span>
-      </div>
-    </header>
-
-    <!-- Ticker -->
-    <div class="bg-black border-b-4 border-black h-9 flex items-center overflow-hidden">
-      <div class="ticker-wrap w-full"><div class="ticker-content" id="ticker-text">
-        <span class="text-yellow-400 font-label font-bold text-xs tracking-widest uppercase">• PROWAY SECURITY DAY • КИБЕРБЕЗОПАСНОСТЬ • 21 АПРЕЛЯ • ПРОСТРАНСТВО CONNECT •</span>
-      </div></div>
     </div>
-
-    <main class="px-4 space-y-6 py-6">
-
-      <!-- Agent Card -->
-      <div id="agent-card" class="relative bg-white border-4 border-black ink8 overflow-hidden">
-        <div class="absolute inset-0 halftone-light pointer-events-none"></div>
-        <!-- Card top: image + stats -->
-        <div class="flex border-b-4 border-black">
-          <!-- Image -->
-          <div class="w-1/3 border-r-4 border-black relative bg-secondary-container min-h-[160px] flex items-center justify-center overflow-hidden">
-            <img id="p-card-img" src="" alt="" class="w-full h-full object-cover hidden"/>
-            <span id="p-card-emoji" class="text-6xl">🦸</span>
-            <div class="absolute bottom-2 left-0 right-0 px-2">
-              <div class="bg-tertiary text-on-tertiary text-[9px] font-label font-bold px-2 py-1 border border-black text-center uppercase tracking-wide" id="p-rank-badge">НОВОБРАНЕЦ</div>
-            </div>
-          </div>
-          <!-- Stats -->
-          <div class="flex-1 p-4 relative z-10">
-            <p class="font-label text-secondary font-bold text-[10px] tracking-widest uppercase mb-1">КОДОВОЕ ИМЯ</p>
-            <h3 id="p-codename" class="font-headline font-black italic text-3xl uppercase tracking-tight leading-none text-on-surface mb-2">—</h3>
-            <p id="p-name-card" class="font-body font-bold text-sm text-on-surface-variant mb-3 truncate">—</p>
-            <div class="flex items-baseline gap-1 mb-2">
-              <span id="p-pts-big" class="font-headline font-black italic text-5xl text-primary leading-none drop-shadow-[2px_2px_0_rgba(0,0,0,1)]">0</span>
-              <span class="font-label font-bold text-xs text-on-surface-variant uppercase">очков</span>
-              <span id="p-place-badge" class="ml-auto bg-primary text-white font-label font-bold text-xs px-2 py-1 border-2 border-black rotate-2">#—</span>
-            </div>
-            <!-- Progress bar -->
-            <div class="w-full bg-surface-container border-2 border-black h-4 overflow-hidden">
-              <div id="p-bar" class="h-full bg-primary border-r-2 border-black transition-all duration-1000" style="width:0%"></div>
-            </div>
-            <div class="flex justify-between mt-1">
-              <span class="font-label text-[9px] font-bold text-on-surface-variant uppercase">До приза</span>
-              <span id="p-pct" class="font-label text-[9px] font-bold text-primary uppercase">0%</span>
-            </div>
-          </div>
-        </div>
-        <!-- Skill bars -->
-        <div class="p-4 border-b-4 border-black">
-          <h4 class="font-headline italic font-black text-sm uppercase border-b-2 border-black pb-1 mb-3">ХАРАКТЕРИСТИКИ</h4>
-          <div class="space-y-2" id="skill-bars">
-            <!-- динамически -->
-          </div>
-        </div>
-        <!-- Achievements -->
-        <div class="p-4 border-b-4 border-black">
-          <h4 class="font-headline italic font-black text-sm uppercase border-b-2 border-black pb-1 mb-3">ДОСТИЖЕНИЯ</h4>
-          <div class="grid grid-cols-5 gap-2" id="ach-grid">
-            <!-- динамически -->
-          </div>
-        </div>
-        <!-- Actions -->
-        <div class="flex gap-3 p-4">
-          <button onclick="showQrModal()" class="flex-1 bg-secondary text-white border-4 border-black py-3 font-headline italic font-black text-sm uppercase flex items-center justify-center gap-1 ink4 hover:-translate-y-1 transition-all active:translate-y-1 active:shadow-none">
-            <span class="material-symbols-outlined text-lg">qr_code_2</span>МОЙ QR
-          </button>
-          <button onclick="downloadCard()" class="flex-1 bg-white border-4 border-black py-3 font-headline italic font-black text-sm uppercase flex items-center justify-center gap-1 ink4 hover:-translate-y-1 transition-all active:translate-y-1 active:shadow-none">
-            <span class="material-symbols-outlined text-lg">download</span>КАРТОЧКА
-          </button>
-        </div>
-      </div>
-
-      <!-- Program -->
-      <section>
-        <div class="flex justify-between items-end mb-3">
-          <h2 class="font-headline italic font-black text-2xl uppercase tracking-tight -skew-x-3">ПРОГРАММА</h2>
-          <span class="font-label text-xs font-bold text-secondary uppercase">21 апр</span>
-        </div>
-        <div class="bg-white border-4 border-black ink4 overflow-hidden" id="program-list"></div>
-      </section>
-
-    </main>
-  </div>
-
-  <!-- ── Рейтинг ── -->
-  <div class="app-screen pb-24" id="screen-top">
-    <header class="sticky top-0 z-50 flex items-center px-5 h-16 bg-surface-container-lowest border-b-4 border-black ink4">
-      <h1 class="font-headline italic font-black text-2xl text-primary uppercase tracking-tight -skew-x-3">ТОП АГЕНТОВ</h1>
-      <span class="ml-auto font-label text-xs font-bold text-on-surface-variant uppercase" id="lb-count">0 участников</span>
-    </header>
-    <main class="px-4 py-6">
-      <!-- Hero panel -->
-      <div class="relative bg-secondary border-4 border-black ink8 p-5 mb-6 -rotate-1 overflow-hidden">
-        <div class="absolute inset-0 halftone opacity-15"></div>
-        <div class="relative z-10">
-          <h2 class="font-headline italic font-black text-4xl uppercase text-white drop-shadow-[4px_4px_0_rgba(0,0,0,1)]">РЕЙТИНГ</h2>
-          <p class="font-label font-bold text-xs text-secondary-container uppercase tracking-widest">Обновляется каждые 15 сек</p>
-        </div>
-        <div class="absolute -top-4 -right-4 bg-primary text-white comic-burst w-16 h-16 flex items-center justify-center font-headline italic font-black text-xl rotate-12 border-2 border-black">TOP</div>
-      </div>
-      <div class="space-y-2" id="lb-list">
-        <div class="font-label text-center text-on-surface-variant py-8 uppercase text-xs tracking-widest">Загрузка...</div>
-      </div>
-    </main>
-  </div>
-
-  <!-- ── Стенды ── -->
-  <div class="app-screen pb-24" id="screen-stands">
-    <header class="sticky top-0 z-50 flex items-center px-5 h-16 bg-surface-container-lowest border-b-4 border-black ink4">
-      <h1 class="font-headline italic font-black text-2xl text-primary uppercase tracking-tight -skew-x-3">СТЕНДЫ</h1>
-    </header>
-    <main class="px-4 py-6">
-      <!-- Progress -->
-      <div class="bg-secondary border-4 border-black ink4 p-4 mb-6 relative overflow-hidden -rotate-1">
-        <div class="absolute inset-0 halftone opacity-10"></div>
-        <div class="relative z-10 flex justify-between items-center mb-3">
-          <div>
-            <h3 class="font-headline italic font-black text-white text-xl uppercase">ПРОГРЕСС МИССИИ</h3>
-            <p class="font-label text-xs text-secondary-container uppercase font-bold">Посети все стенды</p>
-          </div>
-          <div class="bg-tertiary-container border-4 border-black px-4 py-2 rotate-2 ink4 text-center">
-            <span id="stands-progress" class="font-headline italic font-black text-on-tertiary-container text-2xl block leading-none">0/6</span>
-            <span class="font-label font-bold text-[9px] text-on-tertiary-container uppercase">СТЕНДОВ</span>
-          </div>
-        </div>
-        <div class="w-full bg-white/20 border-2 border-black h-5 overflow-hidden">
-          <div id="stands-bar" class="h-full bg-primary-container border-r-4 border-black transition-all duration-700" style="width:0%"></div>
-        </div>
-      </div>
-      <!-- QR Scanner button -->
-      <div class="bg-tertiary-container border-4 border-black ink4 p-4 mb-6 flex items-center gap-4">
-        <span class="material-symbols-outlined text-4xl text-on-tertiary-container fill-icon">qr_code_scanner</span>
-        <div class="flex-1">
-          <h4 class="font-headline italic font-black text-lg uppercase text-on-tertiary-container">Сканировать QR</h4>
-          <p class="font-body text-xs text-on-tertiary-container opacity-70">Наведи камеру на QR-код стенда</p>
-        </div>
-        <button onclick="openQrScanner()" class="bg-black text-white font-headline italic font-black text-sm uppercase px-4 py-2 border-2 border-black hover:bg-primary transition-colors">СКАН</button>
-      </div>
-      <!-- Vendor cards -->
-      <div class="grid grid-cols-1 gap-4" id="stands-list"></div>
-    </main>
-  </div>
-
-  <!-- ── Сеть ── -->
-  <div class="app-screen pb-24" id="screen-network">
-    <header class="sticky top-0 z-50 flex items-center px-5 h-16 bg-surface-container-lowest border-b-4 border-black ink4">
-      <h1 class="font-headline italic font-black text-2xl text-primary uppercase tracking-tight -skew-x-3">СЕТЬ АГЕНТОВ</h1>
-      <span class="ml-auto">
-        <span id="net-online" class="bg-primary text-white font-label font-bold text-xs px-3 py-1 border-2 border-black uppercase">0 онлайн</span>
-      </span>
-    </header>
-    <!-- Likes notification banner -->
-    <div id="likes-banner" class="hidden bg-tertiary-container border-b-4 border-black px-4 py-3 flex items-center gap-3">
-      <span class="material-symbols-outlined text-on-tertiary-container fill-icon">favorite</span>
-      <span id="likes-text" class="font-label font-bold text-xs text-on-tertiary-container uppercase flex-1"></span>
-      <button onclick="document.getElementById('likes-banner').classList.add('hidden')" class="material-symbols-outlined text-on-tertiary-container text-lg">close</button>
-    </div>
-    <main class="px-4 py-6">
-      <div class="grid grid-cols-1 gap-4" id="network-list">
-        <div class="font-label text-center text-on-surface-variant py-8 uppercase text-xs tracking-widest">Загрузка...</div>
-      </div>
-    </main>
-  </div>
-
-  <!-- ── Опросы ── -->
-  <div class="app-screen pb-24" id="screen-polls">
-    <header class="sticky top-0 z-50 flex items-center px-5 h-16 bg-surface-container-lowest border-b-4 border-black ink4">
-      <h1 class="font-headline italic font-black text-2xl text-primary uppercase tracking-tight -skew-x-3">ОПРОСЫ</h1>
-      <span class="ml-auto font-label text-xs font-bold text-secondary uppercase">Live</span>
-    </header>
-    <main class="px-4 py-6 space-y-4" id="polls-list">
-      <div class="font-label text-center text-on-surface-variant py-8 uppercase text-xs tracking-widest">Загрузка...</div>
-    </main>
-  </div>
-
-  <!-- Bottom Navigation -->
-  <nav class="fixed bottom-0 left-0 right-0 z-50 flex justify-around items-stretch bg-secondary border-t-4 border-black h-20 shadow-[0_-4px_0_0_#000]">
-    <button onclick="switchTab('profile')" id="nav-profile" class="nav-btn active flex flex-col items-center justify-center gap-1 flex-1 transition-all active:scale-90">
-      <span class="material-symbols-outlined nav-icon text-white text-2xl">account_circle</span>
-      <span class="nav-label font-headline italic font-bold text-[10px] uppercase text-white">Профиль</span>
-    </button>
-    <button onclick="switchTab('top')" id="nav-top" class="nav-btn flex flex-col items-center justify-center gap-1 flex-1 text-white/70 transition-all active:scale-90">
-      <span class="material-symbols-outlined nav-icon text-2xl">leaderboard</span>
-      <span class="nav-label font-headline italic font-bold text-[10px] uppercase">Рейтинг</span>
-    </button>
-    <button onclick="switchTab('stands')" id="nav-stands" class="nav-btn flex flex-col items-center justify-center gap-1 flex-1 text-white/70 transition-all active:scale-90">
-      <span class="material-symbols-outlined nav-icon text-2xl">storefront</span>
-      <span class="nav-label font-headline italic font-bold text-[10px] uppercase">Стенды</span>
-    </button>
-    <button onclick="switchTab('network')" id="nav-network" class="nav-btn flex flex-col items-center justify-center gap-1 flex-1 text-white/70 transition-all active:scale-90">
-      <span class="material-symbols-outlined nav-icon text-2xl">group</span>
-      <span class="nav-label font-headline italic font-bold text-[10px] uppercase">Сеть</span>
-    </button>
-    <button onclick="switchTab('polls')" id="nav-polls" class="nav-btn flex flex-col items-center justify-center gap-1 flex-1 text-white/70 transition-all active:scale-90">
-      <span class="material-symbols-outlined nav-icon text-2xl">poll</span>
-      <span class="nav-label font-headline italic font-bold text-[10px] uppercase">Опросы</span>
-    </button>
-  </nav>
-</div>
-
-<!-- ═══════════════════════════════════
-     МОДАЛКИ
-═══════════════════════════════════ -->
-
-<!-- Войти -->
-<div class="modal-overlay" id="login-modal" onclick="if(event.target===this)closeLoginModal()">
-  <div class="bg-white border-4 border-black ink12 w-full max-w-sm p-6">
-    <div class="flex items-start justify-between mb-5">
-      <div>
-        <p class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">Восстановить доступ</p>
-        <h2 class="font-headline italic font-black text-2xl uppercase text-primary -skew-x-3">ВОЙТИ В МИССИЮ</h2>
-      </div>
-      <button onclick="closeLoginModal()" class="material-symbols-outlined text-black text-2xl mt-1">close</button>
-    </div>
-    <div class="space-y-4">
-      <div>
-        <label class="font-label font-bold text-[10px] uppercase tracking-widest text-on-surface-variant block mb-1">Имя и фамилия</label>
-        <input type="text" id="login-name" placeholder="Анна Козлова" class="w-full border-4 border-black px-4 py-3 font-body text-base bg-surface-container-low focus:outline-none focus:border-primary focus:bg-yellow-50 transition-colors"/>
-      </div>
-      <div>
-        <label class="font-label font-bold text-[10px] uppercase tracking-widest text-on-surface-variant block mb-1">Корпоративная почта</label>
-        <input type="email" id="login-email" placeholder="name@company.ru" onkeydown="if(event.key==='Enter')submitLogin()" class="w-full border-4 border-black px-4 py-3 font-body text-base bg-surface-container-low focus:outline-none focus:border-primary focus:bg-yellow-50 transition-colors"/>
-      </div>
-      <div id="login-error" class="hidden bg-error-container border-4 border-black px-4 py-2">
-        <p class="font-label font-bold text-sm text-white uppercase" id="login-error-text"></p>
-      </div>
-      <button id="login-btn" onclick="submitLogin()" class="w-full bg-primary border-4 border-black py-4 flex items-center justify-center gap-2 ink8 hover:-translate-y-1 transition-all active:translate-y-1 active:shadow-none">
-        <span class="font-headline italic font-black text-xl text-white uppercase">Найти миссию</span>
-        <span class="material-symbols-outlined text-white">search</span>
+    <div style="padding:0 14px 4px;">
+      <button class="share-card-btn" onclick="generateShareCard()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 5l3-3 3 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11v2a1 1 0 001 1h10a1 1 0 001-1v-2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Скачать карточку агента
       </button>
-      <div class="flex items-center gap-3"><div class="flex-1 h-[3px] bg-black"></div><span class="font-label text-xs font-bold uppercase text-on-surface-variant">или</span><div class="flex-1 h-[3px] bg-black"></div></div>
-      <button onclick="closeLoginModal();showScreen('screen-agent')" class="w-full bg-white border-4 border-black py-3 font-label font-bold text-sm text-black uppercase ink4 hover:-translate-y-1 transition-all">Начать заново</button>
     </div>
+    <canvas id="share-canvas" style="display:none;"></canvas>
+    <div style="height:12px;"></div>
+    <div class="section-hdr"><div class="section-hdr-title">БАЗА</div><div class="section-hdr-sub">// ЛОКАЦИЯ</div></div>
+    <div class="info-block">
+      <div class="info-row"><div class="info-icon">✈</div><div><div class="info-title">Воробьевы Холл</div><div class="info-text">ул. Косыгина 28с1, Москва</div></div></div>
+      <div class="info-row"><div class="info-icon">🚇</div><div><div class="info-title">Метро</div><div class="info-text">Воробьевы горы, выход №2, по Эскалаторной галерее направо 500 м</div></div></div>
+      <div class="info-row"><div class="info-icon">🚕</div><div><div class="info-title">Такси</div><div class="info-text">ул. Косыгина 28с1</div></div></div>
+    </div>
+    <div class="section-hdr" style="margin-top:0;"><div class="section-hdr-title">ВЕЧЕР</div><div class="section-hdr-sub">// ПРОГРАММА</div></div>
+    <div class="info-block">
+      <div class="info-row"><div class="info-icon">🍽</div><div><div class="info-title">Фуршетный дозаправщик</div><div class="info-text">Закуски и напитки</div></div></div>
+      <div class="info-row"><div class="info-icon">🏆</div><div><div class="info-title">Награждение агентов</div><div class="info-text">Лучшие получают призы на сцене</div></div></div>
+      <div class="info-row"><div class="info-icon">🎤</div><div><div class="info-title">Кавер-авиашоу + DJ</div><div class="info-text">Танцуем пока не кончится топливо!</div></div></div>
+      <div class="info-row"><div class="info-icon">🚡</div><div><div class="info-title">VIP-кабина канатной дороги</div><div class="info-text">Приватные беседы с видом на Москву</div></div></div>
+    </div>
+    <div class="section-hdr" style="margin-top:0;"><div class="section-hdr-title">РОЗЫГРЫШ</div><div class="section-hdr-sub">// ПРИЗЫ</div></div>
+    <div class="info-block">
+      <div class="info-row"><div class="info-icon">🎁</div><div><div class="info-title">6 × Telegram Premium на год</div><div class="info-text">Участвуй в опросах и сканируй стенды — повышай шансы!</div></div></div>
+    </div>
+    <div style="height:12px;"></div>
   </div>
-</div>
 
-<!-- QR агента -->
-<div class="modal-overlay" id="qr-modal" onclick="if(event.target===this)closeQrModal()">
-  <div class="bg-white border-4 border-black ink12 w-full max-w-xs p-6 text-center">
-    <div class="flex justify-between items-center mb-4">
-      <h2 class="font-headline italic font-black text-xl uppercase text-primary -skew-x-3">МОЙ QR-КОД</h2>
-      <button onclick="closeQrModal()" class="material-symbols-outlined text-black text-2xl">close</button>
+  <!-- ЛЕНТА -->
+  <div id="screen-feed" class="app-screen">
+    <div class="topbar">
+      <div><div class="topbar-logo">ЛЕНТА</div><div class="topbar-sub">// LIVE · ОБНОВЛЕНИЯ</div></div>
     </div>
-    <div id="qr-container" class="bg-surface-container border-4 border-black p-4 mb-4 flex items-center justify-center min-h-[200px]">
-      <div class="font-label text-xs text-on-surface-variant uppercase">Генерация...</div>
+    <div style="height:12px;"></div>
+    <div class="feed-how-block">
+      <div class="feed-how-title">Как играть</div>
+      <div class="feed-how-item">
+        <div class="feed-how-num">1</div>
+        <div class="feed-how-text">Зарегистрируйся и получи агента — он твой персонаж на весь день</div>
+      </div>
+      <div class="feed-how-item">
+        <div class="feed-how-num">2</div>
+        <div class="feed-how-text">Сканируй QR-коды на стендах вендоров — каждый даёт +20 баллов</div>
+      </div>
+      <div class="feed-how-item">
+        <div class="feed-how-num">3</div>
+        <div class="feed-how-text">Голосуй в опросах после каждого доклада — +15 баллов за голос</div>
+      </div>
+      <div class="feed-how-item">
+        <div class="feed-how-num">4</div>
+        <div class="feed-how-text">Задавай вопросы спикерам — если твой выберут на трансляцию, +50 баллов</div>
+      </div>
+      <div class="feed-how-item">
+        <div class="feed-how-num">5</div>
+        <div class="feed-how-text">Лучшие агенты по итогу получают призы на главной сцене</div>
+      </div>
     </div>
-    <p class="font-label font-bold text-xs uppercase text-on-surface-variant">Покажи другому участнику для нетворкинга</p>
+    <div class="section-hdr"><div class="section-hdr-title">ОБНОВЛЕНИЯ</div><div class="section-hdr-sub">// LIVE</div></div>
+    <div style="height:8px;"></div>
+    <div id="feed-screen-list"><div class="loader">ЗАГРУЗКА...</div></div>
+    <div style="height:12px;"></div>
   </div>
+
+  <!-- РЕЙТИНГ -->
+  <div id="screen-rating" class="app-screen">
+    <div class="topbar">
+      <div><div class="topbar-logo">РЕЙТИНГ</div><div class="topbar-sub">// АГЕНТЫ РЕЙСА</div></div>
+      <div class="topbar-av"><img id="p-av-img3" src="" alt="" style="display:none;"><span id="p-av-emoji3">◈</span></div>
+    </div>
+    <div style="height:12px;"></div>
+    <div class="lb-wrap" id="leaderboard-wrap"><div class="loader">ЗАГРУЗКА...</div></div>
+    <div style="height:12px;"></div>
+  </div>
+
+  <!-- СЕТЬ -->
+  <div id="screen-network" class="app-screen">
+    <div class="topbar">
+      <div><div class="topbar-logo">СЕТЬ</div><div class="topbar-sub">// НАЙДИ СОЮЗНИКОВ</div></div>
+      <div class="topbar-av"><img id="p-av-img2" src="" alt="" style="display:none;"><span id="p-av-emoji2">◈</span></div>
+    </div>
+    <div style="height:12px;"></div>
+    <div id="network-list"><div class="loader">СКАНИРУЮ БАЗУ...</div></div>
+    <div style="height:12px;"></div>
+  </div>
+
+  <!-- СТЕНДЫ -->
+  <div id="screen-vendors" class="app-screen">
+    <div class="topbar">
+      <div><div class="topbar-logo">СТЕНДЫ</div><div class="topbar-sub">// СКАНИРУЙ QR · +20 Б · ОТКРЫВАЙ ДОСЬЕ</div></div>
+    </div>
+    <div style="height:12px;"></div>
+    <div class="vendor-prog">
+      <div class="vp-label">// ПРОГРЕСС МИССИИ</div>
+      <div class="vp-right"><div class="vp-stars" id="vendor-stars"></div><div class="vp-count" id="vendor-count">0 / 0</div></div>
+    </div>
+    <div class="vendor-list" id="vendor-list"></div>
+    <div style="height:12px;"></div>
+  </div>
+
+  <!-- МИССИЯ -->
+  <div id="screen-polls" class="app-screen">
+    <div class="topbar">
+      <div><div class="topbar-logo">МИССИЯ</div><div class="topbar-sub">// ОПРОСЫ · +15 Б ЗА ГОЛОС</div></div>
+    </div>
+    <div style="height:12px;"></div>
+    <div id="polls-list"></div>
+    <div style="height:12px;"></div>
+  </div>
+
 </div>
 
-<!-- Toast -->
-<div class="toast" id="toast">
-  <div class="bg-black border-4 border-primary text-yellow-400 px-5 py-3 font-label font-bold text-sm uppercase tracking-wide ink4 text-center" id="toast-text"></div>
-</div>
+<nav class="navbar" id="navbar" style="display:none;">
+  <button class="nb act" onclick="showScreen('profile')" id="nav-profile">
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="var(--cyan)" stroke-width="1.5" fill="none"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+    <span class="nb-lbl" style="color:var(--cyan);">Я</span>
+  </button>
+  <button class="nb" onclick="showScreen('rating')" id="nav-rating">
+    <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="13" width="4" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="10" y="8" width="4" height="13" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="17" y="3" width="4" height="18" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/></svg>
+    <span class="nb-lbl">ТОП</span>
+  </button>
+  <button class="nb" onclick="showScreen('feed')" id="nav-feed">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M18 8a5 5 0 00-10 0v5l-1.5 2.5h13L18 13V8z" stroke="#ffffff22" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M10.5 19a1.5 1.5 0 003 0" stroke="#ffffff22" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <span class="nb-lbl" style="position:relative;">ЛЕНТА<span id="nav-feed-dot" style="display:none;position:absolute;top:-6px;right:-8px;width:7px;height:7px;background:#ee672a;border-radius:50%;"></span></span>
+  </button>
+  <button class="nb" onclick="showScreen('network')" id="nav-network">
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="7" r="3" stroke="#ffffff22" stroke-width="1.5" fill="none"/><circle cx="15" cy="7" r="3" stroke="#ffffff22" stroke-width="1.5" fill="none"/><path d="M3 20c0-3.3 2.7-6 6-6M21 20c0-3.3-2.7-6-6-6" stroke="#ffffff22" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+    <span class="nb-lbl">СЕТЬ</span>
+  </button>
+  <button class="nb" onclick="showScreen('vendors')" id="nav-vendors">
+    <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="13" y="3" width="8" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="3" y="13" width="8" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="13" y="13" width="8" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/></svg>
+    <span class="nb-lbl">СТЕНДЫ</span>
+  </button>
+  <button class="nb" onclick="showScreen('polls')" id="nav-polls">
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#ffffff22" stroke-width="1.5" fill="none"/><path d="M8 12l3 3 5-5" stroke="#ffffff22" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span class="nb-lbl">МИССИЯ</span>
+  </button>
+</nav>
 
-<!-- ═══════════════════════════════════
-     СКРИПТ
-═══════════════════════════════════ -->
+<div class="toast" id="toast"></div>
+
 <script>
-const API = 'https://script.google.com/macros/s/AKfycbyYuilmUoMlTsWc_M0GeuOxmsbJ7QWK9cyOg20j-uUD8HvHBxzsyW5lm-o0kFT0G53tVA/exec';
-const MAX_PTS = 620;
-
-// ── Аватарки ──
-const AVATARS = {
-  male:   [{ file:'Defense_Grid_Icon.png',  codename:'DEFENSE GRID'  }],
-  female: [{ file:'Stealth_Tracer_Icon.png', codename:'STEALTH TRACER'}]
-};
-
-// ── Программа ──
-const PROGRAM = [
-  { time:'13:00', title:'Регистрация и приветственный кофе', tag:'СТАРТ',    tagColor:'#00618c', done:false },
-  { time:'13:55', title:'Приветственное слово',              tag:'',         tagColor:'',        done:false },
-  { time:'14:00', title:'Панельная дискуссия «Ток-шоу»',     tag:'LIVE',     tagColor:'#b90c01', done:false },
-  { time:'15:30', title:'Кофе-брейк и PROWAY Security Экспо',tag:'ПАУЗА',   tagColor:'#725812', done:false },
-  { time:'16:00', title:'«Прямая линия PROWAY Security»',    tag:'LIVE',     tagColor:'#b90c01', done:false },
-  { time:'17:30', title:'PROWAY Security Экспо',             tag:'СТЕНДЫ',   tagColor:'#00618c', done:false },
-  { time:'18:30', title:'Фуршет, награждение, DJ',           tag:'ФИНАЛ',   tagColor:'#725812', done:false },
-  { time:'22:00', title:'Завершение мероприятия',            tag:'',         tagColor:'',        done:false },
-];
-
-// ── Вендоры ──
-const VENDORS = [
-  { id:'positive',     name:'Positive Technologies', spec:'NGFW / SIEM',      logo:'logos/logo-positive.png'     },
-  { id:'infotecs',     name:'ИнфоТеКС (ViPNet)',     spec:'VPN / Крипто',     logo:'logos/logo-infotecs.png'     },
-  { id:'codesecurity', name:'Код Безопасности',      spec:'Межсетевые экраны',logo:'logos/logo-codesecurity.png' },
-  { id:'garda',        name:'Гарда',                 spec:'DLP / DB Security', logo:'logos/logo-garda.png'        },
-  { id:'avsoft',       name:'AV Soft',               spec:'Sandbox / EDR',    logo:'logos/logo-avsoft.png'       },
-  { id:'evriteg',      name:'ЭВРИТЕГ',               spec:'PAM / IAM',        logo:'logos/logo-evriteg.png'      },
-];
-
-// ── Достижения ──
+const API='https://script.google.com/macros/s/AKfycbyDyYFwHvLPwHZSqd2abQCLhr9RaoqgVTA96OIw4-mxvRSRkioSe2Th2MD8LYiKhRFstw/exec';
 const ACHIEVEMENTS = [
-  { id:'first_q',    icon:'forum',          label:'1-й вопрос', pts:10,  check: p => p.questions >= 1 },
-  { id:'popular',    icon:'thumb_up',       label:'Голос народа', pts:15, check: p => p.topVotes >= 5 },
-  { id:'top3',       icon:'military_tech',  label:'Топ-3',      pts:20,  check: p => p.rank <= 3 && p.rank > 0 },
-  { id:'explorer',   icon:'explore',        label:'Исследователь', pts:15, check: p => p.standsVisited >= 3 },
-  { id:'veteran',    icon:'workspace_premium', label:'Ветеран',  pts:25,  check: p => p.points >= 200 },
+  { id:'register', icon:'🎖️', name:'Первый шаг',      check: ()=> !!participant },
+  { id:'vendors',  icon:'🗺️', name:'Картограф',       check: ()=> scannedVendors.size >= 4 },
+  { id:'polls',    icon:'🧠', name:'Аналитик',         check: ()=> Object.keys(pollAnswers).length >= 3 },
+  { id:'network',  icon:'🤝', name:'Связной',          check: ()=> { let m=0; for(let k in localStorage){if(k.startsWith('met_'))m++;} return m>=5; }},
+  { id:'top3',     icon:'🏆', name:'Топ-3',            check: ()=> myRank > 0 && myRank <= 3 },
+  { id:'100pts',   icon:'⚡', name:'100 баллов',       check: ()=> (participant?.points||0) >= 100 },
+];
+const unlockedAchs = new Set(JSON.parse(localStorage.getItem('unlocked_achs')||'[]'));
+const MAX_PTS=430;
+const STORY_UNLOCK_DATE=new Date('2025-11-16T00:00:00');
+
+const VENDORS=[
+  {id:'kod_bezopasnosti',name:'Код Безопасности',system:'NGFW/SOC',color:'#c0392b',icon:'КБ',desc:'Межсетевые экраны и средства защиты периметра. Лидер российского рынка сетевой безопасности.',chapterMale:'Первый рубеж. Иванов смотрел на схему сети и понимал — без периметра всё остальное бессмысленно. Код стоял как стена. Он кивнул.',chapterFemale:'Первый рубеж. Козлова смотрела на схему сети и понимала — без периметра всё остальное бессмысленно. Код стоял как стена. Она кивнула.'},
+  {id:'checkpoint',name:'Check Point',system:'FW/VPN',color:'#005ca8',icon:'CP',desc:'Межсетевые экраны и VPN мирового класса. Защита корпоративных сетей с 1993 года.',chapterMale:'«Проверка пройдена» — сообщение появилось на экране. Иванов усмехнулся. Check Point держит то что обещает.',chapterFemale:'«Проверка пройдена» — сообщение появилось на экране. Козлова усмехнулась. Check Point держит то что обещает.'},
+  {id:'infoteks',name:'ИнфоТеКС',system:'VPN/КРИПТО',color:'#005ca8',icon:'ИТ',desc:'Криптографическая защита каналов связи. ViPNet — стандарт защищённых коммуникаций.',chapterMale:'Новое задание пришло зашифрованным. Разумеется. Иванов расшифровал его за четыре минуты. «Просто знаю где искать ключ.» Теперь его каналы непробиваемы.',chapterFemale:'Новое задание пришло зашифрованным. Разумеется. Козлова расшифровала его за четыре минуты. «Просто знаю где искать ключ.» Теперь её каналы непробиваемы.'},
+  {id:'positive',name:'Positive Technologies',system:'SIEM/PT',color:'#c0392b',icon:'PT',desc:'SIEM и мониторинг безопасности. Выявление угроз в реальном времени.',chapterMale:'Поток данных на экране выглядел как город с высоты птичьего полёта. Иванов указал на аномалию. «Вот.» Куратор молча сделал пометку.',chapterFemale:'Поток данных на экране выглядел как город с высоты птичьего полёта. Козлова указала на аномалию. «Вот.» Куратор молча сделал пометку.'},
+  {id:'ngr_softlab',name:'NGR Softlab',system:'DLP',color:'#8e44ad',icon:'НГ',desc:'Система предотвращения утечек данных. Контроль всех каналов передачи информации.',chapterMale:'«Данные уходят тихо» — пришло в 6 утра. Иванов налил кофе. Одна флешка. Один человек. Канал был найден до второй чашки.',chapterFemale:'«Данные уходят тихо» — пришло в 6 утра. Козлова налила кофе. Одна флешка. Один человек. Канал был найден до второй чашки.'},
+  {id:'trafficsoft',name:'TrafficSoft',system:'ANTI-DDOS',color:'#27ae60',icon:'ТС',desc:'Защита от DDoS-атак и управление трафиком. Непрерывная доступность сервисов.',chapterMale:'Волна пришла неожиданно. Миллионы запросов в секунду. Иванов смотрел как TrafficSoft поглощает атаку. Спокойно. Методично.',chapterFemale:'Волна пришла неожиданно. Миллионы запросов в секунду. Козлова смотрела как TrafficSoft поглощает атаку. Спокойно. Методично.'},
+  {id:'f6',name:'F6 / Эфшесть',system:'EDR',color:'#d35400',icon:'F6',desc:'Защита конечных точек и реагирование на инциденты. Обнаружение угроз на устройствах.',chapterMale:'Угроза пришла изнутри. Иванов запустил сканирование. F6 нашёл то что искал за 40 секунд. Конечная точка изолирована.',chapterFemale:'Угроза пришла изнутри. Козлова запустила сканирование. F6 нашёл то что искал за 40 секунд. Конечная точка изолирована.'},
+  {id:'ideco',name:'Ideco',system:'UTM',color:'#2980b9',icon:'ID',desc:'Универсальный шлюз безопасности. Интернет-шлюз с полным контролем трафика.',chapterMale:'Последний рубеж. Ideco стоял на выходе из сети как часовой. Иванов проверил настройки. Всё под контролем.',chapterFemale:'Последний рубеж. Ideco стоял на выходе из сети как часовой. Козлова проверила настройки. Всё под контролем.'},
 ];
 
-// ── Характеристики по роли ──
-const ROLE_SKILLS = {
-  'PROWAY':     ['Стратегия','Нетворк','Продажи','Знание рынка','Лидерство'],
-  'Вендор':     ['Технологии','Инновации','Поддержка','Экосистема','Экспертиза'],
-  'Интегратор': ['Анализ','Интеграция','Безопасность','Скорость','Compliance'],
-  'default':    ['Анализ','Скорость','Крипто','Периметр','Влияние'],
+const AGENT_STATS={
+  male:{'ФАЙРВОЛ':{АНАЛИЗ:79,СКОРОСТЬ:62,КРИПТО:91,ПЕРИМЕТР:96,ВЛИЯНИЕ:55}},
+  female:{'ХАКЕР':{АНАЛИЗ:88,СКОРОСТЬ:94,КРИПТО:71,ПЕРИМЕТР:65,ВЛИЯНИЕ:97}}
 };
-const SKILL_COLORS = ['bg-primary','bg-secondary','bg-tertiary','bg-primary','bg-secondary'];
+const STAT_COLORS={АНАЛИЗ:'#00aeee',СКОРОСТЬ:'#f5e642',КРИПТО:'#ee672a',ПЕРИМЕТР:'#005ca8',ВЛИЯНИЕ:'#8e44ad'};
 
-let participant = null;
-let assignedAvatar = null;
-let selectedRoleTag = '';
-let pollAnswers = {};
-let visitedStands = new Set();
-let likedParticipants = new Set();
-let myLikes = 0; // сколько лайков поставили мне
+const RARITY=[
+  {min:0,label:'НОВОБРАНЕЦ',bg:'rgba(255,255,255,0.06)',color:'#ffffff44',stars:0},
+  {min:1,label:'АГЕНТ',bg:'rgba(0,255,255,0.1)',color:'#00ffff',stars:2},
+  {min:3,label:'МАСТЕР',bg:'rgba(255,107,53,0.12)',color:'#ff6b35',stars:3},
+  {min:5,label:'ЛЕГЕНДА',bg:'rgba(255,204,0,0.12)',color:'#ffcc00',stars:4},
+];
 
-// ══════════════════════════════
-// НАВИГАЦИЯ
-// ══════════════════════════════
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  const s = document.getElementById(id);
-  if (s) { s.classList.add('active'); window.scrollTo(0,0); }
+const AVATARS={
+  male:[
+    {file:'Defense_Grid_Icon.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'male0.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'male1.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'male2.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'male3.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'male4.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'male5.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'male6.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'male7.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'Male8.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'Male9.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'Male10.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'Male11.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
+    {file:'Male12.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'}
+  ],
+  female:[
+    {file:'Stealth_Tracer_Icon.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female0.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female1.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female2.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female3.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female4.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female5.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female6.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female7.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female8.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female9.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female10.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female11.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'female12.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
+    {file:'Female13.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'}
+  ]
+};
+
+const PROGRAM=[
+  {time:'13:50',title:'Приветственное слово экипажа',speaker:'Алексей Матвеев, PROWAY Security',tag:'ВЗЛЁТ',tagColor:'#005ca8',done:true},
+  {time:'14:00',title:'Панельная дискуссия «Security Talks»',speaker:'Конкуренция на российском рынке ИБ',tag:'ДЕЛОВАЯ',tagColor:'#ee672a',done:true},
+  {time:'15:30',title:'Кофе-брейк и Lounge Expo',speaker:'Первый этаж и веранда',tag:'ПАУЗА',tagColor:'#555',done:false},
+  {time:'16:00',title:'Прямая линия PROWAY Security',speaker:'Экспресс-опросы · результаты на экран',tag:'ДЕЛОВАЯ',tagColor:'#ee672a',done:false},
+  {time:'17:30',title:'Нетворкинг',speaker:'VIP-кабина канатной дороги',tag:'НЕТВОРК',tagColor:'#27ae60',done:false},
+  {time:'18:30',title:'Вечерняя программа',speaker:'Фуршет · Кавер-авиашоу · DJ',tag:'ФИНАЛ',tagColor:'#8e44ad',done:false},
+  {time:'22:00',title:'Приземление. До новых рейсов!',speaker:'Спасибо что выбрали PROWAY Security Day',tag:'',tagColor:'',done:false},
+];
+
+const SPEAKERS=[
+  {name:'Роман Бочкарёв',co:'Positive Technologies',role:'Зам. директора по работе с партнёрами',color:'#c0392b'},
+  {name:'Роман Набережный',co:'ИнфоТеКС (ViPNet)',role:'Зам. коммерческого директора',color:'#005ca8'},
+  {name:'Дмитрий Ивашкин',co:'Код Безопасности',role:'Менеджер по работе с партнёрами',color:'#27ae60'},
+  {name:'Вячеслав Гребнев',co:'Гарда',role:'Бизнес-архитектор',color:'#8e44ad'},
+  {name:'Антон Чухнов',co:'AV Soft',role:'Генеральный директор',color:'#ee672a'},
+  {name:'Александр Корзников',co:'ЭВРИТЕГ',role:'Технический директор',color:'#16a085'},
+  {name:'Алексей Матвеев',co:'PROWAY Security',role:'Директор департамента · Модератор',color:'#005ca8'},
+  {name:'Дмитрий Захаренко',co:'PROWAY Security',role:'Технический директор · Модератор',color:'#005ca8'},
+];
+
+const POLLS=[
+  {id:'poll1',session:'// SECURITY_TALKS',question:'Что будет основным «рецептом» выживаемости вендоров на российском рынке?',options:['Регуляторка — соответствие требованиям','Технологии — развитие до мировых решений','Комплексный подход — экосистемы','Маркетинг — расширение аудитории'],votes:[0,0,0,0]},
+  {id:'poll2',session:'// ПРЯМАЯ_ЛИНИЯ',question:'Что является решающим фактором при выборе NGFW?',options:['Цена','Производительность','Функциональность','Сертификация','Другое'],votes:[0,0,0,0,0]},
+  {id:'poll3',session:'// ПРЯМАЯ_ЛИНИЯ',question:'Готовы ли российские ИБ-решения полностью заменить зарубежные?',options:['Полностью готовы','В большинстве сегментов','Есть пробелы','Пока не готовы'],votes:[0,0,0,0]},
+];
+
+let participant=null,selectedTags=[],pollAnswers={};
+let myRank=0;
+let selectedGender=null,assignedAvatar=null;
+let scannedVendors=new Set();
+let lastAnnouncementId=null;
+
+function api(p){return fetch(API+'?'+new URLSearchParams(p)).then(r=>r.json());}
+function showToast(m,d=2500){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),d);}
+function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+
+function selectGender(g){
+  selectedGender=g;
+  const pool=AVATARS[g];
+  assignedAvatar=pool[Math.floor(Math.random()*pool.length)];
+  document.getElementById('reveal-img').src='https://proway-event.vercel.app/'+assignedAvatar.file;
+  document.getElementById('reveal-codename').textContent=assignedAvatar.codename;
+  goTo('ob-reveal');
 }
 
-function switchTab(name) {
-  document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + name).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b => {
-    b.classList.remove('active','bg-primary','text-white');
-    b.classList.add('text-white/70');
-    b.querySelector('.nav-icon').style.color = '';
-    b.querySelector('.nav-label').style.color = '';
+document.querySelectorAll('.itag').forEach(t=>{
+  t.addEventListener('click',()=>{
+    if(t.classList.contains('sel')){t.classList.remove('sel');selectedTags=selectedTags.filter(v=>v!==t.dataset.val);}
+    else if(selectedTags.length<3){t.classList.add('sel');selectedTags.push(t.dataset.val);}
   });
-  const btn = document.getElementById('nav-' + name);
-  if (btn) {
-    btn.classList.remove('text-white/70');
-    btn.classList.add('active','bg-primary');
-    btn.querySelector('.nav-icon').style.color = 'white';
-    btn.querySelector('.nav-label').style.color = 'white';
+});
+
+async function register(){
+  const name=document.getElementById('reg-name').value.trim();
+  const email=document.getElementById('reg-email').value.trim();
+  const company=document.getElementById('reg-company').value.trim();
+  const role=document.getElementById('reg-role').value.trim();
+  if(!name||!company){showToast('// ЗАПОЛНИ ПОЗЫВНОЙ И ОРГАНИЗАЦИЮ');return;}
+  const btn=document.querySelector('#ob-reveal .ob-btn');
+  btn.innerHTML='<span style="display:inline-flex;align-items:center;gap:10px;justify-content:center;"><svg style="animation:spin 1s linear infinite;width:16px;height:16px;flex-shrink:0;" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,0.3)" stroke-width="2"/><path d="M12 3a9 9 0 019 9" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>Авторизация...</span>';btn.disabled=true;
+  try{
+    const res=await api({action:'register',name,email,company,role,interests:selectedTags.join(','),avatar:assignedAvatar?assignedAvatar.file:'',codename:assignedAvatar?assignedAvatar.codename:''});
+    if(res.success){
+      const save=(k,v)=>localStorage.setItem(k,v);
+      save('participant_id',res.id);save('participant_name',name);save('participant_email',email);
+      save('participant_company',company);save('participant_interests',selectedTags.join(','));
+      save('participant_avatar',assignedAvatar?assignedAvatar.file:'');
+      save('participant_gender',selectedGender||'male');
+      save('participant_codename',assignedAvatar?assignedAvatar.codename:'');
+      save('participant_artfile',assignedAvatar?assignedAvatar.artFile:'');
+      participant={id:res.id,name,email,company,role,points:15,interests:selectedTags.join(','),
+        avatar:assignedAvatar?assignedAvatar.file:'',gender:selectedGender,
+        codename:assignedAvatar?assignedAvatar.codename:'',artFile:assignedAvatar?assignedAvatar.artFile:''};
+      initApp();
+      showToast('// ДОБРО ПОЖАЛОВАТЬ, АГЕНТ! +15 Б');
+    }else{showToast('// ОШИБКА АВТОРИЗАЦИИ');btn.innerHTML='ПРИСТУПИТЬ К МИССИИ ›';btn.disabled=false;}
+  }catch(e){showToast('// НЕТ СВЯЗИ');btn.innerHTML='ПРИСТУПИТЬ К МИССИИ ›';btn.disabled=false;}
+}
+
+function setAvatarUI(){
+  const av=participant&&participant.avatar?(participant.avatar.startsWith('http')?participant.avatar:'https://proway-event.vercel.app/'+participant.avatar):'';
+  ['p-av-img','p-av-img2','p-av-img3'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&av){el.src=av;el.style.display='block';}
+  });
+  if(av){['p-av-emoji','p-av-emoji2','p-av-emoji3'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.style.display='none';
+  });}
+}
+
+function initApp(){
+  // Восстанавливаем ачивки
+  unlockedAchs.forEach(id => {
+    const el = document.getElementById('ach-'+id);
+    if(el) el.classList.add('unlocked');
+  });
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('app').style.display='block';
+  document.getElementById('navbar').style.display='flex';
+  document.getElementById('ticker-wrap').style.display='flex';
+  setAvatarUI();
+  renderProfile(); checkAchievements();
+  renderAgentCard();
+  renderPolls();
+  renderVendors();
+  loadLeaderboard();
+  loadNetwork();
+  checkAnnouncements();
+  setInterval(loadLeaderboard,15000); setInterval(checkAchievements,20000);
+  setInterval(loadNetwork,30000);
+  setInterval(checkAnnouncements,20000);
+  setInterval(checkFinale,15000);
+  checkFinale();
+  setTimeout(()=>{const b=document.getElementById('p-bar');if(b)b.style.width=(Math.min((participant.points||0)/MAX_PTS,1)*100)+'%';},300);
+}
+
+function showScreen(n){
+  document.querySelectorAll('.app-screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b=>{
+    b.classList.remove('act');
+    b.querySelector('.nb-lbl').style.color='';
+    b.querySelectorAll('svg [stroke]').forEach(el=>{if(el.getAttribute('stroke')!=='none')el.setAttribute('stroke','#ffffff22');});
+  });
+  document.getElementById('screen-'+n).classList.add('active');
+  const nb=document.getElementById('nav-'+n);
+  if(nb){
+    nb.classList.add('act');
+    nb.querySelector('.nb-lbl').style.color='var(--cyan)';
+    nb.querySelectorAll('svg [stroke]').forEach(el=>{if(el.getAttribute('stroke')!=='none')el.setAttribute('stroke','#a29bfe');});
   }
   window.scrollTo(0,0);
-  if (name === 'top') loadLeaderboard();
-  if (name === 'network') loadNetwork();
-  if (name === 'polls') loadPolls();
-  if (name === 'stands') renderStands();
+  if(n==='feed') renderFeedScreen();
 }
 
-// ══════════════════════════════
-// TOAST
-// ══════════════════════════════
-function showToast(msg, dur=2500) {
-  const t = document.getElementById('toast');
-  document.getElementById('toast-text').textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), dur);
-}
+// ── ANNOUNCEMENTS & NOTIFICATIONS ────────────────────────────────
 
-// ══════════════════════════════
-// API
-// ══════════════════════════════
-function api(params) {
-  return fetch(API + '?' + new URLSearchParams(params)).then(r => r.json());
-}
+let announcements = [];
 
-// ══════════════════════════════
-// ОНБОРДИНГ
-// ══════════════════════════════
-function selectGender(gender) {
-  const pool = AVATARS[gender];
-  assignedAvatar = pool[Math.floor(Math.random() * pool.length)];
-  const img = document.getElementById('reveal-img');
-  const em  = document.getElementById('reveal-emoji');
-  img.src = assignedAvatar.file;
-  img.classList.remove('hidden'); em.classList.add('hidden');
-  img.onerror = () => { img.classList.add('hidden'); em.classList.remove('hidden'); };
-  document.getElementById('reveal-codename').textContent = assignedAvatar.codename;
-  showScreen('screen-register');
-}
+async function checkAnnouncements(){
+  try{
+    const res=await api({action:'getAnnouncements'});
+    if(!res.announcements) return;
+    const list = res.announcements;
 
-function selectRole(btn, role) {
-  document.querySelectorAll('.role-tag').forEach(b => {
-    b.classList.remove('bg-secondary','text-white');
-    b.classList.add('bg-white');
-  });
-  btn.classList.add('bg-secondary','text-white');
-  btn.classList.remove('bg-white');
-  selectedRoleTag = role;
-}
-
-async function register() {
-  const name    = document.getElementById('reg-name').value.trim();
-  const email   = document.getElementById('reg-email').value.trim();
-  const company = document.getElementById('reg-company').value.trim();
-  const role    = document.getElementById('reg-role').value.trim();
-  if (!name || !company) { showRegError('Заполни имя и организацию'); return; }
-  const btn = document.getElementById('reg-btn');
-  btn.innerHTML = '<span class="font-headline italic font-black text-xl text-white uppercase">Авторизация...</span>';
-  btn.disabled = true;
-  try {
-    const res = await api({ action:'register', name, email, company, role,
-      interests: selectedRoleTag, avatar: assignedAvatar?.file || '',
-      codename: assignedAvatar?.codename || '' });
-    if (res.success) {
-      localStorage.setItem('participant_id',      res.id);
-      localStorage.setItem('participant_name',    name);
-      localStorage.setItem('participant_email',   email);
-      localStorage.setItem('participant_company', company);
-      localStorage.setItem('participant_role',    role);
-      localStorage.setItem('participant_interests', selectedRoleTag);
-      localStorage.setItem('participant_avatar',  assignedAvatar?.file || '');
-      localStorage.setItem('participant_codename',assignedAvatar?.codename || '');
-      participant = { id:res.id, name, email, company, role, interests:selectedRoleTag,
-        points:15, avatar:assignedAvatar?.file||'', codename:assignedAvatar?.codename||'',
-        questions:0, standsVisited:0, rank:0, topVotes:0 };
-      initApp();
-      showToast('Добро пожаловать, агент! +15 очков');
-    } else { showRegError('Ошибка регистрации'); resetRegBtn(); }
-  } catch(e) { showRegError('Нет соединения'); resetRegBtn(); }
-}
-function showRegError(msg) {
-  const el = document.getElementById('reg-error');
-  document.getElementById('reg-error-text').textContent = msg;
-  el.classList.remove('hidden');
-}
-function resetRegBtn() {
-  const btn = document.getElementById('reg-btn');
-  btn.innerHTML = '<span class="font-headline italic font-black text-xl text-white uppercase">Приступить к миссии</span><span class="material-symbols-outlined text-white">arrow_forward</span>';
-  btn.disabled = false;
-}
-
-// ══════════════════════════════
-// ЛОГИН
-// ══════════════════════════════
-function openLoginModal()  { document.getElementById('login-modal').classList.add('open'); setTimeout(()=>document.getElementById('login-name').focus(),100); }
-function closeLoginModal() { document.getElementById('login-modal').classList.remove('open'); document.getElementById('login-error').classList.add('hidden'); }
-
-async function submitLogin() {
-  const name  = document.getElementById('login-name').value.trim();
-  const email = document.getElementById('login-email').value.trim();
-  if (!name && !email) { showLoginError('Введи имя или почту'); return; }
-  const btn = document.getElementById('login-btn');
-  btn.innerHTML = '<span class="font-headline italic font-black text-xl text-white uppercase">Ищу...</span>';
-  btn.disabled = true;
-  try {
-    const res = await api({ action:'findParticipant', name, email });
-    if (res.success && res.participant) {
-      const p = res.participant;
-      localStorage.setItem('participant_id',       p.id);
-      localStorage.setItem('participant_name',     p.name);
-      localStorage.setItem('participant_email',    p.email||'');
-      localStorage.setItem('participant_company',  p.company||'');
-      localStorage.setItem('participant_role',     p.role||'');
-      localStorage.setItem('participant_interests',p.interests||'');
-      localStorage.setItem('participant_avatar',   p.avatar||'');
-      localStorage.setItem('participant_codename', p.codename||'');
-      participant = { ...p, questions:0, standsVisited:0, rank:0, topVotes:0 };
-      closeLoginModal();
-      initApp();
-      showToast('Добро пожаловать обратно!');
-    } else { showLoginError('Участник не найден'); }
-  } catch(e) { showLoginError('Нет соединения'); }
-  btn.innerHTML = '<span class="font-headline italic font-black text-xl text-white uppercase">Найти миссию</span><span class="material-symbols-outlined text-white">search</span>';
-  btn.disabled = false;
-}
-function showLoginError(msg) {
-  document.getElementById('login-error-text').textContent = msg;
-  document.getElementById('login-error').classList.remove('hidden');
-}
-
-// ══════════════════════════════
-// ИНИЦИАЛИЗАЦИЯ ПРИЛОЖЕНИЯ
-// ══════════════════════════════
-function initApp() {
-  showScreen('app');
-  setAvatarUI();
-  renderProfile();
-  renderProgram();
-  renderStands();
-  loadLeaderboard();
-  loadPolls();
-  setInterval(loadLeaderboard, 15000);
-  setInterval(loadPolls, 10000);
-  setInterval(checkMyLikes, 30000);
-  setTimeout(() => {
-    const bar = document.getElementById('p-bar');
-    if (bar) bar.style.width = Math.min((participant.points||0)/MAX_PTS*100,100)+'%';
-  }, 300);
-}
-
-// ══════════════════════════════
-// ПРОФИЛЬ
-// ══════════════════════════════
-function setAvatarUI() {
-  const av = participant?.avatar || '';
-  const setImg = (imgId, emId) => {
-    const img = document.getElementById(imgId);
-    const em  = document.getElementById(emId);
-    if (img && av) {
-      img.src = av;
-      img.classList.remove('hidden');
-      img.onerror = () => { img.classList.add('hidden'); em?.classList.remove('hidden'); };
-      if (em) em.classList.add('hidden');
+    // Проверяем финальный сигнал
+    const finaleMsg = list.find(a => a.message === '__FINALE_START__');
+    const finaleEnd = list.find(a => a.message === '__FINALE_END__');
+    if (finaleMsg && !finaleEnd) {
+      localStorage.setItem('finale_active', 'true');
+      checkFinale();
+    } else {
+      localStorage.setItem('finale_active', 'false');
     }
-  };
-  setImg('p-av-top','p-av-top-emoji');
-  setImg('p-card-img','p-card-emoji');
+
+    // Фильтруем спец-сообщения из ленты
+    const visibleList = list.filter(a => !a.message.startsWith('__'));
+
+    // Бегущая строка — последнее сообщение
+    if(visibleList.length){
+      const msgs = visibleList.map(a=>`<span class="ticker-msg">${a.message}</span><span class="ticker-sep"> · </span>`).join('');
+      document.getElementById('ticker-inner').innerHTML = msgs;
+    }
+
+    // Новые сообщения → баннер + бейдж
+    const latest = visibleList[0];
+    if(latest && latest.id !== lastAnnouncementId){
+      lastAnnouncementId = latest.id;
+      showBanner(latest.message);
+    }
+
+    announcements = visibleList;
+
+    // Обновляем бейдж колокольчика
+    const badge = document.getElementById('bell-badge');
+    const dot = document.getElementById('nav-feed-dot');
+    if(visibleList.length > 0){
+      badge.textContent = list.length > 9 ? '9+' : list.length;
+      badge.classList.add('show');
+      if(dot) dot.style.display = 'block';
+    } else {
+      badge.classList.remove('show');
+      if(dot) dot.style.display = 'none';
+    }
+
+    // Если панель открыта — обновляем
+    if(document.getElementById('notif-panel').classList.contains('show')) renderNotifPanel();
+    // Если экран ленты открыт — обновляем
+    if(document.getElementById('screen-feed').classList.contains('active')) renderFeedScreen();
+
+  }catch(e){}
 }
 
-function renderProfile() {
-  if (!participant) return;
-  const pts = participant.points || 0;
-  const pct = Math.min(Math.round(pts/MAX_PTS*100),100);
-  document.getElementById('p-pts-top').textContent  = pts + ' PTS';
-  document.getElementById('p-pts-big').textContent  = pts;
-  document.getElementById('p-pct').textContent      = pct + '%';
-  document.getElementById('p-bar').style.width      = pct + '%';
-  document.getElementById('p-codename').textContent = participant.codename || '—';
-  document.getElementById('p-name-card').textContent= participant.name + ' · ' + participant.company;
-  renderSkillBars();
-  renderAchievements();
+function openNotifPanel(){
+  document.getElementById('notif-overlay').classList.add('show');
+  document.getElementById('notif-panel').classList.add('show');
+  renderNotifPanel();
+  // Убираем бейдж пока открыто
+  document.getElementById('bell-badge').classList.remove('show');
+  const dot = document.getElementById('nav-feed-dot');
+  if(dot) dot.style.display='none';
 }
 
-function renderSkillBars() {
-  const role   = participant.interests || 'default';
-  const skills = ROLE_SKILLS[role] || ROLE_SKILLS['default'];
-  const pts    = participant.points || 0;
-  const base   = [85,62,94,40,77];
-  const html = skills.map((s,i) => {
-    const val = Math.min(Math.round(base[i] * (0.5 + pts/MAX_PTS*0.5)), 100);
-    return `<div>
-      <div class="flex justify-between mb-1">
-        <span class="font-label font-bold text-xs uppercase">${s}</span>
-        <span class="font-headline italic font-bold text-sm">${val}%</span>
-      </div>
-      <div class="h-5 bg-surface-container border-2 border-black overflow-hidden">
-        <div class="h-full ${SKILL_COLORS[i]} halftone-light border-r-2 border-black transition-all duration-700" style="width:${val}%"></div>
+function closeNotifPanel(){
+  document.getElementById('notif-overlay').classList.remove('show');
+  document.getElementById('notif-panel').classList.remove('show');
+}
+
+function renderNotifPanel(){
+  const el = document.getElementById('notif-list');
+  if(!announcements.length){
+    el.innerHTML='<div class="notif-empty">Пока тихо — следите за обновлениями</div>';
+    return;
+  }
+  el.innerHTML = announcements.map(a=>{
+    const type = a.type||'info';
+    const time = a.created_at ? new Date(a.created_at).toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'}) : '';
+    return `<div class="notif-item ${type}">
+      <div class="notif-dot ${type}"></div>
+      <div class="notif-body">
+        <div class="notif-text">${a.message}</div>
+        <div class="notif-time">${time}</div>
       </div>
     </div>`;
   }).join('');
-  document.getElementById('skill-bars').innerHTML = html;
 }
 
-function renderAchievements() {
-  const html = ACHIEVEMENTS.map(a => {
-    const unlocked = a.check(participant);
-    return `<div class="aspect-square border-4 border-black flex flex-col items-center justify-center p-1 ${unlocked ? 'bg-tertiary-container ink4' : 'bg-surface-dim opacity-40 grayscale'}" title="${a.label}">
-      <span class="material-symbols-outlined text-2xl ${unlocked ? 'text-on-tertiary-container fill-icon' : 'text-outline'}">${a.icon}</span>
-      <span class="font-label font-bold text-[7px] uppercase text-center leading-tight mt-1">${a.label}</span>
+function renderFeedScreen(){
+  const el = document.getElementById('feed-screen-list');
+  if(!announcements.length){
+    el.innerHTML='<div class="loader" style="color:rgba(255,255,255,0.25);font-size:12px;">Сообщений пока нет</div>';
+    return;
+  }
+  el.innerHTML = announcements.map(a=>{
+    const type = a.type||'info';
+    const time = a.created_at ? new Date(a.created_at).toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'}) : '';
+    return `<div class="feed-card ${type}">
+      <div class="feed-card-text">${a.message}</div>
+      <div class="feed-card-time">${time}</div>
     </div>`;
   }).join('');
-  document.getElementById('ach-grid').innerHTML = html;
 }
 
-function renderProgram() {
-  const html = PROGRAM.map(s => `
-    <div class="flex gap-3 p-3 ${s.done ? 'bg-surface-container' : 'bg-white'} border-b-2 border-black last:border-b-0 hover:bg-surface-container-low transition-colors">
-      <span class="font-headline italic font-black text-base text-primary shrink-0 w-14">${s.time}</span>
-      <div class="flex-1">
-        ${s.tag ? `<span class="font-label font-bold text-[9px] px-2 py-0.5 border border-black uppercase mr-1" style="color:${s.tagColor};border-color:${s.tagColor}">${s.tag}</span>` : ''}
-        <span class="font-body font-bold text-sm">${s.title}</span>
-      </div>
+function showBanner(msg){
+  const b=document.getElementById('announce-banner');
+  document.getElementById('announce-text').textContent=msg;
+  b.classList.add('show');
+  setTimeout(()=>b.classList.remove('show'),8000);
+}
+function closeBanner(){document.getElementById('announce-banner').classList.remove('show');}
+
+function renderProfile(){
+  if(!participant)return;
+  const pts=participant.points||0;
+  document.getElementById('p-pts').textContent=pts;
+  const pct=Math.min(Math.round(pts/MAX_PTS*100),100);
+  document.getElementById('p-pct').textContent=pct+'%';
+  document.getElementById('s-vendors').textContent=scannedVendors.size;
+  document.getElementById('s-polls').textContent=Object.keys(pollAnswers).length;
+}
+
+function getRarity(n){let r=RARITY[0];for(const l of RARITY){if(n>=l.min)r=l;}return r;}
+
+function renderAgentCard(){
+  if(!participant)return;
+  const scanned=scannedVendors.size;
+  const rarity=getRarity(scanned);
+  const gender=participant.gender||'male';
+  const codename=participant.codename||'ФАЙРВОЛ';
+  const artFile=participant.artFile||'';
+  const stats=AGENT_STATS[gender]?.[codename]||{АНАЛИЗ:75,СКОРОСТЬ:75,КРИПТО:75,ПЕРИМЕТР:75,ВЛИЯНИЕ:75};
+  const lastName=participant.name.split(' ').slice(-1)[0]||participant.name;
+  const unlocked=new Date()>STORY_UNLOCK_DATE;
+
+  let starsHtml='';
+  for(let i=0;i<4;i++)starsHtml+=`<div class="acf-star${i<rarity.stars?'':' empty'}"></div>`;
+
+  let statsHtml=Object.entries(stats).map(([k,v])=>`
+    <div class="acf-stat-row">
+      <span class="acf-stat-lbl">${k}</span>
+      <div class="acf-bar-wrap"><div class="acf-bar" style="width:${v}%;background:${STAT_COLORS[k]};"></div></div>
+      <span class="acf-stat-val">${v}</span>
     </div>`).join('');
-  document.getElementById('program-list').innerHTML = html;
+
+  const baseStory=gender==='female'
+    ?`${lastName} не планировала становиться агентом. Конверт лежал прямо на клавиатуре — без подписи, без обратного адреса. Только координаты и время. Она пришла. Конечно пришла.`
+    :`${lastName} не планировал становиться агентом. Конверт лежал прямо на клавиатуре — без подписи, без обратного адреса. Только координаты и время. Он пришёл. Конечно пришёл.`;
+
+  let chaptersHtml=`<div class="acf-chapter-badge">НАЧАЛО</div><div class="acf-chapter-text">${baseStory}</div>`;
+  VENDORS.forEach((v,idx)=>{
+    const wasScanned=scannedVendors.has(v.id);
+    if(wasScanned||unlocked){
+      const text=gender==='female'?v.chapterFemale:v.chapterMale;
+      chaptersHtml+=`<div class="acf-chapter-badge">ГЛАВА ${idx+1} · ${v.system}</div><div class="acf-chapter-text">${text}</div>`;
+    }else{
+      chaptersHtml+=`<div class="acf-locked"><div class="acf-lock"></div><span class="acf-locked-text">ГЛАВА ${idx+1} · СТЕНД ${v.system}</span></div>`;
+    }
+  });
+
+  const artHtml=artFile?`<img src="${artFile}" alt="${codename}">`:`<span style="font-family:'Bangers',cursive;font-size:28px;color:var(--cyan);letter-spacing:4px;">${codename}</span>`;
+
+  document.getElementById('agent-full-card').innerHTML=`
+    <div class="acf-namebar">
+      <span class="acf-codename">${codename}</span>
+      <span class="acf-badge" style="background:${rarity.bg};color:${rarity.color};border-color:${rarity.color}44;">${rarity.label}</span>
+    </div>
+    <div class="acf-art">${artHtml}<div class="acf-rarity">${starsHtml}</div></div>
+    <div class="acf-stats">${statsHtml}</div>
+    <div class="acf-story">
+      <div class="acf-story-lbl">// ДОСЬЕ</div>
+      ${chaptersHtml}
+    </div>
+    <div class="acf-footer">
+      <span class="acf-footer-name">${participant.name.toUpperCase()}</span>
+      <span class="acf-footer-pts">${participant.points||0} Б</span>
+    </div>`;
 }
 
-// ══════════════════════════════
-// РЕЙТИНГ
-// ══════════════════════════════
-async function loadLeaderboard() {
-  try {
-    const res = await api({ action:'getLeaderboard' });
-    if (!res.leaderboard) return;
-    document.getElementById('lb-count').textContent = res.leaderboard.length + ' участников';
-    let myRank = 0;
-    const html = res.leaderboard.map((p,i) => {
-      const isMe = participant && p.id === participant.id;
-      if (isMe) { myRank = i+1; participant.points = p.points; participant.rank = i+1; renderProfile(); }
-      const avHtml = p.avatar
-        ? `<img src="${p.avatar}" class="w-full h-full object-cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><span style="display:none" class="w-full h-full flex items-center justify-center text-xl">🦸</span>`
-        : `<span class="text-xl">🦸</span>`;
-      const medalColors = ['bg-yellow-400 border-yellow-600','bg-surface-container-high border-outline-variant','bg-tertiary-container border-tertiary'];
-      const medal = i < 3 ? medalColors[i] : 'bg-white border-black';
-      return `<div class="flex items-center gap-3 p-3 bg-white border-4 border-black ${isMe ? 'border-primary bg-secondary-container' : ''} ink4 ${isMe ? 'ink4' : ''} relative overflow-hidden">
-        ${i === 0 ? '<div class="absolute top-0 right-0 bg-yellow-400 text-black font-label font-bold text-[9px] px-2 py-1 border-b-2 border-l-2 border-black uppercase">Лидер</div>' : ''}
-        <span class="font-headline italic font-black text-2xl w-8 ${i===0?'text-yellow-600':i===1?'text-outline-variant':i===2?'text-tertiary':'text-on-surface-variant'}">${i+1}</span>
-        <div class="w-10 h-10 border-2 border-black ${isMe?'border-primary':''} overflow-hidden flex items-center justify-center bg-surface-container flex-shrink-0 rounded-full">${avHtml}</div>
-        <div class="flex-1 min-w-0">
-          <p class="font-body font-bold text-sm truncate ${isMe?'text-primary':''}">${p.name}${isMe?' · ВЫ':''}</p>
-          <p class="font-label text-[10px] text-on-surface-variant truncate">${p.company||''}</p>
-        </div>
-        <span class="font-headline italic font-black text-xl ${isMe?'text-primary':'text-on-surface'}">${p.points}</span>
-      </div>`;
-    }).join('');
-    document.getElementById('lb-list').innerHTML = html || '<div class="font-label text-center text-on-surface-variant py-8 uppercase text-xs">Нет данных</div>';
-    if (myRank) document.getElementById('p-place-badge').textContent = '#' + myRank;
-  } catch(e) {}
-}
-
-// ══════════════════════════════
-// СТЕНДЫ
-// ══════════════════════════════
-function renderStands() {
-  const visited = [...visitedStands];
-  const count = visited.length;
-  document.getElementById('stands-progress').textContent = count + '/' + VENDORS.length;
-  document.getElementById('stands-bar').style.width = Math.round(count/VENDORS.length*100) + '%';
-  const html = VENDORS.map(v => {
-    const done = visitedStands.has(v.id);
-    return `<div class="group bg-white border-4 border-black ink4 hover:-translate-y-1 transition-all relative overflow-hidden">
-      ${done ? `<div class="absolute -top-3 -right-3 bg-tertiary-container border-4 border-black w-12 h-12 rotate-12 flex flex-col items-center justify-center z-10 ink4">
-        <span class="material-symbols-outlined text-black text-lg fill-icon">check_circle</span>
-        <span class="font-label font-bold text-[7px] uppercase">DONE</span>
-      </div>` : ''}
-      <div class="h-24 bg-surface-variant border-b-4 border-black relative flex items-center justify-center overflow-hidden">
-        <img src="${v.logo}" alt="${v.name}" class="max-h-16 max-w-[70%] object-contain ${done?'':'grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all'}"/>
-        <div class="absolute top-2 left-2 font-label font-bold text-[9px] px-2 py-1 border-2 border-black uppercase ${done?'bg-green-400 text-black':'bg-surface-container text-on-surface-variant'}">${v.spec}</div>
+function renderVendors(){
+  const total=VENDORS.length;
+  let starsHtml='';
+  for(let i=0;i<total;i++)starsHtml+=`<div class="vp-star${i<scannedVendors.size?'':' empty'}"></div>`;
+  document.getElementById('vendor-stars').innerHTML=starsHtml;
+  document.getElementById('vendor-count').textContent=`${scannedVendors.size} / ${total}`;
+  document.getElementById('vendor-list').innerHTML=VENDORS.map((v,idx)=>{
+    const scanned=scannedVendors.has(v.id);
+    return`<div class="vendor-card${scanned?' scanned':''}">
+      <div class="vendor-top">
+        <div class="vendor-icon" style="background:${v.color}18;border-color:${v.color}44;color:${v.color};">${v.icon}</div>
+        <div class="vendor-info"><div class="vendor-name">${v.name}</div><div class="vendor-system">${v.system}</div></div>
+        <div><div class="vendor-pts${scanned?' done':''}">${scanned?'ПОЛУЧЕНО':'+20 Б'}</div><div class="vendor-pts-lbl">${scanned?'✓':'ЗА СКАН'}</div></div>
       </div>
-      <div class="p-4 flex items-center justify-between">
-        <div>
-          <h3 class="font-headline italic font-black text-xl uppercase leading-tight">${v.name}</h3>
-          <div class="flex items-center gap-1 mt-1">
-            <div class="w-2 h-2 border border-black ${done?'bg-green-500':'bg-primary-container'}"></div>
-            <span class="font-label font-bold text-[10px] uppercase ${done?'text-green-700':'text-on-surface-variant'}">${done?'Посещён (+20 очков)':'Не посещён'}</span>
-          </div>
-        </div>
-        ${done
-          ? '<span class="bg-surface-dim text-black/40 font-headline italic font-black text-sm uppercase px-4 py-2 border-2 border-black">ГОТОВО</span>'
-          : `<button onclick="visitStand('${v.id}')" class="bg-black text-white font-headline italic font-black text-sm uppercase px-4 py-2 border-2 border-black hover:bg-primary transition-colors">ОТКРЫТЬ</button>`}
-      </div>
+      <div class="vendor-desc">${v.desc}</div>
+      ${scanned
+        ?`<div class="vendor-chapter"><span class="vc-badge">ГЛАВА ${idx+1} · ОТКРЫТА</span><span class="vc-text">Фрагмент досье добавлен в карточку агента</span></div>`
+        :`<div class="vendor-locked"><span class="vl-text">// ГЛАВА ${idx+1} · ОТСКАНИРУЙ QR НА СТЕНДЕ</span></div>`}
     </div>`;
   }).join('');
-  document.getElementById('stands-list').innerHTML = html;
 }
 
-async function visitStand(vendorId) {
-  if (visitedStands.has(vendorId) || !participant) return;
-  visitedStands.add(vendorId);
-  participant.standsVisited = visitedStands.size;
-  localStorage.setItem('visited_stands', JSON.stringify([...visitedStands]));
-  try { await api({ action:'addPoints', participant_id:participant.id, action:'vendor_qr', points:20, vendor:vendorId }); } catch(e){}
-  participant.points = (participant.points||0) + 20;
-  renderProfile();
-  renderStands();
-  showToast('Стенд ' + vendorId + ' посещён! +20 очков');
-}
-
-function openQrScanner() {
-  showToast('Наведи камеру телефона на QR-код стенда');
-  // В реальном приложении здесь открывается камера через getUserMedia
-}
-
-// ══════════════════════════════
-// СЕТЬ
-// ══════════════════════════════
-async function loadNetwork() {
-  if (!participant) return;
-  try {
-    const res = await api({ action:'getParticipants', exclude:participant.id });
-    const wrap = document.getElementById('network-list');
-    document.getElementById('net-online').textContent = (res.participants?.length||0) + ' онлайн';
-    if (!res.participants?.length) {
-      wrap.innerHTML = '<div class="font-label text-center text-on-surface-variant py-12 uppercase text-xs tracking-widest border-4 border-black bg-white ink4 p-8">Других агентов пока нет</div>';
-      return;
+async function handleVendorScan(vendorId){
+  if(!participant){showToast('// СНАЧАЛА ЗАРЕГИСТРИРУЙСЯ');return;}
+  if(scannedVendors.has(vendorId)){showToast('// СТЕНД УЖЕ ОТСКАНИРОВАН');showScreen('vendors');return;}
+  try{
+    const res=await api({action:'scanVendor',participant_id:participant.id,vendor_id:vendorId});
+    if(res.success||res.already){
+      scannedVendors.add(vendorId);
+      localStorage.setItem('scanned_vendors',JSON.stringify([...scannedVendors]));
+      if(res.success)participant.points=(participant.points||0)+20;
+      document.getElementById('s-vendors').textContent=scannedVendors.size;
+      renderVendors();renderProfile();renderAgentCard();
+      showToast(res.already?'// СТЕНД УЖЕ БЫЛ ЗАСЧИТАН':'// СТЕНД ЗАСЧИТАН! +20 Б · ГЛАВА ОТКРЫТА');
+      showScreen('vendors');
     }
-    const myRole = participant.interests || '';
-    const sorted = [...res.participants].sort((a,b) => {
-      const am = (a.interests===myRole)?1:0;
-      const bm = (b.interests===myRole)?1:0;
-      return bm - am || b.points - a.points;
-    });
-    wrap.innerHTML = sorted.map(p => {
-      const liked = likedParticipants.has(p.id);
-      const sameRole = p.interests && p.interests === myRole;
-      const avHtml = p.avatar
-        ? `<img src="${p.avatar}" class="w-full h-full object-cover grayscale contrast-125" onerror="this.style.display='none'"/>`
-        : `<span class="text-3xl">🦸</span>`;
-      return `<div class="group bg-white border-4 border-black ink4 overflow-hidden hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all">
-        <div class="flex gap-0">
-          <div class="w-24 h-24 border-r-4 border-black overflow-hidden flex items-center justify-center bg-surface-container flex-shrink-0">${avHtml}</div>
-          <div class="flex-1 p-3 min-w-0">
-            <p class="font-headline italic font-black text-lg uppercase leading-none truncate">${p.name}</p>
-            <p class="font-label font-bold text-xs text-on-surface-variant mt-1 truncate">${p.company||''}${p.role?' · '+p.role:''}</p>
-            ${p.interests ? `<span class="inline-block mt-1 font-label font-bold text-[9px] uppercase px-2 py-0.5 border-2 border-black ${sameRole?'bg-primary text-white border-primary':'bg-surface-container text-on-surface-variant'}">${p.interests}</span>` : ''}
-          </div>
-          <div class="flex flex-col items-center justify-center p-3 border-l-4 border-black gap-2">
-            <button onclick="toggleLike('${p.id}', this)" class="w-10 h-10 flex items-center justify-center border-2 border-black ${liked?'bg-error':'bg-white'} hover:bg-error hover:text-white transition-colors ink4 active:scale-90">
-              <span class="material-symbols-outlined text-lg ${liked?'text-white fill-icon':'text-black'}">favorite</span>
+  }catch(e){showToast('// НЕТ СВЯЗИ');}
+}
+
+async function loadLeaderboard(){
+  try{
+    const res=await api({action:'getLeaderboard'});
+    const wrap=document.getElementById('leaderboard-wrap');
+    if(!res.leaderboard||!res.leaderboard.length){wrap.innerHTML='<div class="loader">// АГЕНТОВ НЕТ</div>';return;}
+    myRank=0;
+    wrap.innerHTML=res.leaderboard.map((p,i)=>{
+      const isMe=participant&&p.id===participant.id;
+      if(isMe){
+        myRank=i+1;participant.points=p.points;renderProfile();
+        const b=document.getElementById('p-bar');
+        if(b)b.style.width=(Math.min(p.points/MAX_PTS,1)*100)+'%';
+        document.getElementById('p-pts').textContent=p.points;
+        document.getElementById('p-pct').textContent=Math.min(Math.round(p.points/MAX_PTS*100),100)+'%';
+        document.getElementById('s-rank2').textContent=i+1;
+      }
+      const avHtml=p.avatar?`<img src="${p.avatar.startsWith('http')?p.avatar:'https://proway-event.vercel.app/'+p.avatar}" alt="">`:`<span style="font-size:13px;color:var(--text2);">◈</span>`;
+      return`<div class="lb-row${isMe?' me':''}">
+        ${i===0?'<div class="lb-leader">ЛИДЕР</div>':''}
+        <span class="lb-pos${i===0?' gold':''}${isMe?' me-c':''}">${i+1}</span>
+        <div class="lb-av${isMe?' me':''}">${avHtml}</div>
+        <div class="lb-info">
+          <div class="lb-name${isMe?' me':''}">${p.name}${isMe?' · ВЫ':''}</div>
+          <div class="lb-co">${p.company||''}</div>
+        </div>
+        <span class="lb-pts${isMe?' me':''}">${p.points} б</span>
+      </div>`;
+    }).join('');
+    document.getElementById('p-rank').textContent='#'+myRank;
+  }catch(e){}
+}
+
+const likedProfiles = new Set(JSON.parse(localStorage.getItem('liked_profiles')||'[]'));
+
+function toggleLike(id, btn) {
+  if (likedProfiles.has(id)) {
+    likedProfiles.delete(id);
+    btn.className = 'net-btn';
+    btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 14s-6-3.5-6-8a4 4 0 018 0 4 4 0 018 0c0 4.5-6 8-6 8z" stroke="rgba(255,255,255,0.4)" stroke-width="1.3"/></svg> Отметить';
+  } else {
+    likedProfiles.add(id);
+    btn.className = 'net-btn liked';
+    btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 16 16" fill="#a29bfe"><path d="M8 14s-6-3.5-6-8a4 4 0 018 0 4 4 0 018 0c0 4.5-6 8-6 8z" stroke="#a29bfe" stroke-width="1.3"/></svg> Интересно';
+  }
+  localStorage.setItem('liked_profiles', JSON.stringify([...likedProfiles]));
+}
+
+async function loadNetwork(){
+  if(!participant)return;
+  try{
+    const res=await api({action:'getParticipants',exclude:participant.id});
+    const wrap=document.getElementById('network-list');
+    if(!res.participants||!res.participants.length){
+      wrap.innerHTML='<div class="empty-state"><div class="empty-text">// ДРУГИХ АГЕНТОВ ПОКА НЕТ</div></div>';return;
+    }
+    const myInterests=(participant.interests||'').split(',').filter(Boolean);
+    const scored=res.participants.map(p=>{
+      const their=(p.interests||'').split(',').filter(Boolean);
+      const matches=myInterests.filter(i=>their.includes(i));
+      return{...p,matches,score:matches.length};
+    }).sort((a,b)=>b.score-a.score||b.points-a.points);
+    wrap.innerHTML=scored.map(p=>{
+      const their=(p.interests||'').split(',').filter(Boolean);
+      const mySet=new Set(myInterests);
+      const tagsHtml=their.map(t=>`<span class="net-tag${mySet.has(t)?' match':''}">${t}</span>`).join('');
+      const avHtml=p.avatar?`<img src="${p.avatar.startsWith('http')?p.avatar:'https://proway-event.vercel.app/'+p.avatar}" alt="">`:`<span style="font-size:18px;color:var(--text2);">◈</span>`;
+      const liked = likedProfiles.has(p.id);
+      return`<div class="net-card${p.score>0?' top-match':''}">
+        <div class="net-av">${avHtml}</div>
+        <div class="net-info">
+          <div class="net-name">${p.name}</div>
+          <div class="net-co">${p.company||''}${p.role?' · '+p.role:''}</div>
+          <div class="net-tags">${tagsHtml}</div>
+          <div class="net-actions">
+            <button class="net-btn${liked?' liked':''}" onclick="toggleLike('${p.id}',this)">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="${liked?'#a29bfe':'none'}"><path d="M8 14s-6-3.5-6-8a4 4 0 018 0 4 4 0 018 0c0 4.5-6 8-6 8z" stroke="${liked?'#a29bfe':'rgba(255,255,255,0.4)'}" stroke-width="1.3"/></svg>
+              ${liked?'Интересно':'Отметить'}
             </button>
+            ${p.email?`<button class="net-btn contact" onclick="window.location.href='mailto:${p.email}'">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="#00c864" stroke-width="1.3"/><path d="M1 5l7 5 7-5" stroke="#00c864" stroke-width="1.3" stroke-linecap="round"/></svg>
+              Написать
+            </button>`:''}
           </div>
+        </div>
+        <div>
+          <div class="net-match-n${p.score>0?' hot':''}">${p.score}</div>
+          <div class="net-match-l">СОВП.</div>
         </div>
       </div>`;
     }).join('');
-  } catch(e) {
-    document.getElementById('network-list').innerHTML = '<div class="font-label text-center text-on-surface-variant py-8 uppercase text-xs">Ошибка загрузки</div>';
-  }
+  }catch(e){document.getElementById('network-list').innerHTML='<div class="loader">// ОШИБКА СВЯЗИ</div>';}
 }
 
-async function toggleLike(targetId, btn) {
-  if (!participant) return;
-  const icon = btn.querySelector('.material-symbols-outlined');
-  if (likedParticipants.has(targetId)) {
-    likedParticipants.delete(targetId);
-    btn.classList.remove('bg-error'); btn.classList.add('bg-white');
-    icon.classList.remove('text-white','fill-icon'); icon.classList.add('text-black');
+function renderPolls(){
+  document.getElementById('polls-list').innerHTML=POLLS.map(poll=>{
+    const answered=pollAnswers[poll.id]!==undefined;
+    if(answered){
+      const total=poll.votes.reduce((a,b)=>a+b,0)||1;
+      return`<div class="poll-card"><div class="poll-session">${poll.session}</div><div class="poll-q">${poll.question}</div>
+        ${poll.options.map((opt,i)=>{
+          const pct=Math.round(poll.votes[i]/total*100);
+          const isMe=pollAnswers[poll.id]===i;
+          return`<div class="poll-opt poll-result" style="${isMe?'border-color:var(--cyan);':''}">
+            <div class="poll-bar${isMe?' me-bar':''}" style="width:${pct}%"></div>
+            <div class="poll-content"><span style="${isMe?'color:var(--cyan);':''}">${opt}</span><span class="poll-pct${isMe?' me':''}">${pct}%</span></div>
+          </div>`;}).join('')}
+      </div>`;
+    }
+    return`<div class="poll-card"><div class="poll-session">${poll.session}</div><div class="poll-q">${poll.question}</div>
+      ${poll.options.map((opt,i)=>`<button class="poll-opt" onclick="answerPoll('${poll.id}',${i})">${opt}</button>`).join('')}
+    </div>`;
+  }).join('');
+}
+
+function answerPoll(pollId,optIdx){
+  if(pollAnswers[pollId]!==undefined)return;
+  pollAnswers[pollId]=optIdx;
+  const poll=POLLS.find(p=>p.id===pollId);
+  poll.votes[optIdx]++;
+  renderPolls();
+  document.getElementById('s-polls').textContent=Object.keys(pollAnswers).length;
+  if(participant)api({action:'addPoints',participant_id:participant.id,action:'poll',points:15});
+  showToast('// ГОЛОС ПРИНЯТ · +15 Б');
+}
+
+
+async function generateShareCard() {
+  if (!participant) { showToast('Нет данных'); return; }
+  const btn = document.querySelector('.share-card-btn');
+  btn.innerHTML = '<svg style="animation:spin 1s linear infinite;width:16px;height:16px;" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,0.3)" stroke-width="2"/><path d="M12 3a9 9 0 019 9" stroke="white" stroke-width="2" stroke-linecap="round"/></svg> Генерируем...';
+  btn.disabled = true;
+
+  // Загружаем Bangers
+  try {
+    const font = new FontFace('Bangers', 'url(https://fonts.gstatic.com/s/bangers/v24/FeVQS0BTqb0h60ACL5la2bxii28wYQ.woff2)');
+    await font.load();
+    document.fonts.add(font);
+  } catch(e) {}
+
+  // 5x10 cm @ 300dpi
+  const W = 591, H = 1181;
+  const canvas = document.getElementById('share-canvas');
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // ── ФОН ──
+  const bgG = ctx.createLinearGradient(0,0,0,H);
+  bgG.addColorStop(0,'#0a0520'); bgG.addColorStop(1,'#120830');
+  ctx.fillStyle = bgG; ctx.fillRect(0,0,W,H);
+
+  // Сетка
+  ctx.strokeStyle='rgba(108,92,231,0.07)'; ctx.lineWidth=0.5;
+  for(let x=0;x<W;x+=80){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<H;y+=80){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+  // Глитч
+  ctx.fillStyle='rgba(108,92,231,0.25)'; ctx.fillRect(0,186,100,2);
+  ctx.fillStyle='rgba(0,200,255,0.18)'; ctx.fillRect(400,310,70,1.5);
+
+  // Радар
+  ctx.strokeStyle='rgba(108,92,231,0.1)'; ctx.lineWidth=0.5;
+  const RX=W/2, RY=300;
+  for(const r of [260,180,110,50]){ctx.beginPath();ctx.arc(RX,RY,r,0,Math.PI*2);ctx.stroke();}
+  ctx.beginPath();ctx.moveTo(RX,40);ctx.lineTo(RX,560);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(20,RY);ctx.lineTo(W-20,RY);ctx.stroke();
+
+  // ── ИЗОБРАЖЕНИЕ АГЕНТА ──
+  const artSrc = participant.artFile
+    ? (participant.artFile.startsWith('http')?participant.artFile:'https://proway-event.vercel.app/'+participant.artFile)
+    : null;
+  const avatarSrc = participant.avatar
+    ? (participant.avatar.startsWith('http')?participant.avatar:'https://proway-event.vercel.app/'+participant.avatar)
+    : null;
+
+  if(artSrc){
+    try{
+      const img=await loadImage(artSrc);
+      ctx.drawImage(img,0,0,W,H*0.6);
+    }catch(e){ await drawCardHero(ctx,W,avatarSrc,participant.codename); }
   } else {
-    likedParticipants.add(targetId);
-    btn.classList.add('bg-error'); btn.classList.remove('bg-white');
-    icon.classList.add('text-white','fill-icon'); icon.classList.remove('text-black');
-    try { await api({ action:'sendLike', from:participant.id, to:targetId }); } catch(e){}
+    await drawCardHero(ctx,W,avatarSrc,participant.codename);
+  }
+
+  // Градиент снизу
+  const dg=ctx.createLinearGradient(0,H*0.3,0,H);
+  dg.addColorStop(0,'rgba(5,3,20,0)');
+  dg.addColorStop(0.25,'rgba(5,3,20,0.93)');
+  dg.addColorStop(1,'rgba(5,3,20,0.99)');
+  ctx.fillStyle=dg; ctx.fillRect(0,H*0.3,W,H*0.7);
+
+  // Затемнение сверху
+  const tg=ctx.createLinearGradient(0,0,0,120);
+  tg.addColorStop(0,'rgba(5,3,20,0.75)'); tg.addColorStop(1,'rgba(5,3,20,0)');
+  ctx.fillStyle=tg; ctx.fillRect(0,0,W,120);
+
+  const PX=28;
+
+  // ── 001 и PROWAY над плашкой ──
+  ctx.fillStyle='rgba(255,255,255,0.4)';
+  ctx.font='600 18px Inter,sans-serif';
+  ctx.textAlign='left'; ctx.fillText('001', PX, 36);
+  ctx.textAlign='right'; ctx.fillText('PROWAY', W-PX, 36);
+
+  // ── ПЛАШКА С НАЗВАНИЕМ ──
+  const PL=28, PR=W-28, PT=44, PB=96, skew=32;
+  ctx.beginPath();
+  ctx.moveTo(PL+skew,PT); ctx.lineTo(PR-skew,PT);
+  ctx.lineTo(PR,PB); ctx.lineTo(PL,PB);
+  ctx.closePath();
+  ctx.strokeStyle='#f5e642'; ctx.lineWidth=4; ctx.stroke();
+  const ng=ctx.createLinearGradient(PL,0,PR,0);
+  ng.addColorStop(0,'#2a1a80'); ng.addColorStop(0.5,'#6c5ce7'); ng.addColorStop(1,'#2a1a80');
+  ctx.fillStyle=ng; ctx.fill();
+  ctx.fillStyle='#fff';
+  ctx.font='400 42px "Bangers",cursive,sans-serif';
+  ctx.textAlign='center';
+  ctx.shadowColor='rgba(0,0,0,0.6)'; ctx.shadowBlur=8;
+  ctx.fillText((participant.codename||'АГЕНТ').toUpperCase(), W/2, PT+36);
+  ctx.shadowBlur=0;
+
+  // Жёлтые уголки
+  ctx.strokeStyle='#f5e642'; ctx.lineWidth=4;
+  const c=36;
+  ctx.beginPath();ctx.moveTo(0,c);ctx.lineTo(0,0);ctx.lineTo(c,0);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(W-c,0);ctx.lineTo(W,0);ctx.lineTo(W,c);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(W,H-c);ctx.lineTo(W,H);ctx.lineTo(W-c,H);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(c,H);ctx.lineTo(0,H);ctx.lineTo(0,H-c);ctx.stroke();
+
+  // ── НИЖНЯЯ ЧАСТЬ ──
+  const panelY = H*0.44;
+
+  // Компания — бейдж
+  const coText = ([participant.company,participant.role].filter(Boolean).join(' · ')).toUpperCase();
+  ctx.font='600 20px Inter,sans-serif';
+  const coW = ctx.measureText(coText).width + 28;
+  ctx.fillStyle='rgba(108,92,231,0.2)';
+  roundRect(ctx, PX, panelY, coW, 32, 6); ctx.fill();
+  ctx.strokeStyle='rgba(108,92,231,0.5)'; ctx.lineWidth=1;
+  roundRect(ctx, PX, panelY, coW, 32, 6); ctx.stroke();
+  ctx.fillStyle='rgba(162,155,254,0.9)';
+  ctx.textAlign='left';
+  ctx.fillText(coText, PX+14, panelY+22);
+
+  // Имя — две строки
+  const nameParts = (participant.name||'').toUpperCase().split(' ');
+  const firstName = nameParts[0]||'';
+  const lastName = nameParts.slice(1).join(' ')||'';
+  ctx.fillStyle='#fff';
+  ctx.font='400 72px "Bangers",cursive,sans-serif';
+  ctx.textAlign='left';
+  ctx.fillText(firstName, PX, panelY+100);
+  ctx.fillText(lastName, PX, panelY+168);
+
+  // Разделитель
+  ctx.strokeStyle='rgba(108,92,231,0.4)'; ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(PX,panelY+182);ctx.lineTo(W-PX,panelY+182);ctx.stroke();
+
+  // ── СИЛЫ ──
+  const pts=participant.points||0;
+  const vendors=scannedVendors.size;
+  const polls=Object.keys(pollAnswers).length;
+  let meets=0;
+  for(let k in localStorage){if(k.startsWith('met_'))meets++;}
+  const regTime=localStorage.getItem('participant_registered_at');
+  let speedVal=50;
+  if(regTime){
+    const eS=new Date('2025-11-16T09:00:00'),eE=new Date('2025-11-16T11:00:00');
+    speedVal=Math.max(20,Math.round((1-Math.max(0,new Date(regTime)-eS)/(eE-eS))*100));
+  }
+  const stats=[
+    {name:'АНАЛИЗ',  val:Math.min(100,polls*34),                   color:'#a29bfe',ge:'#6c5ce7'},
+    {name:'СКОРОСТЬ',val:speedVal,                                   color:'#fab387',ge:'#ee672a'},
+    {name:'КРИПТО',  val:Math.min(100,Math.round(pts/MAX_PTS*100)),color:'#6ee7b7',ge:'#00c864'},
+    {name:'ПЕРИМЕТР',val:Math.min(100,vendors*25),                   color:'#60a5fa',ge:'#005ca8'},
+    {name:'ВЛИЯНИЕ', val:Math.min(100,meets*20),                     color:'#f5e642',ge:'#d4a017'},
+  ];
+
+  const statsStartY = panelY+196;
+  const rowH = 44;
+  const barMaxW = W - PX*2 - 60;
+
+  stats.forEach((s,i)=>{
+    const y = statsStartY + i*rowH;
+    const bW = Math.max(4, Math.round(s.val/100*barMaxW));
+
+    // Название над баром
+    ctx.fillStyle='rgba(255,255,255,0.55)';
+    ctx.font='400 22px "Bangers",cursive,sans-serif';
+    ctx.textAlign='left';
+    ctx.fillText(s.name, PX, y+2);
+
+    // Фон бара
+    ctx.fillStyle='rgba(255,255,255,0.05)';
+    roundRect(ctx, PX, y+6, barMaxW, 20, 4); ctx.fill();
+
+    // Бар
+    const bg=ctx.createLinearGradient(PX,0,PX+bW,0);
+    bg.addColorStop(0,s.ge+'cc'); bg.addColorStop(1,s.color);
+    ctx.fillStyle=bg;
+    roundRect(ctx, PX, y+6, bW, 20, 4); ctx.fill();
+
+    // Цифра справа
+    ctx.fillStyle=s.color;
+    ctx.font='400 28px "Bangers",cursive,sans-serif';
+    ctx.textAlign='right';
+    ctx.fillText(s.val, W-PX, y+24);
+  });
+
+  // Разделитель
+  const descY = statsStartY + stats.length*rowH + 10;
+  ctx.strokeStyle='rgba(108,92,231,0.25)'; ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(PX,descY);ctx.lineTo(W-PX,descY);ctx.stroke();
+
+  // Описание
+  const gender=participant.gender||'male';
+  const lName=(participant.name||'').split(' ').slice(-1)[0];
+  const desc=gender==='female'
+    ?`${lName} не планировала становиться агентом. Конверт без подписи. Только координаты и время. Она пришла.`
+    :`${lName} не планировал становиться агентом. Конверт без подписи. Только координаты и время. Он пришёл.`;
+  ctx.fillStyle='rgba(255,255,255,0.4)';
+  ctx.font='400 20px Inter,sans-serif';
+  ctx.textAlign='left';
+  wrapText(ctx, desc, PX, descY+28, W-PX*2, 28);
+
+  // ── НИЖНИЙ БЛОК: баллы + QR ──
+  const bottomY = H - 110;
+
+  // Баллы
+  ctx.fillStyle='rgba(108,92,231,0.15)';
+  roundRect(ctx, PX, bottomY, 180, 56, 28); ctx.fill();
+  ctx.strokeStyle='rgba(108,92,231,0.5)'; ctx.lineWidth=1;
+  roundRect(ctx, PX, bottomY, 180, 56, 28); ctx.stroke();
+  ctx.fillStyle='#a29bfe';
+  ctx.font='400 32px "Bangers",cursive,sans-serif';
+  ctx.textAlign='center';
+  ctx.fillText(pts+' БАЛЛОВ', PX+90, bottomY+38);
+
+  // QR — подпись сверху, код снизу
+  const qrX = W-PX-76, qrY = bottomY+2;
+  ctx.fillStyle='rgba(255,255,255,0.35)';
+  ctx.font='400 16px Inter,sans-serif';
+  ctx.textAlign='center';
+  ctx.fillText('сканируй меня', qrX+38, qrY-4);
+
+  // QR через API
+  try {
+    const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=76x76&data='+encodeURIComponent('https://proway-event.vercel.app/profile-scan.html?id='+participant.id);
+    const qrImg = await loadImage(qrUrl);
+    ctx.fillStyle='#fff';
+    roundRect(ctx, qrX, qrY+4, 76, 76, 6); ctx.fill();
+    ctx.drawImage(qrImg, qrX+4, qrY+8, 68, 68);
+  } catch(e) {
+    ctx.fillStyle='rgba(255,255,255,0.8)';
+    roundRect(ctx, qrX, qrY+4, 76, 76, 6); ctx.fill();
+    ctx.fillStyle='rgba(108,92,231,0.5)';
+    ctx.font='400 12px Inter,sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText('QR', qrX+38, qrY+46);
+  }
+
+  // Нижняя полоса
+  const botG=ctx.createLinearGradient(0,0,W,0);
+  botG.addColorStop(0,'#4834d4');botG.addColorStop(0.5,'#6c5ce7');botG.addColorStop(1,'#4834d4');
+  ctx.fillStyle=botG; ctx.fillRect(0,H-12,W,12);
+
+  // Рамка
+  ctx.strokeStyle='rgba(108,92,231,0.4)'; ctx.lineWidth=3;
+  roundRect(ctx,2,2,W-4,H-4,16); ctx.stroke();
+
+  // Скачиваем
+  const a=document.createElement('a');
+  a.download='agent-'+(participant.codename||'card').toLowerCase().replace(/ /g,'-')+'.png';
+  a.href=canvas.toDataURL('image/png');
+  a.click();
+
+  btn.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 5l3-3 3 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11v2a1 1 0 001 1h10a1 1 0 001-1v-2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg> Скачать карточку агента';
+  btn.disabled=false;
+}
+
+async function drawCardHero(ctx, W, avatarSrc, codename) {
+  const glow=ctx.createRadialGradient(W/2,300,0,W/2,300,260);
+  glow.addColorStop(0,'rgba(108,92,231,0.2)');
+  glow.addColorStop(1,'rgba(108,92,231,0)');
+  ctx.fillStyle=glow; ctx.fillRect(0,0,W,600);
+
+  if(avatarSrc){
+    try{
+      const img=await loadImage(avatarSrc);
+      ctx.save();
+      ctx.beginPath();ctx.arc(W/2,300,200,0,Math.PI*2);ctx.clip();
+      ctx.drawImage(img,W/2-200,100,400,400);
+      ctx.restore();
+      ctx.strokeStyle='rgba(108,92,231,0.5)';ctx.lineWidth=2;
+      ctx.beginPath();ctx.arc(W/2,300,202,0,Math.PI*2);ctx.stroke();
+    }catch(e){}
   }
 }
 
-async function checkMyLikes() {
-  if (!participant) return;
-  try {
-    const res = await api({ action:'getMyLikes', participant_id:participant.id });
-    if (res.likes && res.likes > myLikes) {
-      const newLikes = res.likes - myLikes;
-      myLikes = res.likes;
-      const banner = document.getElementById('likes-banner');
-      document.getElementById('likes-text').textContent = `Тебе поставили ${newLikes} ${newLikes===1?'лайк':'лайков'}!`;
-      banner.classList.remove('hidden');
-    }
-  } catch(e){}
+async function drawHeroPlaceholder(ctx,W,H,avatarSrc,codename){
+  // Свечение по центру
+  const glow=ctx.createRadialGradient(W/2,280,0,W/2,280,220);
+  glow.addColorStop(0,'rgba(108,92,231,0.25)');
+  glow.addColorStop(1,'rgba(108,92,231,0)');
+  ctx.fillStyle=glow; ctx.fillRect(0,0,W,H*0.6);
+
+  if(avatarSrc){
+    try{
+      const img=await loadImage(avatarSrc);
+      ctx.save();
+      ctx.beginPath();ctx.arc(W/2,260,170,0,Math.PI*2);ctx.clip();
+      ctx.drawImage(img,W/2-170,90,340,340);
+      ctx.restore();
+      ctx.strokeStyle='rgba(108,92,231,0.5)';ctx.lineWidth=2;
+      ctx.beginPath();ctx.arc(W/2,260,172,0,Math.PI*2);ctx.stroke();
+    }catch(e){}
+  }
 }
 
-// ══════════════════════════════
-// ОПРОСЫ
-// ══════════════════════════════
-async function loadPolls() {
-  try {
-    const res = await api({ action:'getPolls' });
-    const wrap = document.getElementById('polls-list');
-    if (!res.polls?.length) {
-      wrap.innerHTML = '<div class="bg-white border-4 border-black ink4 p-8 text-center"><p class="font-headline italic font-black text-xl uppercase text-on-surface-variant">Опросы скоро появятся</p><p class="font-body text-sm text-on-surface-variant mt-2">Администратор добавит вопросы во время дискуссии</p></div>';
-      return;
+function drawCardBg(ctx, W, H) {
+  ctx.fillStyle = '#0a0b1e';
+  ctx.fillRect(0, 0, W, H);
+  ctx.strokeStyle = 'rgba(108,92,231,0.08)'; ctx.lineWidth = 1;
+  for (let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for (let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  ctx.fillStyle = 'rgba(108,92,231,0.15)';
+  ctx.beginPath(); ctx.arc(W/2, H*0.35, 180, 0, Math.PI*2); ctx.fill();
+}
+
+function drawPlaceholder(ctx, x, y, w, h, codename) {
+  ctx.fillStyle = 'rgba(108,92,231,0.06)';
+  ctx.strokeStyle = 'rgba(108,92,231,0.2)';
+  ctx.lineWidth = 1;
+  roundRect(ctx, x, y, w, h, 20);
+  ctx.fill(); ctx.stroke();
+  ctx.fillStyle = 'rgba(108,92,231,0.3)';
+  ctx.font = '700 32px Inter, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(codename, x + w/2, y + h/2);
+}
+
+function wrapText(ctx, text, x, y, maxW, lineH) {
+  const words = text.split(' ');
+  let line = '';
+  for (const word of words) {
+    const test = line + word + ' ';
+    if (ctx.measureText(test).width > maxW && line) {
+      ctx.fillText(line.trim(), x, y);
+      line = word + ' ';
+      y += lineH;
+    } else { line = test; }
+  }
+  if (line) ctx.fillText(line.trim(), x, y);
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.lineTo(x+w-r, y);
+  ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+  ctx.lineTo(x+w, y+h-r);
+  ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+  ctx.lineTo(x+r, y+h);
+  ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+  ctx.lineTo(x, y+r);
+  ctx.quadraticCurveTo(x, y, x+r, y);
+  ctx.closePath();
+}
+
+function loadImage(src) {
+  return new Promise((res, rej) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => res(img);
+    img.onerror = rej;
+    img.src = src;
+  });
+}
+
+
+function wrapTextCenter(ctx, text, cx, y, maxW, lineH) {
+  const words = text.split(' ');
+  let line = '';
+  for (const word of words) {
+    const test = line + word + ' ';
+    if (ctx.measureText(test).width > maxW && line) {
+      ctx.fillText(line.trim(), cx, y);
+      line = word + ' ';
+      y += lineH;
+    } else { line = test; }
+  }
+  if (line) ctx.fillText(line.trim(), cx, y);
+}
+
+
+// ── ACHIEVEMENTS ─────────────────────────────────────────────────
+
+
+
+function checkAchievements() {
+  if (!participant) return;
+  ACHIEVEMENTS.forEach(a => {
+    const el = document.getElementById('ach-'+a.id);
+    if (!el) return;
+    const isUnlocked = a.check();
+    if (isUnlocked) {
+      el.classList.add('unlocked');
+      if (!unlockedAchs.has(a.id)) {
+        unlockedAchs.add(a.id);
+        localStorage.setItem('unlocked_achs', JSON.stringify([...unlockedAchs]));
+        showAchievementBanner(a.icon, a.name);
+      }
     }
-    wrap.innerHTML = res.polls.map(poll => renderPollCard(poll)).join('');
+  });
+}
+
+function showAchievementBanner(icon, name) {
+  const banner = document.getElementById('ach-banner');
+  document.getElementById('ach-banner-icon').textContent = icon;
+  document.getElementById('ach-banner-name').textContent = name;
+  banner.classList.add('show');
+  setTimeout(() => banner.classList.remove('show'), 4000);
+}
+
+
+function showFinale() {
+  if (!participant) return;
+  // Обновляем данные
+  document.getElementById('finale-pts').textContent = (participant.points||0) + ' Б';
+  document.getElementById('finale-rank').textContent = myRank ? 'Место в рейтинге: #' + myRank : 'Место в рейтинге: —';
+  // Ачивки
+  const achEl = document.getElementById('finale-achs');
+  achEl.innerHTML = ACHIEVEMENTS.filter(a => unlockedAchs.has(a.id)).map(a => `<div class="finale-ach">${a.icon}</div>`).join('');
+  // Показываем
+  document.getElementById('finale-overlay').classList.add('show');
+}
+
+function checkFinale() {
+  try {
+    if (localStorage.getItem('finale_active') === 'true') {
+      showFinale();
+    }
   } catch(e) {}
 }
 
-function renderPollCard(poll) {
-  const answered = pollAnswers[poll.id] !== undefined;
-  const total = (poll.options||[]).reduce((s,o) => s+(o.votes||0),0) || 1;
-  return `<div class="bg-white border-4 border-black ink4 overflow-hidden">
-    <div class="bg-primary border-b-4 border-black px-4 py-2 flex items-center justify-between">
-      <span class="font-label font-bold text-[10px] uppercase tracking-widest text-white/70">${poll.session||'ОПРОС'}</span>
-      ${answered ? '<span class="font-label font-bold text-[9px] bg-yellow-400 text-black px-2 py-0.5 border border-black uppercase">Голос отдан</span>' : '<span class="bg-white/20 text-white font-label font-bold text-[9px] px-2 py-0.5 uppercase">Активный</span>'}
-    </div>
-    <div class="p-4">
-      <p class="font-headline italic font-black text-lg uppercase leading-tight mb-4">${poll.question}</p>
-      <div class="space-y-2">
-        ${(poll.options||[]).map((opt,i) => {
-          const pct = answered ? Math.round((opt.votes||0)/total*100) : 0;
-          const isMyVote = pollAnswers[poll.id] === i;
-          if (answered) {
-            return `<div class="relative border-4 ${isMyVote?'border-primary':'border-black'} overflow-hidden">
-              <div class="absolute inset-0 ${isMyVote?'bg-secondary-container':'bg-surface-container'}" style="width:${pct}%"></div>
-              <div class="relative z-10 flex justify-between px-3 py-2">
-                <span class="font-body font-bold text-sm ${isMyVote?'text-primary':''}">${opt.text||opt}</span>
-                <span class="font-headline italic font-black text-base ${isMyVote?'text-primary':''}">${pct}%</span>
-              </div>
-            </div>`;
-          }
-          return `<button onclick="answerPoll('${poll.id}',${i},this)" class="w-full text-left border-4 border-black px-3 py-2 font-body font-bold text-sm bg-white hover:bg-secondary hover:text-white hover:border-secondary transition-all ink4 active:translate-y-1 active:shadow-none">${opt.text||opt}</button>`;
-        }).join('')}
-      </div>
-    </div>
-  </div>`;
-}
-
-async function answerPoll(pollId, optIdx, btn) {
-  if (pollAnswers[pollId] !== undefined || !participant) return;
-  pollAnswers[pollId] = optIdx;
-  try {
-    await api({ action:'votePoll', poll_id:pollId, option:optIdx, participant_id:participant.id });
-    participant.points = (participant.points||0) + 15;
-    renderProfile();
-    showToast('Голос принят! +15 очков');
-    loadPolls();
-  } catch(e) { showToast('Ошибка голосования'); delete pollAnswers[pollId]; }
-}
-
-// ══════════════════════════════
-// QR МОДАЛКА
-// ══════════════════════════════
 function showQrModal() {
-  document.getElementById('qr-modal').classList.add('open');
-  const el = document.getElementById('qr-container');
-  if (!participant) return;
-  const url = `https://proway-event.vercel.app/?agent=${participant.id}`;
-  el.innerHTML = `<div class="flex flex-col items-center gap-2">
-    <div class="bg-white p-2 border-4 border-black">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(url)}" alt="QR" class="w-40 h-40"/>
-    </div>
-    <p class="font-label font-bold text-xs uppercase text-on-surface-variant text-center">${participant.codename||participant.name}</p>
-  </div>`;
+  const id = participant ? participant.id : localStorage.getItem('participant_id');
+  if (!id) { showToast('Сначала зарегистрируйся'); return; }
+  const url = 'https://proway-event.vercel.app/profile-scan.html?id=' + id;
+  const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' + encodeURIComponent(url);
+  document.getElementById('qr-modal-img').src = qrUrl;
+  document.getElementById('qr-modal-overlay').classList.add('show');
 }
-function closeQrModal() { document.getElementById('qr-modal').classList.remove('open'); }
-
-// ══════════════════════════════
-// СКАЧАТЬ КАРТОЧКУ
-// ══════════════════════════════
-function downloadCard() {
-  showToast('Скачивание карточки агента...');
-  // Базовая реализация — в финальной версии через html2canvas
-  const data = {
-    name: participant?.name||'',
-    codename: participant?.codename||'',
-    company: participant?.company||'',
-    points: participant?.points||0,
-  };
-  showToast('Карточка: ' + data.codename + ' · ' + data.points + ' очков');
+function closeQrModal() {
+  document.getElementById('qr-modal-overlay').classList.remove('show');
 }
 
-function scrollToCard() { document.getElementById('agent-card')?.scrollIntoView({behavior:'smooth'}); }
 
-// ══════════════════════════════
-// СТАРТ
-// ══════════════════════════════
-window.addEventListener('load', () => {
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
+// ── ДАТА ОТКРЫТИЯ ПОЛНОГО ПРИЛОЖЕНИЯ ──────────────────
+const LAUNCH_DATE = new Date('2026-04-21T11:00:00+03:00');
+function isLaunched(){ return new Date() >= LAUNCH_DATE; }
 
-  // Восстановить посещённые стенды
-  try {
-    const sv = localStorage.getItem('visited_stands');
-    if (sv) visitedStands = new Set(JSON.parse(sv));
-  } catch(e){}
-
-  const id = localStorage.getItem('participant_id');
-  if (id) {
-    participant = {
-      id,
-      name:      localStorage.getItem('participant_name') || '—',
-      email:     localStorage.getItem('participant_email') || '',
-      company:   localStorage.getItem('participant_company') || '—',
-      role:      localStorage.getItem('participant_role') || '',
-      interests: localStorage.getItem('participant_interests') || '',
-      avatar:    localStorage.getItem('participant_avatar') || '',
-      codename:  localStorage.getItem('participant_codename') || '',
-      points: 0, questions:0, standsVisited: visitedStands.size, rank:0, topVotes:0,
-    };
-    initApp();
+function startCountdown(){
+  function update(){
+    const diff = LAUNCH_DATE - new Date();
+    if(diff <= 0){ location.reload(); return; }
+    const d=Math.floor(diff/86400000);
+    const h=Math.floor((diff%86400000)/3600000);
+    const m=Math.floor((diff%3600000)/60000);
+    const s=Math.floor((diff%60000)/1000);
+    ['countdown','countdown2'].forEach(cid=>{const el=document.getElementById(cid);if(el) el.innerHTML=
+      `<span class="cd-block"><span class="cd-num">${d}</span><span class="cd-lbl">дней</span></span>` +
+      `<span class="cd-block"><span class="cd-num">${String(h).padStart(2,'0')}</span><span class="cd-lbl">часов</span></span>` +
+      `<span class="cd-block"><span class="cd-num">${String(m).padStart(2,'0')}</span><span class="cd-lbl">минут</span></span>` +
+      `<span class="cd-block"><span class="cd-num">${String(s).padStart(2,'0')}</span><span class="cd-lbl">секунд</span></span>`;
   }
+  update();
+  setInterval(update, 1000);
+}
+
+
+function showPrelaunch(){
+  document.getElementById('screen-prelaunch').classList.remove('hidden');
+}
+
+function showPrelaunchDone(){
+  const el = document.getElementById('screen-prelaunch-done');
+  if(!el) return;
+  el.classList.remove('hidden');
+  // Заполняем данные агента
+  if(participant){
+    const cod = participant.codename || 'АГЕНТ';
+    const cn1 = document.getElementById('prelaunch-codename');
+    const cn2 = document.getElementById('prelaunch-codename2');
+    const nm = document.getElementById('prelaunch-name');
+    const av = document.getElementById('prelaunch-avatar');
+    if(cn1) cn1.textContent = cod;
+    if(cn2) cn2.textContent = cod;
+    if(nm) nm.textContent = participant.name + ' · ' + participant.company;
+    if(av && participant.avatar){ av.src = participant.avatar; }
+  }
+}
+
+window.addEventListener('load',()=>{
+if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
+  const savedScans=localStorage.getItem('scanned_vendors');
+  if(savedScans){try{JSON.parse(savedScans).forEach(id=>scannedVendors.add(id));}catch(e){}}
+  const id=localStorage.getItem('participant_id');
+  if(id){
+    participant={
+      id,
+      name:localStorage.getItem('participant_name')||'—',
+      email:localStorage.getItem('participant_email')||'',
+      company:localStorage.getItem('participant_company')||'—',
+      points:0,
+      interests:localStorage.getItem('participant_interests')||'',
+      avatar:localStorage.getItem('participant_avatar')||'',
+      gender:localStorage.getItem('participant_gender')||'male',
+      codename:localStorage.getItem('participant_codename')||'ФАЙРВОЛ',
+      artFile:localStorage.getItem('participant_artfile')||''
+    };
+    if(isLaunched()){
+      initApp();
+    } else {
+      // Уже зарегистрирован, но игра ещё не открылась
+      showPrelaunchDone();
+      startCountdown();
+    }
+    return;
+  }
+  // Не зарегистрирован
+  if(!isLaunched()){
+    showPrelaunch();
+    startCountdown();
+  }
+  const urlParams=new URLSearchParams(window.location.search);
+  const vendorId=urlParams.get('id');
+  if(vendorId&&id)handleVendorScan(vendorId);
 });
 </script>
+
+<!-- ══ PRE-LAUNCH: НЕ ЗАРЕГИСТРИРОВАН ══ -->
+<div id="screen-prelaunch" class="prelaunch-screen hidden">
+  <div class="pl-grid"></div>
+  <div class="pl-glow"></div>
+
+  <!-- Header -->
+  <div style="padding:52px 20px 0;position:relative;z-index:1;text-align:center;">
+    <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:4px;margin-bottom:8px">// PROWAY_SECURITY_DAY_2026</div>
+    <h1 style="font-family:'Bangers',cursive;font-size:52px;color:var(--white);letter-spacing:4px;line-height:.95;margin-bottom:6px">МИР<br><span style="color:var(--cyan)">ПОД</span><br>УГРОЗОЙ</h1>
+    <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:4px">21 апреля · Пространство «Connect»</div>
+    <div style="font-size:11px;color:var(--text2)">5-й Донской проезд, д. 17</div>
+  </div>
+
+  <!-- Countdown -->
+  <div style="padding:0 20px;position:relative;z-index:1;">
+    <div style="font-size:10px;font-weight:700;color:var(--text2);letter-spacing:2px;text-transform:uppercase;text-align:center;margin-bottom:4px">До начала миссии</div>
+    <div id="countdown"></div>
+  </div>
+
+  <!-- Speech bubble -->
+  <div style="margin:0 16px;background:rgba(108,92,231,.06);border:1px solid var(--border2);border-left:3px solid var(--cyan);border-radius:4px;padding:14px 16px;position:relative;z-index:1;">
+    <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:3px;margin-bottom:8px">// ВХОДЯЩЕЕ_СООБЩЕНИЕ</div>
+    <p style="font-size:14px;font-weight:600;color:var(--text);line-height:1.6;">Кибератаки участились. Старые методы защиты не работают. Нужны новые герои — те, кто знает как работают настоящие инструменты безопасности.</p>
+    <p style="font-size:13px;color:var(--text2);margin-top:8px;line-height:1.5;">Зарегистрируйся сейчас, получи кодовое имя агента и готовься к миссии 21 апреля.</p>
+  </div>
+
+  <!-- Механика -->
+  <div style="padding:0 16px;position:relative;z-index:1;">
+    <div style="font-family:'Bangers',cursive;font-size:16px;color:var(--cyan);letter-spacing:3px;margin:16px 0 10px">КАК ИГРАТЬ</div>
+    <div class="mech-card">
+      <div class="mech-icon">🎯</div>
+      <div><div class="mech-title">Посещай стенды</div><div class="mech-text">8 вендоров — 8 глав шпионского досье. Каждый QR-код открывает новую главу твоей истории и даёт +20 баллов.</div></div>
+    </div>
+    <div class="mech-card">
+      <div class="mech-icon">🗳️</div>
+      <div><div class="mech-title">Голосуй в опросах</div><div class="mech-text">После каждого доклада — живые вопросы. Выбери позицию и получи +15 баллов за каждый ответ.</div></div>
+    </div>
+    <div class="mech-card">
+      <div class="mech-icon">🤝</div>
+      <div><div class="mech-title">Нетворкинг</div><div class="mech-text">Находи коллег по интересам — DLP, SOC, пентест. Совпадения по темам поднимают тебя в рейтинге.</div></div>
+    </div>
+    <div class="mech-card">
+      <div class="mech-icon">🏆</div>
+      <div><div class="mech-title">Борись за топ</div><div class="mech-text">Лучшие агенты получают призы на финальном награждении. Максимум — 430 баллов.</div></div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div style="padding:16px;position:relative;z-index:1;padding-bottom:40px;">
+    <button onclick="showScreen('screen-agent')"
+      style="width:100%;background:var(--grad);border:none;border-radius:8px;padding:18px;font-family:'Bangers',cursive;font-size:24px;color:#fff;letter-spacing:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;">
+      ПРИНЯТЬ МИССИЮ
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M12 6l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div style="text-align:center;margin-top:12px;font-size:12px;color:var(--text2)">Регистрация занимает 1 минуту · Бесплатно</div>
+  </div>
+</div>
+
+<!-- ══ PRE-LAUNCH: УЖЕ ЗАРЕГИСТРИРОВАН ══ -->
+<div id="screen-prelaunch-done" class="prelaunch-screen hidden">
+  <div class="pl-grid"></div>
+  <div class="pl-glow"></div>
+
+  <!-- Header -->
+  <div style="padding:52px 20px 20px;position:relative;z-index:1;text-align:center;">
+    <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:#00c864;letter-spacing:4px;margin-bottom:12px">✓ АГЕНТ АВТОРИЗОВАН</div>
+    <h1 style="font-family:'Bangers',cursive;font-size:44px;color:var(--white);letter-spacing:3px;line-height:1;margin-bottom:4px">ЖДЁМ<br>ТЕБЯ,<br><span style="color:var(--cyan)" id="prelaunch-codename">АГЕНТ</span></h1>
+  </div>
+
+  <!-- Agent card -->
+  <div class="agent-done-card" style="position:relative;z-index:1;">
+    <div class="agent-done-av">
+      <img id="prelaunch-avatar" src="" alt="" onerror="this.style.background='var(--bg3)'"/>
+    </div>
+    <div style="flex:1;min-width:0;">
+      <div style="font-size:10px;font-weight:700;color:var(--text2);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px">Кодовое имя</div>
+      <div style="font-family:'Bangers',cursive;font-size:22px;color:var(--cyan);letter-spacing:3px" id="prelaunch-codename2">АГЕНТ</div>
+      <div style="font-size:12px;color:var(--text2);margin-top:4px" id="prelaunch-name">—</div>
+      <div style="display:inline-block;background:rgba(0,200,100,.12);border:1px solid rgba(0,200,100,.3);border-radius:20px;padding:2px 10px;font-size:10px;font-weight:700;color:#00c864;letter-spacing:1px;margin-top:6px">ГОТОВ К МИССИИ</div>
+    </div>
+  </div>
+
+  <!-- Countdown -->
+  <div style="padding:20px 20px 0;position:relative;z-index:1;">
+    <div style="font-size:10px;font-weight:700;color:var(--text2);letter-spacing:2px;text-transform:uppercase;text-align:center;margin-bottom:4px">До начала игры</div>
+    <div id="countdown2"></div>
+  </div>
+
+  <!-- Info -->
+  <div style="margin:16px;background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:16px;position:relative;z-index:1;">
+    <div style="font-family:'Bangers',cursive;font-size:15px;color:var(--cyan);letter-spacing:3px;margin-bottom:12px">21 АПРЕЛЯ · 13:00</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text)"><span style="color:var(--cyan);font-family:'Share Tech Mono',monospace">13:00</span>Регистрация и PROWAY Security Экспо</div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text)"><span style="color:var(--cyan);font-family:'Share Tech Mono',monospace">14:00</span>Панельная дискуссия «Ток-шоу»</div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text)"><span style="color:var(--cyan);font-family:'Share Tech Mono',monospace">16:00</span>Прямая линия с вендорами</div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text)"><span style="color:var(--cyan);font-family:'Share Tech Mono',monospace">17:30</span>PROWAY Security Экспо</div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text)"><span style="color:var(--cyan);font-family:'Share Tech Mono',monospace">18:30</span>Фуршет и награждение 🏆</div>
+    </div>
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:12px;color:var(--text2)">
+      📍 Пространство «Connect» · 5-й Донской проезд, д. 17
+    </div>
+  </div>
+
+  <!-- Share hint -->
+  <div style="padding:0 16px 40px;position:relative;z-index:1;">
+    <div style="background:rgba(108,92,231,.08);border:1px solid var(--border2);border-radius:8px;padding:14px;text-align:center;">
+      <div style="font-size:13px;color:var(--text2);line-height:1.5;">Приложение автоматически откроется<br>в день мероприятия в <span style="color:var(--cyan);font-weight:700">11:00</span></div>
+      <div style="font-size:11px;color:var(--text2);margin-top:6px;opacity:.6">Все твои данные сохранены</div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
