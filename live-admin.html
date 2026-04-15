@@ -2,259 +2,539 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PROWAY · Live Admin</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>PROWAY Security Day — Админ</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Inter',sans-serif;background:#080920;color:#fff;min-height:100vh;padding:0;}
-.lock{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px;}
-.lock-box{background:#0e0f28;border:0.5px solid rgba(108,92,231,0.3);border-radius:20px;padding:32px 24px;width:100%;max-width:360px;}
-.lock-title{font-size:20px;font-weight:700;color:#fff;margin-bottom:4px;}
-.lock-sub{font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:24px;}
-.lock-input{width:100%;padding:12px 16px;background:#13152f;border:0.5px solid rgba(108,92,231,0.3);border-radius:12px;font-size:15px;font-family:'Inter',sans-serif;color:#fff;outline:none;margin-bottom:12px;}
-.lock-input:focus{border-color:#6c5ce7;}
-.lock-btn{width:100%;padding:13px;background:linear-gradient(135deg,#6c5ce7,#4834d4);border:none;border-radius:12px;font-size:14px;font-weight:700;color:#fff;cursor:pointer;}
-.lock-err{font-size:12px;color:#ee672a;margin-top:8px;text-align:center;display:none;}
+:root{
+  --bg:#080920;--bg2:#0e0f28;--bg3:#13152f;
+  --cyan:#a29bfe;--violet:#6c5ce7;--orange:#ee672a;
+  --yellow:#f5e642;--green:#00c864;--red:#e74c3c;
+  --white:#fff;--text:#ffffffcc;--text2:#ffffff66;--text3:#ffffff22;
+  --border:#6c5ce722;--border2:#6c5ce744;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
-.admin{display:none;max-width:560px;margin:0 auto;padding:24px 16px 40px;}
-.admin-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
-.admin-logo{font-size:16px;font-weight:700;color:#fff;letter-spacing:1px;}
-.admin-badge{background:rgba(108,92,231,0.15);border:0.5px solid rgba(108,92,231,0.4);border-radius:20px;padding:4px 12px;font-size:11px;color:#a29bfe;}
+/* LOGIN */
+#login-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px;}
+.login-box{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:32px 28px;width:100%;max-width:360px;}
+.login-title{font-family:'Bangers',cursive;font-size:28px;color:var(--cyan);letter-spacing:4px;text-align:center;margin-bottom:4px;}
+.login-sub{font-size:11px;color:var(--text2);letter-spacing:2px;text-align:center;margin-bottom:24px;}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.field label{font-size:11px;font-weight:700;color:var(--text2);letter-spacing:1px;text-transform:uppercase;}
+.field input,.field select,.field textarea{background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:12px 14px;font-size:14px;font-family:'Rajdhani',sans-serif;font-weight:600;color:var(--white);outline:none;width:100%;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--cyan);}
+.field textarea{resize:vertical;min-height:80px;}
+.btn{width:100%;padding:14px;border:none;border-radius:8px;font-family:'Bangers',cursive;font-size:20px;letter-spacing:3px;cursor:pointer;transition:.15s;}
+.btn-primary{background:var(--violet);color:#fff;}
+.btn-primary:active{opacity:.8;}
+.btn-danger{background:var(--red);color:#fff;}
+.btn-success{background:var(--green);color:#000;}
+.btn-orange{background:var(--orange);color:#fff;}
+.btn-sm{padding:8px 16px;font-size:14px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1px;border-radius:6px;border:none;cursor:pointer;}
 
-.card{background:#0e0f28;border:0.5px solid rgba(108,92,231,0.2);border-radius:16px;padding:20px;margin-bottom:16px;}
-.card-title{font-size:12px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;}
+/* MAIN */
+#main-screen{display:none;padding-bottom:40px;}
+.topbar{background:var(--bg2);border-bottom:1px solid var(--border);padding:48px 16px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.topbar-title{font-family:'Bangers',cursive;font-size:20px;color:var(--cyan);letter-spacing:4px;}
+.topbar-badge{font-size:10px;font-weight:700;color:var(--text2);background:var(--bg3);padding:4px 10px;border-radius:20px;border:1px solid var(--border2);}
 
-.type-row{display:flex;gap:8px;margin-bottom:14px;}
-.type-btn{flex:1;padding:8px;border-radius:10px;border:0.5px solid rgba(108,92,231,0.2);background:transparent;font-size:12px;font-weight:600;color:rgba(255,255,255,0.4);cursor:pointer;font-family:'Inter',sans-serif;}
-.type-btn.active-info{background:rgba(108,92,231,0.15);color:#a29bfe;border-color:rgba(108,92,231,0.5);}
-.type-btn.active-alert{background:rgba(238,103,42,0.15);color:#ee672a;border-color:rgba(238,103,42,0.5);}
-.type-btn.active-success{background:rgba(0,200,100,0.1);color:#00c864;border-color:rgba(0,200,100,0.4);}
+/* TABS */
+.tabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);overflow-x:auto;}
+.tab{flex:1;padding:12px 8px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text2);letter-spacing:2px;text-align:center;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;}
+.tab.active{color:var(--cyan);border-bottom-color:var(--cyan);}
 
-textarea{width:100%;padding:12px 16px;background:#13152f;border:0.5px solid rgba(108,92,231,0.3);border-radius:12px;font-size:14px;font-family:'Inter',sans-serif;color:#fff;outline:none;resize:none;height:100px;line-height:1.5;margin-bottom:12px;}
-textarea:focus{border-color:#6c5ce7;}
-textarea::placeholder{color:rgba(255,255,255,0.2);}
-.char-count{font-size:11px;color:rgba(255,255,255,0.3);text-align:right;margin-top:-8px;margin-bottom:12px;}
+/* SECTIONS */
+.section{display:none;padding:16px;}
+.section.active{display:block;}
+.section-title{font-family:'Bangers',cursive;font-size:16px;color:var(--cyan);letter-spacing:3px;margin-bottom:12px;}
 
-.templates{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
-.tpl{background:#13152f;border:0.5px solid rgba(108,92,231,0.15);border-radius:10px;padding:10px 12px;font-size:12px;color:rgba(255,255,255,0.5);cursor:pointer;text-align:left;}
-.tpl:hover{background:rgba(108,92,231,0.08);color:#a29bfe;border-color:rgba(108,92,231,0.3);}
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:14px;margin-bottom:10px;}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.card-title{font-size:13px;font-weight:700;color:var(--white);}
+.card-sub{font-size:11px;color:var(--text2);margin-top:2px;}
+.badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:1px;}
+.badge-cyan{background:rgba(162,155,254,.15);color:var(--cyan);border:1px solid rgba(162,155,254,.3);}
+.badge-green{background:rgba(0,200,100,.15);color:var(--green);border:1px solid rgba(0,200,100,.3);}
+.badge-orange{background:rgba(238,103,42,.15);color:var(--orange);border:1px solid rgba(238,103,42,.3);}
+.badge-red{background:rgba(231,76,60,.15);color:var(--red);border:1px solid rgba(231,76,60,.3);}
 
-.publish-btn{width:100%;padding:14px;background:linear-gradient(135deg,#6c5ce7,#4834d4);border:none;border-radius:12px;font-size:14px;font-weight:700;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
-.publish-btn:disabled{opacity:0.5;cursor:not-allowed;}
+/* LIVE MODE SWITCH */
+.live-switch{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:16px;margin-bottom:16px;}
+.live-switch-title{font-size:11px;font-weight:700;color:var(--text2);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;}
+.mode-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.mode-btn{padding:12px;border-radius:8px;border:2px solid var(--border2);background:transparent;color:var(--text2);font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;cursor:pointer;text-align:center;transition:.15s;}
+.mode-btn.active{border-color:var(--cyan);color:var(--cyan);background:rgba(162,155,254,.08);}
 
-.feed-list{display:flex;flex-direction:column;gap:8px;}
-.feed-item{background:#13152f;border-radius:12px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px;border-left:3px solid #6c5ce7;}
-.feed-item.alert{border-left-color:#ee672a;}
-.feed-item.success{border-left-color:#00c864;}
-.feed-dot{width:8px;height:8px;border-radius:50%;background:#6c5ce7;flex-shrink:0;margin-top:5px;}
-.feed-dot.alert{background:#ee672a;}
-.feed-dot.success{background:#00c864;}
-.feed-body{flex:1;}
-.feed-text{font-size:13px;color:rgba(255,255,255,0.85);line-height:1.4;margin-bottom:4px;}
-.feed-meta{font-size:10px;color:rgba(255,255,255,0.3);}
-.feed-del{background:none;border:none;color:rgba(255,255,255,0.2);cursor:pointer;font-size:16px;padding:0 4px;flex-shrink:0;}
-.feed-del:hover{color:#ee672a;}
-.empty{text-align:center;padding:24px;font-size:12px;color:rgba(255,255,255,0.25);}
-.toast-adm{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0e0f28;border:0.5px solid rgba(108,92,231,0.4);border-left:3px solid #6c5ce7;border-radius:12px;padding:12px 20px;font-size:13px;color:#a29bfe;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;}
-.toast-adm.show{opacity:1;}
+/* POLL BUILDER */
+.option-row{display:flex;gap:8px;margin-bottom:6px;align-items:center;}
+.option-row input{flex:1;}
+.remove-opt{background:rgba(231,76,60,.2);border:none;border-radius:4px;color:var(--red);width:28px;height:28px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;}
+
+/* ANNOUNCEMENTS */
+.ann-item{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px;}
+.ann-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.ann-text{flex:1;font-size:13px;color:var(--text);}
+.ann-time{font-size:10px;color:var(--text2);}
+.ann-del{background:none;border:none;color:var(--red);cursor:pointer;font-size:18px;padding:4px;}
+
+/* LEADERBOARD */
+.lb-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
+.lb-pos{font-family:'Bangers',cursive;font-size:18px;min-width:24px;color:var(--text3);}
+.lb-pos.gold{color:var(--yellow);}
+.lb-name{flex:1;font-size:13px;font-weight:700;color:var(--white);}
+.lb-co{font-size:11px;color:var(--text2);}
+.lb-pts{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--cyan);}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:16px;right:16px;background:var(--bg2);color:var(--cyan);border:1px solid var(--border2);border-left:3px solid var(--violet);border-radius:8px;padding:12px 16px;font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;text-align:center;z-index:999;opacity:0;transition:.25s;pointer-events:none;}
+.toast.show{opacity:1;}
+
+.divider{height:1px;background:var(--border);margin:16px 0;}
+.info-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.info-row:last-child{border-bottom:none;}
+.info-key{color:var(--text2);}
+.info-val{color:var(--white);font-weight:600;}
 </style>
 </head>
 <body>
 
-<!-- Экран входа -->
-<div class="lock" id="lock-screen">
-  <div class="lock-box">
-    <div class="lock-title">Live Admin</div>
-    <div class="lock-sub">PROWAY Security Day · Контент-менеджер</div>
-    <input class="lock-input" type="password" id="pwd-input" placeholder="Пароль" onkeydown="if(event.key==='Enter')checkPwd()">
-    <button class="lock-btn" onclick="checkPwd()">Войти</button>
-    <div class="lock-err" id="lock-err">Неверный пароль</div>
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-title">ADMIN</div>
+    <div class="login-sub">// PROWAY SECURITY DAY 2026</div>
+    <div class="field">
+      <label>Пароль</label>
+      <input type="password" id="pwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="btn btn-primary" onclick="doLogin()">ВОЙТИ</button>
   </div>
 </div>
 
-<!-- Панель КМ -->
-<div class="admin" id="admin-panel">
-  <div class="admin-header">
-    <div class="admin-logo">PROWAY · Live</div>
-    <div class="admin-badge">Контент-менеджер</div>
+<!-- MAIN -->
+<div id="main-screen">
+  <div class="topbar">
+    <div>
+      <div class="topbar-title">ПАНЕЛЬ КМ</div>
+      <div style="font-size:10px;color:var(--text2);letter-spacing:1px">PROWAY Security Day 2026</div>
+    </div>
+    <div class="topbar-badge" id="live-mode-badge">LIVE: РЕЙТИНГ</div>
   </div>
 
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('live')">LIVE</div>
+    <div class="tab" onclick="switchTab('polls')">ОПРОСЫ</div>
+    <div class="tab" onclick="switchTab('announce')">ОБЪЯВЛЕНИЯ</div>
+    <div class="tab" onclick="switchTab('rating')">РЕЙТИНГ</div>
+    <div class="tab" onclick="switchTab('finale')">ФИНАЛ</div>
+  </div>
 
-  <!-- Завершение миссии -->
-  <div class="card">
-    <div class="card-title">Управление миссией</div>
-    <div id="finale-status" style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:12px;">Миссия активна</div>
-    <button class="publish-btn" id="finale-btn" onclick="toggleFinale()" style="background:linear-gradient(135deg,#ee672a,#c0392b);">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a6 6 0 100 12A6 6 0 008 2zM6 6l4 2-4 2V6z" fill="white"/></svg>
-      Завершить миссию
+  <!-- ═══ TAB: LIVE ═══ -->
+  <div id="tab-live" class="section active">
+    <div class="section-title">УПРАВЛЕНИЕ LIVE-ЭКРАНОМ</div>
+
+    <div class="live-switch">
+      <div class="live-switch-title">Что показывать на проекторе</div>
+      <div class="mode-btns">
+        <button class="mode-btn active" id="mode-btn-rating" onclick="setLiveMode('rating')">
+          <div style="font-size:20px;margin-bottom:4px">🏆</div>
+          РЕЙТИНГ
+        </button>
+        <button class="mode-btn" id="mode-btn-poll" onclick="openPollSelector()">
+          <div style="font-size:20px;margin-bottom:4px">🗳️</div>
+          ОПРОС
+        </button>
+      </div>
+    </div>
+
+    <!-- Выбор опроса для live -->
+    <div id="poll-selector" style="display:none;" class="card">
+      <div class="card-title" style="margin-bottom:10px">Выберите опрос для показа</div>
+      <div id="poll-selector-list"></div>
+    </div>
+
+    <div class="card">
+      <div class="info-row"><span class="info-key">Текущий режим</span><span class="info-val" id="current-mode-label">Рейтинг</span></div>
+      <div class="info-row"><span class="info-key">Ссылка на live-экран</span><span class="info-val" style="font-size:11px;color:var(--cyan)">/live.html</span></div>
+      <div class="info-row"><span class="info-key">Обновление</span><span class="info-val">каждые 5 сек</span></div>
+    </div>
+
+    <button class="btn btn-primary" onclick="window.open('live.html','_blank')" style="margin-top:8px">
+      ОТКРЫТЬ LIVE-ЭКРАН ↗
     </button>
   </div>
 
-  <!-- Форма публикации -->
-  <div class="card">
-    <div class="card-title">Новое сообщение</div>
+  <!-- ═══ TAB: ОПРОСЫ ═══ -->
+  <div id="tab-polls" class="section">
+    <div class="section-title">УПРАВЛЕНИЕ ОПРОСАМИ</div>
 
-    <div class="type-row">
-      <button class="type-btn active-info" onclick="setType('info',this)" id="t-info">ℹ Инфо</button>
-      <button class="type-btn" onclick="setType('alert',this)" id="t-alert">⚡ Срочно</button>
-      <button class="type-btn" onclick="setType('success',this)" id="t-success">✓ Событие</button>
+    <!-- Добавить опрос -->
+    <div class="card">
+      <div class="card-title" style="margin-bottom:12px">Добавить новый вопрос</div>
+      <div class="field">
+        <label>Сессия (метка)</label>
+        <input type="text" id="new-poll-session" placeholder="// ПОСЛЕ_ДОКЛАДА_1" value="// SECURITY_TALKS">
+      </div>
+      <div class="field">
+        <label>Вопрос</label>
+        <textarea id="new-poll-q" placeholder="Текст вопроса..."></textarea>
+      </div>
+      <div class="field">
+        <label>Варианты ответов</label>
+        <div id="options-list">
+          <div class="option-row"><input type="text" class="opt-input" placeholder="Вариант 1"><button class="remove-opt" onclick="removeOpt(this)">×</button></div>
+          <div class="option-row"><input type="text" class="opt-input" placeholder="Вариант 2"><button class="remove-opt" onclick="removeOpt(this)">×</button></div>
+          <div class="option-row"><input type="text" class="opt-input" placeholder="Вариант 3"><button class="remove-opt" onclick="removeOpt(this)">×</button></div>
+        </div>
+        <button onclick="addOpt()" style="margin-top:8px;background:rgba(162,155,254,.1);border:1px solid var(--border2);color:var(--cyan);padding:8px 14px;border-radius:6px;cursor:pointer;font-size:13px;font-family:'Rajdhani',sans-serif;font-weight:700;">+ Добавить вариант</button>
+      </div>
+      <button class="btn btn-primary" onclick="addPoll()">ДОБАВИТЬ ОПРОС</button>
     </div>
 
-    <div class="card-title" style="margin-bottom:8px;">Шаблоны</div>
-    <div class="templates">
-      <button class="tpl" onclick="useTpl(this)">→ Начинается сессия 2 · Переходите в зал А</button>
-      <button class="tpl" onclick="useTpl(this)">🍽 Фуршет открыт · Зал Б, 3 этаж</button>
-      <button class="tpl" onclick="useTpl(this)">🏆 Розыгрыш начинается через 10 минут · Главная сцена</button>
-      <button class="tpl" onclick="useTpl(this)">⚡ Внимание: изменение программы</button>
-      <button class="tpl" onclick="useTpl(this)">🎤 Спикер отвечает на вопросы · Подходите к сцене</button>
+    <!-- Список опросов -->
+    <div class="section-title" style="margin-top:16px">Активные опросы</div>
+    <div id="polls-admin-list">
+      <div style="text-align:center;padding:20px;font-size:12px;color:var(--text2)">Загрузка...</div>
     </div>
-
-    <textarea id="msg-input" placeholder="Напишите сообщение для участников..." oninput="updateCount()"></textarea>
-    <div class="char-count"><span id="char-n">0</span> / 200</div>
-
-    <button class="publish-btn" onclick="publish()" id="pub-btn">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8l10-6-4 6 4 6z" fill="white"/></svg>
-      Опубликовать
-    </button>
   </div>
 
-  <!-- Лента -->
-  <div class="card">
-    <div class="card-title">Активные сообщения</div>
-    <div class="feed-list" id="feed-list"><div class="empty">Сообщений нет</div></div>
+  <!-- ═══ TAB: ОБЪЯВЛЕНИЯ ═══ -->
+  <div id="tab-announce" class="section">
+    <div class="section-title">ОБЪЯВЛЕНИЯ И БЕГУЩАЯ СТРОКА</div>
+    <div class="card">
+      <div class="field">
+        <label>Текст объявления</label>
+        <textarea id="ann-text" placeholder="Текст для бегущей строки и уведомления..."></textarea>
+      </div>
+      <div class="field">
+        <label>Тип</label>
+        <select id="ann-type">
+          <option value="info">Инфо (фиолетовый)</option>
+          <option value="alert">Важно (оранжевый)</option>
+          <option value="success">Успех (зелёный)</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" onclick="addAnnouncement()">ОПУБЛИКОВАТЬ</button>
+    </div>
+    <div class="section-title" style="margin-top:16px">Активные объявления</div>
+    <div id="announcements-list">
+      <div style="text-align:center;padding:20px;font-size:12px;color:var(--text2)">Загрузка...</div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: РЕЙТИНГ ═══ -->
+  <div id="tab-rating" class="section">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <div class="section-title" style="margin-bottom:0">РЕЙТИНГ УЧАСТНИКОВ</div>
+      <button onclick="loadRating()" style="background:var(--bg3);border:1px solid var(--border2);color:var(--cyan);padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-family:'Share Tech Mono',monospace;">↻ ОБНОВИТЬ</button>
+    </div>
+    <div id="rating-list">
+      <div style="text-align:center;padding:20px;font-size:12px;color:var(--text2)">Загрузка...</div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: ФИНАЛ ═══ -->
+  <div id="tab-finale" class="section">
+    <div class="section-title">ЗАВЕРШЕНИЕ МЕРОПРИЯТИЯ</div>
+    <div class="card" style="border-color:rgba(238,103,42,.3);">
+      <div class="card-title" style="color:var(--orange)">Запустить финальный экран</div>
+      <div class="card-sub" style="margin-bottom:14px;">Все участники увидят финальную анимацию с результатами. Действие необратимо.</div>
+      <button class="btn btn-orange" onclick="triggerFinale()">ЗАПУСТИТЬ ФИНАЛ 🏆</button>
+    </div>
+    <div class="card" style="margin-top:12px;">
+      <div class="card-title" style="margin-bottom:10px;">Статистика мероприятия</div>
+      <div id="stats-list">
+        <div style="text-align:center;padding:12px;font-size:12px;color:var(--text2)">Загрузка...</div>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="toast-adm" id="toast-adm"></div>
+<div class="toast" id="toast"></div>
 
 <script>
 const API = 'https://script.google.com/macros/s/AKfycbyDyYFwHvLPwHZSqd2abQCLhr9RaoqgVTA96OIw4-mxvRSRkioSe2Th2MD8LYiKhRFstw/exec';
 const SECRET = 'proway2025';
-let currentType = 'info';
 
-let finaleActive = false;
-
-async function toggleFinale() {
-  finaleActive = !finaleActive;
-  localStorage.setItem('finale_signal', finaleActive ? 'true' : 'false');
-
-  // Отправляем через announcements как спецсообщение
-  try {
-    const msg = finaleActive ? '__FINALE_START__' : '__FINALE_END__';
-    await fetch(`${API}?action=addAnnouncement&secret=${encodeURIComponent(SECRET)}&message=${encodeURIComponent(msg)}&type=info`);
-  } catch(e) {}
-
-  const btn = document.getElementById('finale-btn');
-  const status = document.getElementById('finale-status');
-  if (finaleActive) {
-    btn.style.background = 'linear-gradient(135deg,#00c864,#0a8a45)';
-    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="4" y="4" width="8" height="8" rx="1" fill="white"/></svg> Возобновить миссию';
-    status.textContent = '🔴 Миссия завершена — финальный экран активен';
-    status.style.color = '#ee672a';
-    showToast('Финальный экран активирован ✓');
-  } else {
-    btn.style.background = 'linear-gradient(135deg,#ee672a,#c0392b)';
-    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a6 6 0 100 12A6 6 0 008 2zM6 6l4 2-4 2V6z" fill="white"/></svg> Завершить миссию';
-    status.textContent = 'Миссия активна';
-    status.style.color = 'rgba(255,255,255,0.4)';
-    showToast('Миссия возобновлена');
-  }
-}
-
+// Локальные опросы (из приложения) + загруженные из API
+let localPolls = [
+  {id:'poll1',session:'// SECURITY_TALKS',question:'Что будет основным «рецептом» выживаемости вендоров на российском рынке?',options:['Регуляторка — соответствие требованиям','Технологии — развитие до мировых решений','Комплексный подход — экосистемы','Маркетинг — расширение аудитории'],votes:[0,0,0,0]},
+  {id:'poll2',session:'// ПРЯМАЯ_ЛИНИЯ',question:'Что является решающим фактором при выборе NGFW?',options:['Цена','Производительность','Функциональность','Сертификация','Другое'],votes:[0,0,0,0,0]},
+  {id:'poll3',session:'// ПРЯМАЯ_ЛИНИЯ',question:'Готовы ли российские ИБ-решения полностью заменить зарубежные?',options:['Полностью готовы','В большинстве сегментов','Есть пробелы','Пока не готовы'],votes:[0,0,0,0]},
+];
+let allPolls = [...localPolls];
+let currentLiveMode = 'rating';
+let currentLivePoll = null;
 let announcements = [];
 
-function checkPwd() {
-  const v = document.getElementById('pwd-input').value;
-  if (v === SECRET) {
-    document.getElementById('lock-screen').style.display = 'none';
-    document.getElementById('admin-panel').style.display = 'block';
-    loadFeed();
-    setInterval(loadFeed, 15000);
+// ── AUTH ──────────────────────────────────────────────
+function doLogin(){
+  const pwd = document.getElementById('pwd').value;
+  if(pwd === SECRET){
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('main-screen').style.display = 'block';
+    init();
   } else {
-    document.getElementById('lock-err').style.display = 'block';
+    showToast('// НЕВЕРНЫЙ ПАРОЛЬ');
+    document.getElementById('pwd').value = '';
   }
 }
 
-function setType(type, btn) {
-  currentType = type;
-  ['info','alert','success'].forEach(t => {
-    const b = document.getElementById('t-'+t);
-    b.className = 'type-btn';
-    if(t===type) b.className = 'type-btn active-'+t;
+function init(){
+  loadRating();
+  loadAnnouncements();
+  loadLiveMode();
+  renderPollsAdmin();
+  setInterval(()=>{
+    if(document.getElementById('tab-rating').classList.contains('active')) loadRating();
+    if(document.getElementById('tab-polls').classList.contains('active')) refreshPollVotes();
+  }, 10000);
+}
+
+// ── TABS ──────────────────────────────────────────────
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach((t,i)=>{
+    t.classList.toggle('active', t.textContent.toLowerCase().includes(name) || 
+      (name==='live'&&i===0)||(name==='polls'&&i===1)||(name==='announce'&&i===2)||(name==='rating'&&i===3)||(name==='finale'&&i===4));
   });
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  if(name==='rating') loadRating();
+  if(name==='announce') loadAnnouncements();
+  if(name==='polls') renderPollsAdmin();
+  if(name==='finale') loadStats();
 }
 
-function useTpl(btn) {
-  document.getElementById('msg-input').value = btn.textContent.trim();
-  updateCount();
+// ── API ──────────────────────────────────────────────
+async function api(params){
+  const url = new URL(API);
+  Object.entries(params).forEach(([k,v])=>url.searchParams.set(k,v));
+  const r = await fetch(url, {redirect:'follow'});
+  return r.json();
 }
 
-function updateCount() {
-  const n = document.getElementById('msg-input').value.length;
-  document.getElementById('char-n').textContent = n;
+// ── LIVE MODE ─────────────────────────────────────────
+function loadLiveMode(){
+  const saved = localStorage.getItem('liveMode') || 'rating';
+  const savedPoll = localStorage.getItem('livePoll');
+  currentLiveMode = saved;
+  currentLivePoll = savedPoll;
+  updateLiveModeUI();
 }
 
-async function publish() {
-  const msg = document.getElementById('msg-input').value.trim();
-  if (!msg) return showToast('Напишите сообщение');
-  if (msg.length > 200) return showToast('Слишком длинное');
-  const btn = document.getElementById('pub-btn');
-  btn.disabled = true;
-  btn.textContent = 'Публикую...';
-  try {
-    const url = `${API}?action=addAnnouncement&secret=${encodeURIComponent(SECRET)}&message=${encodeURIComponent(msg)}&type=${currentType}`;
-    await fetch(url);
-    document.getElementById('msg-input').value = '';
-    updateCount();
-    showToast('Опубликовано ✓');
-    loadFeed();
-  } catch(e) {
-    showToast('Ошибка соединения');
-  }
-  btn.disabled = false;
-  btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8l10-6-4 6 4 6z" fill="white"/></svg> Опубликовать';
+function setLiveMode(mode, pollId){
+  currentLiveMode = mode;
+  currentLivePoll = pollId || null;
+  localStorage.setItem('liveMode', mode);
+  localStorage.setItem('livePoll', pollId || '');
+  // Сохраняем в API как объявление-команду
+  api({action:'addAnnouncement', secret:SECRET,
+    message: '__LIVE_MODE__' + mode + (pollId?':'+pollId:''),
+    type:'info'
+  });
+  updateLiveModeUI();
+  showToast(mode==='rating' ? '// LIVE: РЕЙТИНГ' : '// LIVE: ОПРОС');
 }
 
-async function loadFeed() {
-  try {
-    const r = await fetch(`${API}?action=getAnnouncements`);
-    const d = await r.json();
-    announcements = d.announcements || [];
-    renderFeed();
-  } catch(e) {}
+function updateLiveModeUI(){
+  document.getElementById('mode-btn-rating').classList.toggle('active', currentLiveMode==='rating');
+  document.getElementById('mode-btn-poll').classList.toggle('active', currentLiveMode==='poll');
+  const label = currentLiveMode==='rating' ? 'Рейтинг' : 
+    'Опрос: ' + (allPolls.find(p=>p.id===currentLivePoll)?.question?.slice(0,30)+'...' || '?');
+  document.getElementById('current-mode-label').textContent = label;
+  document.getElementById('live-mode-badge').textContent = 'LIVE: ' + (currentLiveMode==='rating'?'РЕЙТИНГ':'ОПРОС');
 }
 
-function renderFeed() {
-  const el = document.getElementById('feed-list');
-  if (!announcements.length) { el.innerHTML = '<div class="empty">Сообщений нет</div>'; return; }
-  el.innerHTML = announcements.map(a => {
-    const type = a.type || 'info';
-    const time = a.created_at ? new Date(a.created_at).toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'}) : '';
-    return `<div class="feed-item ${type}">
-      <div class="feed-dot ${type}"></div>
-      <div class="feed-body">
-        <div class="feed-text">${a.message}</div>
-        <div class="feed-meta">${time}</div>
+function openPollSelector(){
+  const sel = document.getElementById('poll-selector');
+  const list = document.getElementById('poll-selector-list');
+  sel.style.display = sel.style.display==='none' ? 'block' : 'none';
+  list.innerHTML = allPolls.map(p=>`
+    <div style="padding:10px;border-bottom:1px solid var(--border);cursor:pointer;border-radius:6px"
+         onclick="setLiveMode('poll','${p.id}');document.getElementById('poll-selector').style.display='none'">
+      <div style="font-size:12px;color:var(--cyan);margin-bottom:2px;font-family:'Share Tech Mono',monospace">${p.session}</div>
+      <div style="font-size:13px;color:var(--white)">${p.question}</div>
+    </div>
+  `).join('');
+}
+
+// ── POLLS ─────────────────────────────────────────────
+function renderPollsAdmin(){
+  const el = document.getElementById('polls-admin-list');
+  el.innerHTML = allPolls.map(p=>{
+    const total = p.votes.reduce((a,b)=>a+b,0)||1;
+    const isLive = currentLivePoll===p.id && currentLiveMode==='poll';
+    return`<div class="card" style="${isLive?'border-color:var(--cyan)':''}">
+      <div class="card-header">
+        <div>
+          <div class="card-title">${p.question}</div>
+          <div class="card-sub">${p.session} · ${p.votes.reduce((a,b)=>a+b,0)} голосов</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-direction:column;align-items:flex-end">
+          ${isLive?'<span class="badge badge-cyan">LIVE</span>':''}
+          <button class="btn-sm btn-primary" onclick="setLiveMode('poll','${p.id}')">НА ЭКРАН</button>
+        </div>
       </div>
-      <button class="feed-del" onclick="deleteMsg('${a.id}')">✕</button>
+      ${p.options.map((opt,i)=>{
+        const pct=Math.round(p.votes[i]/total*100);
+        return`<div style="margin-bottom:6px">
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px">
+            <span style="color:var(--text)">${opt}</span>
+            <span style="color:var(--cyan);font-family:'Share Tech Mono',monospace">${pct}% (${p.votes[i]})</span>
+          </div>
+          <div style="height:6px;background:var(--bg3);border-radius:3px;overflow:hidden">
+            <div style="height:100%;background:var(--violet);width:${pct}%;transition:width .6s;border-radius:3px"></div>
+          </div>
+        </div>`;
+      }).join('')}
     </div>`;
   }).join('');
 }
 
-async function deleteMsg(id) {
-  try {
-    await fetch(`${API}?action=deleteAnnouncement&secret=${encodeURIComponent(SECRET)}&id=${id}`);
-    showToast('Удалено');
-    loadFeed();
-  } catch(e) {}
+async function refreshPollVotes(){
+  try{
+    const res = await api({action:'getPollResults'});
+    if(res.polls){
+      res.polls.forEach(serverPoll=>{
+        const local = allPolls.find(p=>p.id===serverPoll.id);
+        if(local) local.votes = serverPoll.votes;
+      });
+      renderPollsAdmin();
+    }
+  }catch(e){}
 }
 
-function showToast(msg) {
-  const t = document.getElementById('toast-adm');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+function addOpt(){
+  const list = document.getElementById('options-list');
+  const div = document.createElement('div');
+  div.className = 'option-row';
+  div.innerHTML = `<input type="text" class="opt-input" placeholder="Вариант ${list.children.length+1}"><button class="remove-opt" onclick="removeOpt(this)">×</button>`;
+  list.appendChild(div);
+}
+
+function removeOpt(btn){
+  const list = document.getElementById('options-list');
+  if(list.children.length > 2){ btn.parentElement.remove(); }
+  else { showToast('// МИНИМУМ 2 ВАРИАНТА'); }
+}
+
+async function addPoll(){
+  const session = document.getElementById('new-poll-session').value.trim();
+  const question = document.getElementById('new-poll-q').value.trim();
+  const opts = [...document.querySelectorAll('.opt-input')].map(i=>i.value.trim()).filter(Boolean);
+  if(!question || opts.length < 2){ showToast('// ЗАПОЛНИ ВОПРОС И ВАРИАНТЫ'); return; }
+  const id = 'poll_' + Date.now();
+  const newPoll = {id, session, question, options:opts, votes:opts.map(()=>0)};
+  // Сохраняем через API
+  try{
+    await api({action:'addPoll', secret:SECRET, id, session, question, options:JSON.stringify(opts)});
+    showToast('// ОПРОС ДОБАВЛЕН');
+  }catch(e){
+    showToast('// СОХРАНЕНО ЛОКАЛЬНО');
+  }
+  allPolls.push(newPoll);
+  renderPollsAdmin();
+  document.getElementById('new-poll-q').value = '';
+  document.querySelectorAll('.opt-input').forEach((el,i)=>{ el.value=''; el.placeholder=`Вариант ${i+1}`; });
+}
+
+// ── ANNOUNCEMENTS ─────────────────────────────────────
+async function loadAnnouncements(){
+  try{
+    const res = await api({action:'getAnnouncements'});
+    announcements = (res.announcements||[]).filter(a=>!a.message.startsWith('__'));
+    renderAnnouncements();
+  }catch(e){}
+}
+
+function renderAnnouncements(){
+  const el = document.getElementById('announcements-list');
+  if(!announcements.length){
+    el.innerHTML = '<div style="text-align:center;padding:16px;font-size:12px;color:var(--text2)">Нет активных объявлений</div>';
+    return;
+  }
+  el.innerHTML = announcements.map(a=>{
+    const colors = {info:'var(--violet)',alert:'var(--orange)',success:'var(--green)'};
+    const time = a.created_at ? new Date(a.created_at).toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'}) : '';
+    return`<div class="ann-item">
+      <div class="ann-dot" style="background:${colors[a.type]||colors.info}"></div>
+      <div style="flex:1">
+        <div class="ann-text">${a.message}</div>
+        <div class="ann-time">${time}</div>
+      </div>
+      <button class="ann-del" onclick="deleteAnn('${a.id}')">×</button>
+    </div>`;
+  }).join('');
+}
+
+async function addAnnouncement(){
+  const text = document.getElementById('ann-text').value.trim();
+  const type = document.getElementById('ann-type').value;
+  if(!text){ showToast('// ВВЕДИ ТЕКСТ'); return; }
+  try{
+    await api({action:'addAnnouncement', secret:SECRET, message:text, type});
+    document.getElementById('ann-text').value = '';
+    showToast('// ОПУБЛИКОВАНО');
+    await loadAnnouncements();
+  }catch(e){ showToast('// ОШИБКА СЕТИ'); }
+}
+
+async function deleteAnn(id){
+  try{
+    await api({action:'deleteAnnouncement', secret:SECRET, id});
+    showToast('// УДАЛЕНО');
+    await loadAnnouncements();
+  }catch(e){ showToast('// ОШИБКА'); }
+}
+
+// ── RATING ────────────────────────────────────────────
+async function loadRating(){
+  try{
+    const res = await api({action:'getLeaderboard'});
+    const lb = res.leaderboard || [];
+    const el = document.getElementById('rating-list');
+    if(!lb.length){ el.innerHTML='<div style="text-align:center;padding:16px;font-size:12px;color:var(--text2)">Нет участников</div>'; return; }
+    el.innerHTML = `<div class="card">${lb.map((p,i)=>`
+      <div class="lb-row">
+        <div class="lb-pos ${i===0?'gold':''}">${i+1}</div>
+        <div style="flex:1">
+          <div class="lb-name">${p.name}</div>
+          <div class="lb-co">${p.company} · ${p.codename||''}</div>
+        </div>
+        <div class="lb-pts">${p.points} б</div>
+      </div>`).join('')}</div>`;
+    // Обновляем статистику
+    document.getElementById('stats-list').innerHTML = `
+      <div class="info-row"><span class="info-key">Участников</span><span class="info-val">${lb.length}</span></div>
+      <div class="info-row"><span class="info-key">Топ-1</span><span class="info-val">${lb[0]?.name||'—'} · ${lb[0]?.points||0} б</span></div>
+      <div class="info-row"><span class="info-key">Средний балл</span><span class="info-val">${Math.round(lb.reduce((a,p)=>a+p.points,0)/lb.length)||0} б</span></div>
+    `;
+  }catch(e){ showToast('// ОШИБКА ЗАГРУЗКИ'); }
+}
+
+// ── STATS ─────────────────────────────────────────────
+function loadStats(){ loadRating(); }
+
+// ── FINALE ────────────────────────────────────────────
+async function triggerFinale(){
+  if(!confirm('Запустить финальный экран для всех участников?')) return;
+  try{
+    await api({action:'addAnnouncement', secret:SECRET, message:'__FINALE_START__', type:'info'});
+    showToast('// ФИНАЛ ЗАПУЩЕН 🏆');
+  }catch(e){ showToast('// ОШИБКА'); }
+}
+
+// ── TOAST ─────────────────────────────────────────────
+let toastTimer;
+function showToast(m){
+  const t=document.getElementById('toast');
+  t.textContent=m; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2500);
 }
 </script>
 </body>
