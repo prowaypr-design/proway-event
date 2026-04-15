@@ -8,7 +8,7 @@
 <link rel="manifest" href="manifest.json">
 <title>PROWAY Security Day</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Bangers&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#080920;--bg2:#0e0f28;--bg3:#13152f;
@@ -208,14 +208,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .prog-title{font-size:13px;font-weight:600;color:#fff;line-height:1.3;margin-bottom:2px;}
 .prog-speaker{font-size:11px;color:var(--text2);}
 
-/* SPEAKERS */
-.speaker-list{padding:0 14px;}
-.speaker-card{background:var(--bg2);border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;padding:11px 13px;margin-bottom:8px;display:flex;align-items:center;gap:12px;}
-.sp-av{width:40px;height:40px;border-radius:50%;border:0.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
-.sp-name{font-size:13px;font-weight:600;color:#fff;}
-.sp-co{font-size:11px;font-weight:600;margin-top:1px;}
-.sp-role{font-size:10px;color:var(--text2);margin-top:1px;}
-
 /* VENDORS */
 .vendor-prog{margin:12px 14px;background:var(--bg2);border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;}
 .vp-label{font-size:10px;font-weight:700;color:var(--text2);letter-spacing:2px;}
@@ -275,7 +267,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .bell-btn{width:36px;height:36px;border-radius:50%;border:1.5px solid rgba(108,92,231,0.4);background:rgba(108,92,231,0.08);display:flex;align-items:center;justify-content:center;}
 .bell-badge{position:absolute;top:-3px;right:-3px;width:16px;height:16px;background:#ee672a;border-radius:50%;font-size:9px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;display:none;}
 .bell-badge.show{display:flex;}
-
 .notif-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:400;opacity:0;pointer-events:none;transition:opacity 0.2s;}
 .notif-overlay.show{opacity:1;pointer-events:auto;}
 .notif-panel{position:fixed;top:0;right:0;bottom:0;width:min(340px,100vw);background:#0e0f28;border-left:0.5px solid rgba(108,92,231,0.3);z-index:401;transform:translateX(100%);transition:transform 0.3s ease;display:flex;flex-direction:column;}
@@ -290,12 +281,11 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .notif-dot{width:8px;height:8px;border-radius:50%;background:#6c5ce7;flex-shrink:0;margin-top:5px;}
 .notif-dot.alert{background:#ee672a;}
 .notif-dot.success{background:#00c864;}
-.notif-body{}
 .notif-text{font-size:13px;color:rgba(255,255,255,0.85);line-height:1.5;margin-bottom:3px;}
 .notif-time{font-size:10px;color:rgba(255,255,255,0.3);}
 .notif-empty{text-align:center;padding:40px 20px;font-size:12px;color:rgba(255,255,255,0.25);}
 
-/* ЭКРАН ЛЕНТА */
+/* FEED */
 .feed-card{background:#0e0f28;border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;padding:12px 14px;margin:0 14px 10px;border-left:3px solid #6c5ce7;}
 .feed-card.alert{border-left-color:#ee672a;}
 .feed-card.success{border-left-color:#00c864;}
@@ -308,7 +298,9 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .feed-how-num{width:22px;height:22px;border-radius:50%;background:rgba(108,92,231,0.2);border:0.5px solid rgba(108,92,231,0.4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#a29bfe;flex-shrink:0;}
 .feed-how-text{font-size:12px;color:rgba(255,255,255,0.6);line-height:1.5;padding-top:2px;}
 
-/* NETWORK ACTIONS */
+
+.how-icon{width:40px;height:40px;border-radius:10px;background:rgba(108,92,231,0.15);border:0.5px solid rgba(108,92,231,0.35);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#a29bfe;}
+/* NET ACTIONS */
 .net-actions{display:flex;gap:6px;margin-top:8px;}
 .net-btn{flex:1;padding:7px 10px;border-radius:10px;border:0.5px solid rgba(108,92,231,0.25);background:transparent;font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;}
 .net-btn:active{opacity:0.7;}
@@ -345,7 +337,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .ach-banner{position:fixed;top:80px;left:14px;right:14px;background:#0e0f28;border:0.5px solid rgba(108,92,231,0.4);border-left:3px solid #f5e642;border-radius:14px;padding:14px 16px;z-index:350;opacity:0;transform:translateY(-20px);transition:all 0.4s;pointer-events:none;display:flex;align-items:center;gap:12px;}
 .ach-banner.show{opacity:1;transform:translateY(0);}
 .ach-banner-icon{font-size:28px;flex-shrink:0;}
-.ach-banner-body{}
 .ach-banner-title{font-size:11px;font-weight:700;color:#f5e642;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;}
 .ach-banner-name{font-size:14px;font-weight:700;color:#fff;}
 
@@ -368,27 +359,19 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .finale-btn-sec{width:100%;max-width:320px;padding:14px;background:transparent;border:0.5px solid rgba(108,92,231,0.4);border-radius:16px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;font-family:'Inter',sans-serif;}
 .finale-radar{position:absolute;opacity:0.05;pointer-events:none;}
 
-/* ── PRE-LAUNCH SCREENS ─────────────────────────────── */
+/* PRE-LAUNCH */
 .prelaunch-screen{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;overflow-y:auto;z-index:1000;}
 .prelaunch-screen.hidden{display:none;}
-
-/* Countdown */
-#countdown{display:flex;gap:12px;justify-content:center;margin:20px 0;}
+#countdown,#countdown2{display:flex;gap:12px;justify-content:center;margin:20px 0;}
 .cd-block{display:flex;flex-direction:column;align-items:center;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:12px 16px;min-width:64px;}
 .cd-num{font-family:'Bangers',cursive;font-size:2.4rem;color:var(--cyan);line-height:1;letter-spacing:2px;}
 .cd-lbl{font-size:.6rem;font-weight:700;color:var(--text2);letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
-
-/* Grid bg */
 .pl-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
 .pl-glow{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(108,92,231,.12),transparent 70%);top:-100px;left:50%;transform:translateX(-50%);pointer-events:none;}
-
-/* Mechanic cards */
 .mech-card{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:12px 14px;display:flex;align-items:flex-start;gap:12px;margin-bottom:8px;}
 .mech-icon{width:36px;height:36px;border-radius:6px;background:rgba(108,92,231,.15);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;}
 .mech-title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:3px;}
 .mech-text{font-size:12px;color:var(--text2);line-height:1.5;}
-
-/* Done screen */
 .agent-done-card{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:20px;display:flex;align-items:center;gap:16px;margin:0 16px;}
 .agent-done-av{width:72px;height:72px;border-radius:50%;border:2px solid var(--violet);overflow:hidden;flex-shrink:0;}
 .agent-done-av img{width:100%;height:100%;object-fit:cover;}
@@ -400,7 +383,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   <div class="ticker-label">LIVE</div>
   <div class="ticker-track">
     <div class="ticker-inner" id="ticker-inner">
-      <span class="ticker-msg">ДОБРО ПОЖАЛОВАТЬ НА БОРТ PROWAY SECURITY DAY 2025</span>
+      <span class="ticker-msg">ДОБРО ПОЖАЛОВАТЬ НА БОРТ PROWAY SECURITY DAY 2026</span>
       <span class="ticker-sep"> · </span>
       <span class="ticker-msg">СКАНИРУЙ QR-КОДЫ НА СТЕНДАХ И ОТКРЫВАЙ ГЛАВЫ СВОЕГО ДОСЬЕ</span>
       <span class="ticker-sep"> · </span>
@@ -418,7 +401,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   <div class="ob-hero">
     <div class="ob-grid"></div>
     <div class="ob-glow"></div>
-    <div class="ob-eyebrow">// PROWAY_SECURITY_DAY_2025</div>
+    <div class="ob-eyebrow">// PROWAY_SECURITY_DAY_2026</div>
     <div class="ob-title">МИР<br><span class="accent">ПОД</span><br>УГРОЗОЙ</div>
     <div class="ob-line"></div>
     <div class="ob-speech">
@@ -465,16 +448,20 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
       <div><div class="field-label">// ОРГАНИЗАЦИЯ</div><input type="text" id="reg-company" class="field-input" placeholder="Название компании"></div>
       <div><div class="field-label">// ДОЛЖНОСТЬ</div><input type="text" id="reg-role" class="field-input" placeholder="ИТ-директор"></div>
       <div>
-        <div class="field-label">// СПЕЦИАЛИЗАЦИЯ (до 3)</div>
+        <div class="field-label">// ВЫ ПРЕДСТАВЛЯЕТЕ</div>
         <div class="tags-wrap" id="tags-wrap">
-          <button class="itag" data-val="NGFW">NGFW</button>
-          <button class="itag" data-val="SOC/SIEM">SOC/SIEM</button>
-          <button class="itag" data-val="Пентест">Пентест</button>
-          <button class="itag" data-val="Zero Trust">Zero Trust</button>
-          <button class="itag" data-val="DLP">DLP</button>
-          <button class="itag" data-val="PAM">PAM</button>
-          <button class="itag" data-val="Криптография">Крипто</button>
-          <button class="itag" data-val="Compliance">Compliance</button>
+          <button class="itag" data-val="PROWAY">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="vertical-align:middle;margin-right:4px"><rect x="1" y="1" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M4 7h6M4 4.5h3M4 9.5h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            PROWAY
+          </button>
+          <button class="itag" data-val="вендор">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="vertical-align:middle;margin-right:4px"><circle cx="7" cy="5" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M2 12.5c0-2.761 2.239-5 5-5s5 2.239 5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M9.5 3.5l1.5-1.5M4.5 3.5L3 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Вендор
+          </button>
+          <button class="itag" data-val="интегратор">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="vertical-align:middle;margin-right:4px"><circle cx="3" cy="7" r="1.5" stroke="currentColor" stroke-width="1.3"/><circle cx="11" cy="3" r="1.5" stroke="currentColor" stroke-width="1.3"/><circle cx="11" cy="11" r="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4.4 6.5L9.5 3.8M4.4 7.5L9.5 10.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Интегратор
+          </button>
         </div>
       </div>
       <button class="ob-btn" onclick="register()">ПРИСТУПИТЬ К МИССИИ ›</button>
@@ -485,24 +472,16 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 <!-- APP -->
 <div id="app" style="display:none;">
 
-  <!-- ПРОФИЛЬ -->
-  
-
-<!-- QR MODAL -->
 <div class="qr-modal-overlay" id="qr-modal-overlay" onclick="closeQrModal()">
   <div class="qr-modal" onclick="event.stopPropagation()">
     <div class="qr-modal-title">Мой QR-код</div>
     <div class="qr-modal-sub">Попроси другого участника отсканировать</div>
-    <div class="qr-modal-code">
-      <img id="qr-modal-img" src="" alt="QR">
-    </div>
+    <div class="qr-modal-code"><img id="qr-modal-img" src="" alt="QR"></div>
     <div class="qr-modal-pts">+10 баллов за знакомство</div>
     <button class="qr-modal-close" onclick="closeQrModal()">Закрыть</button>
   </div>
 </div>
 
-
-<!-- FINALE SCREEN -->
 <div class="finale-overlay" id="finale-overlay">
   <svg class="finale-radar" width="400" height="400" viewBox="0 0 400 400" fill="none">
     <circle cx="200" cy="200" r="180" stroke="white" stroke-width="0.5"/>
@@ -511,14 +490,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     <circle cx="200" cy="200" r="40" stroke="white" stroke-width="0.5"/>
     <line x1="200" y1="20" x2="200" y2="380" stroke="white" stroke-width="0.5"/>
     <line x1="20" y1="200" x2="380" y2="200" stroke="white" stroke-width="0.5"/>
-    <line x1="73" y1="73" x2="327" y2="327" stroke="white" stroke-width="0.5"/>
-    <line x1="327" y1="73" x2="73" y2="327" stroke="white" stroke-width="0.5"/>
   </svg>
-  <div class="finale-stars">
-    <div class="finale-star"></div>
-    <div class="finale-star"></div>
-    <div class="finale-star"></div>
-  </div>
+  <div class="finale-stars"><div class="finale-star"></div><div class="finale-star"></div><div class="finale-star"></div></div>
   <div class="finale-badge">МИССИЯ ВЫПОЛНЕНА</div>
   <div class="finale-title">СПАСИБО,<br>АГЕНТ!</div>
   <div class="finale-sub">Ты сделал этот день особенным.<br>Твой вклад в безопасность цифрового мира бесценен.</div>
@@ -531,7 +504,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   </button>
   <button class="finale-btn-sec" onclick="document.getElementById('finale-overlay').classList.remove('show')">Вернуться в приложение</button>
 </div>
-<!-- ACHIEVEMENT BANNER -->
+
 <div class="ach-banner" id="ach-banner">
   <div class="ach-banner-icon" id="ach-banner-icon">🏆</div>
   <div class="ach-banner-body">
@@ -539,7 +512,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     <div class="ach-banner-name" id="ach-banner-name"></div>
   </div>
 </div>
-<!-- NOTIFICATION PANEL -->
+
 <div class="notif-overlay" id="notif-overlay" onclick="closeNotifPanel()"></div>
 <div class="notif-panel" id="notif-panel">
   <div class="notif-header">
@@ -552,172 +525,147 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 </div>
 
 <div id="screen-profile" class="app-screen active">
-    <div class="topbar">
-      <div><div class="topbar-logo">PROWAY</div><div class="topbar-sub">SECURITY DAY 2025</div></div>
-      <div class="topbar-right">
-        <div class="bell-wrap" onclick="openNotifPanel()">
-          <div class="bell-btn">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M8 2a5 5 0 00-5 5v3l-1 1.5h12L13 10V7a5 5 0 00-5-5z" stroke="#a29bfe" stroke-width="1.3" stroke-linejoin="round"/>
-              <path d="M6.5 13.5a1.5 1.5 0 003 0" stroke="#a29bfe" stroke-width="1.3" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <div class="bell-badge" id="bell-badge">0</div>
+  <div class="topbar">
+    <div><div class="topbar-logo">PROWAY</div><div class="topbar-sub">SECURITY DAY 2026</div></div>
+    <div class="topbar-right">
+      <div class="bell-wrap" onclick="openNotifPanel()">
+        <div class="bell-btn">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a5 5 0 00-5 5v3l-1 1.5h12L13 10V7a5 5 0 00-5-5z" stroke="#a29bfe" stroke-width="1.3" stroke-linejoin="round"/><path d="M6.5 13.5a1.5 1.5 0 003 0" stroke="#a29bfe" stroke-width="1.3" stroke-linecap="round"/></svg>
         </div>
-        <div class="topbar-av"><img id="p-av-img" src="" alt="" style="display:none;"><span id="p-av-emoji">◈</span></div>
+        <div class="bell-badge" id="bell-badge">0</div>
       </div>
+      <div class="topbar-av"><img id="p-av-img" src="" alt="" style="display:none;"><span id="p-av-emoji">◈</span></div>
     </div>
-    <div class="hero-block">
-      <div class="pts-row">
-        <div><div class="pts-label">// БАЛЛЫ</div><div><span class="pts-big" id="p-pts">0</span><span class="pts-unit">Б</span></div></div>
-        <div class="rank-box"><div class="rank-n" id="p-rank">#—</div><div class="rank-l">МЕСТО</div></div>
-      </div>
-      <div class="prog-row"><span class="prog-lbl">ДО ПРИЗА</span><span class="prog-pct" id="p-pct">0%</span></div>
-      <div class="prog-track"><div class="prog-fill" id="p-bar"></div></div>
-    </div>
-    <div class="stats-grid">
-      <div class="sg-cell"><div class="sg-n" id="s-vendors">0</div><div class="sg-l">СТЕНДЫ</div></div>
-      <div class="sg-cell"><div class="sg-n" id="s-polls">0</div><div class="sg-l">ОПРОСЫ</div></div>
-      <div class="sg-cell"><div class="sg-n accent" id="s-rank2">—</div><div class="sg-l">МЕСТО</div></div>
-    </div>
-    <div style="height:12px;"></div>
-    <div style="padding:0 14px 12px;">
-      <button onclick="showQrModal()" style="width:100%;padding:12px;background:rgba(108,92,231,0.1);border:0.5px solid rgba(108,92,231,0.3);border-radius:14px;font-size:13px;font-weight:700;color:#a29bfe;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1" stroke="#a29bfe" stroke-width="1.3"/><rect x="9" y="1" width="6" height="6" rx="1" stroke="#a29bfe" stroke-width="1.3"/><rect x="1" y="9" width="6" height="6" rx="1" stroke="#a29bfe" stroke-width="1.3"/><rect x="10" y="10" width="2" height="2" fill="#a29bfe"/><rect x="13" y="10" width="2" height="2" fill="#a29bfe"/><rect x="10" y="13" width="2" height="2" fill="#a29bfe"/><rect x="13" y="13" width="2" height="2" fill="#a29bfe"/></svg>
-        Показать мой QR
-      </button>
-    </div>
-    <div class="section-hdr"><div class="section-hdr-title">МОЯ КАРТОЧКА</div><div class="section-hdr-sub">// ДОСЬЕ АГЕНТА</div></div>
-    <div class="agent-card-full" id="agent-full-card"><div class="loader">ЗАГРУЗКА...</div></div>
-    <div class="section-hdr" style="margin-top:0;"><div class="section-hdr-title">ДОСТИЖЕНИЯ</div><div class="section-hdr-sub">// РАЗБЛОКИРОВАНО</div></div>
-    <div class="ach-section">
-      <div class="ach-grid" id="ach-grid">
-        <div class="ach-item" id="ach-register"><div class="ach-icon">🎖️</div><div class="ach-name">Первый шаг</div></div>
-        <div class="ach-item" id="ach-vendors"><div class="ach-icon">🗺️</div><div class="ach-name">Все стенды</div></div>
-        <div class="ach-item" id="ach-polls"><div class="ach-icon">🧠</div><div class="ach-name">Аналитик</div></div>
-        <div class="ach-item" id="ach-network"><div class="ach-icon">🤝</div><div class="ach-name">Связной</div></div>
-        <div class="ach-item" id="ach-top3"><div class="ach-icon">🏆</div><div class="ach-name">Топ-3</div></div>
-        <div class="ach-item" id="ach-100pts"><div class="ach-icon">⚡</div><div class="ach-name">100 баллов</div></div>
-      </div>
-    </div>
-    <div style="padding:0 14px 4px;">
-      <button class="share-card-btn" onclick="generateShareCard()">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 5l3-3 3 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11v2a1 1 0 001 1h10a1 1 0 001-1v-2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
-        Скачать карточку агента
-      </button>
-    </div>
-    <canvas id="share-canvas" style="display:none;"></canvas>
-    <div style="height:12px;"></div>
-    <div class="section-hdr"><div class="section-hdr-title">БАЗА</div><div class="section-hdr-sub">// ЛОКАЦИЯ</div></div>
-    <div class="info-block">
-      <div class="info-row"><div class="info-icon">✈</div><div><div class="info-title">Воробьевы Холл</div><div class="info-text">ул. Косыгина 28с1, Москва</div></div></div>
-      <div class="info-row"><div class="info-icon">🚇</div><div><div class="info-title">Метро</div><div class="info-text">Воробьевы горы, выход №2, по Эскалаторной галерее направо 500 м</div></div></div>
-      <div class="info-row"><div class="info-icon">🚕</div><div><div class="info-title">Такси</div><div class="info-text">ул. Косыгина 28с1</div></div></div>
-    </div>
-    <div class="section-hdr" style="margin-top:0;"><div class="section-hdr-title">ВЕЧЕР</div><div class="section-hdr-sub">// ПРОГРАММА</div></div>
-    <div class="info-block">
-      <div class="info-row"><div class="info-icon">🍽</div><div><div class="info-title">Фуршетный дозаправщик</div><div class="info-text">Закуски и напитки</div></div></div>
-      <div class="info-row"><div class="info-icon">🏆</div><div><div class="info-title">Награждение агентов</div><div class="info-text">Лучшие получают призы на сцене</div></div></div>
-      <div class="info-row"><div class="info-icon">🎤</div><div><div class="info-title">Кавер-авиашоу + DJ</div><div class="info-text">Танцуем пока не кончится топливо!</div></div></div>
-      <div class="info-row"><div class="info-icon">🚡</div><div><div class="info-title">VIP-кабина канатной дороги</div><div class="info-text">Приватные беседы с видом на Москву</div></div></div>
-    </div>
-    <div class="section-hdr" style="margin-top:0;"><div class="section-hdr-title">РОЗЫГРЫШ</div><div class="section-hdr-sub">// ПРИЗЫ</div></div>
-    <div class="info-block">
-      <div class="info-row"><div class="info-icon">🎁</div><div><div class="info-title">6 × Telegram Premium на год</div><div class="info-text">Участвуй в опросах и сканируй стенды — повышай шансы!</div></div></div>
-    </div>
-    <div style="height:12px;"></div>
   </div>
-
-  <!-- ЛЕНТА -->
-  <div id="screen-feed" class="app-screen">
-    <div class="topbar">
-      <div><div class="topbar-logo">ЛЕНТА</div><div class="topbar-sub">// LIVE · ОБНОВЛЕНИЯ</div></div>
+  <div class="hero-block">
+    <div class="pts-row">
+      <div><div class="pts-label">// БАЛЛЫ</div><div><span class="pts-big" id="p-pts">0</span><span class="pts-unit">Б</span></div></div>
+      <div class="rank-box"><div class="rank-n" id="p-rank">#—</div><div class="rank-l">МЕСТО</div></div>
     </div>
-    <div style="height:12px;"></div>
-    <div class="feed-how-block">
-      <div class="feed-how-title">Как играть</div>
-      <div class="feed-how-item">
-        <div class="feed-how-num">1</div>
-        <div class="feed-how-text">Зарегистрируйся и получи агента — он твой персонаж на весь день</div>
-      </div>
-      <div class="feed-how-item">
-        <div class="feed-how-num">2</div>
-        <div class="feed-how-text">Сканируй QR-коды на стендах вендоров — каждый даёт +20 баллов</div>
-      </div>
-      <div class="feed-how-item">
-        <div class="feed-how-num">3</div>
-        <div class="feed-how-text">Голосуй в опросах после каждого доклада — +15 баллов за голос</div>
-      </div>
-      <div class="feed-how-item">
-        <div class="feed-how-num">4</div>
-        <div class="feed-how-text">Задавай вопросы спикерам — если твой выберут на трансляцию, +50 баллов</div>
-      </div>
-      <div class="feed-how-item">
-        <div class="feed-how-num">5</div>
-        <div class="feed-how-text">Лучшие агенты по итогу получают призы на главной сцене</div>
-      </div>
-    </div>
-    <div class="section-hdr"><div class="section-hdr-title">ОБНОВЛЕНИЯ</div><div class="section-hdr-sub">// LIVE</div></div>
-    <div style="height:8px;"></div>
-    <div id="feed-screen-list"><div class="loader">ЗАГРУЗКА...</div></div>
-    <div style="height:12px;"></div>
+    <div class="prog-row"><span class="prog-lbl">ДО ПРИЗА</span><span class="prog-pct" id="p-pct">0%</span></div>
+    <div class="prog-track"><div class="prog-fill" id="p-bar"></div></div>
   </div>
-
-  <!-- РЕЙТИНГ -->
-  <div id="screen-rating" class="app-screen">
-    <div class="topbar">
-      <div><div class="topbar-logo">РЕЙТИНГ</div><div class="topbar-sub">// АГЕНТЫ РЕЙСА</div></div>
-      <div class="topbar-av"><img id="p-av-img3" src="" alt="" style="display:none;"><span id="p-av-emoji3">◈</span></div>
-    </div>
-    <div style="height:12px;"></div>
-    <div class="lb-wrap" id="leaderboard-wrap"><div class="loader">ЗАГРУЗКА...</div></div>
-    <div style="height:12px;"></div>
+  <div class="stats-grid">
+    <div class="sg-cell"><div class="sg-n" id="s-vendors">0</div><div class="sg-l">СТЕНДЫ</div></div>
+    <div class="sg-cell"><div class="sg-n" id="s-polls">0</div><div class="sg-l">ОПРОСЫ</div></div>
+    <div class="sg-cell"><div class="sg-n accent" id="s-rank2">—</div><div class="sg-l">МЕСТО</div></div>
   </div>
-
-  <!-- СЕТЬ -->
-  <div id="screen-network" class="app-screen">
-    <div class="topbar">
-      <div><div class="topbar-logo">СЕТЬ</div><div class="topbar-sub">// НАЙДИ СОЮЗНИКОВ</div></div>
-      <div class="topbar-av"><img id="p-av-img2" src="" alt="" style="display:none;"><span id="p-av-emoji2">◈</span></div>
-    </div>
-    <div style="height:12px;"></div>
-    <div id="network-list"><div class="loader">СКАНИРУЮ БАЗУ...</div></div>
-    <div style="height:12px;"></div>
+  <div style="height:12px;"></div>
+  <div style="padding:0 14px 12px;">
+    <button onclick="showQrModal()" style="width:100%;padding:12px;background:rgba(108,92,231,0.1);border:0.5px solid rgba(108,92,231,0.3);border-radius:14px;font-size:13px;font-weight:700;color:#a29bfe;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1" stroke="#a29bfe" stroke-width="1.3"/><rect x="9" y="1" width="6" height="6" rx="1" stroke="#a29bfe" stroke-width="1.3"/><rect x="1" y="9" width="6" height="6" rx="1" stroke="#a29bfe" stroke-width="1.3"/><rect x="10" y="10" width="2" height="2" fill="#a29bfe"/><rect x="13" y="10" width="2" height="2" fill="#a29bfe"/><rect x="10" y="13" width="2" height="2" fill="#a29bfe"/><rect x="13" y="13" width="2" height="2" fill="#a29bfe"/></svg>
+      Показать мой QR
+    </button>
   </div>
-
-  <!-- СТЕНДЫ -->
-  <div id="screen-vendors" class="app-screen">
-    <div class="topbar">
-      <div><div class="topbar-logo">СТЕНДЫ</div><div class="topbar-sub">// СКАНИРУЙ QR · +20 Б · ОТКРЫВАЙ ДОСЬЕ</div></div>
+  <div class="section-hdr"><div class="section-hdr-title">МОЯ КАРТОЧКА</div><div class="section-hdr-sub">// ДОСЬЕ АГЕНТА</div></div>
+  <div class="agent-card-full" id="agent-full-card"><div class="loader">ЗАГРУЗКА...</div></div>
+  <div class="section-hdr"><div class="section-hdr-title">ДОСТИЖЕНИЯ</div><div class="section-hdr-sub">// РАЗБЛОКИРОВАНО</div></div>
+  <div class="ach-section">
+    <div class="ach-grid" id="ach-grid">
+      <div class="ach-item" id="ach-register"><div class="ach-icon">🎖️</div><div class="ach-name">Первый шаг</div></div>
+      <div class="ach-item" id="ach-vendors"><div class="ach-icon">🗺️</div><div class="ach-name">Все стенды</div></div>
+      <div class="ach-item" id="ach-polls"><div class="ach-icon">🧠</div><div class="ach-name">Аналитик</div></div>
+      <div class="ach-item" id="ach-network"><div class="ach-icon">🤝</div><div class="ach-name">Связной</div></div>
+      <div class="ach-item" id="ach-top3"><div class="ach-icon">🏆</div><div class="ach-name">Топ-3</div></div>
+      <div class="ach-item" id="ach-100pts"><div class="ach-icon">⚡</div><div class="ach-name">100 баллов</div></div>
     </div>
-    <div style="height:12px;"></div>
-    <div class="vendor-prog">
-      <div class="vp-label">// ПРОГРЕСС МИССИИ</div>
-      <div class="vp-right"><div class="vp-stars" id="vendor-stars"></div><div class="vp-count" id="vendor-count">0 / 0</div></div>
-    </div>
-    <div class="vendor-list" id="vendor-list"></div>
-    <div style="height:12px;"></div>
   </div>
-
-  <!-- МИССИЯ -->
-  <div id="screen-polls" class="app-screen">
-    <div class="topbar">
-      <div><div class="topbar-logo">МИССИЯ</div><div class="topbar-sub">// ОПРОСЫ · +15 Б ЗА ГОЛОС</div></div>
-    </div>
-    <div style="height:12px;"></div>
-    <div id="polls-list"></div>
-    <div style="height:12px;"></div>
+  <div style="padding:0 14px 4px;">
+    <button class="share-card-btn" onclick="generateShareCard()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 5l3-3 3 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11v2a1 1 0 001 1h10a1 1 0 001-1v-2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Скачать карточку агента
+    </button>
   </div>
-
+  <canvas id="share-canvas" style="display:none;"></canvas>
+  <div style="height:12px;"></div>
+  <div class="section-hdr"><div class="section-hdr-title">БАЗА</div><div class="section-hdr-sub">// ЛОКАЦИЯ</div></div>
+  <div class="info-block">
+    <div class="info-row"><div class="info-icon">📍</div><div><div class="info-title">Пространство «Connect»</div><div class="info-text">5-й Донской проезд, д. 17, Москва</div></div></div>
+    <div class="info-row"><div class="info-icon">🚇</div><div><div class="info-title">Метро</div><div class="info-text">Шаболовская или Тульская, 10 мин пешком</div></div></div>
+    <div class="info-row"><div class="info-icon">🚕</div><div><div class="info-title">Такси</div><div class="info-text">5-й Донской проезд, д. 17</div></div></div>
+  </div>
+  <div class="section-hdr"><div class="section-hdr-title">РОЗЫГРЫШ</div><div class="section-hdr-sub">// ПРИЗЫ</div></div>
+  <div class="info-block">
+    <div class="info-row"><div class="info-icon">🎁</div><div><div class="info-title">6 × Telegram Premium на год</div><div class="info-text">Участвуй в опросах и сканируй стенды — повышай шансы!</div></div></div>
+  </div>
+  <div style="height:12px;"></div>
 </div>
+
+<div id="screen-feed" class="app-screen">
+  <div class="topbar"><div><div class="topbar-logo">ЛЕНТА</div><div class="topbar-sub">// LIVE · ОБНОВЛЕНИЯ</div></div></div>
+  <div style="height:12px;"></div>
+  <div class="feed-how-block">
+    <div class="feed-how-title">КАК ИГРАТЬ</div>
+    <div class="feed-how-item">
+      <div class="how-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="currentColor" stroke-width="1.4"/><circle cx="11" cy="11" r="5" stroke="currentColor" stroke-width="1.4"/><circle cx="11" cy="11" r="1.5" fill="currentColor"/><line x1="11" y1="2" x2="11" y2="5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><line x1="11" y1="17" x2="11" y2="20" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><line x1="2" y1="11" x2="5" y2="11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><line x1="17" y1="11" x2="20" y2="11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+      <div><div class="feed-how-text" style="font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;">Посещай стенды</div><div class="feed-how-text">8 вендоров — 8 глав шпионского досье. Каждый QR-код открывает новую главу твоей истории и даёт +20 баллов.</div></div>
+    </div>
+    <div class="feed-how-item">
+      <div class="how-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="2" width="18" height="18" rx="4" stroke="currentColor" stroke-width="1.4"/><path d="M7 11l3 3 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div><div class="feed-how-text" style="font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;">Голосуй в опросах</div><div class="feed-how-text">После каждого доклада — живые вопросы. Выбери позицию и получи +15 баллов за каждый ответ.</div></div>
+    </div>
+    <div class="feed-how-item">
+      <div class="how-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="7.5" cy="8" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M2 18c0-3 2.5-5 5.5-5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="15" cy="6" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M11 18c0-2.8 2-5 4.5-5s4.5 2.2 4.5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+      <div><div class="feed-how-text" style="font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;">Нетворкинг</div><div class="feed-how-text">Находи коллег по роли — PROWAY, вендоры, интеграторы. Заводи знакомства и получай баллы.</div></div>
+    </div>
+    <div class="feed-how-item">
+      <div class="how-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 8l2 6h10l2-6-4 2-3-5-3 5-4-2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><rect x="6" y="14" width="10" height="2" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="8" y="16" width="6" height="2" rx="1" stroke="currentColor" stroke-width="1.4"/></svg></div>
+      <div><div class="feed-how-text" style="font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;">Борись за топ</div><div class="feed-how-text">Лучшие агенты получают призы на финальном награждении. Максимум — 430 баллов.</div></div>
+    </div>
+  </div>
+  <div class="section-hdr"><div class="section-hdr-title">ОБНОВЛЕНИЯ</div><div class="section-hdr-sub">// LIVE</div></div>
+  <div style="height:8px;"></div>
+  <div id="feed-screen-list"><div class="loader">ЗАГРУЗКА...</div></div>
+  <div style="height:12px;"></div>
+</div>
+
+<div id="screen-rating" class="app-screen">
+  <div class="topbar">
+    <div><div class="topbar-logo">РЕЙТИНГ</div><div class="topbar-sub">// АГЕНТЫ РЕЙСА</div></div>
+    <div class="topbar-av"><img id="p-av-img3" src="" alt="" style="display:none;"><span id="p-av-emoji3">◈</span></div>
+  </div>
+  <div style="height:12px;"></div>
+  <div class="lb-wrap" id="leaderboard-wrap"><div class="loader">ЗАГРУЗКА...</div></div>
+  <div style="height:12px;"></div>
+</div>
+
+<div id="screen-network" class="app-screen">
+  <div class="topbar">
+    <div><div class="topbar-logo">СЕТЬ</div><div class="topbar-sub">// НАЙДИ СОЮЗНИКОВ</div></div>
+    <div class="topbar-av"><img id="p-av-img2" src="" alt="" style="display:none;"><span id="p-av-emoji2">◈</span></div>
+  </div>
+  <div style="height:12px;"></div>
+  <div id="network-list"><div class="loader">СКАНИРУЮ БАЗУ...</div></div>
+  <div style="height:12px;"></div>
+</div>
+
+<div id="screen-vendors" class="app-screen">
+  <div class="topbar"><div><div class="topbar-logo">СТЕНДЫ</div><div class="topbar-sub">// СКАНИРУЙ QR · +20 Б · ОТКРЫВАЙ ДОСЬЕ</div></div></div>
+  <div style="height:12px;"></div>
+  <div class="vendor-prog">
+    <div class="vp-label">// ПРОГРЕСС МИССИИ</div>
+    <div class="vp-right"><div class="vp-stars" id="vendor-stars"></div><div class="vp-count" id="vendor-count">0 / 0</div></div>
+  </div>
+  <div class="vendor-list" id="vendor-list"></div>
+  <div style="height:12px;"></div>
+</div>
+
+<div id="screen-polls" class="app-screen">
+  <div class="topbar"><div><div class="topbar-logo">МИССИЯ</div><div class="topbar-sub">// ОПРОСЫ · +15 Б ЗА ГОЛОС</div></div></div>
+  <div style="height:12px;"></div>
+  <div id="polls-list"></div>
+  <div style="height:12px;"></div>
+</div>
+
+</div><!-- /app -->
 
 <nav class="navbar" id="navbar" style="display:none;">
   <button class="nb act" onclick="showScreen('profile')" id="nav-profile">
-    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="var(--cyan)" stroke-width="1.5" fill="none"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke="var(--cyan)" stroke-width="1.5" fill="none"/><path d="M5 20c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="12" cy="8" r="1" fill="var(--cyan)"/></svg>
     <span class="nb-lbl" style="color:var(--cyan);">Я</span>
   </button>
   <button class="nb" onclick="showScreen('rating')" id="nav-rating">
-    <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="13" width="4" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="10" y="8" width="4" height="13" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="17" y="3" width="4" height="18" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/></svg>
+    <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="13" width="4" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="10" y="7" width="4" height="14" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="17" y="3" width="4" height="18" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><path d="M12 3l.7 2h2l-1.7 1.2.7 2L12 7l-1.7 1.2.7-2L9.3 5h2z" fill="#ffffff22"/></svg>
     <span class="nb-lbl">ТОП</span>
   </button>
   <button class="nb" onclick="showScreen('feed')" id="nav-feed">
@@ -729,11 +677,11 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     <span class="nb-lbl">СЕТЬ</span>
   </button>
   <button class="nb" onclick="showScreen('vendors')" id="nav-vendors">
-    <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="13" y="3" width="8" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="3" y="13" width="8" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="13" y="13" width="8" height="8" rx="1" stroke="#ffffff22" stroke-width="1.5" fill="none"/></svg>
+    <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="#ffffff22" stroke-width="1.5" fill="none"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="#ffffff22" stroke-width="1.5" fill="none"/><path d="M5.5 6.5h2M16.5 6.5h2M5.5 17.5h2M16.5 17.5h2" stroke="#ffffff33" stroke-width="1" stroke-linecap="round"/></svg>
     <span class="nb-lbl">СТЕНДЫ</span>
   </button>
   <button class="nb" onclick="showScreen('polls')" id="nav-polls">
-    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#ffffff22" stroke-width="1.5" fill="none"/><path d="M8 12l3 3 5-5" stroke="#ffffff22" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4" stroke="#ffffff22" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 3a9 9 0 100 18A9 9 0 0012 3z" stroke="#ffffff22" stroke-width="1.5" fill="none"/><path d="M12 7v1M12 16v1" stroke="#ffffff22" stroke-width="1" stroke-linecap="round" opacity="0.5"/></svg>
     <span class="nb-lbl">МИССИЯ</span>
   </button>
 </nav>
@@ -742,27 +690,57 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 
 <script>
 const API='https://script.google.com/macros/s/AKfycbyDyYFwHvLPwHZSqd2abQCLhr9RaoqgVTA96OIw4-mxvRSRkioSe2Th2MD8LYiKhRFstw/exec';
+
+// ── ДАТА ОТКРЫТИЯ ПОЛНОГО ПРИЛОЖЕНИЯ ──────────────────
+const LAUNCH_DATE = new Date('2026-04-21T11:00:00+03:00');
+function isLaunched(){ return new Date() >= LAUNCH_DATE; }
+
+// ── КНОПКА РЕГИСТРАЦИИ (блокировка до LAUNCH_DATE) ────────────────
+function updateRegBtn(){
+  const btn=document.getElementById('reg-cta-btn');
+  const hint=document.getElementById('reg-cta-hint');
+  if(!btn)return;
+  const diff=LAUNCH_DATE-new Date();
+  if(diff>0){
+    const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000),m=Math.floor((diff%3600000)/60000);
+    const label=d>0?'ОТКРЫТИЕ ЧЕРЕЗ '+d+'Д '+(h%24)+'Ч':h>0?'ОТКРЫТИЕ ЧЕРЕЗ '+h+'Ч '+m+'М':'ОТКРЫТИЕ ЧЕРЕЗ '+m+' МИН';
+    btn.style.opacity='0.45'; btn.style.cursor='not-allowed'; btn.style.pointerEvents='none';
+    btn.textContent=label;
+    if(hint)hint.textContent='Регистрация откроется 21 апреля в 11:00 МСК';
+    setTimeout(updateRegBtn,30000);
+  } else {
+    btn.style.opacity='1'; btn.style.cursor='pointer'; btn.style.pointerEvents='auto';
+    btn.textContent='ПРИНЯТЬ МИССИЮ ›';
+    if(hint)hint.textContent='Регистрация занимает 1 минуту · Бесплатно';
+  }
+}
+function openRegistration(){
+  if(new Date()<LAUNCH_DATE){showToast('// РЕГИСТРАЦИЯ ОТКРОЕТСЯ 21.04 В 11:00 МСК');return;}
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('ob-welcome').classList.add('active');
+}
+
 const ACHIEVEMENTS = [
-  { id:'register', icon:'🎖️', name:'Первый шаг',      check: ()=> !!participant },
-  { id:'vendors',  icon:'🗺️', name:'Картограф',       check: ()=> scannedVendors.size >= 4 },
-  { id:'polls',    icon:'🧠', name:'Аналитик',         check: ()=> Object.keys(pollAnswers).length >= 3 },
-  { id:'network',  icon:'🤝', name:'Связной',          check: ()=> { let m=0; for(let k in localStorage){if(k.startsWith('met_'))m++;} return m>=5; }},
-  { id:'top3',     icon:'🏆', name:'Топ-3',            check: ()=> myRank > 0 && myRank <= 3 },
-  { id:'100pts',   icon:'⚡', name:'100 баллов',       check: ()=> (participant?.points||0) >= 100 },
+  { id:'register', icon:'🎖️', name:'Первый шаг',  check: ()=> !!participant },
+  { id:'vendors',  icon:'🗺️', name:'Картограф',   check: ()=> scannedVendors.size >= 4 },
+  { id:'polls',    icon:'🧠', name:'Аналитик',     check: ()=> Object.keys(pollAnswers).length >= 3 },
+  { id:'network',  icon:'🤝', name:'Связной',      check: ()=> { let m=0; for(let k in localStorage){if(k.startsWith('met_'))m++;} return m>=5; }},
+  { id:'top3',     icon:'🏆', name:'Топ-3',        check: ()=> myRank > 0 && myRank <= 3 },
+  { id:'100pts',   icon:'⚡', name:'100 баллов',   check: ()=> (participant?.points||0) >= 100 },
 ];
 const unlockedAchs = new Set(JSON.parse(localStorage.getItem('unlocked_achs')||'[]'));
 const MAX_PTS=430;
-const STORY_UNLOCK_DATE=new Date('2025-11-16T00:00:00');
+const STORY_UNLOCK_DATE=new Date('2026-04-21T22:00:00');
 
 const VENDORS=[
-  {id:'kod_bezopasnosti',name:'Код Безопасности',system:'NGFW/SOC',color:'#c0392b',icon:'КБ',desc:'Межсетевые экраны и средства защиты периметра. Лидер российского рынка сетевой безопасности.',chapterMale:'Первый рубеж. Иванов смотрел на схему сети и понимал — без периметра всё остальное бессмысленно. Код стоял как стена. Он кивнул.',chapterFemale:'Первый рубеж. Козлова смотрела на схему сети и понимала — без периметра всё остальное бессмысленно. Код стоял как стена. Она кивнула.'},
-  {id:'checkpoint',name:'Check Point',system:'FW/VPN',color:'#005ca8',icon:'CP',desc:'Межсетевые экраны и VPN мирового класса. Защита корпоративных сетей с 1993 года.',chapterMale:'«Проверка пройдена» — сообщение появилось на экране. Иванов усмехнулся. Check Point держит то что обещает.',chapterFemale:'«Проверка пройдена» — сообщение появилось на экране. Козлова усмехнулась. Check Point держит то что обещает.'},
-  {id:'infoteks',name:'ИнфоТеКС',system:'VPN/КРИПТО',color:'#005ca8',icon:'ИТ',desc:'Криптографическая защита каналов связи. ViPNet — стандарт защищённых коммуникаций.',chapterMale:'Новое задание пришло зашифрованным. Разумеется. Иванов расшифровал его за четыре минуты. «Просто знаю где искать ключ.» Теперь его каналы непробиваемы.',chapterFemale:'Новое задание пришло зашифрованным. Разумеется. Козлова расшифровала его за четыре минуты. «Просто знаю где искать ключ.» Теперь её каналы непробиваемы.'},
-  {id:'positive',name:'Positive Technologies',system:'SIEM/PT',color:'#c0392b',icon:'PT',desc:'SIEM и мониторинг безопасности. Выявление угроз в реальном времени.',chapterMale:'Поток данных на экране выглядел как город с высоты птичьего полёта. Иванов указал на аномалию. «Вот.» Куратор молча сделал пометку.',chapterFemale:'Поток данных на экране выглядел как город с высоты птичьего полёта. Козлова указала на аномалию. «Вот.» Куратор молча сделал пометку.'},
-  {id:'ngr_softlab',name:'NGR Softlab',system:'DLP',color:'#8e44ad',icon:'НГ',desc:'Система предотвращения утечек данных. Контроль всех каналов передачи информации.',chapterMale:'«Данные уходят тихо» — пришло в 6 утра. Иванов налил кофе. Одна флешка. Один человек. Канал был найден до второй чашки.',chapterFemale:'«Данные уходят тихо» — пришло в 6 утра. Козлова налила кофе. Одна флешка. Один человек. Канал был найден до второй чашки.'},
-  {id:'trafficsoft',name:'TrafficSoft',system:'ANTI-DDOS',color:'#27ae60',icon:'ТС',desc:'Защита от DDoS-атак и управление трафиком. Непрерывная доступность сервисов.',chapterMale:'Волна пришла неожиданно. Миллионы запросов в секунду. Иванов смотрел как TrafficSoft поглощает атаку. Спокойно. Методично.',chapterFemale:'Волна пришла неожиданно. Миллионы запросов в секунду. Козлова смотрела как TrafficSoft поглощает атаку. Спокойно. Методично.'},
-  {id:'f6',name:'F6 / Эфшесть',system:'EDR',color:'#d35400',icon:'F6',desc:'Защита конечных точек и реагирование на инциденты. Обнаружение угроз на устройствах.',chapterMale:'Угроза пришла изнутри. Иванов запустил сканирование. F6 нашёл то что искал за 40 секунд. Конечная точка изолирована.',chapterFemale:'Угроза пришла изнутри. Козлова запустила сканирование. F6 нашёл то что искал за 40 секунд. Конечная точка изолирована.'},
-  {id:'ideco',name:'Ideco',system:'UTM',color:'#2980b9',icon:'ID',desc:'Универсальный шлюз безопасности. Интернет-шлюз с полным контролем трафика.',chapterMale:'Последний рубеж. Ideco стоял на выходе из сети как часовой. Иванов проверил настройки. Всё под контролем.',chapterFemale:'Последний рубеж. Ideco стоял на выходе из сети как часовой. Козлова проверила настройки. Всё под контролем.'},
+  {id:'kod_bezopasnosti',name:'Код Безопасности',system:'NGFW/SOC',color:'#c0392b',icon:'КБ',desc:'Межсетевые экраны и средства защиты периметра. Лидер российского рынка сетевой безопасности.',chapterMale:'Первый рубеж. Иванов смотрел на схему сети и понимал — без периметра всё остальное бессмысленно.',chapterFemale:'Первый рубеж. Козлова смотрела на схему сети и понимала — без периметра всё остальное бессмысленно.'},
+  {id:'checkpoint',name:'Check Point',system:'FW/VPN',color:'#005ca8',icon:'CP',desc:'Межсетевые экраны и VPN мирового класса. Защита корпоративных сетей с 1993 года.',chapterMale:'«Проверка пройдена» — сообщение появилось на экране. Иванов усмехнулся. Check Point держит то что обещает.',chapterFemale:'«Проверка пройдена» — сообщение появилось на экране. Козлова усмехнулась.'},
+  {id:'infoteks',name:'ИнфоТеКС',system:'VPN/КРИПТО',color:'#005ca8',icon:'ИТ',desc:'Криптографическая защита каналов связи. ViPNet — стандарт защищённых коммуникаций.',chapterMale:'Новое задание пришло зашифрованным. Иванов расшифровал его за четыре минуты.',chapterFemale:'Новое задание пришло зашифрованным. Козлова расшифровала его за четыре минуты.'},
+  {id:'positive',name:'Positive Technologies',system:'SIEM/PT',color:'#c0392b',icon:'PT',desc:'SIEM и мониторинг безопасности. Выявление угроз в реальном времени.',chapterMale:'Иванов указал на аномалию в потоке данных. «Вот.» Куратор молча сделал пометку.',chapterFemale:'Козлова указала на аномалию в потоке данных. «Вот.» Куратор молча сделал пометку.'},
+  {id:'ngr_softlab',name:'NGR Softlab',system:'DLP',color:'#8e44ad',icon:'НГ',desc:'Система предотвращения утечек данных. Контроль всех каналов передачи информации.',chapterMale:'«Данные уходят тихо». Иванов налил кофе. Один канал. Один человек. Найден до второй чашки.',chapterFemale:'«Данные уходят тихо». Козлова налила кофе. Один канал. Один человек. Найден до второй чашки.'},
+  {id:'trafficsoft',name:'TrafficSoft',system:'ANTI-DDOS',color:'#27ae60',icon:'ТС',desc:'Защита от DDoS-атак и управление трафиком. Непрерывная доступность сервисов.',chapterMale:'Миллионы запросов в секунду. Иванов смотрел как TrafficSoft поглощает атаку. Спокойно.',chapterFemale:'Миллионы запросов в секунду. Козлова смотрела как TrafficSoft поглощает атаку. Спокойно.'},
+  {id:'f6',name:'F6 / Эфшесть',system:'EDR',color:'#d35400',icon:'F6',desc:'Защита конечных точек и реагирование на инциденты.',chapterMale:'Угроза пришла изнутри. Иванов запустил сканирование. F6 нашёл её за 40 секунд.',chapterFemale:'Угроза пришла изнутри. Козлова запустила сканирование. F6 нашёл её за 40 секунд.'},
+  {id:'ideco',name:'Ideco',system:'UTM',color:'#2980b9',icon:'ID',desc:'Универсальный шлюз безопасности. Интернет-шлюз с полным контролем трафика.',chapterMale:'Последний рубеж. Ideco стоял на выходе как часовой. Иванов проверил настройки. Всё под контролем.',chapterFemale:'Последний рубеж. Ideco стоял на выходе как часовой. Козлова проверила настройки. Всё под контролем.'},
 ];
 
 const AGENT_STATS={
@@ -780,60 +758,26 @@ const RARITY=[
 
 const AVATARS={
   male:[
-    {file:'Defense_Grid_Icon.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
-    {file:'male0.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
-    {file:'male1.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
-    {file:'male2.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
-    {file:'male3.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
-    {file:'male4.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
-    {file:'male5.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
-    {file:'male6.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
-    {file:'male7.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
-    {file:'Male8.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
-    {file:'Male9.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
-    {file:'Male10.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
-    {file:'Male11.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'},
-    {file:'Male12.png',codename:'ФАЙРВОЛ',artFile:'5379679076819343593.jpg'}
+    {file:'Defense_Grid_Icon.png',codename:'ФАЙРВОЛ',artFile:''},
+    {file:'male0.png',codename:'ФАЙРВОЛ',artFile:''},{file:'male1.png',codename:'ФАЙРВОЛ',artFile:''},
+    {file:'male2.png',codename:'ФАЙРВОЛ',artFile:''},{file:'male3.png',codename:'ФАЙРВОЛ',artFile:''},
+    {file:'male4.png',codename:'ФАЙРВОЛ',artFile:''},{file:'male5.png',codename:'ФАЙРВОЛ',artFile:''},
+    {file:'male6.png',codename:'ФАЙРВОЛ',artFile:''},{file:'male7.png',codename:'ФАЙРВОЛ',artFile:''},
+    {file:'Male8.png',codename:'ФАЙРВОЛ',artFile:''},{file:'Male9.png',codename:'ФАЙРВОЛ',artFile:''},
+    {file:'Male10.png',codename:'ФАЙРВОЛ',artFile:''},{file:'Male11.png',codename:'ФАЙРВОЛ',artFile:''},
+    {file:'Male12.png',codename:'ФАЙРВОЛ',artFile:''}
   ],
   female:[
-    {file:'Stealth_Tracer_Icon.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
-    {file:'female0.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
-    {file:'female1.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
-    {file:'female2.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
-    {file:'female3.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
-    {file:'female4.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
-    {file:'female5.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
-    {file:'female6.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
-    {file:'female7.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
-    {file:'female8.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
-    {file:'female9.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
-    {file:'female10.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
-    {file:'female11.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
-    {file:'female12.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'},
-    {file:'Female13.png',codename:'ХАКЕР',artFile:'5379679076819343592.jpg'}
+    {file:'Stealth_Tracer_Icon.png',codename:'ХАКЕР',artFile:''},
+    {file:'female0.png',codename:'ХАКЕР',artFile:''},{file:'female1.png',codename:'ХАКЕР',artFile:''},
+    {file:'female2.png',codename:'ХАКЕР',artFile:''},{file:'female3.png',codename:'ХАКЕР',artFile:''},
+    {file:'female4.png',codename:'ХАКЕР',artFile:''},{file:'female5.png',codename:'ХАКЕР',artFile:''},
+    {file:'female6.png',codename:'ХАКЕР',artFile:''},{file:'female7.png',codename:'ХАКЕР',artFile:''},
+    {file:'female8.png',codename:'ХАКЕР',artFile:''},{file:'female9.png',codename:'ХАКЕР',artFile:''},
+    {file:'female10.png',codename:'ХАКЕР',artFile:''},{file:'female11.png',codename:'ХАКЕР',artFile:''},
+    {file:'female12.png',codename:'ХАКЕР',artFile:''},{file:'Female13.png',codename:'ХАКЕР',artFile:''}
   ]
 };
-
-const PROGRAM=[
-  {time:'13:50',title:'Приветственное слово экипажа',speaker:'Алексей Матвеев, PROWAY Security',tag:'ВЗЛЁТ',tagColor:'#005ca8',done:true},
-  {time:'14:00',title:'Панельная дискуссия «Security Talks»',speaker:'Конкуренция на российском рынке ИБ',tag:'ДЕЛОВАЯ',tagColor:'#ee672a',done:true},
-  {time:'15:30',title:'Кофе-брейк и Lounge Expo',speaker:'Первый этаж и веранда',tag:'ПАУЗА',tagColor:'#555',done:false},
-  {time:'16:00',title:'Прямая линия PROWAY Security',speaker:'Экспресс-опросы · результаты на экран',tag:'ДЕЛОВАЯ',tagColor:'#ee672a',done:false},
-  {time:'17:30',title:'Нетворкинг',speaker:'VIP-кабина канатной дороги',tag:'НЕТВОРК',tagColor:'#27ae60',done:false},
-  {time:'18:30',title:'Вечерняя программа',speaker:'Фуршет · Кавер-авиашоу · DJ',tag:'ФИНАЛ',tagColor:'#8e44ad',done:false},
-  {time:'22:00',title:'Приземление. До новых рейсов!',speaker:'Спасибо что выбрали PROWAY Security Day',tag:'',tagColor:'',done:false},
-];
-
-const SPEAKERS=[
-  {name:'Роман Бочкарёв',co:'Positive Technologies',role:'Зам. директора по работе с партнёрами',color:'#c0392b'},
-  {name:'Роман Набережный',co:'ИнфоТеКС (ViPNet)',role:'Зам. коммерческого директора',color:'#005ca8'},
-  {name:'Дмитрий Ивашкин',co:'Код Безопасности',role:'Менеджер по работе с партнёрами',color:'#27ae60'},
-  {name:'Вячеслав Гребнев',co:'Гарда',role:'Бизнес-архитектор',color:'#8e44ad'},
-  {name:'Антон Чухнов',co:'AV Soft',role:'Генеральный директор',color:'#ee672a'},
-  {name:'Александр Корзников',co:'ЭВРИТЕГ',role:'Технический директор',color:'#16a085'},
-  {name:'Алексей Матвеев',co:'PROWAY Security',role:'Директор департамента · Модератор',color:'#005ca8'},
-  {name:'Дмитрий Захаренко',co:'PROWAY Security',role:'Технический директор · Модератор',color:'#005ca8'},
-];
 
 const POLLS=[
   {id:'poll1',session:'// SECURITY_TALKS',question:'Что будет основным «рецептом» выживаемости вендоров на российском рынке?',options:['Регуляторка — соответствие требованиям','Технологии — развитие до мировых решений','Комплексный подход — экосистемы','Маркетинг — расширение аудитории'],votes:[0,0,0,0]},
@@ -842,10 +786,10 @@ const POLLS=[
 ];
 
 let participant=null,selectedTags=[],pollAnswers={};
-let myRank=0;
-let selectedGender=null,assignedAvatar=null;
+let myRank=0,selectedGender=null,assignedAvatar=null;
 let scannedVendors=new Set();
-let lastAnnouncementId=null;
+let lastAnnouncementId=null,announcements=[];
+const likedProfiles=new Set(JSON.parse(localStorage.getItem('liked_profiles')||'[]'));
 
 function api(p){return fetch(API+'?'+new URLSearchParams(p)).then(r=>r.json());}
 function showToast(m,d=2500){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),d);}
@@ -860,12 +804,19 @@ function selectGender(g){
   goTo('ob-reveal');
 }
 
+// Выбор роли — одиночный
 document.querySelectorAll('.itag').forEach(t=>{
   t.addEventListener('click',()=>{
-    if(t.classList.contains('sel')){t.classList.remove('sel');selectedTags=selectedTags.filter(v=>v!==t.dataset.val);}
-    else if(selectedTags.length<3){t.classList.add('sel');selectedTags.push(t.dataset.val);}
+    document.querySelectorAll('.itag').forEach(x=>x.classList.remove('sel'));
+    t.classList.add('sel');
+    selectedTags=[t.dataset.val];
   });
 });
+// По умолчанию выбираем первую
+setTimeout(()=>{
+  const first=document.querySelector('.itag');
+  if(first){first.classList.add('sel');selectedTags=[first.dataset.val];}
+},100);
 
 async function register(){
   const name=document.getElementById('reg-name').value.trim();
@@ -874,7 +825,8 @@ async function register(){
   const role=document.getElementById('reg-role').value.trim();
   if(!name||!company){showToast('// ЗАПОЛНИ ПОЗЫВНОЙ И ОРГАНИЗАЦИЮ');return;}
   const btn=document.querySelector('#ob-reveal .ob-btn');
-  btn.innerHTML='<span style="display:inline-flex;align-items:center;gap:10px;justify-content:center;"><svg style="animation:spin 1s linear infinite;width:16px;height:16px;flex-shrink:0;" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,0.3)" stroke-width="2"/><path d="M12 3a9 9 0 019 9" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>Авторизация...</span>';btn.disabled=true;
+  btn.innerHTML='<span style="display:inline-flex;align-items:center;gap:10px;justify-content:center;"><svg style="animation:spin 1s linear infinite;width:16px;height:16px;" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,0.3)" stroke-width="2"/><path d="M12 3a9 9 0 019 9" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>Авторизация...</span>';
+  btn.disabled=true;
   try{
     const res=await api({action:'register',name,email,company,role,interests:selectedTags.join(','),avatar:assignedAvatar?assignedAvatar.file:'',codename:assignedAvatar?assignedAvatar.codename:''});
     if(res.success){
@@ -885,48 +837,31 @@ async function register(){
       save('participant_gender',selectedGender||'male');
       save('participant_codename',assignedAvatar?assignedAvatar.codename:'');
       save('participant_artfile',assignedAvatar?assignedAvatar.artFile:'');
+      save('participant_registered_at',new Date().toISOString());
       participant={id:res.id,name,email,company,role,points:15,interests:selectedTags.join(','),
         avatar:assignedAvatar?assignedAvatar.file:'',gender:selectedGender,
         codename:assignedAvatar?assignedAvatar.codename:'',artFile:assignedAvatar?assignedAvatar.artFile:''};
-      initApp();
-      showToast('// ДОБРО ПОЖАЛОВАТЬ, АГЕНТ! +15 Б');
+      initApp();showToast('// ДОБРО ПОЖАЛОВАТЬ, АГЕНТ! +15 Б');
     }else{showToast('// ОШИБКА АВТОРИЗАЦИИ');btn.innerHTML='ПРИСТУПИТЬ К МИССИИ ›';btn.disabled=false;}
   }catch(e){showToast('// НЕТ СВЯЗИ');btn.innerHTML='ПРИСТУПИТЬ К МИССИИ ›';btn.disabled=false;}
 }
 
 function setAvatarUI(){
   const av=participant&&participant.avatar?(participant.avatar.startsWith('http')?participant.avatar:'https://proway-event.vercel.app/'+participant.avatar):'';
-  ['p-av-img','p-av-img2','p-av-img3'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el&&av){el.src=av;el.style.display='block';}
-  });
-  if(av){['p-av-emoji','p-av-emoji2','p-av-emoji3'].forEach(id=>{
-    const el=document.getElementById(id);if(el)el.style.display='none';
-  });}
+  ['p-av-img','p-av-img2','p-av-img3'].forEach(id=>{const el=document.getElementById(id);if(el&&av){el.src=av;el.style.display='block';}});
+  if(av){['p-av-emoji','p-av-emoji2','p-av-emoji3'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});}
 }
 
 function initApp(){
-  // Восстанавливаем ачивки
-  unlockedAchs.forEach(id => {
-    const el = document.getElementById('ach-'+id);
-    if(el) el.classList.add('unlocked');
-  });
+  unlockedAchs.forEach(id=>{const el=document.getElementById('ach-'+id);if(el)el.classList.add('unlocked');});
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('app').style.display='block';
   document.getElementById('navbar').style.display='flex';
   document.getElementById('ticker-wrap').style.display='flex';
-  setAvatarUI();
-  renderProfile(); checkAchievements();
-  renderAgentCard();
-  renderPolls();
-  renderVendors();
-  loadLeaderboard();
-  loadNetwork();
-  checkAnnouncements();
-  setInterval(loadLeaderboard,15000); setInterval(checkAchievements,20000);
-  setInterval(loadNetwork,30000);
-  setInterval(checkAnnouncements,20000);
-  setInterval(checkFinale,15000);
+  setAvatarUI();renderProfile();checkAchievements();renderAgentCard();renderPolls();renderVendors();
+  loadLeaderboard();loadNetwork();checkAnnouncements();
+  setInterval(loadLeaderboard,15000);setInterval(checkAchievements,20000);
+  setInterval(loadNetwork,30000);setInterval(checkAnnouncements,20000);setInterval(checkFinale,15000);
   checkFinale();
   setTimeout(()=>{const b=document.getElementById('p-bar');if(b)b.style.width=(Math.min((participant.points||0)/MAX_PTS,1)*100)+'%';},300);
 }
@@ -934,76 +869,39 @@ function initApp(){
 function showScreen(n){
   document.querySelectorAll('.app-screen').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nb').forEach(b=>{
-    b.classList.remove('act');
-    b.querySelector('.nb-lbl').style.color='';
+    b.classList.remove('act');b.querySelector('.nb-lbl').style.color='';
     b.querySelectorAll('svg [stroke]').forEach(el=>{if(el.getAttribute('stroke')!=='none')el.setAttribute('stroke','#ffffff22');});
   });
   document.getElementById('screen-'+n).classList.add('active');
   const nb=document.getElementById('nav-'+n);
-  if(nb){
-    nb.classList.add('act');
-    nb.querySelector('.nb-lbl').style.color='var(--cyan)';
-    nb.querySelectorAll('svg [stroke]').forEach(el=>{if(el.getAttribute('stroke')!=='none')el.setAttribute('stroke','#a29bfe');});
-  }
+  if(nb){nb.classList.add('act');nb.querySelector('.nb-lbl').style.color='var(--cyan)';
+    nb.querySelectorAll('svg [stroke]').forEach(el=>{if(el.getAttribute('stroke')!=='none')el.setAttribute('stroke','#a29bfe');});}
   window.scrollTo(0,0);
-  if(n==='feed') renderFeedScreen();
+  if(n==='feed')renderFeedScreen();
 }
-
-// ── ANNOUNCEMENTS & NOTIFICATIONS ────────────────────────────────
-
-let announcements = [];
 
 async function checkAnnouncements(){
   try{
     const res=await api({action:'getAnnouncements'});
-    if(!res.announcements) return;
-    const list = res.announcements;
-
-    // Проверяем финальный сигнал
-    const finaleMsg = list.find(a => a.message === '__FINALE_START__');
-    const finaleEnd = list.find(a => a.message === '__FINALE_END__');
-    if (finaleMsg && !finaleEnd) {
-      localStorage.setItem('finale_active', 'true');
-      checkFinale();
-    } else {
-      localStorage.setItem('finale_active', 'false');
-    }
-
-    // Фильтруем спец-сообщения из ленты
-    const visibleList = list.filter(a => !a.message.startsWith('__'));
-
-    // Бегущая строка — последнее сообщение
+    if(!res.announcements)return;
+    const list=res.announcements;
+    const finaleMsg=list.find(a=>a.message==='__FINALE_START__');
+    const finaleEnd=list.find(a=>a.message==='__FINALE_END__');
+    if(finaleMsg&&!finaleEnd){localStorage.setItem('finale_active','true');checkFinale();}
+    else{localStorage.setItem('finale_active','false');}
+    const visibleList=list.filter(a=>!a.message.startsWith('__'));
     if(visibleList.length){
-      const msgs = visibleList.map(a=>`<span class="ticker-msg">${a.message}</span><span class="ticker-sep"> · </span>`).join('');
-      document.getElementById('ticker-inner').innerHTML = msgs;
+      document.getElementById('ticker-inner').innerHTML=visibleList.map(a=>`<span class="ticker-msg">${a.message}</span><span class="ticker-sep"> · </span>`).join('');
     }
-
-    // Новые сообщения → баннер + бейдж
-    const latest = visibleList[0];
-    if(latest && latest.id !== lastAnnouncementId){
-      lastAnnouncementId = latest.id;
-      showBanner(latest.message);
-    }
-
-    announcements = visibleList;
-
-    // Обновляем бейдж колокольчика
-    const badge = document.getElementById('bell-badge');
-    const dot = document.getElementById('nav-feed-dot');
-    if(visibleList.length > 0){
-      badge.textContent = list.length > 9 ? '9+' : list.length;
-      badge.classList.add('show');
-      if(dot) dot.style.display = 'block';
-    } else {
-      badge.classList.remove('show');
-      if(dot) dot.style.display = 'none';
-    }
-
-    // Если панель открыта — обновляем
-    if(document.getElementById('notif-panel').classList.contains('show')) renderNotifPanel();
-    // Если экран ленты открыт — обновляем
-    if(document.getElementById('screen-feed').classList.contains('active')) renderFeedScreen();
-
+    const latest=visibleList[0];
+    if(latest&&latest.id!==lastAnnouncementId){lastAnnouncementId=latest.id;showBanner(latest.message);}
+    announcements=visibleList;
+    const badge=document.getElementById('bell-badge');
+    const dot=document.getElementById('nav-feed-dot');
+    if(visibleList.length>0){badge.textContent=list.length>9?'9+':list.length;badge.classList.add('show');if(dot)dot.style.display='block';}
+    else{badge.classList.remove('show');if(dot)dot.style.display='none';}
+    if(document.getElementById('notif-panel').classList.contains('show'))renderNotifPanel();
+    if(document.getElementById('screen-feed').classList.contains('active'))renderFeedScreen();
   }catch(e){}
 }
 
@@ -1011,58 +909,32 @@ function openNotifPanel(){
   document.getElementById('notif-overlay').classList.add('show');
   document.getElementById('notif-panel').classList.add('show');
   renderNotifPanel();
-  // Убираем бейдж пока открыто
   document.getElementById('bell-badge').classList.remove('show');
-  const dot = document.getElementById('nav-feed-dot');
-  if(dot) dot.style.display='none';
+  const dot=document.getElementById('nav-feed-dot');if(dot)dot.style.display='none';
 }
-
 function closeNotifPanel(){
   document.getElementById('notif-overlay').classList.remove('show');
   document.getElementById('notif-panel').classList.remove('show');
 }
-
 function renderNotifPanel(){
-  const el = document.getElementById('notif-list');
-  if(!announcements.length){
-    el.innerHTML='<div class="notif-empty">Пока тихо — следите за обновлениями</div>';
-    return;
-  }
-  el.innerHTML = announcements.map(a=>{
-    const type = a.type||'info';
-    const time = a.created_at ? new Date(a.created_at).toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'}) : '';
-    return `<div class="notif-item ${type}">
-      <div class="notif-dot ${type}"></div>
-      <div class="notif-body">
-        <div class="notif-text">${a.message}</div>
-        <div class="notif-time">${time}</div>
-      </div>
-    </div>`;
+  const el=document.getElementById('notif-list');
+  if(!announcements.length){el.innerHTML='<div class="notif-empty">Пока тихо — следите за обновлениями</div>';return;}
+  el.innerHTML=announcements.map(a=>{
+    const type=a.type||'info';
+    const time=a.created_at?new Date(a.created_at).toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'}):'';
+    return`<div class="notif-item ${type}"><div class="notif-dot ${type}"></div><div class="notif-body"><div class="notif-text">${a.message}</div><div class="notif-time">${time}</div></div></div>`;
   }).join('');
 }
-
 function renderFeedScreen(){
-  const el = document.getElementById('feed-screen-list');
-  if(!announcements.length){
-    el.innerHTML='<div class="loader" style="color:rgba(255,255,255,0.25);font-size:12px;">Сообщений пока нет</div>';
-    return;
-  }
-  el.innerHTML = announcements.map(a=>{
-    const type = a.type||'info';
-    const time = a.created_at ? new Date(a.created_at).toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'}) : '';
-    return `<div class="feed-card ${type}">
-      <div class="feed-card-text">${a.message}</div>
-      <div class="feed-card-time">${time}</div>
-    </div>`;
+  const el=document.getElementById('feed-screen-list');
+  if(!announcements.length){el.innerHTML='<div class="loader" style="color:rgba(255,255,255,0.25);font-size:12px;">Сообщений пока нет</div>';return;}
+  el.innerHTML=announcements.map(a=>{
+    const type=a.type||'info';
+    const time=a.created_at?new Date(a.created_at).toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'}):'';
+    return`<div class="feed-card ${type}"><div class="feed-card-text">${a.message}</div><div class="feed-card-time">${time}</div></div>`;
   }).join('');
 }
-
-function showBanner(msg){
-  const b=document.getElementById('announce-banner');
-  document.getElementById('announce-text').textContent=msg;
-  b.classList.add('show');
-  setTimeout(()=>b.classList.remove('show'),8000);
-}
+function showBanner(msg){const b=document.getElementById('announce-banner');document.getElementById('announce-text').textContent=msg;b.classList.add('show');setTimeout(()=>b.classList.remove('show'),8000);}
 function closeBanner(){document.getElementById('announce-banner').classList.remove('show');}
 
 function renderProfile(){
@@ -1083,73 +955,39 @@ function renderAgentCard(){
   const rarity=getRarity(scanned);
   const gender=participant.gender||'male';
   const codename=participant.codename||'ФАЙРВОЛ';
-  const artFile=participant.artFile||'';
   const stats=AGENT_STATS[gender]?.[codename]||{АНАЛИЗ:75,СКОРОСТЬ:75,КРИПТО:75,ПЕРИМЕТР:75,ВЛИЯНИЕ:75};
   const lastName=participant.name.split(' ').slice(-1)[0]||participant.name;
   const unlocked=new Date()>STORY_UNLOCK_DATE;
-
-  let starsHtml='';
-  for(let i=0;i<4;i++)starsHtml+=`<div class="acf-star${i<rarity.stars?'':' empty'}"></div>`;
-
-  let statsHtml=Object.entries(stats).map(([k,v])=>`
-    <div class="acf-stat-row">
-      <span class="acf-stat-lbl">${k}</span>
-      <div class="acf-bar-wrap"><div class="acf-bar" style="width:${v}%;background:${STAT_COLORS[k]};"></div></div>
-      <span class="acf-stat-val">${v}</span>
-    </div>`).join('');
-
-  const baseStory=gender==='female'
-    ?`${lastName} не планировала становиться агентом. Конверт лежал прямо на клавиатуре — без подписи, без обратного адреса. Только координаты и время. Она пришла. Конечно пришла.`
-    :`${lastName} не планировал становиться агентом. Конверт лежал прямо на клавиатуре — без подписи, без обратного адреса. Только координаты и время. Он пришёл. Конечно пришёл.`;
-
+  let starsHtml='';for(let i=0;i<4;i++)starsHtml+=`<div class="acf-star${i<rarity.stars?'':' empty'}"></div>`;
+  const statsHtml=Object.entries(stats).map(([k,v])=>`<div class="acf-stat-row"><span class="acf-stat-lbl">${k}</span><div class="acf-bar-wrap"><div class="acf-bar" style="width:${v}%;background:${STAT_COLORS[k]};"></div></div><span class="acf-stat-val">${v}</span></div>`).join('');
+  const baseStory=gender==='female'?`${lastName} не планировала становиться агентом. Конверт лежал прямо на клавиатуре. Только координаты и время. Она пришла.`:`${lastName} не планировал становиться агентом. Конверт лежал прямо на клавиатуре. Только координаты и время. Он пришёл.`;
   let chaptersHtml=`<div class="acf-chapter-badge">НАЧАЛО</div><div class="acf-chapter-text">${baseStory}</div>`;
   VENDORS.forEach((v,idx)=>{
     const wasScanned=scannedVendors.has(v.id);
-    if(wasScanned||unlocked){
-      const text=gender==='female'?v.chapterFemale:v.chapterMale;
-      chaptersHtml+=`<div class="acf-chapter-badge">ГЛАВА ${idx+1} · ${v.system}</div><div class="acf-chapter-text">${text}</div>`;
-    }else{
-      chaptersHtml+=`<div class="acf-locked"><div class="acf-lock"></div><span class="acf-locked-text">ГЛАВА ${idx+1} · СТЕНД ${v.system}</span></div>`;
-    }
+    if(wasScanned||unlocked){const text=gender==='female'?v.chapterFemale:v.chapterMale;chaptersHtml+=`<div class="acf-chapter-badge">ГЛАВА ${idx+1} · ${v.system}</div><div class="acf-chapter-text">${text}</div>`;}
+    else{chaptersHtml+=`<div class="acf-locked"><div class="acf-lock"></div><span class="acf-locked-text">ГЛАВА ${idx+1} · СТЕНД ${v.system}</span></div>`;}
   });
-
-  const artHtml=artFile?`<img src="${artFile}" alt="${codename}">`:`<span style="font-family:'Bangers',cursive;font-size:28px;color:var(--cyan);letter-spacing:4px;">${codename}</span>`;
-
+  const avSrc=participant.avatar?'https://proway-event.vercel.app/'+participant.avatar:'';
+  const artHtml=avSrc?`<img src="${avSrc}" alt="${codename}">`:`<span style="font-family:'Bangers',cursive;font-size:28px;color:var(--cyan);letter-spacing:4px;">${codename}</span>`;
   document.getElementById('agent-full-card').innerHTML=`
-    <div class="acf-namebar">
-      <span class="acf-codename">${codename}</span>
-      <span class="acf-badge" style="background:${rarity.bg};color:${rarity.color};border-color:${rarity.color}44;">${rarity.label}</span>
-    </div>
+    <div class="acf-namebar"><span class="acf-codename">${codename}</span><span class="acf-badge" style="background:${rarity.bg};color:${rarity.color};border-color:${rarity.color}44;">${rarity.label}</span></div>
     <div class="acf-art">${artHtml}<div class="acf-rarity">${starsHtml}</div></div>
     <div class="acf-stats">${statsHtml}</div>
-    <div class="acf-story">
-      <div class="acf-story-lbl">// ДОСЬЕ</div>
-      ${chaptersHtml}
-    </div>
-    <div class="acf-footer">
-      <span class="acf-footer-name">${participant.name.toUpperCase()}</span>
-      <span class="acf-footer-pts">${participant.points||0} Б</span>
-    </div>`;
+    <div class="acf-story"><div class="acf-story-lbl">// ДОСЬЕ</div>${chaptersHtml}</div>
+    <div class="acf-footer"><span class="acf-footer-name">${participant.name.toUpperCase()}</span><span class="acf-footer-pts">${participant.points||0} Б</span></div>`;
 }
 
 function renderVendors(){
   const total=VENDORS.length;
-  let starsHtml='';
-  for(let i=0;i<total;i++)starsHtml+=`<div class="vp-star${i<scannedVendors.size?'':' empty'}"></div>`;
+  let starsHtml='';for(let i=0;i<total;i++)starsHtml+=`<div class="vp-star${i<scannedVendors.size?'':' empty'}"></div>`;
   document.getElementById('vendor-stars').innerHTML=starsHtml;
   document.getElementById('vendor-count').textContent=`${scannedVendors.size} / ${total}`;
   document.getElementById('vendor-list').innerHTML=VENDORS.map((v,idx)=>{
     const scanned=scannedVendors.has(v.id);
     return`<div class="vendor-card${scanned?' scanned':''}">
-      <div class="vendor-top">
-        <div class="vendor-icon" style="background:${v.color}18;border-color:${v.color}44;color:${v.color};">${v.icon}</div>
-        <div class="vendor-info"><div class="vendor-name">${v.name}</div><div class="vendor-system">${v.system}</div></div>
-        <div><div class="vendor-pts${scanned?' done':''}">${scanned?'ПОЛУЧЕНО':'+20 Б'}</div><div class="vendor-pts-lbl">${scanned?'✓':'ЗА СКАН'}</div></div>
-      </div>
+      <div class="vendor-top"><div class="vendor-icon" style="background:${v.color}18;border-color:${v.color}44;color:${v.color};">${v.icon}</div><div class="vendor-info"><div class="vendor-name">${v.name}</div><div class="vendor-system">${v.system}</div></div><div><div class="vendor-pts${scanned?' done':''}">${scanned?'ПОЛУЧЕНО':'+20 Б'}</div><div class="vendor-pts-lbl">${scanned?'✓':'ЗА СКАН'}</div></div></div>
       <div class="vendor-desc">${v.desc}</div>
-      ${scanned
-        ?`<div class="vendor-chapter"><span class="vc-badge">ГЛАВА ${idx+1} · ОТКРЫТА</span><span class="vc-text">Фрагмент досье добавлен в карточку агента</span></div>`
-        :`<div class="vendor-locked"><span class="vl-text">// ГЛАВА ${idx+1} · ОТСКАНИРУЙ QR НА СТЕНДЕ</span></div>`}
+      ${scanned?`<div class="vendor-chapter"><span class="vc-badge">ГЛАВА ${idx+1} · ОТКРЫТА</span><span class="vc-text">Фрагмент досье добавлен в карточку агента</span></div>`:`<div class="vendor-locked"><span class="vl-text">// ГЛАВА ${idx+1} · ОТСКАНИРУЙ QR НА СТЕНДЕ</span></div>`}
     </div>`;
   }).join('');
 }
@@ -1160,8 +998,7 @@ async function handleVendorScan(vendorId){
   try{
     const res=await api({action:'scanVendor',participant_id:participant.id,vendor_id:vendorId});
     if(res.success||res.already){
-      scannedVendors.add(vendorId);
-      localStorage.setItem('scanned_vendors',JSON.stringify([...scannedVendors]));
+      scannedVendors.add(vendorId);localStorage.setItem('scanned_vendors',JSON.stringify([...scannedVendors]));
       if(res.success)participant.points=(participant.points||0)+20;
       document.getElementById('s-vendors').textContent=scannedVendors.size;
       renderVendors();renderProfile();renderAgentCard();
@@ -1179,23 +1016,17 @@ async function loadLeaderboard(){
     myRank=0;
     wrap.innerHTML=res.leaderboard.map((p,i)=>{
       const isMe=participant&&p.id===participant.id;
-      if(isMe){
-        myRank=i+1;participant.points=p.points;renderProfile();
-        const b=document.getElementById('p-bar');
-        if(b)b.style.width=(Math.min(p.points/MAX_PTS,1)*100)+'%';
+      if(isMe){myRank=i+1;participant.points=p.points;renderProfile();
+        const b=document.getElementById('p-bar');if(b)b.style.width=(Math.min(p.points/MAX_PTS,1)*100)+'%';
         document.getElementById('p-pts').textContent=p.points;
         document.getElementById('p-pct').textContent=Math.min(Math.round(p.points/MAX_PTS*100),100)+'%';
-        document.getElementById('s-rank2').textContent=i+1;
-      }
+        document.getElementById('s-rank2').textContent=i+1;}
       const avHtml=p.avatar?`<img src="${p.avatar.startsWith('http')?p.avatar:'https://proway-event.vercel.app/'+p.avatar}" alt="">`:`<span style="font-size:13px;color:var(--text2);">◈</span>`;
       return`<div class="lb-row${isMe?' me':''}">
         ${i===0?'<div class="lb-leader">ЛИДЕР</div>':''}
         <span class="lb-pos${i===0?' gold':''}${isMe?' me-c':''}">${i+1}</span>
         <div class="lb-av${isMe?' me':''}">${avHtml}</div>
-        <div class="lb-info">
-          <div class="lb-name${isMe?' me':''}">${p.name}${isMe?' · ВЫ':''}</div>
-          <div class="lb-co">${p.company||''}</div>
-        </div>
+        <div class="lb-info"><div class="lb-name${isMe?' me':''}">${p.name}${isMe?' · ВЫ':''}</div><div class="lb-co">${p.company||''}</div></div>
         <span class="lb-pts${isMe?' me':''}">${p.points} б</span>
       </div>`;
     }).join('');
@@ -1203,19 +1034,10 @@ async function loadLeaderboard(){
   }catch(e){}
 }
 
-const likedProfiles = new Set(JSON.parse(localStorage.getItem('liked_profiles')||'[]'));
-
-function toggleLike(id, btn) {
-  if (likedProfiles.has(id)) {
-    likedProfiles.delete(id);
-    btn.className = 'net-btn';
-    btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 14s-6-3.5-6-8a4 4 0 018 0 4 4 0 018 0c0 4.5-6 8-6 8z" stroke="rgba(255,255,255,0.4)" stroke-width="1.3"/></svg> Отметить';
-  } else {
-    likedProfiles.add(id);
-    btn.className = 'net-btn liked';
-    btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 16 16" fill="#a29bfe"><path d="M8 14s-6-3.5-6-8a4 4 0 018 0 4 4 0 018 0c0 4.5-6 8-6 8z" stroke="#a29bfe" stroke-width="1.3"/></svg> Интересно';
-  }
-  localStorage.setItem('liked_profiles', JSON.stringify([...likedProfiles]));
+function toggleLike(id,btn){
+  if(likedProfiles.has(id)){likedProfiles.delete(id);btn.className='net-btn';btn.innerHTML='<svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 14s-6-3.5-6-8a4 4 0 018 0 4 4 0 018 0c0 4.5-6 8-6 8z" stroke="rgba(255,255,255,0.4)" stroke-width="1.3"/></svg> Отметить';}
+  else{likedProfiles.add(id);btn.className='net-btn liked';btn.innerHTML='<svg width="13" height="13" viewBox="0 0 16 16" fill="#a29bfe"><path d="M8 14s-6-3.5-6-8a4 4 0 018 0 4 4 0 018 0c0 4.5-6 8-6 8z" stroke="#a29bfe" stroke-width="1.3"/></svg> Интересно';}
+  localStorage.setItem('liked_profiles',JSON.stringify([...likedProfiles]));
 }
 
 async function loadNetwork(){
@@ -1223,42 +1045,26 @@ async function loadNetwork(){
   try{
     const res=await api({action:'getParticipants',exclude:participant.id});
     const wrap=document.getElementById('network-list');
-    if(!res.participants||!res.participants.length){
-      wrap.innerHTML='<div class="empty-state"><div class="empty-text">// ДРУГИХ АГЕНТОВ ПОКА НЕТ</div></div>';return;
-    }
+    if(!res.participants||!res.participants.length){wrap.innerHTML='<div class="empty-state"><div class="empty-text">// ДРУГИХ АГЕНТОВ ПОКА НЕТ</div></div>';return;}
     const myInterests=(participant.interests||'').split(',').filter(Boolean);
-    const scored=res.participants.map(p=>{
-      const their=(p.interests||'').split(',').filter(Boolean);
-      const matches=myInterests.filter(i=>their.includes(i));
-      return{...p,matches,score:matches.length};
-    }).sort((a,b)=>b.score-a.score||b.points-a.points);
+    const scored=res.participants.map(p=>{const their=(p.interests||'').split(',').filter(Boolean);const matches=myInterests.filter(i=>their.includes(i));return{...p,matches,score:matches.length};}).sort((a,b)=>b.score-a.score||b.points-a.points);
     wrap.innerHTML=scored.map(p=>{
-      const their=(p.interests||'').split(',').filter(Boolean);
-      const mySet=new Set(myInterests);
+      const their=(p.interests||'').split(',').filter(Boolean);const mySet=new Set(myInterests);
       const tagsHtml=their.map(t=>`<span class="net-tag${mySet.has(t)?' match':''}">${t}</span>`).join('');
       const avHtml=p.avatar?`<img src="${p.avatar.startsWith('http')?p.avatar:'https://proway-event.vercel.app/'+p.avatar}" alt="">`:`<span style="font-size:18px;color:var(--text2);">◈</span>`;
-      const liked = likedProfiles.has(p.id);
-      return`<div class="net-card${p.score>0?' top-match':''}">
+      const liked=likedProfiles.has(p.id);
+      return`<div class="net-card">
         <div class="net-av">${avHtml}</div>
-        <div class="net-info">
-          <div class="net-name">${p.name}</div>
-          <div class="net-co">${p.company||''}${p.role?' · '+p.role:''}</div>
-          <div class="net-tags">${tagsHtml}</div>
+        <div class="net-info"><div class="net-name">${p.name}</div><div class="net-co">${p.company||''}${p.role?' · '+p.role:''}</div><div class="net-tags">${tagsHtml}</div>
           <div class="net-actions">
             <button class="net-btn${liked?' liked':''}" onclick="toggleLike('${p.id}',this)">
               <svg width="13" height="13" viewBox="0 0 16 16" fill="${liked?'#a29bfe':'none'}"><path d="M8 14s-6-3.5-6-8a4 4 0 018 0 4 4 0 018 0c0 4.5-6 8-6 8z" stroke="${liked?'#a29bfe':'rgba(255,255,255,0.4)'}" stroke-width="1.3"/></svg>
               ${liked?'Интересно':'Отметить'}
             </button>
-            ${p.email?`<button class="net-btn contact" onclick="window.location.href='mailto:${p.email}'">
-              <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="#00c864" stroke-width="1.3"/><path d="M1 5l7 5 7-5" stroke="#00c864" stroke-width="1.3" stroke-linecap="round"/></svg>
-              Написать
-            </button>`:''}
+            ${p.email?`<button class="net-btn contact" onclick="window.location.href='mailto:${p.email}'"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="#00c864" stroke-width="1.3"/><path d="M1 5l7 5 7-5" stroke="#00c864" stroke-width="1.3" stroke-linecap="round"/></svg>Написать</button>`:''}
           </div>
         </div>
-        <div>
-          <div class="net-match-n${p.score>0?' hot':''}">${p.score}</div>
-          <div class="net-match-l">СОВП.</div>
-        </div>
+        <div><div class="net-match-n${p.score>0?' hot':''}">${p.score}</div><div class="net-match-l">СОВП.</div></div>
       </div>`;
     }).join('');
   }catch(e){document.getElementById('network-list').innerHTML='<div class="loader">// ОШИБКА СВЯЗИ</div>';}
@@ -1270,13 +1076,8 @@ function renderPolls(){
     if(answered){
       const total=poll.votes.reduce((a,b)=>a+b,0)||1;
       return`<div class="poll-card"><div class="poll-session">${poll.session}</div><div class="poll-q">${poll.question}</div>
-        ${poll.options.map((opt,i)=>{
-          const pct=Math.round(poll.votes[i]/total*100);
-          const isMe=pollAnswers[poll.id]===i;
-          return`<div class="poll-opt poll-result" style="${isMe?'border-color:var(--cyan);':''}">
-            <div class="poll-bar${isMe?' me-bar':''}" style="width:${pct}%"></div>
-            <div class="poll-content"><span style="${isMe?'color:var(--cyan);':''}">${opt}</span><span class="poll-pct${isMe?' me':''}">${pct}%</span></div>
-          </div>`;}).join('')}
+        ${poll.options.map((opt,i)=>{const pct=Math.round(poll.votes[i]/total*100);const isMe=pollAnswers[poll.id]===i;
+          return`<div class="poll-opt poll-result" style="${isMe?'border-color:var(--cyan);':''}"><div class="poll-bar${isMe?' me-bar':''}" style="width:${pct}%"></div><div class="poll-content"><span style="${isMe?'color:var(--cyan);':''}">${opt}</span><span class="poll-pct${isMe?' me':''}">${pct}%</span></div></div>`;}).join('')}
       </div>`;
     }
     return`<div class="poll-card"><div class="poll-session">${poll.session}</div><div class="poll-q">${poll.question}</div>
@@ -1288,603 +1089,206 @@ function renderPolls(){
 function answerPoll(pollId,optIdx){
   if(pollAnswers[pollId]!==undefined)return;
   pollAnswers[pollId]=optIdx;
-  const poll=POLLS.find(p=>p.id===pollId);
-  poll.votes[optIdx]++;
-  renderPolls();
+  const poll=POLLS.find(p=>p.id===pollId);poll.votes[optIdx]++;renderPolls();
   document.getElementById('s-polls').textContent=Object.keys(pollAnswers).length;
-  if(participant)api({action:'addPoints',participant_id:participant.id,action:'poll',points:15});
+  if(participant)api({action:'addPoints',participant_id:participant.id,points:15});
   showToast('// ГОЛОС ПРИНЯТ · +15 Б');
 }
 
+function checkAchievements(){
+  if(!participant)return;
+  ACHIEVEMENTS.forEach(a=>{
+    const el=document.getElementById('ach-'+a.id);if(!el)return;
+    if(a.check()){el.classList.add('unlocked');
+      if(!unlockedAchs.has(a.id)){unlockedAchs.add(a.id);localStorage.setItem('unlocked_achs',JSON.stringify([...unlockedAchs]));showAchievementBanner(a.icon,a.name);}
+    }
+  });
+}
+function showAchievementBanner(icon,name){
+  const banner=document.getElementById('ach-banner');
+  document.getElementById('ach-banner-icon').textContent=icon;document.getElementById('ach-banner-name').textContent=name;
+  banner.classList.add('show');setTimeout(()=>banner.classList.remove('show'),4000);
+}
 
-async function generateShareCard() {
-  if (!participant) { showToast('Нет данных'); return; }
-  const btn = document.querySelector('.share-card-btn');
-  btn.innerHTML = '<svg style="animation:spin 1s linear infinite;width:16px;height:16px;" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,0.3)" stroke-width="2"/><path d="M12 3a9 9 0 019 9" stroke="white" stroke-width="2" stroke-linecap="round"/></svg> Генерируем...';
-  btn.disabled = true;
+function showFinale(){
+  if(!participant)return;
+  document.getElementById('finale-pts').textContent=(participant.points||0)+' Б';
+  document.getElementById('finale-rank').textContent=myRank?'Место в рейтинге: #'+myRank:'Место в рейтинге: —';
+  document.getElementById('finale-achs').innerHTML=ACHIEVEMENTS.filter(a=>unlockedAchs.has(a.id)).map(a=>`<div class="finale-ach">${a.icon}</div>`).join('');
+  document.getElementById('finale-overlay').classList.add('show');
+}
+function checkFinale(){try{if(localStorage.getItem('finale_active')==='true')showFinale();}catch(e){}}
 
-  // Загружаем Bangers
-  try {
-    const font = new FontFace('Bangers', 'url(https://fonts.gstatic.com/s/bangers/v24/FeVQS0BTqb0h60ACL5la2bxii28wYQ.woff2)');
-    await font.load();
-    document.fonts.add(font);
-  } catch(e) {}
+function showQrModal(){
+  const id=participant?participant.id:localStorage.getItem('participant_id');
+  if(!id){showToast('Сначала зарегистрируйся');return;}
+  const url='https://proway-event.vercel.app/profile-scan.html?id='+id;
+  document.getElementById('qr-modal-img').src='https://api.qrserver.com/v1/create-qr-code/?size=180x180&data='+encodeURIComponent(url);
+  document.getElementById('qr-modal-overlay').classList.add('show');
+}
+function closeQrModal(){document.getElementById('qr-modal-overlay').classList.remove('show');}
 
-  // 5x10 cm @ 300dpi
-  const W = 591, H = 1181;
-  const canvas = document.getElementById('share-canvas');
-  canvas.width = W; canvas.height = H;
-  const ctx = canvas.getContext('2d');
-
-  // ── ФОН ──
-  const bgG = ctx.createLinearGradient(0,0,0,H);
-  bgG.addColorStop(0,'#0a0520'); bgG.addColorStop(1,'#120830');
-  ctx.fillStyle = bgG; ctx.fillRect(0,0,W,H);
-
-  // Сетка
-  ctx.strokeStyle='rgba(108,92,231,0.07)'; ctx.lineWidth=0.5;
+// ── SHARE CARD (упрощённая версия) ──────────────────────────────
+async function generateShareCard(){
+  if(!participant){showToast('Нет данных');return;}
+  const btn=document.querySelector('.share-card-btn, .finale-btn');
+  if(btn){btn.textContent='Генерируем...';btn.disabled=true;}
+  try{
+    const font=new FontFace('Bangers','url(https://fonts.gstatic.com/s/bangers/v24/FeVQS0BTqb0h60ACL5la2bxii28wYQ.woff2)');
+    await font.load();document.fonts.add(font);
+  }catch(e){}
+  const W=591,H=1181;
+  const canvas=document.getElementById('share-canvas');canvas.width=W;canvas.height=H;
+  const ctx=canvas.getContext('2d');
+  const bgG=ctx.createLinearGradient(0,0,0,H);bgG.addColorStop(0,'#0a0520');bgG.addColorStop(1,'#120830');
+  ctx.fillStyle=bgG;ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='rgba(108,92,231,0.07)';ctx.lineWidth=0.5;
   for(let x=0;x<W;x+=80){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
   for(let y=0;y<H;y+=80){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
-
-  // Глитч
-  ctx.fillStyle='rgba(108,92,231,0.25)'; ctx.fillRect(0,186,100,2);
-  ctx.fillStyle='rgba(0,200,255,0.18)'; ctx.fillRect(400,310,70,1.5);
-
-  // Радар
-  ctx.strokeStyle='rgba(108,92,231,0.1)'; ctx.lineWidth=0.5;
-  const RX=W/2, RY=300;
-  for(const r of [260,180,110,50]){ctx.beginPath();ctx.arc(RX,RY,r,0,Math.PI*2);ctx.stroke();}
-  ctx.beginPath();ctx.moveTo(RX,40);ctx.lineTo(RX,560);ctx.stroke();
-  ctx.beginPath();ctx.moveTo(20,RY);ctx.lineTo(W-20,RY);ctx.stroke();
-
-  // ── ИЗОБРАЖЕНИЕ АГЕНТА ──
-  const artSrc = participant.artFile
-    ? (participant.artFile.startsWith('http')?participant.artFile:'https://proway-event.vercel.app/'+participant.artFile)
-    : null;
-  const avatarSrc = participant.avatar
-    ? (participant.avatar.startsWith('http')?participant.avatar:'https://proway-event.vercel.app/'+participant.avatar)
-    : null;
-
-  if(artSrc){
-    try{
-      const img=await loadImage(artSrc);
-      ctx.drawImage(img,0,0,W,H*0.6);
-    }catch(e){ await drawCardHero(ctx,W,avatarSrc,participant.codename); }
-  } else {
-    await drawCardHero(ctx,W,avatarSrc,participant.codename);
-  }
-
-  // Градиент снизу
-  const dg=ctx.createLinearGradient(0,H*0.3,0,H);
-  dg.addColorStop(0,'rgba(5,3,20,0)');
-  dg.addColorStop(0.25,'rgba(5,3,20,0.93)');
-  dg.addColorStop(1,'rgba(5,3,20,0.99)');
-  ctx.fillStyle=dg; ctx.fillRect(0,H*0.3,W,H*0.7);
-
-  // Затемнение сверху
-  const tg=ctx.createLinearGradient(0,0,0,120);
-  tg.addColorStop(0,'rgba(5,3,20,0.75)'); tg.addColorStop(1,'rgba(5,3,20,0)');
-  ctx.fillStyle=tg; ctx.fillRect(0,0,W,120);
-
-  const PX=28;
-
-  // ── 001 и PROWAY над плашкой ──
-  ctx.fillStyle='rgba(255,255,255,0.4)';
-  ctx.font='600 18px Inter,sans-serif';
-  ctx.textAlign='left'; ctx.fillText('001', PX, 36);
-  ctx.textAlign='right'; ctx.fillText('PROWAY', W-PX, 36);
-
-  // ── ПЛАШКА С НАЗВАНИЕМ ──
-  const PL=28, PR=W-28, PT=44, PB=96, skew=32;
-  ctx.beginPath();
-  ctx.moveTo(PL+skew,PT); ctx.lineTo(PR-skew,PT);
-  ctx.lineTo(PR,PB); ctx.lineTo(PL,PB);
-  ctx.closePath();
-  ctx.strokeStyle='#f5e642'; ctx.lineWidth=4; ctx.stroke();
-  const ng=ctx.createLinearGradient(PL,0,PR,0);
-  ng.addColorStop(0,'#2a1a80'); ng.addColorStop(0.5,'#6c5ce7'); ng.addColorStop(1,'#2a1a80');
-  ctx.fillStyle=ng; ctx.fill();
-  ctx.fillStyle='#fff';
-  ctx.font='400 42px "Bangers",cursive,sans-serif';
-  ctx.textAlign='center';
-  ctx.shadowColor='rgba(0,0,0,0.6)'; ctx.shadowBlur=8;
-  ctx.fillText((participant.codename||'АГЕНТ').toUpperCase(), W/2, PT+36);
-  ctx.shadowBlur=0;
-
-  // Жёлтые уголки
-  ctx.strokeStyle='#f5e642'; ctx.lineWidth=4;
-  const c=36;
+  // Уголки
+  ctx.strokeStyle='#f5e642';ctx.lineWidth=4;const c=36;
   ctx.beginPath();ctx.moveTo(0,c);ctx.lineTo(0,0);ctx.lineTo(c,0);ctx.stroke();
   ctx.beginPath();ctx.moveTo(W-c,0);ctx.lineTo(W,0);ctx.lineTo(W,c);ctx.stroke();
   ctx.beginPath();ctx.moveTo(W,H-c);ctx.lineTo(W,H);ctx.lineTo(W-c,H);ctx.stroke();
   ctx.beginPath();ctx.moveTo(c,H);ctx.lineTo(0,H);ctx.lineTo(0,H-c);ctx.stroke();
-
-  // ── НИЖНЯЯ ЧАСТЬ ──
-  const panelY = H*0.44;
-
-  // Компания — бейдж
-  const coText = ([participant.company,participant.role].filter(Boolean).join(' · ')).toUpperCase();
-  ctx.font='600 20px Inter,sans-serif';
-  const coW = ctx.measureText(coText).width + 28;
-  ctx.fillStyle='rgba(108,92,231,0.2)';
-  roundRect(ctx, PX, panelY, coW, 32, 6); ctx.fill();
-  ctx.strokeStyle='rgba(108,92,231,0.5)'; ctx.lineWidth=1;
-  roundRect(ctx, PX, panelY, coW, 32, 6); ctx.stroke();
-  ctx.fillStyle='rgba(162,155,254,0.9)';
-  ctx.textAlign='left';
-  ctx.fillText(coText, PX+14, panelY+22);
-
-  // Имя — две строки
-  const nameParts = (participant.name||'').toUpperCase().split(' ');
-  const firstName = nameParts[0]||'';
-  const lastName = nameParts.slice(1).join(' ')||'';
-  ctx.fillStyle='#fff';
-  ctx.font='400 72px "Bangers",cursive,sans-serif';
-  ctx.textAlign='left';
-  ctx.fillText(firstName, PX, panelY+100);
-  ctx.fillText(lastName, PX, panelY+168);
-
-  // Разделитель
-  ctx.strokeStyle='rgba(108,92,231,0.4)'; ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(PX,panelY+182);ctx.lineTo(W-PX,panelY+182);ctx.stroke();
-
-  // ── СИЛЫ ──
-  const pts=participant.points||0;
-  const vendors=scannedVendors.size;
-  const polls=Object.keys(pollAnswers).length;
-  let meets=0;
-  for(let k in localStorage){if(k.startsWith('met_'))meets++;}
-  const regTime=localStorage.getItem('participant_registered_at');
-  let speedVal=50;
-  if(regTime){
-    const eS=new Date('2025-11-16T09:00:00'),eE=new Date('2025-11-16T11:00:00');
-    speedVal=Math.max(20,Math.round((1-Math.max(0,new Date(regTime)-eS)/(eE-eS))*100));
-  }
-  const stats=[
-    {name:'АНАЛИЗ',  val:Math.min(100,polls*34),                   color:'#a29bfe',ge:'#6c5ce7'},
-    {name:'СКОРОСТЬ',val:speedVal,                                   color:'#fab387',ge:'#ee672a'},
-    {name:'КРИПТО',  val:Math.min(100,Math.round(pts/MAX_PTS*100)),color:'#6ee7b7',ge:'#00c864'},
-    {name:'ПЕРИМЕТР',val:Math.min(100,vendors*25),                   color:'#60a5fa',ge:'#005ca8'},
-    {name:'ВЛИЯНИЕ', val:Math.min(100,meets*20),                     color:'#f5e642',ge:'#d4a017'},
-  ];
-
-  const statsStartY = panelY+196;
-  const rowH = 44;
-  const barMaxW = W - PX*2 - 60;
-
-  stats.forEach((s,i)=>{
-    const y = statsStartY + i*rowH;
-    const bW = Math.max(4, Math.round(s.val/100*barMaxW));
-
-    // Название над баром
-    ctx.fillStyle='rgba(255,255,255,0.55)';
-    ctx.font='400 22px "Bangers",cursive,sans-serif';
-    ctx.textAlign='left';
-    ctx.fillText(s.name, PX, y+2);
-
-    // Фон бара
-    ctx.fillStyle='rgba(255,255,255,0.05)';
-    roundRect(ctx, PX, y+6, barMaxW, 20, 4); ctx.fill();
-
-    // Бар
-    const bg=ctx.createLinearGradient(PX,0,PX+bW,0);
-    bg.addColorStop(0,s.ge+'cc'); bg.addColorStop(1,s.color);
-    ctx.fillStyle=bg;
-    roundRect(ctx, PX, y+6, bW, 20, 4); ctx.fill();
-
-    // Цифра справа
-    ctx.fillStyle=s.color;
-    ctx.font='400 28px "Bangers",cursive,sans-serif';
-    ctx.textAlign='right';
-    ctx.fillText(s.val, W-PX, y+24);
-  });
-
-  // Разделитель
-  const descY = statsStartY + stats.length*rowH + 10;
-  ctx.strokeStyle='rgba(108,92,231,0.25)'; ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(PX,descY);ctx.lineTo(W-PX,descY);ctx.stroke();
-
-  // Описание
-  const gender=participant.gender||'male';
-  const lName=(participant.name||'').split(' ').slice(-1)[0];
-  const desc=gender==='female'
-    ?`${lName} не планировала становиться агентом. Конверт без подписи. Только координаты и время. Она пришла.`
-    :`${lName} не планировал становиться агентом. Конверт без подписи. Только координаты и время. Он пришёл.`;
-  ctx.fillStyle='rgba(255,255,255,0.4)';
-  ctx.font='400 20px Inter,sans-serif';
-  ctx.textAlign='left';
-  wrapText(ctx, desc, PX, descY+28, W-PX*2, 28);
-
-  // ── НИЖНИЙ БЛОК: баллы + QR ──
-  const bottomY = H - 110;
-
+  // Плашка с именем
+  const PX=28;
+  ctx.fillStyle='rgba(108,92,231,0.2)';ctx.fillRect(0,44,W,52);
+  ctx.fillStyle='#fff';ctx.font='400 40px Bangers,cursive';ctx.textAlign='center';
+  ctx.fillText((participant.codename||'АГЕНТ').toUpperCase(),W/2,84);
+  // Аватар
+  const avSrc=participant.avatar?'https://proway-event.vercel.app/'+participant.avatar:null;
+  if(avSrc){try{const img=await loadImg(avSrc);ctx.save();ctx.beginPath();ctx.arc(W/2,320,200,0,Math.PI*2);ctx.clip();ctx.drawImage(img,W/2-200,120,400,400);ctx.restore();}catch(e){}}
+  // Имя
+  const nameParts=(participant.name||'').toUpperCase().split(' ');
+  ctx.fillStyle='#fff';ctx.font='400 68px Bangers,cursive';ctx.textAlign='left';
+  ctx.fillText(nameParts[0]||'',PX,600);ctx.fillText(nameParts.slice(1).join(' ')||'',PX,668);
+  // Компания
+  ctx.fillStyle='rgba(162,155,254,0.8)';ctx.font='600 18px Inter,sans-serif';
+  ctx.fillText(([participant.company,participant.role].filter(Boolean).join(' · ')).toUpperCase(),PX,700);
   // Баллы
-  ctx.fillStyle='rgba(108,92,231,0.15)';
-  roundRect(ctx, PX, bottomY, 180, 56, 28); ctx.fill();
-  ctx.strokeStyle='rgba(108,92,231,0.5)'; ctx.lineWidth=1;
-  roundRect(ctx, PX, bottomY, 180, 56, 28); ctx.stroke();
-  ctx.fillStyle='#a29bfe';
-  ctx.font='400 32px "Bangers",cursive,sans-serif';
-  ctx.textAlign='center';
-  ctx.fillText(pts+' БАЛЛОВ', PX+90, bottomY+38);
-
-  // QR — подпись сверху, код снизу
-  const qrX = W-PX-76, qrY = bottomY+2;
-  ctx.fillStyle='rgba(255,255,255,0.35)';
-  ctx.font='400 16px Inter,sans-serif';
-  ctx.textAlign='center';
-  ctx.fillText('сканируй меня', qrX+38, qrY-4);
-
-  // QR через API
-  try {
-    const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=76x76&data='+encodeURIComponent('https://proway-event.vercel.app/profile-scan.html?id='+participant.id);
-    const qrImg = await loadImage(qrUrl);
-    ctx.fillStyle='#fff';
-    roundRect(ctx, qrX, qrY+4, 76, 76, 6); ctx.fill();
-    ctx.drawImage(qrImg, qrX+4, qrY+8, 68, 68);
-  } catch(e) {
-    ctx.fillStyle='rgba(255,255,255,0.8)';
-    roundRect(ctx, qrX, qrY+4, 76, 76, 6); ctx.fill();
-    ctx.fillStyle='rgba(108,92,231,0.5)';
-    ctx.font='400 12px Inter,sans-serif';
-    ctx.textAlign='center';
-    ctx.fillText('QR', qrX+38, qrY+46);
-  }
-
+  ctx.fillStyle='rgba(108,92,231,0.2)';roundRect(ctx,PX,730,200,48,24);ctx.fill();
+  ctx.strokeStyle='rgba(108,92,231,0.5)';ctx.lineWidth=1;roundRect(ctx,PX,730,200,48,24);ctx.stroke();
+  ctx.fillStyle='#a29bfe';ctx.font='400 28px Bangers,cursive';ctx.textAlign='center';
+  ctx.fillText((participant.points||0)+' БАЛЛОВ',PX+100,762);
   // Нижняя полоса
-  const botG=ctx.createLinearGradient(0,0,W,0);
-  botG.addColorStop(0,'#4834d4');botG.addColorStop(0.5,'#6c5ce7');botG.addColorStop(1,'#4834d4');
-  ctx.fillStyle=botG; ctx.fillRect(0,H-12,W,12);
-
-  // Рамка
-  ctx.strokeStyle='rgba(108,92,231,0.4)'; ctx.lineWidth=3;
-  roundRect(ctx,2,2,W-4,H-4,16); ctx.stroke();
-
-  // Скачиваем
-  const a=document.createElement('a');
-  a.download='agent-'+(participant.codename||'card').toLowerCase().replace(/ /g,'-')+'.png';
-  a.href=canvas.toDataURL('image/png');
-  a.click();
-
-  btn.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 5l3-3 3 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11v2a1 1 0 001 1h10a1 1 0 001-1v-2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg> Скачать карточку агента';
-  btn.disabled=false;
+  const botG=ctx.createLinearGradient(0,0,W,0);botG.addColorStop(0,'#4834d4');botG.addColorStop(0.5,'#6c5ce7');botG.addColorStop(1,'#4834d4');
+  ctx.fillStyle=botG;ctx.fillRect(0,H-12,W,12);
+  // Скачать
+  const a=document.createElement('a');a.download='agent-'+(participant.codename||'card').toLowerCase()+'.png';a.href=canvas.toDataURL('image/png');a.click();
+  if(btn){btn.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 5l3-3 3 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11v2a1 1 0 001 1h10a1 1 0 001-1v-2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg> Скачать карточку агента';btn.disabled=false;}
 }
-
-async function drawCardHero(ctx, W, avatarSrc, codename) {
-  const glow=ctx.createRadialGradient(W/2,300,0,W/2,300,260);
-  glow.addColorStop(0,'rgba(108,92,231,0.2)');
-  glow.addColorStop(1,'rgba(108,92,231,0)');
-  ctx.fillStyle=glow; ctx.fillRect(0,0,W,600);
-
-  if(avatarSrc){
-    try{
-      const img=await loadImage(avatarSrc);
-      ctx.save();
-      ctx.beginPath();ctx.arc(W/2,300,200,0,Math.PI*2);ctx.clip();
-      ctx.drawImage(img,W/2-200,100,400,400);
-      ctx.restore();
-      ctx.strokeStyle='rgba(108,92,231,0.5)';ctx.lineWidth=2;
-      ctx.beginPath();ctx.arc(W/2,300,202,0,Math.PI*2);ctx.stroke();
-    }catch(e){}
-  }
-}
-
-async function drawHeroPlaceholder(ctx,W,H,avatarSrc,codename){
-  // Свечение по центру
-  const glow=ctx.createRadialGradient(W/2,280,0,W/2,280,220);
-  glow.addColorStop(0,'rgba(108,92,231,0.25)');
-  glow.addColorStop(1,'rgba(108,92,231,0)');
-  ctx.fillStyle=glow; ctx.fillRect(0,0,W,H*0.6);
-
-  if(avatarSrc){
-    try{
-      const img=await loadImage(avatarSrc);
-      ctx.save();
-      ctx.beginPath();ctx.arc(W/2,260,170,0,Math.PI*2);ctx.clip();
-      ctx.drawImage(img,W/2-170,90,340,340);
-      ctx.restore();
-      ctx.strokeStyle='rgba(108,92,231,0.5)';ctx.lineWidth=2;
-      ctx.beginPath();ctx.arc(W/2,260,172,0,Math.PI*2);ctx.stroke();
-    }catch(e){}
-  }
-}
-
-function drawCardBg(ctx, W, H) {
-  ctx.fillStyle = '#0a0b1e';
-  ctx.fillRect(0, 0, W, H);
-  ctx.strokeStyle = 'rgba(108,92,231,0.08)'; ctx.lineWidth = 1;
-  for (let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
-  for (let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
-  ctx.fillStyle = 'rgba(108,92,231,0.15)';
-  ctx.beginPath(); ctx.arc(W/2, H*0.35, 180, 0, Math.PI*2); ctx.fill();
-}
-
-function drawPlaceholder(ctx, x, y, w, h, codename) {
-  ctx.fillStyle = 'rgba(108,92,231,0.06)';
-  ctx.strokeStyle = 'rgba(108,92,231,0.2)';
-  ctx.lineWidth = 1;
-  roundRect(ctx, x, y, w, h, 20);
-  ctx.fill(); ctx.stroke();
-  ctx.fillStyle = 'rgba(108,92,231,0.3)';
-  ctx.font = '700 32px Inter, sans-serif';
-  ctx.textAlign = 'center';
-  ctx.fillText(codename, x + w/2, y + h/2);
-}
-
-function wrapText(ctx, text, x, y, maxW, lineH) {
-  const words = text.split(' ');
-  let line = '';
-  for (const word of words) {
-    const test = line + word + ' ';
-    if (ctx.measureText(test).width > maxW && line) {
-      ctx.fillText(line.trim(), x, y);
-      line = word + ' ';
-      y += lineH;
-    } else { line = test; }
-  }
-  if (line) ctx.fillText(line.trim(), x, y);
-}
-
-function roundRect(ctx, x, y, w, h, r) {
-  ctx.beginPath();
-  ctx.moveTo(x+r, y);
-  ctx.lineTo(x+w-r, y);
-  ctx.quadraticCurveTo(x+w, y, x+w, y+r);
-  ctx.lineTo(x+w, y+h-r);
-  ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
-  ctx.lineTo(x+r, y+h);
-  ctx.quadraticCurveTo(x, y+h, x, y+h-r);
-  ctx.lineTo(x, y+r);
-  ctx.quadraticCurveTo(x, y, x+r, y);
-  ctx.closePath();
-}
-
-function loadImage(src) {
-  return new Promise((res, rej) => {
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.onload = () => res(img);
-    img.onerror = rej;
-    img.src = src;
-  });
-}
-
-
-function wrapTextCenter(ctx, text, cx, y, maxW, lineH) {
-  const words = text.split(' ');
-  let line = '';
-  for (const word of words) {
-    const test = line + word + ' ';
-    if (ctx.measureText(test).width > maxW && line) {
-      ctx.fillText(line.trim(), cx, y);
-      line = word + ' ';
-      y += lineH;
-    } else { line = test; }
-  }
-  if (line) ctx.fillText(line.trim(), cx, y);
-}
-
-
-// ── ACHIEVEMENTS ─────────────────────────────────────────────────
-
-
-
-function checkAchievements() {
-  if (!participant) return;
-  ACHIEVEMENTS.forEach(a => {
-    const el = document.getElementById('ach-'+a.id);
-    if (!el) return;
-    const isUnlocked = a.check();
-    if (isUnlocked) {
-      el.classList.add('unlocked');
-      if (!unlockedAchs.has(a.id)) {
-        unlockedAchs.add(a.id);
-        localStorage.setItem('unlocked_achs', JSON.stringify([...unlockedAchs]));
-        showAchievementBanner(a.icon, a.name);
-      }
-    }
-  });
-}
-
-function showAchievementBanner(icon, name) {
-  const banner = document.getElementById('ach-banner');
-  document.getElementById('ach-banner-icon').textContent = icon;
-  document.getElementById('ach-banner-name').textContent = name;
-  banner.classList.add('show');
-  setTimeout(() => banner.classList.remove('show'), 4000);
-}
-
-
-function showFinale() {
-  if (!participant) return;
-  // Обновляем данные
-  document.getElementById('finale-pts').textContent = (participant.points||0) + ' Б';
-  document.getElementById('finale-rank').textContent = myRank ? 'Место в рейтинге: #' + myRank : 'Место в рейтинге: —';
-  // Ачивки
-  const achEl = document.getElementById('finale-achs');
-  achEl.innerHTML = ACHIEVEMENTS.filter(a => unlockedAchs.has(a.id)).map(a => `<div class="finale-ach">${a.icon}</div>`).join('');
-  // Показываем
-  document.getElementById('finale-overlay').classList.add('show');
-}
-
-function checkFinale() {
-  try {
-    if (localStorage.getItem('finale_active') === 'true') {
-      showFinale();
-    }
-  } catch(e) {}
-}
-
-function showQrModal() {
-  const id = participant ? participant.id : localStorage.getItem('participant_id');
-  if (!id) { showToast('Сначала зарегистрируйся'); return; }
-  const url = 'https://proway-event.vercel.app/profile-scan.html?id=' + id;
-  const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' + encodeURIComponent(url);
-  document.getElementById('qr-modal-img').src = qrUrl;
-  document.getElementById('qr-modal-overlay').classList.add('show');
-}
-function closeQrModal() {
-  document.getElementById('qr-modal-overlay').classList.remove('show');
-}
-
-
-// ── ДАТА ОТКРЫТИЯ ПОЛНОГО ПРИЛОЖЕНИЯ ──────────────────
-const LAUNCH_DATE = new Date('2026-04-21T11:00:00+03:00');
-function isLaunched(){ return new Date() >= LAUNCH_DATE; }
+function loadImg(src){return new Promise((res,rej)=>{const img=new Image();img.crossOrigin='anonymous';img.onload=()=>res(img);img.onerror=rej;img.src=src;});}
+function roundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
 
 function startCountdown(){
   function update(){
-    const diff = LAUNCH_DATE - new Date();
-    if(diff <= 0){ location.reload(); return; }
-    const d=Math.floor(diff/86400000);
-    const h=Math.floor((diff%86400000)/3600000);
-    const m=Math.floor((diff%3600000)/60000);
-    const s=Math.floor((diff%60000)/1000);
-    ['countdown','countdown2'].forEach(cid=>{const el=document.getElementById(cid);if(el) el.innerHTML=
-      `<span class="cd-block"><span class="cd-num">${d}</span><span class="cd-lbl">дней</span></span>` +
-      `<span class="cd-block"><span class="cd-num">${String(h).padStart(2,'0')}</span><span class="cd-lbl">часов</span></span>` +
-      `<span class="cd-block"><span class="cd-num">${String(m).padStart(2,'0')}</span><span class="cd-lbl">минут</span></span>` +
-      `<span class="cd-block"><span class="cd-num">${String(s).padStart(2,'0')}</span><span class="cd-lbl">секунд</span></span>`;
+    const diff=LAUNCH_DATE-new Date();
+    if(diff<=0){location.reload();return;}
+    const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
+    ['countdown','countdown2'].forEach(cid=>{const el=document.getElementById(cid);if(el)el.innerHTML=
+      `<span class="cd-block"><span class="cd-num">${d}</span><span class="cd-lbl">дней</span></span>`+
+      `<span class="cd-block"><span class="cd-num">${String(h).padStart(2,'0')}</span><span class="cd-lbl">часов</span></span>`+
+      `<span class="cd-block"><span class="cd-num">${String(m).padStart(2,'0')}</span><span class="cd-lbl">минут</span></span>`+
+      `<span class="cd-block"><span class="cd-num">${String(s).padStart(2,'0')}</span><span class="cd-lbl">секунд</span></span>`;});
   }
-  update();
-  setInterval(update, 1000);
-}
-
-
-function showPrelaunch(){
-  document.getElementById('screen-prelaunch').classList.remove('hidden');
+  update();setInterval(update,1000);
 }
 
 function showPrelaunchDone(){
-  const el = document.getElementById('screen-prelaunch-done');
-  if(!el) return;
+  const el=document.getElementById('screen-prelaunch-done');if(!el)return;
   el.classList.remove('hidden');
-  // Заполняем данные агента
   if(participant){
-    const cod = participant.codename || 'АГЕНТ';
-    const cn1 = document.getElementById('prelaunch-codename');
-    const cn2 = document.getElementById('prelaunch-codename2');
-    const nm = document.getElementById('prelaunch-name');
-    const av = document.getElementById('prelaunch-avatar');
-    if(cn1) cn1.textContent = cod;
-    if(cn2) cn2.textContent = cod;
-    if(nm) nm.textContent = participant.name + ' · ' + participant.company;
-    if(av && participant.avatar){ av.src = participant.avatar; }
+    const cn1=document.getElementById('prelaunch-codename');const cn2=document.getElementById('prelaunch-codename2');
+    const nm=document.getElementById('prelaunch-name');const av=document.getElementById('prelaunch-avatar');
+    if(cn1)cn1.textContent=participant.codename||'АГЕНТ';if(cn2)cn2.textContent=participant.codename||'АГЕНТ';
+    if(nm)nm.textContent=participant.name+' · '+participant.company;
+    if(av&&participant.avatar)av.src='https://proway-event.vercel.app/'+participant.avatar;
   }
 }
 
 window.addEventListener('load',()=>{
+// ── DEV BYPASS: открой ?dev=true чтобы пропустить pre-launch ──────
+const _dp=new URLSearchParams(window.location.search);
+if(_dp.get('dev')==='true'){
+  const _sc=localStorage.getItem('scanned_vendors');
+  if(_sc)try{JSON.parse(_sc).forEach(i=>scannedVendors.add(i));}catch(e){}
+  const _id=localStorage.getItem('participant_id');
+  if(_id){
+    participant={id:_id,name:localStorage.getItem('participant_name')||'DEV',email:localStorage.getItem('participant_email')||'',company:localStorage.getItem('participant_company')||'PROWAY',points:0,interests:localStorage.getItem('participant_interests')||'',avatar:localStorage.getItem('participant_avatar')||'',gender:localStorage.getItem('participant_gender')||'male',codename:localStorage.getItem('participant_codename')||'ФАЙРВОЛ',artFile:localStorage.getItem('participant_artfile')||''};
+    initApp();return;
+  }
+  // Нет участника — показываем онбординг
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('ob-welcome').classList.add('active');
+  return;
+}
+// Обновляем кнопку регистрации
+updateRegBtn();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
-  const savedScans=localStorage.getItem('scanned_vendors');
-  if(savedScans){try{JSON.parse(savedScans).forEach(id=>scannedVendors.add(id));}catch(e){}}
-  const id=localStorage.getItem('participant_id');
-  if(id){
-    participant={
-      id,
-      name:localStorage.getItem('participant_name')||'—',
-      email:localStorage.getItem('participant_email')||'',
-      company:localStorage.getItem('participant_company')||'—',
-      points:0,
-      interests:localStorage.getItem('participant_interests')||'',
-      avatar:localStorage.getItem('participant_avatar')||'',
-      gender:localStorage.getItem('participant_gender')||'male',
-      codename:localStorage.getItem('participant_codename')||'ФАЙРВОЛ',
-      artFile:localStorage.getItem('participant_artfile')||''
-    };
-    if(isLaunched()){
-      initApp();
-    } else {
-      // Уже зарегистрирован, но игра ещё не открылась
-      showPrelaunchDone();
-      startCountdown();
-    }
-    return;
-  }
-  // Не зарегистрирован
-  if(!isLaunched()){
-    showPrelaunch();
-    startCountdown();
-  }
-  const urlParams=new URLSearchParams(window.location.search);
-  const vendorId=urlParams.get('id');
-  if(vendorId&&id)handleVendorScan(vendorId);
+const savedScans=localStorage.getItem('scanned_vendors');
+if(savedScans){try{JSON.parse(savedScans).forEach(id=>scannedVendors.add(id));}catch(e){}}
+const id=localStorage.getItem('participant_id');
+if(id){
+  participant={id,name:localStorage.getItem('participant_name')||'—',email:localStorage.getItem('participant_email')||'',company:localStorage.getItem('participant_company')||'—',points:0,interests:localStorage.getItem('participant_interests')||'',avatar:localStorage.getItem('participant_avatar')||'',gender:localStorage.getItem('participant_gender')||'male',codename:localStorage.getItem('participant_codename')||'ФАЙРВОЛ',artFile:localStorage.getItem('participant_artfile')||''};
+  if(isLaunched()){initApp();}
+  else{showPrelaunchDone();startCountdown();}
+  return;
+}
+if(!isLaunched()){
+  document.getElementById('screen-prelaunch').classList.remove('hidden');
+  startCountdown();
+}
+const urlParams=new URLSearchParams(window.location.search);
+const vendorId=urlParams.get('id');
+if(vendorId&&id)handleVendorScan(vendorId);
 });
 </script>
 
-<!-- ══ PRE-LAUNCH: НЕ ЗАРЕГИСТРИРОВАН ══ -->
+<!-- PRE-LAUNCH: НЕ ЗАРЕГИСТРИРОВАН -->
 <div id="screen-prelaunch" class="prelaunch-screen hidden">
-  <div class="pl-grid"></div>
-  <div class="pl-glow"></div>
-
-  <!-- Header -->
+  <div class="pl-grid"></div><div class="pl-glow"></div>
   <div style="padding:52px 20px 0;position:relative;z-index:1;text-align:center;">
     <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:4px;margin-bottom:8px">// PROWAY_SECURITY_DAY_2026</div>
     <h1 style="font-family:'Bangers',cursive;font-size:52px;color:var(--white);letter-spacing:4px;line-height:.95;margin-bottom:6px">МИР<br><span style="color:var(--cyan)">ПОД</span><br>УГРОЗОЙ</h1>
     <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:4px">21 апреля · Пространство «Connect»</div>
     <div style="font-size:11px;color:var(--text2)">5-й Донской проезд, д. 17</div>
   </div>
-
-  <!-- Countdown -->
   <div style="padding:0 20px;position:relative;z-index:1;">
     <div style="font-size:10px;font-weight:700;color:var(--text2);letter-spacing:2px;text-transform:uppercase;text-align:center;margin-bottom:4px">До начала миссии</div>
     <div id="countdown"></div>
   </div>
-
-  <!-- Speech bubble -->
   <div style="margin:0 16px;background:rgba(108,92,231,.06);border:1px solid var(--border2);border-left:3px solid var(--cyan);border-radius:4px;padding:14px 16px;position:relative;z-index:1;">
     <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:3px;margin-bottom:8px">// ВХОДЯЩЕЕ_СООБЩЕНИЕ</div>
-    <p style="font-size:14px;font-weight:600;color:var(--text);line-height:1.6;">Кибератаки участились. Старые методы защиты не работают. Нужны новые герои — те, кто знает как работают настоящие инструменты безопасности.</p>
-    <p style="font-size:13px;color:var(--text2);margin-top:8px;line-height:1.5;">Зарегистрируйся сейчас, получи кодовое имя агента и готовься к миссии 21 апреля.</p>
+    <p style="font-size:14px;font-weight:600;color:var(--text);line-height:1.6;">Кибератаки участились. Нужны новые герои — те, кто знает как работают настоящие инструменты безопасности.</p>
+    <p style="font-size:13px;color:var(--text2);margin-top:8px;line-height:1.5;">Зарегистрируйся и получи кодовое имя агента — готовься к миссии 21 апреля.</p>
   </div>
-
-  <!-- Механика -->
   <div style="padding:0 16px;position:relative;z-index:1;">
     <div style="font-family:'Bangers',cursive;font-size:16px;color:var(--cyan);letter-spacing:3px;margin:16px 0 10px">КАК ИГРАТЬ</div>
-    <div class="mech-card">
-      <div class="mech-icon">🎯</div>
-      <div><div class="mech-title">Посещай стенды</div><div class="mech-text">8 вендоров — 8 глав шпионского досье. Каждый QR-код открывает новую главу твоей истории и даёт +20 баллов.</div></div>
-    </div>
-    <div class="mech-card">
-      <div class="mech-icon">🗳️</div>
-      <div><div class="mech-title">Голосуй в опросах</div><div class="mech-text">После каждого доклада — живые вопросы. Выбери позицию и получи +15 баллов за каждый ответ.</div></div>
-    </div>
-    <div class="mech-card">
-      <div class="mech-icon">🤝</div>
-      <div><div class="mech-title">Нетворкинг</div><div class="mech-text">Находи коллег по интересам — DLP, SOC, пентест. Совпадения по темам поднимают тебя в рейтинге.</div></div>
-    </div>
-    <div class="mech-card">
-      <div class="mech-icon">🏆</div>
-      <div><div class="mech-title">Борись за топ</div><div class="mech-text">Лучшие агенты получают призы на финальном награждении. Максимум — 430 баллов.</div></div>
-    </div>
+    <div class="mech-card"><div class="mech-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="var(--cyan)" stroke-width="1.5"/><circle cx="10" cy="10" r="4" stroke="var(--cyan)" stroke-width="1.5"/><circle cx="10" cy="10" r="1.5" fill="var(--cyan)"/><line x1="10" y1="2" x2="10" y2="4.5" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round"/><line x1="10" y1="15.5" x2="10" y2="18" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round"/><line x1="2" y1="10" x2="4.5" y2="10" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round"/><line x1="15.5" y1="10" x2="18" y2="10" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round"/></svg></div><div><div class="mech-title">Посещай стенды</div><div class="mech-text">8 вендоров — 8 глав шпионского досье. Каждый QR-код открывает новую главу и даёт +20 баллов.</div></div></div>
+    <div class="mech-card"><div class="mech-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="16" height="16" rx="3" stroke="var(--cyan)" stroke-width="1.5"/><path d="M5.5 10.5l3 3 6-6" stroke="var(--cyan)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="mech-title">Голосуй в опросах</div><div class="mech-text">После каждого доклада — живые вопросы. Выбери позицию и получи +15 баллов.</div></div></div>
+    <div class="mech-card"><div class="mech-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="7" cy="6" r="3" stroke="var(--cyan)" stroke-width="1.5"/><path d="M1 17c0-3.314 2.686-6 6-6" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round"/><circle cx="14" cy="6" r="2.5" stroke="var(--cyan)" stroke-width="1.3"/><path d="M11.5 17c0-2.761 1.343-5 3.5-5s3.5 2.239 3.5 5" stroke="var(--cyan)" stroke-width="1.3" stroke-linecap="round"/><path d="M10.5 12.5l1.5-1" stroke="var(--cyan)" stroke-width="1" stroke-linecap="round" opacity="0.6"/></svg></div><div><div class="mech-title">Нетворкинг</div><div class="mech-text">Находи коллег по роли — PROWAY, вендоры, интеграторы. Заводи знакомства и получай баллы.</div></div></div>
+    <div class="mech-card"><div class="mech-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 2h8v7a4 4 0 01-8 0V2z" stroke="var(--cyan)" stroke-width="1.5" stroke-linejoin="round"/><path d="M6 5H3a2 2 0 000 4h3M14 5h3a2 2 0 010 4h-3" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round"/><path d="M10 13v3M7 18h6" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round"/></svg></div><div><div class="mech-title">Борись за топ</div><div class="mech-text">Лучшие агенты получают призы на финальном награждении. Максимум — 430 баллов.</div></div></div>
   </div>
-
-  <!-- CTA -->
   <div style="padding:16px;position:relative;z-index:1;padding-bottom:40px;">
-    <button onclick="showScreen('screen-agent')"
-      style="width:100%;background:var(--grad);border:none;border-radius:8px;padding:18px;font-family:'Bangers',cursive;font-size:24px;color:#fff;letter-spacing:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;">
-      ПРИНЯТЬ МИССИЮ
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M12 6l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <!-- ▼ КНОПКА С БЛОКИРОВКОЙ ▼ -->
+    <button id="reg-cta-btn" onclick="openRegistration()"
+      style="width:100%;background:var(--grad);border:none;border-radius:8px;padding:18px;font-family:'Bangers',cursive;font-size:24px;color:#fff;letter-spacing:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:opacity 0.3s;">
+      ПРИНЯТЬ МИССИЮ ›
     </button>
-    <div style="text-align:center;margin-top:12px;font-size:12px;color:var(--text2)">Регистрация занимает 1 минуту · Бесплатно</div>
+    <div id="reg-cta-hint" style="text-align:center;margin-top:12px;font-size:12px;color:var(--text2)">Регистрация занимает 1 минуту · Бесплатно</div>
   </div>
 </div>
 
-<!-- ══ PRE-LAUNCH: УЖЕ ЗАРЕГИСТРИРОВАН ══ -->
+<!-- PRE-LAUNCH: УЖЕ ЗАРЕГИСТРИРОВАН -->
 <div id="screen-prelaunch-done" class="prelaunch-screen hidden">
-  <div class="pl-grid"></div>
-  <div class="pl-glow"></div>
-
-  <!-- Header -->
+  <div class="pl-grid"></div><div class="pl-glow"></div>
   <div style="padding:52px 20px 20px;position:relative;z-index:1;text-align:center;">
     <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:#00c864;letter-spacing:4px;margin-bottom:12px">✓ АГЕНТ АВТОРИЗОВАН</div>
     <h1 style="font-family:'Bangers',cursive;font-size:44px;color:var(--white);letter-spacing:3px;line-height:1;margin-bottom:4px">ЖДЁМ<br>ТЕБЯ,<br><span style="color:var(--cyan)" id="prelaunch-codename">АГЕНТ</span></h1>
   </div>
-
-  <!-- Agent card -->
   <div class="agent-done-card" style="position:relative;z-index:1;">
-    <div class="agent-done-av">
-      <img id="prelaunch-avatar" src="" alt="" onerror="this.style.background='var(--bg3)'"/>
-    </div>
+    <div class="agent-done-av"><img id="prelaunch-avatar" src="" alt="" onerror="this.style.background='var(--bg3)'"/></div>
     <div style="flex:1;min-width:0;">
       <div style="font-size:10px;font-weight:700;color:var(--text2);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px">Кодовое имя</div>
       <div style="font-family:'Bangers',cursive;font-size:22px;color:var(--cyan);letter-spacing:3px" id="prelaunch-codename2">АГЕНТ</div>
@@ -1892,14 +1296,10 @@ if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
       <div style="display:inline-block;background:rgba(0,200,100,.12);border:1px solid rgba(0,200,100,.3);border-radius:20px;padding:2px 10px;font-size:10px;font-weight:700;color:#00c864;letter-spacing:1px;margin-top:6px">ГОТОВ К МИССИИ</div>
     </div>
   </div>
-
-  <!-- Countdown -->
   <div style="padding:20px 20px 0;position:relative;z-index:1;">
     <div style="font-size:10px;font-weight:700;color:var(--text2);letter-spacing:2px;text-transform:uppercase;text-align:center;margin-bottom:4px">До начала игры</div>
     <div id="countdown2"></div>
   </div>
-
-  <!-- Info -->
   <div style="margin:16px;background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:16px;position:relative;z-index:1;">
     <div style="font-family:'Bangers',cursive;font-size:15px;color:var(--cyan);letter-spacing:3px;margin-bottom:12px">21 АПРЕЛЯ · 13:00</div>
     <div style="display:flex;flex-direction:column;gap:8px;">
@@ -1909,12 +1309,8 @@ if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
       <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text)"><span style="color:var(--cyan);font-family:'Share Tech Mono',monospace">17:30</span>PROWAY Security Экспо</div>
       <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text)"><span style="color:var(--cyan);font-family:'Share Tech Mono',monospace">18:30</span>Фуршет и награждение 🏆</div>
     </div>
-    <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:12px;color:var(--text2)">
-      📍 Пространство «Connect» · 5-й Донской проезд, д. 17
-    </div>
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:12px;color:var(--text2)">📍 Пространство «Connect» · 5-й Донской проезд, д. 17</div>
   </div>
-
-  <!-- Share hint -->
   <div style="padding:0 16px 40px;position:relative;z-index:1;">
     <div style="background:rgba(108,92,231,.08);border:1px solid var(--border2);border-radius:8px;padding:14px;text-align:center;">
       <div style="font-size:13px;color:var(--text2);line-height:1.5;">Приложение автоматически откроется<br>в день мероприятия в <span style="color:var(--cyan);font-weight:700">11:00</span></div>
