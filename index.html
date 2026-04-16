@@ -1243,12 +1243,12 @@ async function showScannedProfile(targetId){
   // Загружаем данные участника
   try{
     const res = await api({action:'getParticipant', id: targetId});
-    if(!res || !res.participant){ showToast('// АГЕНТ НЕ НАЙДЕН'); return; }
+    if(!res || res.error || !res.id){ showToast('// АГЕНТ НЕ НАЙДЕН'); return; }
     // Фиксируем просмотр профиля (баллы + ачивка)
     if(participant && participant.id !== targetId){
       api({action:'viewProfile', participant_id: participant.id, viewed_id: targetId});
     }
-    const p = res.participant;
+    const p = res;
     // Показываем модалку с профилем
     const avSrc = p.avatar ? 'https://proway-event.vercel.app/' + p.avatar : '';
     const avHtml = avSrc
