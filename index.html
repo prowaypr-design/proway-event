@@ -1272,10 +1272,14 @@ async function showScannedProfile(targetId){
   try{
     const res = await api({action:'getParticipant', id: targetId});
     if(!res || res.error || !res.id){ showToast('// АГЕНТ НЕ НАЙДЕН'); return; }
-    // +10 баллов за знакомство
-    if(participant && participant.id !== targetId){
-      api({action:'viewProfile', participant_id: participant.id, viewed_id: targetId})
-        .then(r=>{ if(r&&r.points){ participant.points=(participant.points||0)+r.points; renderProfile(); showToast('// ЗНАКОМСТВО ЗАСЧИТАНО · +'+r.points+' Б'); }}).catch(()=>{});
+    // +10 баллов за знакомство (один раз на каждого агента)
+    const metKey = 'met_' + targetId;
+    if(participant && participant.id !== targetId && !localStorage.getItem(metKey)){
+      localStorage.setItem(metKey, '1');
+      participant.points = (participant.points||0) + 10;
+      renderProfile();
+      showToast('// ЗНАКОМСТВО ЗАСЧИТАНО · +10 Б');
+      api({action:'viewProfile', participant_id: participant.id, viewed_id: targetId}).catch(()=>{});
     }
     const p = res;
     // Показываем модалку с профилем
