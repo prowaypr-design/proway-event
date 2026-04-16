@@ -482,6 +482,45 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   </div>
 </div>
 
+<!-- QR SCANNER MODAL -->
+<div id="qr-scanner-overlay" style="display:none;position:fixed;inset:0;z-index:600;background:#000;flex-direction:column;align-items:center;justify-content:center;">
+  <div style="position:relative;width:100%;max-width:480px;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+    <!-- Видео -->
+    <video id="qr-video" playsinline autoplay muted style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></video>
+    <!-- Затемнение по краям -->
+    <div style="position:absolute;inset:0;pointer-events:none;">
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.5);"></div>
+      <!-- Прозрачное окошко по центру -->
+      <div id="qr-cutout" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-58%);width:240px;height:240px;box-shadow:0 0 0 9999px rgba(0,0,0,0.55);border-radius:16px;"></div>
+      <!-- Уголки рамки -->
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-58%);width:240px;height:240px;">
+        <div style="position:absolute;top:0;left:0;width:32px;height:32px;border-top:3px solid #00c864;border-left:3px solid #00c864;border-radius:4px 0 0 0;"></div>
+        <div style="position:absolute;top:0;right:0;width:32px;height:32px;border-top:3px solid #00c864;border-right:3px solid #00c864;border-radius:0 4px 0 0;"></div>
+        <div style="position:absolute;bottom:0;left:0;width:32px;height:32px;border-bottom:3px solid #00c864;border-left:3px solid #00c864;border-radius:0 0 0 4px;"></div>
+        <div style="position:absolute;bottom:0;right:0;width:32px;height:32px;border-bottom:3px solid #00c864;border-right:3px solid #00c864;border-radius:0 0 4px 0;"></div>
+        <!-- Сканирующая линия -->
+        <div id="qr-scanline" style="position:absolute;left:6px;right:6px;height:2px;background:linear-gradient(90deg,transparent,#00c864,transparent);animation:scanline 2s ease-in-out infinite;"></div>
+      </div>
+    </div>
+    <!-- Заголовок -->
+    <div style="position:absolute;top:0;left:0;right:0;padding:52px 20px 20px;background:linear-gradient(to bottom,rgba(0,0,0,0.7),transparent);text-align:center;z-index:1;">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:#00c864;letter-spacing:3px;" id="qr-scanner-title">// НАВЕДИ НА QR-КОД</div>
+    </div>
+    <!-- Статус -->
+    <div style="position:absolute;bottom:120px;left:20px;right:20px;text-align:center;z-index:1;">
+      <div id="qr-status" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:1px;"></div>
+    </div>
+    <!-- Кнопка закрыть -->
+    <div style="position:absolute;bottom:40px;left:20px;right:20px;z-index:1;">
+      <button onclick="closeQrScanner()" style="width:100%;padding:14px;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.2);border-radius:14px;font-size:14px;font-weight:600;color:rgba(255,255,255,0.6);cursor:pointer;font-family:'Inter',sans-serif;">Закрыть</button>
+    </div>
+    <canvas id="qr-canvas" style="display:none;"></canvas>
+  </div>
+</div>
+<style>
+@keyframes scanline{0%,100%{top:8%}50%{top:84%}}
+</style>
+
 <div class="finale-overlay" id="finale-overlay">
   <svg class="finale-radar" width="400" height="400" viewBox="0 0 400 400" fill="none">
     <circle cx="200" cy="200" r="180" stroke="white" stroke-width="0.5"/>
@@ -696,7 +735,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   </button>
 </nav>
 
-<input type="file" id="qr-file-input" accept="image/*" style="display:none;">
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1266,74 +1305,112 @@ async function showScannedProfile(targetId){
   } catch(e){ showToast('// ОШИБКА СВЯЗИ'); }
 }
 
-// ── СКАНИРОВАНИЕ QR ЧЕРЕЗ КАМЕРУ (input capture) ─────────────────
-function openQrScanner(mode){
-  // mode: 'agent' — сканируем участника, 'vendor' — сканируем стенд
-  const input = document.getElementById('qr-file-input');
-  input.dataset.mode = mode;
-  input.value = '';
-  input.click();
+// ── QR SCANNER ───────────────────────────────────────────────────
+let _scanStream = null;
+let _scanTimer = null;
+let _scanMode = 'agent';
+let _jsqrLoaded = false;
+
+async function openQrScanner(mode){
+  if(!participant){ showToast('// СНАЧАЛА ЗАРЕГИСТРИРУЙСЯ'); return; }
+  _scanMode = mode;
+  const overlay = document.getElementById('qr-scanner-overlay');
+  overlay.style.display = 'flex';
+  document.getElementById('qr-status').textContent = '';
+  document.getElementById('qr-scanner-title').textContent =
+    mode === 'vendor' ? '// НАВЕДИ НА QR СТЕНДА' : '// НАВЕДИ НА QR АГЕНТА';
+
+  // Загружаем jsQR как fallback если BarcodeDetector недоступен
+  if(!('BarcodeDetector' in window) && !_jsqrLoaded){
+    await new Promise((res)=>{
+      const s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js';
+      s.onload = ()=>{ _jsqrLoaded = true; res(); };
+      s.onerror = ()=>res();
+      document.head.appendChild(s);
+    });
+  }
+
+  try{
+    _scanStream = await navigator.mediaDevices.getUserMedia({
+      video:{ facingMode:'environment', width:{ideal:1280}, height:{ideal:720} }
+    });
+    const video = document.getElementById('qr-video');
+    video.srcObject = _scanStream;
+    await video.play();
+    _startScanLoop();
+  } catch(e){
+    closeQrScanner();
+    showToast('// НЕТ ДОСТУПА К КАМЕРЕ');
+  }
 }
 
-document.addEventListener('DOMContentLoaded', ()=>{
-  document.getElementById('qr-file-input').addEventListener('change', async function(){
-    const file = this.files[0];
-    if(!file) return;
-    const mode = this.dataset.mode || 'agent';
-    showToast('// АНАЛИЗИРУЮ QR-КОД...');
+function closeQrScanner(){
+  clearInterval(_scanTimer);
+  if(_scanStream){ _scanStream.getTracks().forEach(t=>t.stop()); _scanStream = null; }
+  const video = document.getElementById('qr-video');
+  video.srcObject = null;
+  document.getElementById('qr-scanner-overlay').style.display = 'none';
+}
 
-    // Используем Barcode Detection API если доступен (Chrome/Android)
-    if('BarcodeDetector' in window){
+function _startScanLoop(){
+  const video = document.getElementById('qr-video');
+  const canvas = document.getElementById('qr-canvas');
+  const ctx = canvas.getContext('2d');
+  let detected = false;
+
+  // BarcodeDetector (Chrome Android, некоторые браузеры)
+  if('BarcodeDetector' in window){
+    const bd = new BarcodeDetector({formats:['qr_code']});
+    _scanTimer = setInterval(async()=>{
+      if(detected || video.readyState < 2) return;
       try{
-        const bd = new BarcodeDetector({formats:['qr_code']});
-        const bitmap = await createImageBitmap(file);
-        const codes = await bd.detect(bitmap);
+        const codes = await bd.detect(video);
         if(codes.length){
-          handleQrResult(codes[0].rawValue, mode);
-          return;
+          detected = true;
+          clearInterval(_scanTimer);
+          _onQrDetected(codes[0].rawValue);
         }
-      } catch(e){}
+      }catch(e){}
+    }, 300);
+    return;
+  }
+
+  // jsQR fallback (Safari, Яндекс и др.)
+  _scanTimer = setInterval(()=>{
+    if(detected || video.readyState < 2 || !window.jsQR) return;
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    ctx.drawImage(video, 0, 0);
+    const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const code = jsQR(img.data, img.width, img.height, {inversionAttempts:'dontInvert'});
+    if(code){
+      detected = true;
+      clearInterval(_scanTimer);
+      _onQrDetected(code.data);
     }
+  }, 300);
+}
 
-    // Fallback: читаем изображение и ищем URL вручную через canvas + внешний API
-    const img = new Image();
-    const url = URL.createObjectURL(file);
-    img.onload = async ()=>{
-      URL.revokeObjectURL(url);
-      const canvas = document.createElement('canvas');
-      canvas.width = img.width; canvas.height = img.height;
-      canvas.getContext('2d').drawImage(img,0,0);
-      // Используем api.qrserver.com для декодирования
-      const blob = await new Promise(res=>canvas.toBlob(res,'image/png'));
-      const fd = new FormData();
-      fd.append('file', blob, 'qr.png');
-      try{
-        const resp = await fetch('https://api.qrserver.com/v1/read-qr-code/', {method:'POST', body:fd});
-        const data = await resp.json();
-        const val = data?.[0]?.symbol?.[0]?.data;
-        if(val){ handleQrResult(val, mode); return; }
-      } catch(e){}
-      showToast('// QR-КОД НЕ РАСПОЗНАН');
-    };
-    img.onerror = ()=>{ URL.revokeObjectURL(url); showToast('// ОШИБКА ЧТЕНИЯ ФАЙЛА'); };
-    img.src = url;
-  });
-});
+function _onQrDetected(value){
+  // Вибрация если поддерживается
+  if(navigator.vibrate) navigator.vibrate(100);
+  closeQrScanner();
+  handleQrResult(value);
+}
 
-function handleQrResult(value, mode){
+function handleQrResult(value){
   try{
-    // Парсим URL и извлекаем параметры
     const url = new URL(value);
     const vendorId = url.searchParams.get('vendor');
     const scanId = url.searchParams.get('scan');
     if(vendorId){ handleVendorScan(vendorId); return; }
     if(scanId){ showScannedProfile(scanId); return; }
-  } catch(e){
-    // Если не URL — проверяем как сырое значение
-    if(value.startsWith('vendor:')){ handleVendorScan(value.replace('vendor:','')); return; }
-  }
+  } catch(e){}
   showToast('// НЕИЗВЕСТНЫЙ QR-КОД');
 }
+
+document.addEventListener('DOMContentLoaded', ()=>{});
 
 window.addEventListener('load',()=>{
 // ── DEV BYPASS: открой ?dev=true чтобы пропустить pre-launch ──────
