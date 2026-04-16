@@ -395,7 +395,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .agent-done-av{width:72px;height:72px;border-radius:50%;border:2px solid var(--violet);overflow:hidden;flex-shrink:0;}
 .agent-done-av img{width:100%;height:100%;object-fit:cover;}
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+<script src="/jsqr.min.js"></script>
 </head>
 <body>
 
@@ -1275,71 +1275,101 @@ async function showScannedProfile(targetId){
 
 // ── QR СКАНЕР ─────────────────────────────────────────────────────
 let scannerStream = null;
-let scannerMode = null; // 'vendor' | 'player'
+let scannerMode = null;
 let scannerRaf = null;
+let scannerActive = false;
 
 async function openScanner(mode){
   scannerMode = mode;
+  scannerActive = true;
   const overlay = document.getElementById('scanner-overlay');
-  const title = document.getElementById('scanner-title');
-  const hint = document.getElementById('scanner-hint');
+  const title   = document.getElementById('scanner-title');
+  const hint    = document.getElementById('scanner-hint');
   title.textContent = mode === 'vendor' ? '// СКАНИРУЮ СТЕНД' : '// СКАНИРУЮ ИГРОКА';
-  hint.textContent = 'НАВЕДИ КАМЕРУ НА QR-КОД';
+  hint.textContent  = 'НАВЕДИ КАМЕРУ НА QR-КОД';
   overlay.classList.add('show');
+
   try {
     scannerStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: 'environment', width: {ideal:640}, height: {ideal:640} }
+      video: {
+        facingMode: {ideal: 'environment'},
+        width:  {ideal: 1280},
+        height: {ideal: 1280}
+      },
+      audio: false
     });
     const video = document.getElementById('scanner-video');
     video.srcObject = scannerStream;
-    video.play();
-    video.addEventListener('canplay', startScanLoop, {once:true});
-  } catch(e) {
+    await video.play();
+    // Ждём реального кадра
+    await new Promise(r => {
+      if(video.readyState >= 3) return r();
+      video.addEventListener('canplay', r, {once: true});
+    });
+    startScanLoop();
+  } catch(e){
     hint.textContent = 'НЕТ ДОСТУПА К КАМЕРЕ';
-    console.error(e);
+    console.error('Camera error:', e);
   }
 }
 
 function startScanLoop(){
-  const video = document.getElementById('scanner-video');
+  const video  = document.getElementById('scanner-video');
   const canvas = document.getElementById('scanner-canvas');
+  
+  // Пробуем нативный BarcodeDetector (Chrome Android, Safari 17+)
+  if('BarcodeDetector' in window){
+    const detector = new BarcodeDetector({formats: ['qr_code']});
+    async function detectNative(){
+      if(!scannerActive) return;
+      try {
+        const codes = await detector.detect(video);
+        if(codes.length > 0){
+          handleScannedQR(codes[0].rawValue);
+          return;
+        }
+      } catch(e){}
+      scannerRaf = requestAnimationFrame(detectNative);
+    }
+    scannerRaf = requestAnimationFrame(detectNative);
+    return;
+  }
+
+  // Fallback: jsQR
+  if(typeof jsQR === 'undefined'){
+    document.getElementById('scanner-hint').textContent = 'БИБЛИОТЕКА НЕ ЗАГРУЖЕНА — ОБНОВИ СТРАНИЦУ';
+    return;
+  }
+
   const ctx = canvas.getContext('2d', {willReadFrequently: true});
-  let initialized = false;
+  canvas.width  = video.videoWidth  || 640;
+  canvas.height = video.videoHeight || 640;
 
   function tick(){
-    if(!document.getElementById('scanner-overlay').classList.contains('show')) return;
-    if(video.readyState >= 2){
-      // Инициализируем размер canvas только один раз
-      if(!initialized && video.videoWidth > 0){
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        initialized = true;
-      }
-      if(initialized){
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        try {
-          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-          // attemptBoth — пробует обычный и инвертированный QR
-          const code = jsQR(imageData.data, imageData.width, imageData.height, {
-            inversionAttempts: 'attemptBoth'
-          });
-          if(code && code.data){
-            handleScannedQR(code.data);
-            return;
-          }
-        } catch(e){}
-      }
+    if(!scannerActive) return;
+    if(video.readyState >= 2 && video.videoWidth > 0){
+      canvas.width  = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0);
+      try {
+        const d = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const code = jsQR(d.data, d.width, d.height, {inversionAttempts: 'attemptBoth'});
+        if(code && code.data){
+          handleScannedQR(code.data);
+          return;
+        }
+      } catch(e){}
     }
     scannerRaf = requestAnimationFrame(tick);
   }
-  // Небольшая задержка чтобы видео точно стартовало
-  setTimeout(()=>{ scannerRaf = requestAnimationFrame(tick); }, 300);
+  scannerRaf = requestAnimationFrame(tick);
 }
 
 function closeScanner(){
+  scannerActive = false;
   document.getElementById('scanner-overlay').classList.remove('show');
-  if(scannerStream){ scannerStream.getTracks().forEach(t=>t.stop()); scannerStream=null; }
-  if(scannerRaf){ cancelAnimationFrame(scannerRaf); scannerRaf=null; }
+  if(scannerStream){ scannerStream.getTracks().forEach(t => t.stop()); scannerStream = null; }
+  if(scannerRaf){ cancelAnimationFrame(scannerRaf); scannerRaf = null; }
 }
 
 function handleScannedQR(data){
@@ -1352,6 +1382,9 @@ function handleScannedQR(data){
       handleVendorScan(vendorParam);
     } else if(scanParam && scannerMode === 'player'){
       showScannedProfile(scanParam);
+    } else if(vendorParam){
+      // Сканировали через режим игрока но попали на стенд — всё равно засчитаем
+      handleVendorScan(vendorParam);
     } else {
       showToast('// QR НЕ РАСПОЗНАН КАК ИГРОВОЙ');
     }
