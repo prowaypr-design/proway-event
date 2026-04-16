@@ -341,22 +341,71 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .ach-banner-name{font-size:14px;font-weight:700;color:#fff;}
 
 /* FINALE */
-.finale-overlay{position:fixed;inset:0;background:#07071a;z-index:600;display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;}
+.finale-overlay{position:fixed;inset:0;background:#07071a;z-index:600;display:none;flex-direction:column;align-items:center;overflow-y:auto;padding:0;}
 .finale-overlay.show{display:flex;}
-.finale-stars{display:flex;justify-content:center;gap:8px;margin-bottom:24px;}
-.finale-star{width:32px;height:32px;background:#f5e642;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);animation:starPop 0.5s ease both;}
-.finale-star:nth-child(2){animation-delay:0.15s;}
-.finale-star:nth-child(3){animation-delay:0.3s;}
-@keyframes starPop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
-.finale-badge{background:linear-gradient(135deg,#6c5ce7,#4834d4);border-radius:20px;padding:4px 16px;font-size:11px;font-weight:700;color:#fff;letter-spacing:2px;margin-bottom:20px;display:inline-block;}
-.finale-title{font-family:'Bangers',cursive;font-size:52px;color:#fff;letter-spacing:3px;line-height:1;margin-bottom:12px;}
-.finale-sub{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:8px;max-width:300px;}
-.finale-pts{font-family:'Bangers',cursive;font-size:36px;color:#a29bfe;margin-bottom:8px;}
-.finale-rank{font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:32px;}
-.finale-achs{display:flex;gap:8px;justify-content:center;margin-bottom:32px;flex-wrap:wrap;}
-.finale-ach{font-size:24px;}
-.finale-btn{width:100%;max-width:320px;padding:16px;background:linear-gradient(135deg,#6c5ce7,#4834d4);border:none;border-radius:16px;font-size:15px;font-weight:700;color:#fff;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;}
-.finale-btn-sec{width:100%;max-width:320px;padding:14px;background:transparent;border:0.5px solid rgba(108,92,231,0.4);border-radius:16px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;font-family:'Inter',sans-serif;}
+@keyframes starPop{from{transform:scale(0) rotate(-20deg);opacity:0}to{transform:scale(1) rotate(0deg);opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes countUp{from{opacity:0;transform:scale(0.5)}to{opacity:1;transform:scale(1)}}
+@keyframes particleFly{0%{transform:translateY(0) translateX(0) scale(1);opacity:1}100%{transform:translateY(-120px) translateX(var(--tx)) scale(0);opacity:0}}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 20px rgba(108,92,231,0.3)}50%{box-shadow:0 0 60px rgba(108,92,231,0.7)}}
+@keyframes scanReveal{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0% 0 0)}}
+@keyframes radarSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+.fn-particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.fn-particle{position:absolute;border-radius:50%;animation:particleFly 2s ease-out both;}
+
+.fn-hero{width:100%;padding:60px 24px 32px;text-align:center;position:relative;z-index:1;flex-shrink:0;}
+.fn-radar-wrap{position:relative;width:160px;height:160px;margin:0 auto 24px;}
+.fn-radar-svg{position:absolute;inset:0;opacity:0.12;}
+.fn-radar-sweep{position:absolute;inset:0;opacity:0.15;animation:radarSpin 3s linear infinite;}
+.fn-avatar{width:120px;height:120px;border-radius:50%;border:3px solid var(--violet);object-fit:cover;position:absolute;inset:20px;z-index:1;animation:glowPulse 2s ease-in-out infinite;}
+.fn-avatar-placeholder{width:120px;height:120px;border-radius:50%;border:3px solid var(--violet);background:var(--bg2);position:absolute;inset:20px;z-index:1;display:flex;align-items:center;justify-content:center;font-size:40px;color:var(--text2);}
+
+.fn-mission{font-family:'Share Tech Mono',monospace;font-size:10px;color:#00c864;letter-spacing:4px;margin-bottom:8px;animation:fadeUp .6s .2s both;}
+.fn-title{font-family:'Bangers',cursive;font-size:52px;color:#fff;letter-spacing:4px;line-height:1;margin-bottom:6px;animation:fadeUp .6s .3s both;}
+.fn-codename{font-family:'Bangers',cursive;font-size:28px;letter-spacing:3px;animation:fadeUp .6s .4s both;}
+
+.fn-stats-block{width:100%;max-width:400px;padding:0 20px 24px;position:relative;z-index:1;animation:fadeUp .6s .5s both;}
+
+.fn-pts-card{background:linear-gradient(135deg,rgba(108,92,231,0.15),rgba(72,52,212,0.15));border:1px solid rgba(108,92,231,0.4);border-radius:20px;padding:20px;text-align:center;margin-bottom:14px;position:relative;overflow:hidden;}
+.fn-pts-card::before{content:'';position:absolute;inset:-1px;border-radius:20px;background:linear-gradient(135deg,rgba(108,92,231,0.3),transparent,rgba(108,92,231,0.3));opacity:0.5;}
+.fn-pts-lbl{font-size:10px;font-weight:700;color:var(--text2);letter-spacing:3px;margin-bottom:6px;}
+.fn-pts-num{font-family:'Bangers',cursive;font-size:72px;color:#fff;line-height:1;letter-spacing:2px;animation:countUp .8s .7s both;}
+.fn-pts-unit{font-family:'Bangers',cursive;font-size:28px;color:var(--cyan);letter-spacing:2px;}
+.fn-rank-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(245,230,66,0.12);border:1px solid rgba(245,230,66,0.3);border-radius:20px;padding:6px 16px;font-family:'Bangers',cursive;font-size:18px;color:#f5e642;letter-spacing:2px;margin-top:10px;}
+
+.fn-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;}
+.fn-cell{background:rgba(255,255,255,0.04);border:0.5px solid rgba(108,92,231,0.2);border-radius:14px;padding:12px 8px;text-align:center;}
+.fn-cell-n{font-family:'Bangers',cursive;font-size:28px;color:#fff;line-height:1;}
+.fn-cell-n.accent{color:var(--cyan);}
+.fn-cell-l{font-size:9px;font-weight:700;color:var(--text2);letter-spacing:1px;margin-top:4px;text-transform:uppercase;}
+
+.fn-stats-bars{background:rgba(255,255,255,0.03);border:0.5px solid rgba(108,92,231,0.2);border-radius:16px;padding:14px;margin-bottom:14px;}
+.fn-bar-title{font-size:10px;font-weight:700;color:var(--text2);letter-spacing:2px;margin-bottom:12px;}
+.fn-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.fn-bar-row:last-child{margin-bottom:0;}
+.fn-bar-lbl{font-size:10px;font-weight:600;color:var(--text2);letter-spacing:1px;min-width:80px;}
+.fn-bar-track{flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden;}
+.fn-bar-fill{height:100%;border-radius:3px;animation:scanReveal 1s 1s both;}
+.fn-bar-val{font-family:'Share Tech Mono',monospace;font-size:10px;color:#fff;min-width:24px;text-align:right;}
+
+.fn-achs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:14px;}
+.fn-ach{background:rgba(108,92,231,0.1);border:0.5px solid rgba(108,92,231,0.3);border-radius:12px;padding:8px 12px;text-align:center;}
+.fn-ach-icon{font-size:22px;}
+.fn-ach-name{font-size:9px;font-weight:700;color:var(--cyan);letter-spacing:0.5px;margin-top:4px;}
+
+.fn-stars{display:flex;justify-content:center;gap:10px;margin-bottom:20px;}
+.fn-star{width:36px;height:36px;background:#f5e642;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);animation:starPop 0.5s ease both;}
+.fn-star.empty{background:rgba(255,255,255,0.08);}
+.fn-star:nth-child(1){animation-delay:.1s}
+.fn-star:nth-child(2){animation-delay:.25s}
+.fn-star:nth-child(3){animation-delay:.4s}
+.fn-star:nth-child(4){animation-delay:.55s}
+
+.fn-btns{width:100%;max-width:400px;padding:0 20px 48px;position:relative;z-index:1;display:flex;flex-direction:column;gap:10px;animation:fadeUp .6s 1s both;}
+.fn-btn-main{width:100%;padding:16px;background:linear-gradient(135deg,#6c5ce7,#4834d4);border:none;border-radius:16px;font-size:15px;font-weight:700;color:#fff;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;}
+.fn-btn-sec{width:100%;padding:14px;background:transparent;border:0.5px solid rgba(108,92,231,0.3);border-radius:16px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.4);cursor:pointer;font-family:'Inter',sans-serif;}
+
 .finale-radar{position:absolute;opacity:0.05;pointer-events:none;}
 
 /* PRE-LAUNCH */
@@ -397,7 +446,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 </div>
 
 <!-- ONBOARDING -->
-<div id="ob-welcome" class="screen active">
+<div id="ob-welcome" class="screen">
   <div class="ob-hero">
     <div class="ob-grid"></div>
     <div class="ob-glow"></div>
@@ -522,26 +571,74 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 </style>
 
 <div class="finale-overlay" id="finale-overlay">
-  <svg class="finale-radar" width="400" height="400" viewBox="0 0 400 400" fill="none">
-    <circle cx="200" cy="200" r="180" stroke="white" stroke-width="0.5"/>
-    <circle cx="200" cy="200" r="130" stroke="white" stroke-width="0.5"/>
-    <circle cx="200" cy="200" r="80" stroke="white" stroke-width="0.5"/>
-    <circle cx="200" cy="200" r="40" stroke="white" stroke-width="0.5"/>
-    <line x1="200" y1="20" x2="200" y2="380" stroke="white" stroke-width="0.5"/>
-    <line x1="20" y1="200" x2="380" y2="200" stroke="white" stroke-width="0.5"/>
+  <!-- Частицы -->
+  <div class="fn-particles" id="fn-particles"></div>
+
+  <!-- Фоновый радар -->
+  <svg class="finale-radar" width="500" height="500" viewBox="0 0 500 500" style="top:50%;left:50%;transform:translate(-50%,-50%);">
+    <circle cx="250" cy="250" r="220" stroke="white" stroke-width="0.5"/>
+    <circle cx="250" cy="250" r="160" stroke="white" stroke-width="0.5"/>
+    <circle cx="250" cy="250" r="100" stroke="white" stroke-width="0.5"/>
+    <circle cx="250" cy="250" r="50" stroke="white" stroke-width="0.5"/>
+    <line x1="250" y1="30" x2="250" y2="470" stroke="white" stroke-width="0.5"/>
+    <line x1="30" y1="250" x2="470" y2="250" stroke="white" stroke-width="0.5"/>
   </svg>
-  <div class="finale-stars"><div class="finale-star"></div><div class="finale-star"></div><div class="finale-star"></div></div>
-  <div class="finale-badge">МИССИЯ ВЫПОЛНЕНА</div>
-  <div class="finale-title">СПАСИБО,<br>АГЕНТ!</div>
-  <div class="finale-sub">Ты сделал этот день особенным.<br>Твой вклад в безопасность цифрового мира бесценен.</div>
-  <div class="finale-pts" id="finale-pts">0 Б</div>
-  <div class="finale-rank" id="finale-rank">Место в рейтинге: —</div>
-  <div class="finale-achs" id="finale-achs"></div>
-  <button class="finale-btn" onclick="generateShareCard()">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 5l3-3 3 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11v2a1 1 0 001 1h10a1 1 0 001-1v-2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
-    Скачать карточку агента
-  </button>
-  <button class="finale-btn-sec" onclick="document.getElementById('finale-overlay').classList.remove('show')">Вернуться в приложение</button>
+
+  <!-- Герой -->
+  <div class="fn-hero">
+    <div class="fn-radar-wrap">
+      <svg class="fn-radar-svg" viewBox="0 0 160 160"><circle cx="80" cy="80" r="78" stroke="#6c5ce7" stroke-width="1"/><circle cx="80" cy="80" r="55" stroke="#6c5ce7" stroke-width="1"/><circle cx="80" cy="80" r="32" stroke="#6c5ce7" stroke-width="1"/></svg>
+      <svg class="fn-radar-sweep" viewBox="0 0 160 160"><path d="M80 80 L80 4 A76 76 0 0 1 156 80 Z" fill="url(#sweepGrad)"/><defs><linearGradient id="sweepGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6c5ce7" stop-opacity="0"/><stop offset="100%" stop-color="#6c5ce7" stop-opacity="0.8"/></linearGradient></defs></svg>
+      <img id="fn-avatar-img" class="fn-avatar" src="" alt="" style="display:none;">
+      <div id="fn-avatar-ph" class="fn-avatar-placeholder">◈</div>
+    </div>
+    <div class="fn-mission">// МИССИЯ ВЫПОЛНЕНА</div>
+    <div class="fn-title">СПАСИБО,<br>АГЕНТ!</div>
+    <div class="fn-codename" id="fn-codename" style="color:var(--cyan);">ФАЙРВОЛ</div>
+    <div class="fn-stars" id="fn-stars"></div>
+  </div>
+
+  <!-- Блок статистики -->
+  <div class="fn-stats-block">
+
+    <!-- Баллы и место -->
+    <div class="fn-pts-card">
+      <div class="fn-pts-lbl">// ИТОГОВЫЙ СЧЁТ</div>
+      <div><span class="fn-pts-num" id="fn-pts">0</span><span class="fn-pts-unit"> Б</span></div>
+      <div class="fn-rank-pill" id="fn-rank-pill">
+        <span>🏆</span><span id="fn-rank">—</span>
+      </div>
+    </div>
+
+    <!-- Мини-сетка -->
+    <div class="fn-grid">
+      <div class="fn-cell"><div class="fn-cell-n accent" id="fn-s-vendors">0</div><div class="fn-cell-l">Стенды</div></div>
+      <div class="fn-cell"><div class="fn-cell-n accent" id="fn-s-polls">0</div><div class="fn-cell-l">Опросы</div></div>
+      <div class="fn-cell"><div class="fn-cell-n accent" id="fn-s-met">0</div><div class="fn-cell-l">Знакомств</div></div>
+    </div>
+
+    <!-- Статы агента -->
+    <div class="fn-stats-bars">
+      <div class="fn-bar-title">// ХАРАКТЕРИСТИКИ АГЕНТА</div>
+      <div id="fn-bars"></div>
+    </div>
+
+    <!-- Достижения -->
+    <div class="fn-achs" id="fn-achs"></div>
+
+    <div style="font-size:12px;color:rgba(255,255,255,0.3);text-align:center;margin-bottom:4px;line-height:1.6;">
+      Ты сделал этот день особенным.<br>Твой вклад в безопасность цифрового мира бесценен.
+    </div>
+  </div>
+
+  <!-- Кнопки -->
+  <div class="fn-btns">
+    <button class="fn-btn-main" onclick="generateShareCard()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 5l3-3 3 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11v2a1 1 0 001 1h10a1 1 0 001-1v-2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Скачать карточку агента
+    </button>
+    <button class="fn-btn-sec" onclick="document.getElementById('finale-overlay').classList.remove('show')">Вернуться в приложение</button>
+  </div>
 </div>
 
 <div class="ach-banner" id="ach-banner">
@@ -1227,13 +1324,83 @@ function showAchievementBanner(icon,name){
 }
 
 function showFinale(){
-  if(!participant)return;
-  document.getElementById('finale-pts').textContent=(participant.points||0)+' Б';
-  document.getElementById('finale-rank').textContent=myRank?'Место в рейтинге: #'+myRank:'Место в рейтинге: —';
-  document.getElementById('finale-achs').innerHTML=ACHIEVEMENTS.filter(a=>unlockedAchs.has(a.id)).map(a=>`<div class="finale-ach">${a.icon}</div>`).join('');
-  document.getElementById('finale-overlay').classList.add('show');
+  if(!participant) return;
+  const overlay = document.getElementById('finale-overlay');
+  overlay.classList.add('show');
+  overlay.scrollTop = 0;
+
+  // Аватар
+  const avSrc = participant.avatar ? 'https://proway-event.vercel.app/' + participant.avatar : '';
+  const img = document.getElementById('fn-avatar-img');
+  const ph = document.getElementById('fn-avatar-ph');
+  if(avSrc){ img.src=avSrc; img.style.display='block'; ph.style.display='none'; }
+  else { img.style.display='none'; ph.style.display='flex'; }
+
+  // Кодовое имя
+  const cn = document.getElementById('fn-codename');
+  cn.textContent = participant.codename || 'АГЕНТ';
+  cn.style.color = participant.gender==='female' ? '#e879f9' : 'var(--cyan)';
+
+  // Звёзды (по числу вендоров)
+  const rarity = getRarity(scannedVendors.size);
+  let starsHtml = '';
+  for(let i=0;i<4;i++) starsHtml += `<div class="fn-star${i<rarity.stars?' ':' empty'}"></div>`;
+  document.getElementById('fn-stars').innerHTML = starsHtml;
+
+  // Баллы и место
+  const pts = participant.points || 0;
+  document.getElementById('fn-pts').textContent = pts;
+  document.getElementById('fn-rank').textContent = myRank ? '#' + myRank + ' МЕСТО' : '— МЕСТО';
+
+  // Мини-сетка
+  let metCount = 0; for(let k in localStorage){ if(k.startsWith('met_')) metCount++; }
+  document.getElementById('fn-s-vendors').textContent = scannedVendors.size;
+  document.getElementById('fn-s-polls').textContent = Object.keys(pollAnswers).length;
+  document.getElementById('fn-s-met').textContent = metCount;
+
+  // Статы
+  const stats = calcStats();
+  const statColors = {АНАЛИЗ:'#00aeee',СКОРОСТЬ:'#f5e642',КРИПТО:'#ee672a',ПЕРИМЕТР:'#2980b9',ВЛИЯНИЕ:'#8e44ad'};
+  document.getElementById('fn-bars').innerHTML = Object.entries(stats).map(([k,v])=>`
+    <div class="fn-bar-row">
+      <span class="fn-bar-lbl">${k}</span>
+      <div class="fn-bar-track"><div class="fn-bar-fill" style="width:${v}%;background:${statColors[k]};"></div></div>
+      <span class="fn-bar-val">${v}</span>
+    </div>`).join('');
+
+  // Достижения
+  const achList = ACHIEVEMENTS.filter(a=>unlockedAchs.has(a.id));
+  document.getElementById('fn-achs').innerHTML = achList.length
+    ? achList.map(a=>`<div class="fn-ach"><div class="fn-ach-icon">${a.icon}</div><div class="fn-ach-name">${a.name}</div></div>`).join('')
+    : '';
+
+  // Частицы-конфетти
+  _spawnParticles();
 }
 function checkFinale(){try{if(localStorage.getItem('finale_active')==='true')showFinale();}catch(e){}}
+
+function _spawnParticles(){
+  const container = document.getElementById('fn-particles');
+  container.innerHTML = '';
+  const colors = ['#6c5ce7','#a29bfe','#f5e642','#00c864','#ee672a','#e879f9','#00aeee'];
+  for(let i=0;i<40;i++){
+    const el = document.createElement('div');
+    el.className = 'fn-particle';
+    const size = 4 + Math.random()*8;
+    const tx = (Math.random()-0.5)*200;
+    el.style.cssText = `
+      width:${size}px;height:${size}px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      left:${10+Math.random()*80}%;
+      top:${30+Math.random()*40}%;
+      --tx:${tx}px;
+      animation-delay:${Math.random()*1.5}s;
+      animation-duration:${1.5+Math.random()*1.5}s;
+      opacity:0;
+    `;
+    container.appendChild(el);
+  }
+}
 
 function showQrModal(){
   const id=participant?participant.id:localStorage.getItem('participant_id');
@@ -1497,8 +1664,6 @@ function handleQrResult(value){
   } catch(e){}
   showToast('// НЕИЗВЕСТНЫЙ QR-КОД');
 }
-
-document.addEventListener('DOMContentLoaded', ()=>{});
 
 window.addEventListener('load',()=>{
 // ── DEV BYPASS: открой ?dev=true чтобы пропустить pre-launch ──────
