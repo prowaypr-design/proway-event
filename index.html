@@ -1122,7 +1122,7 @@ function checkFinale(){try{if(localStorage.getItem('finale_active')==='true')sho
 function showQrModal(){
   const id=participant?participant.id:localStorage.getItem('participant_id');
   if(!id){showToast('Сначала зарегистрируйся');return;}
-  const url='https://proway-event.vercel.app/profile-scan.html?id='+id;
+  const url='https://proway-event.vercel.app?scan='+id;
   document.getElementById('qr-modal-img').src='https://api.qrserver.com/v1/create-qr-code/?size=180x180&data='+encodeURIComponent(url);
   document.getElementById('qr-modal-overlay').classList.add('show');
 }
@@ -1207,6 +1207,41 @@ function showPrelaunchDone(){
   }
 }
 
+
+// ── ПРОСМОТР ПРОФИЛЯ ПО QR ───────────────────────────────────────
+async function showScannedProfile(targetId){
+  // Загружаем данные участника
+  try{
+    const res = await api({action:'getParticipant', participant_id: targetId});
+    if(!res || !res.participant){ showToast('// АГЕНТ НЕ НАЙДЕН'); return; }
+    const p = res.participant;
+    // Показываем модалку с профилем
+    const avSrc = p.avatar ? 'https://proway-event.vercel.app/' + p.avatar : '';
+    const avHtml = avSrc
+      ? `<img src="${avSrc}" style="width:80px;height:80px;border-radius:50%;border:2px solid var(--violet);object-fit:cover;">`
+      : `<div style="width:80px;height:80px;border-radius:50%;border:2px solid var(--violet);background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--text2);">◈</div>`;
+    const modal = document.createElement('div');
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:600;display:flex;align-items:center;justify-content:center;padding:24px;';
+    modal.innerHTML = `
+      <div style="background:#0e0f28;border:0.5px solid rgba(108,92,231,0.4);border-radius:24px;padding:28px 24px;width:100%;max-width:320px;text-align:center;">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:3px;margin-bottom:16px;">// АГЕНТ ОБНАРУЖЕН</div>
+        <div style="display:flex;justify-content:center;margin-bottom:12px;">${avHtml}</div>
+        <div style="font-family:'Bangers',cursive;font-size:22px;color:#fff;letter-spacing:3px;margin-bottom:4px;">${p.codename||'АГЕНТ'}</div>
+        <div style="font-size:14px;font-weight:600;color:#fff;margin-bottom:4px;">${p.name}</div>
+        <div style="font-size:12px;color:var(--text2);margin-bottom:4px;">${p.company||''}</div>
+        <div style="font-size:11px;color:var(--text2);margin-bottom:16px;">${p.role||''}</div>
+        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(108,92,231,0.12);border:0.5px solid rgba(108,92,231,0.3);border-radius:20px;padding:5px 14px;font-size:12px;color:#a29bfe;margin-bottom:20px;">
+          ${p.points||0} баллов
+        </div>
+        ${p.email ? `<div style="margin-bottom:16px;"><a href="mailto:${p.email}" style="display:block;padding:10px;background:rgba(0,200,100,0.08);border:0.5px solid rgba(0,200,100,0.3);border-radius:12px;font-size:13px;font-weight:600;color:#00c864;text-decoration:none;">Написать агенту</a></div>` : ''}
+        <button onclick="this.closest('[style*=fixed]').remove()" style="width:100%;padding:12px;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:12px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;font-family:'Inter',sans-serif;">Закрыть</button>
+      </div>`;
+    document.body.appendChild(modal);
+    // Убираем ?scan= из URL без перезагрузки
+    window.history.replaceState({}, '', window.location.pathname);
+  } catch(e){ showToast('// ОШИБКА СВЯЗИ'); }
+}
+
 window.addEventListener('load',()=>{
 // ── DEV BYPASS: открой ?dev=true чтобы пропустить pre-launch ──────
 const _dp=new URLSearchParams(window.location.search);
@@ -1240,8 +1275,12 @@ if(!isLaunched()){
   startCountdown();
 }
 const urlParams=new URLSearchParams(window.location.search);
-const vendorId=urlParams.get('id');
-if(vendorId&&id)handleVendorScan(vendorId);
+// QR стенда: ?vendor=kod_bezopasnosti
+const vendorId=urlParams.get('vendor');
+if(vendorId)handleVendorScan(vendorId);
+// QR участника: ?scan=participant_id — показываем профиль
+const scanId=urlParams.get('scan');
+if(scanId)showScannedProfile(scanId);
 });
 </script>
 
