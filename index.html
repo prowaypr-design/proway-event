@@ -1277,9 +1277,20 @@ if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
 const savedScans=localStorage.getItem('scanned_vendors');
 if(savedScans){try{JSON.parse(savedScans).forEach(id=>scannedVendors.add(id));}catch(e){}}
 const id=localStorage.getItem('participant_id');
+// Сначала читаем URL-параметры — они нужны в любом случае
+const urlParams=new URLSearchParams(window.location.search);
+const vendorId=urlParams.get('vendor');
+const scanId=urlParams.get('scan');
+
 if(id){
   participant={id,name:localStorage.getItem('participant_name')||'—',email:localStorage.getItem('participant_email')||'',company:localStorage.getItem('participant_company')||'—',points:0,interests:localStorage.getItem('participant_interests')||'',avatar:localStorage.getItem('participant_avatar')||'',gender:localStorage.getItem('participant_gender')||'male',codename:localStorage.getItem('participant_codename')||'ФАЙРВОЛ',artFile:localStorage.getItem('participant_artfile')||''};
-  if(isLaunched()){initApp();}
+  if(isLaunched()){
+    initApp();
+    // QR стенда: ?vendor=kod_bezopasnosti
+    if(vendorId)handleVendorScan(vendorId);
+    // QR участника: ?scan=participant_id — показываем профиль
+    if(scanId)showScannedProfile(scanId);
+  }
   else{showPrelaunchDone();startCountdown();}
   return;
 }
@@ -1287,12 +1298,9 @@ if(!isLaunched()){
   document.getElementById('screen-prelaunch').classList.remove('hidden');
   startCountdown();
 }
-const urlParams=new URLSearchParams(window.location.search);
 // QR стенда: ?vendor=kod_bezopasnosti
-const vendorId=urlParams.get('vendor');
 if(vendorId)handleVendorScan(vendorId);
 // QR участника: ?scan=participant_id — показываем профиль
-const scanId=urlParams.get('scan');
 if(scanId)showScannedProfile(scanId);
 });
 </script>
