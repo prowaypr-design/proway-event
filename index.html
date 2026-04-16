@@ -1464,7 +1464,7 @@ async function generateShareCard(){
   const statColors={АНАЛИЗ:'#00aeee',СКОРОСТЬ:'#f5e642',КРИПТО:'#ee672a',ПЕРИМЕТР:'#2980b9',ВЛИЯНИЕ:'#8e44ad'};
   const statY=800;const statH=24;const statGap=38;const barW=W-PX*2-90;
   ctx.font='700 13px Inter,sans-serif';
-  statEntries.forEach(([k,v],i){
+  statEntries.forEach(([k,v],i)=>{
     const y=statY+i*statGap;
     // Метка
     ctx.fillStyle='rgba(255,255,255,0.45)';ctx.textAlign='left';
