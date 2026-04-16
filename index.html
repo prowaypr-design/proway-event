@@ -300,6 +300,25 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 
 
 .how-icon{width:40px;height:40px;border-radius:10px;background:rgba(108,92,231,0.15);border:0.5px solid rgba(108,92,231,0.35);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#a29bfe;}
+
+/* SCANNER MODAL */
+.scanner-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:700;display:none;flex-direction:column;align-items:center;justify-content:center;}
+.scanner-overlay.show{display:flex;}
+.scanner-header{position:absolute;top:0;left:0;right:0;padding:52px 20px 16px;display:flex;align-items:center;justify-content:space-between;}
+.scanner-title{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--cyan);letter-spacing:3px;}
+.scanner-close{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.1);border:none;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.scanner-wrap{position:relative;width:260px;height:260px;}
+.scanner-video{width:260px;height:260px;object-fit:cover;border-radius:16px;}
+.scanner-frame{position:absolute;inset:0;border-radius:16px;pointer-events:none;}
+.scanner-corner{position:absolute;width:24px;height:24px;border-color:var(--cyan);border-style:solid;}
+.scanner-corner.tl{top:0;left:0;border-width:3px 0 0 3px;border-radius:6px 0 0 0;}
+.scanner-corner.tr{top:0;right:0;border-width:3px 3px 0 0;border-radius:0 6px 0 0;}
+.scanner-corner.bl{bottom:0;left:0;border-width:0 0 3px 3px;border-radius:0 0 0 6px;}
+.scanner-corner.br{bottom:0;right:0;border-width:0 3px 3px 0;border-radius:0 0 6px 0;}
+.scanner-line{position:absolute;left:12px;right:12px;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);animation:scanline 2s ease-in-out infinite;}
+@keyframes scanline{0%,100%{top:12px;opacity:0.3}50%{top:calc(100% - 14px);opacity:1}}
+.scanner-hint{margin-top:20px;font-family:'Share Tech Mono',monospace;font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:2px;text-align:center;}
+.scanner-canvas{display:none;}
 /* NET ACTIONS */
 .net-actions{display:flex;gap:6px;margin-top:8px;}
 .net-btn{flex:1;padding:7px 10px;border-radius:10px;border:0.5px solid rgba(108,92,231,0.25);background:transparent;font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;}
@@ -551,10 +570,14 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     <div class="sg-cell"><div class="sg-n accent" id="s-rank2">—</div><div class="sg-l">МЕСТО</div></div>
   </div>
   <div style="height:12px;"></div>
-  <div style="padding:0 14px 12px;">
-    <button onclick="showQrModal()" style="width:100%;padding:12px;background:rgba(108,92,231,0.1);border:0.5px solid rgba(108,92,231,0.3);border-radius:14px;font-size:13px;font-weight:700;color:#a29bfe;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;">
+  <div style="padding:0 14px 12px;display:flex;gap:8px;">
+    <button onclick="showQrModal()" style="flex:1;padding:12px 8px;background:rgba(108,92,231,0.1);border:0.5px solid rgba(108,92,231,0.3);border-radius:14px;font-size:12px;font-weight:700;color:#a29bfe;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1" stroke="#a29bfe" stroke-width="1.3"/><rect x="9" y="1" width="6" height="6" rx="1" stroke="#a29bfe" stroke-width="1.3"/><rect x="1" y="9" width="6" height="6" rx="1" stroke="#a29bfe" stroke-width="1.3"/><rect x="10" y="10" width="2" height="2" fill="#a29bfe"/><rect x="13" y="10" width="2" height="2" fill="#a29bfe"/><rect x="10" y="13" width="2" height="2" fill="#a29bfe"/><rect x="13" y="13" width="2" height="2" fill="#a29bfe"/></svg>
-      Показать мой QR
+      Мой QR
+    </button>
+    <button onclick="openScanner('player')" style="flex:1;padding:12px 8px;background:rgba(108,92,231,0.1);border:0.5px solid rgba(108,92,231,0.3);border-radius:14px;font-size:12px;font-weight:700;color:#a29bfe;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 5V2a1 1 0 011-1h3M15 5V2a1 1 0 00-1-1h-3M1 11v3a1 1 0 001 1h3M15 11v3a1 1 0 01-1 1h-3" stroke="#a29bfe" stroke-width="1.3" stroke-linecap="round"/><rect x="5" y="5" width="6" height="6" rx="1" stroke="#a29bfe" stroke-width="1.3"/></svg>
+      Сканировать
     </button>
   </div>
   <div class="section-hdr"><div class="section-hdr-title">МОЯ КАРТОЧКА</div><div class="section-hdr-sub">// ДОСЬЕ АГЕНТА</div></div>
@@ -642,6 +665,12 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 <div id="screen-vendors" class="app-screen">
   <div class="topbar"><div><div class="topbar-logo">СТЕНДЫ</div><div class="topbar-sub">// СКАНИРУЙ QR · +20 Б · ОТКРЫВАЙ ДОСЬЕ</div></div></div>
   <div style="height:12px;"></div>
+  <div style="padding:0 14px 12px;">
+    <button onclick="openScanner('vendor')" style="width:100%;padding:13px;background:linear-gradient(135deg,#6c5ce7,#4834d4);border:none;border-radius:14px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 5V2a1 1 0 011-1h3M15 5V2a1 1 0 00-1-1h-3M1 11v3a1 1 0 001 1h3M15 11v3a1 1 0 01-1 1h-3" stroke="white" stroke-width="1.3" stroke-linecap="round"/><rect x="5" y="5" width="6" height="6" rx="1" stroke="white" stroke-width="1.3"/></svg>
+      Сканировать QR стенда
+    </button>
+  </div>
   <div class="vendor-prog">
     <div class="vp-label">// ПРОГРЕСС МИССИИ</div>
     <div class="vp-right"><div class="vp-stars" id="vendor-stars"></div><div class="vp-count" id="vendor-count">0 / 0</div></div>
@@ -1286,6 +1315,88 @@ async function showScannedProfile(targetId){
   } catch(e){ showToast('// ОШИБКА СВЯЗИ'); }
 }
 
+
+// ── QR СКАНЕР ─────────────────────────────────────────────────────
+let scannerStream = null;
+let scannerMode = null;
+let scannerRaf = null;
+let scannerActive = false;
+
+async function openScanner(mode){
+  scannerMode = mode;
+  scannerActive = true;
+  const overlay = document.getElementById('scanner-overlay');
+  const title   = document.getElementById('scanner-title');
+  const hint    = document.getElementById('scanner-hint');
+  title.textContent = mode === 'vendor' ? '// СКАНИРУЮ СТЕНД' : '// СКАНИРУЮ ИГРОКА';
+  hint.textContent  = 'НАВЕДИ КАМЕРУ НА QR-КОД';
+  overlay.classList.add('show');
+  try {
+    scannerStream = await navigator.mediaDevices.getUserMedia({
+      video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:1280}},
+      audio:false
+    });
+    const video = document.getElementById('scanner-video');
+    video.srcObject = scannerStream;
+    await video.play();
+    await new Promise(r=>{
+      if(video.readyState>=3)return r();
+      video.addEventListener('canplay',r,{once:true});
+    });
+    startScanLoop();
+  }catch(e){
+    hint.textContent='НЕТ ДОСТУПА К КАМЕРЕ';
+    console.error('Camera error:',e);
+  }
+}
+
+function startScanLoop(){
+  const video=document.getElementById('scanner-video');
+  const canvas=document.getElementById('scanner-canvas');
+  if('BarcodeDetector' in window){
+    const detector=new BarcodeDetector({formats:['qr_code']});
+    async function detectNative(){
+      if(!scannerActive)return;
+      try{const codes=await detector.detect(video);if(codes.length>0){handleScannedQR(codes[0].rawValue);return;}}catch(e){}
+      scannerRaf=requestAnimationFrame(detectNative);
+    }
+    scannerRaf=requestAnimationFrame(detectNative);
+    return;
+  }
+  if(typeof jsQR==='undefined'){document.getElementById('scanner-hint').textContent='БИБЛИОТЕКА НЕ ЗАГРУЖЕНА';return;}
+  const ctx=canvas.getContext('2d',{willReadFrequently:true});
+  function tick(){
+    if(!scannerActive)return;
+    if(video.readyState>=2&&video.videoWidth>0){
+      canvas.width=video.videoWidth;canvas.height=video.videoHeight;
+      ctx.drawImage(video,0,0);
+      try{const d=ctx.getImageData(0,0,canvas.width,canvas.height);const code=jsQR(d.data,d.width,d.height,{inversionAttempts:'attemptBoth'});if(code&&code.data){handleScannedQR(code.data);return;}}catch(e){}
+    }
+    scannerRaf=requestAnimationFrame(tick);
+  }
+  scannerRaf=requestAnimationFrame(tick);
+}
+
+function closeScanner(){
+  scannerActive=false;
+  document.getElementById('scanner-overlay').classList.remove('show');
+  if(scannerStream){scannerStream.getTracks().forEach(t=>t.stop());scannerStream=null;}
+  if(scannerRaf){cancelAnimationFrame(scannerRaf);scannerRaf=null;}
+}
+
+function handleScannedQR(data){
+  closeScanner();
+  try{
+    const url=new URL(data);
+    const vendorParam=url.searchParams.get('vendor');
+    const scanParam=url.searchParams.get('scan');
+    if(vendorParam&&scannerMode==='vendor'){handleVendorScan(vendorParam);}
+    else if(scanParam&&scannerMode==='player'){showScannedProfile(scanParam);}
+    else if(vendorParam){handleVendorScan(vendorParam);}
+    else{showToast('// QR НЕ РАСПОЗНАН КАК ИГРОВОЙ');}
+  }catch(e){showToast('// НЕВЕРНЫЙ QR-КОД');}
+}
+
 window.addEventListener('load',()=>{
 // ── DEV BYPASS: открой ?dev=true чтобы пропустить pre-launch ──────
 const _dp=new URLSearchParams(window.location.search);
@@ -1402,5 +1513,25 @@ if(scanId)showScannedProfile(scanId);
   </div>
 </div>
 
+
+<!-- SCANNER MODAL -->
+<div class="scanner-overlay" id="scanner-overlay">
+  <div class="scanner-header">
+    <div class="scanner-title" id="scanner-title">// СКАНИРОВАНИЕ</div>
+    <button class="scanner-close" onclick="closeScanner()">✕</button>
+  </div>
+  <div class="scanner-wrap">
+    <video class="scanner-video" id="scanner-video" autoplay playsinline muted></video>
+    <canvas class="scanner-canvas" id="scanner-canvas"></canvas>
+    <div class="scanner-frame">
+      <div class="scanner-corner tl"></div>
+      <div class="scanner-corner tr"></div>
+      <div class="scanner-corner bl"></div>
+      <div class="scanner-corner br"></div>
+      <div class="scanner-line"></div>
+    </div>
+  </div>
+  <div class="scanner-hint" id="scanner-hint">НАВЕДИ КАМЕРУ НА QR-КОД</div>
+</div>
 </body>
 </html>
