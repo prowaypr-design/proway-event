@@ -8,6 +8,7 @@
 <link rel="manifest" href="manifest.json">
 <title>PROWAY Security Day</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Bangers&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -47,7 +48,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .ob-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;}
 .ob-glow{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(0,255,255,0.07),transparent 70%);top:-80px;right:-60px;}
 .ob-eyebrow{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:3px;opacity:0.8;margin-bottom:12px;position:relative;z-index:1;}
-.ob-title{font-family:'Inter',sans-serif;font-size:54px;font-weight:800;color:#fff;line-height:0.95;letter-spacing:-1px;position:relative;z-index:1;}
+.ob-title{font-family:'Bangers',cursive;font-size:72px;color:#fff;line-height:0.9;letter-spacing:4px;position:relative;z-index:1;}
 .ob-title .accent{color:var(--cyan);}
 .ob-line{width:60px;height:2px;background:var(--violet);margin:16px 0;position:relative;z-index:1;}
 .ob-speech{background:rgba(108,92,231,0.04);border:1px solid var(--border2);border-left:3px solid var(--cyan);border-radius:4px;padding:14px 16px;position:relative;z-index:1;}
@@ -132,8 +133,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .acf-namebar{background:rgba(108,92,231,0.08);border-bottom:0.5px solid var(--border);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;}
 .acf-codename{font-family:'Inter',sans-serif;font-size:15px;font-weight:700;color:#fff;letter-spacing:2px;text-transform:uppercase;}
 .acf-badge{border:0.5px solid rgba(108,92,231,0.4);border-radius:20px;padding:3px 10px;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--cyan);}
-.acf-art{width:100%;height:180px;overflow:hidden;border-bottom:0.5px solid var(--border);background:var(--bg3);display:flex;align-items:center;justify-content:center;position:relative;}
-.acf-art img{width:100%;height:100%;object-fit:cover;object-position:top;}
+.acf-art{width:100%;height:260px;overflow:hidden;border-bottom:0.5px solid var(--border);background:var(--bg3);display:flex;align-items:center;justify-content:center;position:relative;}
+.acf-art img{width:100%;height:100%;object-fit:contain;object-position:center;}
 .acf-rarity{position:absolute;bottom:8px;right:10px;display:flex;gap:3px;}
 .acf-star{width:12px;height:12px;background:var(--yellow);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);}
 .acf-star.empty{background:var(--text3);}
@@ -967,24 +968,37 @@ const RARITY=[
 
 const AVATARS={
   male:[
-    {file:'Defense_Grid_Icon.png',codename:'ФАЙРВОЛ',artFile:''},
-    {file:'male0.png',codename:'ФАЙРВОЛ',artFile:''},{file:'male1.png',codename:'ФАЙРВОЛ',artFile:''},
-    {file:'male2.png',codename:'ФАЙРВОЛ',artFile:''},{file:'male3.png',codename:'ФАЙРВОЛ',artFile:''},
-    {file:'male4.png',codename:'ФАЙРВОЛ',artFile:''},{file:'male5.png',codename:'ФАЙРВОЛ',artFile:''},
-    {file:'male6.png',codename:'ФАЙРВОЛ',artFile:''},{file:'male7.png',codename:'ФАЙРВОЛ',artFile:''},
-    {file:'Male8.png',codename:'ФАЙРВОЛ',artFile:''},{file:'Male9.png',codename:'ФАЙРВОЛ',artFile:''},
-    {file:'Male10.png',codename:'ФАЙРВОЛ',artFile:''},{file:'Male11.png',codename:'ФАЙРВОЛ',artFile:''},
-    {file:'Male12.png',codename:'ФАЙРВОЛ',artFile:''}
+    {file:'Defense_Grid_Icon.png',codename:'ФАЙРВОЛ',artFile:'Defense_Grid_Art.png'},
+    {file:'male0.png',codename:'ФАЙРВОЛ',artFile:'male0_art.png'},
+    {file:'male1.png',codename:'ФАЙРВОЛ',artFile:'male1_art.png'},
+    {file:'male2.png',codename:'ФАЙРВОЛ',artFile:'male2_art.png'},
+    {file:'male3.png',codename:'ФАЙРВОЛ',artFile:'male3_art.png'},
+    {file:'male4.png',codename:'ФАЙРВОЛ',artFile:'male4_art.png'},
+    {file:'male5.png',codename:'ФАЙРВОЛ',artFile:'male5_art.png'},
+    {file:'male6.png',codename:'ФАЙРВОЛ',artFile:'male6_art.png'},
+    {file:'male7.png',codename:'ФАЙРВОЛ',artFile:'male7_art.png'},
+    {file:'Male8.png',codename:'ФАЙРВОЛ',artFile:'Male8_art.png'},
+    {file:'Male9.png',codename:'ФАЙРВОЛ',artFile:'Male9_art.png'},
+    {file:'Male10.png',codename:'ФАЙРВОЛ',artFile:'Male10_art.png'},
+    {file:'Male11.png',codename:'ФАЙРВОЛ',artFile:'Male11_art.png'},
+    {file:'Male12.png',codename:'ФАЙРВОЛ',artFile:'Male12_art.png'},
   ],
   female:[
-    {file:'Stealth_Tracer_Icon.png',codename:'ХАКЕР',artFile:''},
-    {file:'female0.png',codename:'ХАКЕР',artFile:''},{file:'female1.png',codename:'ХАКЕР',artFile:''},
-    {file:'female2.png',codename:'ХАКЕР',artFile:''},{file:'female3.png',codename:'ХАКЕР',artFile:''},
-    {file:'female4.png',codename:'ХАКЕР',artFile:''},{file:'female5.png',codename:'ХАКЕР',artFile:''},
-    {file:'female6.png',codename:'ХАКЕР',artFile:''},{file:'female7.png',codename:'ХАКЕР',artFile:''},
-    {file:'female8.png',codename:'ХАКЕР',artFile:''},{file:'female9.png',codename:'ХАКЕР',artFile:''},
-    {file:'female10.png',codename:'ХАКЕР',artFile:''},{file:'female11.png',codename:'ХАКЕР',artFile:''},
-    {file:'female12.png',codename:'ХАКЕР',artFile:''},{file:'Female13.png',codename:'ХАКЕР',artFile:''}
+    {file:'Stealth_Tracer_Icon.png',codename:'ХАКЕР',artFile:'Stealth_Tracer_Art.png'},
+    {file:'female0.png',codename:'ХАКЕР',artFile:'female0_art.png'},
+    {file:'female1.png',codename:'ХАКЕР',artFile:'female1_art.png'},
+    {file:'female2.png',codename:'ХАКЕР',artFile:'female2_art.png'},
+    {file:'female3.png',codename:'ХАКЕР',artFile:'female3_art.png'},
+    {file:'female4.png',codename:'ХАКЕР',artFile:'female4_art.png'},
+    {file:'female5.png',codename:'ХАКЕР',artFile:'female5_art.png'},
+    {file:'female6.png',codename:'ХАКЕР',artFile:'female6_art.png'},
+    {file:'female7.png',codename:'ХАКЕР',artFile:'female7_art.png'},
+    {file:'female8.png',codename:'ХАКЕР',artFile:'female8_art.png'},
+    {file:'female9.png',codename:'ХАКЕР',artFile:'female9_art.png'},
+    {file:'female10.png',codename:'ХАКЕР',artFile:'female10_art.png'},
+    {file:'female11.png',codename:'ХАКЕР',artFile:'female11_art.png'},
+    {file:'female12.png',codename:'ХАКЕР',artFile:'female12_art.png'},
+    {file:'Female13.png',codename:'ХАКЕР',artFile:'Female13_art.png'},
   ]
 };
 
@@ -1180,7 +1194,10 @@ function renderAgentCard(){
     else{chaptersHtml+=`<div class="acf-locked"><div class="acf-lock"></div><span class="acf-locked-text">ГЛАВА ${idx+1} · СТЕНД ${v.system}</span></div>`;}
   });
   const avSrc=participant.avatar?'https://proway-event.vercel.app/'+participant.avatar:'';
-  const artHtml=avSrc?`<img src="${avSrc}" alt="${codename}">`:`<span style="font-family:'Bangers',cursive;font-size:28px;color:var(--cyan);letter-spacing:4px;">${codename}</span>`;
+  const artSrc=participant.artFile?'https://proway-event.vercel.app/'+participant.artFile:avSrc;
+  const artHtml=artSrc
+    ?`<img src="${artSrc}" alt="${codename}" onerror="this.src='${avSrc}'">`
+    :`<span style="font-family:'Bangers',cursive;font-size:28px;color:var(--cyan);letter-spacing:4px;">${codename}</span>`;
   const pts=participant.points||0;
   document.getElementById('agent-full-card').innerHTML=`
     <div class="acf-namebar"><span class="acf-codename">${codename}</span><span class="acf-badge" style="background:${rarity.bg};color:${rarity.color};border-color:${rarity.color}44;">${rarity.label}</span></div>
@@ -1329,7 +1346,7 @@ function showFinale(){
   overlay.classList.add('show');
   overlay.scrollTop = 0;
 
-  // Аватар
+  // Аватар — иконка в круглом кольце
   const avSrc = participant.avatar ? 'https://proway-event.vercel.app/' + participant.avatar : '';
   const img = document.getElementById('fn-avatar-img');
   const ph = document.getElementById('fn-avatar-ph');
