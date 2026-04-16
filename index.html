@@ -793,10 +793,72 @@ const VENDORS=[
   {id:'ideco',name:'Ideco',system:'UTM',color:'#2980b9',icon:'ID',desc:'Универсальный шлюз безопасности. Интернет-шлюз с полным контролем трафика.',chapterMale:'Последний рубеж. Ideco стоял на выходе как часовой. Иванов проверил настройки. Всё под контролем.',chapterFemale:'Последний рубеж. Ideco стоял на выходе как часовой. Козлова проверила настройки. Всё под контролем.'},
 ];
 
-const AGENT_STATS={
-  male:{'ФАЙРВОЛ':{АНАЛИЗ:79,СКОРОСТЬ:62,КРИПТО:91,ПЕРИМЕТР:96,ВЛИЯНИЕ:55}},
-  female:{'ХАКЕР':{АНАЛИЗ:88,СКОРОСТЬ:94,КРИПТО:71,ПЕРИМЕТР:65,ВЛИЯНИЕ:97}}
+// Базовые статы — уникальны для каждого аватара (по индексу файла)
+const AVATAR_BASE_STATS={
+  male:{
+    'Defense_Grid_Icon.png':{АНАЛИЗ:79,СКОРОСТЬ:62,КРИПТО:91,ПЕРИМЕТР:96,ВЛИЯНИЕ:55},
+    'male0.png':{АНАЛИЗ:72,СКОРОСТЬ:85,КРИПТО:68,ПЕРИМЕТР:77,ВЛИЯНИЕ:63},
+    'male1.png':{АНАЛИЗ:91,СКОРОСТЬ:54,КРИПТО:82,ПЕРИМЕТР:70,ВЛИЯНИЕ:58},
+    'male2.png':{АНАЛИЗ:65,СКОРОСТЬ:90,КРИПТО:74,ПЕРИМЕТР:61,ВЛИЯНИЕ:80},
+    'male3.png':{АНАЛИЗ:83,СКОРОСТЬ:67,КРИПТО:88,ПЕРИМЕТР:72,ВЛИЯНИЕ:60},
+    'male4.png':{АНАЛИЗ:70,СКОРОСТЬ:78,КРИПТО:65,ПЕРИМЕТР:93,ВЛИЯНИЕ:69},
+    'male5.png':{АНАЛИЗ:88,СКОРОСТЬ:71,КРИПТО:79,ПЕРИМЕТР:64,ВЛИЯНИЕ:73},
+    'male6.png':{АНАЛИЗ:62,СКОРОСТЬ:95,КРИПТО:70,ПЕРИМЕТР:58,ВЛИЯНИЕ:85},
+    'male7.png':{АНАЛИЗ:77,СКОРОСТЬ:60,КРИПТО:94,ПЕРИМЕТР:81,ВЛИЯНИЕ:57},
+    'Male8.png':{АНАЛИЗ:85,СКОРОСТЬ:73,КРИПТО:67,ПЕРИМЕТР:89,ВЛИЯНИЕ:62},
+    'Male9.png':{АНАЛИЗ:68,СКОРОСТЬ:88,КРИПТО:76,ПЕРИМЕТР:65,ВЛИЯНИЕ:78},
+    'Male10.png':{АНАЛИЗ:93,СКОРОСТЬ:58,КРИПТО:84,ПЕРИМЕТР:74,ВЛИЯНИЕ:56},
+    'Male11.png':{АНАЛИЗ:74,СКОРОСТЬ:82,КРИПТО:61,ПЕРИМЕТР:87,ВЛИЯНИЕ:71},
+    'Male12.png':{АНАЛИЗ:80,СКОРОСТЬ:69,КРИПТО:90,ПЕРИМЕТР:68,ВЛИЯНИЕ:66},
+  },
+  female:{
+    'Stealth_Tracer_Icon.png':{АНАЛИЗ:88,СКОРОСТЬ:94,КРИПТО:71,ПЕРИМЕТР:65,ВЛИЯНИЕ:97},
+    'female0.png':{АНАЛИЗ:76,СКОРОСТЬ:89,КРИПТО:73,ПЕРИМЕТР:60,ВЛИЯНИЕ:92},
+    'female1.png':{АНАЛИЗ:94,СКОРОСТЬ:67,КРИПТО:85,ПЕРИМЕТР:71,ВЛИЯНИЕ:63},
+    'female2.png':{АНАЛИЗ:69,СКОРОСТЬ:91,КРИПТО:78,ПЕРИМЕТР:63,ВЛИЯНИЕ:88},
+    'female3.png':{АНАЛИЗ:82,СКОРОСТЬ:74,КРИПТО:92,ПЕРИМЕТР:68,ВЛИЯНИЕ:70},
+    'female4.png':{АНАЛИЗ:71,СКОРОСТЬ:86,КРИПТО:66,ПЕРИМЕТР:90,ВЛИЯНИЕ:75},
+    'female5.png':{АНАЛИЗ:90,СКОРОСТЬ:63,КРИПТО:81,ПЕРИМЕТР:73,ВЛИЯНИЕ:67},
+    'female6.png':{АНАЛИЗ:65,СКОРОСТЬ:96,КРИПТО:72,ПЕРИМЕТР:61,ВЛИЯНИЕ:84},
+    'female7.png':{АНАЛИЗ:78,СКОРОСТЬ:70,КРИПТО:95,ПЕРИМЕТР:83,ВЛИЯНИЕ:59},
+    'female8.png':{АНАЛИЗ:86,СКОРОСТЬ:77,КРИПТО:69,ПЕРИМЕТР:91,ВЛИЯНИЕ:64},
+    'female9.png':{АНАЛИЗ:67,СКОРОСТЬ:93,КРИПТО:75,ПЕРИМЕТР:66,ВЛИЯНИЕ:81},
+    'female10.png':{АНАЛИЗ:95,СКОРОСТЬ:61,КРИПТО:87,ПЕРИМЕТР:76,ВЛИЯНИЕ:58},
+    'female11.png':{АНАЛИЗ:73,СКОРОСТЬ:84,КРИПТО:64,ПЕРИМЕТР:88,ВЛИЯНИЕ:74},
+    'female12.png':{АНАЛИЗ:81,СКОРОСТЬ:72,КРИПТО:91,ПЕРИМЕТР:69,ВЛИЯНИЕ:68},
+    'Female13.png':{АНАЛИЗ:89,СКОРОСТЬ:80,КРИПТО:76,ПЕРИМЕТР:62,ВЛИЯНИЕ:93},
+  }
 };
+
+// Динамический расчёт статов: база + бонусы за действия
+// АНАЛИЗ    +3 за каждый опрос
+// СКОРОСТЬ  +2 за каждое знакомство (met_*)
+// КРИПТО    +4 за каждый стенд (вендоры с VPN/КРИПТО приоритет)
+// ПЕРИМЕТР  +3 за каждый стенд (вендоры с NGFW/FW)
+// ВЛИЯНИЕ   +2 за каждые 50 баллов
+function calcStats(){
+  if(!participant) return {АНАЛИЗ:60,СКОРОСТЬ:60,КРИПТО:60,ПЕРИМЕТР:60,ВЛИЯНИЕ:60};
+  const gender = participant.gender||'male';
+  const avatar = participant.avatar||'';
+  const base = (AVATAR_BASE_STATS[gender]&&AVATAR_BASE_STATS[gender][avatar])
+    || (gender==='female'
+      ? {АНАЛИЗ:75,СКОРОСТЬ:85,КРИПТО:68,ПЕРИМЕТР:62,ВЛИЯНИЕ:80}
+      : {АНАЛИЗ:78,СКОРОСТЬ:65,КРИПТО:82,ПЕРИМЕТР:88,ВЛИЯНИЕ:58});
+
+  const polls = Object.keys(pollAnswers).length;
+  let metCount = 0; for(let k in localStorage){ if(k.startsWith('met_')) metCount++; }
+  const vendors = scannedVendors.size;
+  const pts = participant.points||0;
+
+  return {
+    АНАЛИЗ:   Math.min(99, base.АНАЛИЗ   + polls*3),
+    СКОРОСТЬ: Math.min(99, base.СКОРОСТЬ + metCount*2),
+    КРИПТО:   Math.min(99, base.КРИПТО   + vendors*4),
+    ПЕРИМЕТР: Math.min(99, base.ПЕРИМЕТР + vendors*3),
+    ВЛИЯНИЕ:  Math.min(99, base.ВЛИЯНИЕ  + Math.floor(pts/50)*2),
+  };
+}
+
 const STAT_COLORS={АНАЛИЗ:'#00aeee',СКОРОСТЬ:'#f5e642',КРИПТО:'#ee672a',ПЕРИМЕТР:'#005ca8',ВЛИЯНИЕ:'#8e44ad'};
 
 const RARITY=[
@@ -1008,7 +1070,7 @@ function renderAgentCard(){
   const rarity=getRarity(scanned);
   const gender=participant.gender||'male';
   const codename=participant.codename||'ФАЙРВОЛ';
-  const stats=AGENT_STATS[gender]?.[codename]||{АНАЛИЗ:75,СКОРОСТЬ:75,КРИПТО:75,ПЕРИМЕТР:75,ВЛИЯНИЕ:75};
+  const stats=calcStats();
   const lastName=participant.name.split(' ').slice(-1)[0]||participant.name;
   const unlocked=new Date()>STORY_UNLOCK_DATE;
   let starsHtml='';for(let i=0;i<4;i++)starsHtml+=`<div class="acf-star${i<rarity.stars?'':' empty'}"></div>`;
@@ -1022,12 +1084,13 @@ function renderAgentCard(){
   });
   const avSrc=participant.avatar?'https://proway-event.vercel.app/'+participant.avatar:'';
   const artHtml=avSrc?`<img src="${avSrc}" alt="${codename}">`:`<span style="font-family:'Bangers',cursive;font-size:28px;color:var(--cyan);letter-spacing:4px;">${codename}</span>`;
+  const pts=participant.points||0;
   document.getElementById('agent-full-card').innerHTML=`
     <div class="acf-namebar"><span class="acf-codename">${codename}</span><span class="acf-badge" style="background:${rarity.bg};color:${rarity.color};border-color:${rarity.color}44;">${rarity.label}</span></div>
     <div class="acf-art">${artHtml}<div class="acf-rarity">${starsHtml}</div></div>
     <div class="acf-stats">${statsHtml}</div>
     <div class="acf-story"><div class="acf-story-lbl">// ДОСЬЕ</div>${chaptersHtml}</div>
-    <div class="acf-footer"><span class="acf-footer-name">${participant.name.toUpperCase()}</span><span class="acf-footer-pts">${participant.points||0} Б</span></div>`;
+    <div class="acf-footer"><span class="acf-footer-name">${participant.name.toUpperCase()}</span><span class="acf-footer-pts">${pts} Б</span></div>`;
 }
 
 function renderVendors(){
@@ -1069,7 +1132,7 @@ async function loadLeaderboard(){
     myRank=0;
     wrap.innerHTML=res.leaderboard.map((p,i)=>{
       const isMe=participant&&p.id===participant.id;
-      if(isMe){myRank=i+1;participant.points=p.points;renderProfile();
+      if(isMe){myRank=i+1;participant.points=p.points;renderProfile();renderAgentCard();
         const b=document.getElementById('p-bar');if(b)b.style.width=(Math.min(p.points/MAX_PTS,1)*100)+'%';
         document.getElementById('p-pts').textContent=p.points;
         document.getElementById('p-pct').textContent=Math.min(Math.round(p.points/MAX_PTS*100),100)+'%';
@@ -1191,7 +1254,7 @@ async function generateShareCard(){
     const font=new FontFace('Bangers','url(https://fonts.gstatic.com/s/bangers/v24/FeVQS0BTqb0h60ACL5la2bxii28wYQ.woff2)');
     await font.load();document.fonts.add(font);
   }catch(e){}
-  const W=591,H=1181;
+  const W=591,H=1380;
   const canvas=document.getElementById('share-canvas');canvas.width=W;canvas.height=H;
   const ctx=canvas.getContext('2d');
   const bgG=ctx.createLinearGradient(0,0,0,H);bgG.addColorStop(0,'#0a0520');bgG.addColorStop(1,'#120830');
@@ -1228,6 +1291,27 @@ async function generateShareCard(){
   ctx.strokeStyle='rgba(108,92,231,0.5)';ctx.lineWidth=1;roundRect(ctx,PX,730,200,48,24);ctx.stroke();
   ctx.fillStyle='#a29bfe';ctx.font='400 28px Bangers,cursive';ctx.textAlign='center';
   ctx.fillText((participant.points||0)+' БАЛЛОВ',PX+100,762);
+  // Статы
+  const stats=calcStats();
+  const statEntries=Object.entries(stats);
+  const statColors={АНАЛИЗ:'#00aeee',СКОРОСТЬ:'#f5e642',КРИПТО:'#ee672a',ПЕРИМЕТР:'#2980b9',ВЛИЯНИЕ:'#8e44ad'};
+  const statY=800;const statH=24;const statGap=38;const barW=W-PX*2-90;
+  ctx.font='700 13px Inter,sans-serif';
+  statEntries.forEach(([k,v],i){
+    const y=statY+i*statGap;
+    // Метка
+    ctx.fillStyle='rgba(255,255,255,0.45)';ctx.textAlign='left';
+    ctx.fillText(k,PX,y+16);
+    // Фон бара
+    ctx.fillStyle='rgba(255,255,255,0.06)';
+    roundRect(ctx,PX+90,y,barW,statH,12);ctx.fill();
+    // Цветной бар
+    ctx.fillStyle=statColors[k]||'#a29bfe';
+    roundRect(ctx,PX+90,y,Math.max(barW*v/100,24),statH,12);ctx.fill();
+    // Значение
+    ctx.fillStyle='#fff';ctx.textAlign='right';
+    ctx.fillText(v,W-PX,y+16);
+  });
   // Нижняя полоса
   const botG=ctx.createLinearGradient(0,0,W,0);botG.addColorStop(0,'#4834d4');botG.addColorStop(0.5,'#6c5ce7');botG.addColorStop(1,'#4834d4');
   ctx.fillStyle=botG;ctx.fillRect(0,H-12,W,12);
