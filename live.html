@@ -257,14 +257,36 @@ async function updateRating(){
 async function updatePoll(){
   if(currentMode !== 'poll' || !currentPollId) return;
   
-  // Сначала пробуем API, иначе localPolls
+  // Берём вопрос из localPolls
   let poll = localPolls.find(p=>p.id===currentPollId);
-  
+  if(!poll) return;
+
   try{
-    const res = await apiGet({action:'getPollResults', pollId:currentPollId});
-    if(res.poll) poll = res.poll;
+    // Получаем реальные результаты голосования из API
+    const res = await apiGet({action:'getQuestionResults', question_id:currentPollId});
+    if(res.question && res.question.results){
+      const results = res.question.results;
+      const total = res.question.total_votes || 0;
+      
+      document.getElementById('poll-session').textContent = poll.session;
+      document.getElementById('poll-question').textContent = poll.question;
+      document.getElementById('poll-total').textContent = `${total} голосов`;
+      
+      const barsEl = document.getElementById('poll-bars');
+      const maxPct = Math.max(...results.map(r=>r.percent), 1);
+      barsEl.innerHTML = results.map((r,i)=>`
+        <div class="poll-bar-row">
+          <div class="poll-bar-label">${poll.options[i]||''}</div>
+          <div class="poll-bar-wrap">
+            <div class="poll-bar-fill" style="width:${r.percent}%;background:${r.percent===maxPct?'var(--cyan)':'var(--violet)'}"></div>
+          </div>
+          <div class="poll-bar-pct">${r.percent}%</div>
+        </div>`).join('');
+      return;
+    }
   }catch(e){}
-  
+
+  // Fallback — показываем вопрос без результатов
   if(!poll) return;
 
   document.getElementById('poll-session').textContent = poll.session;
@@ -296,11 +318,19 @@ async function init(){
 }
 
 init();
+// Запускаем сразу
+(async()=>{
+  await checkMode();
+  if(currentMode==='rating') await updateRating();
+  else await updatePoll();
+})();
+
+// Потом каждые 4 секунды
 setInterval(async ()=>{
   await checkMode();
   if(currentMode==='rating') await updateRating();
   else await updatePoll();
-}, 5000);
+}, 4000);
 </script>
 </body>
 </html>
