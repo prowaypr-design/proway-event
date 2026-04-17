@@ -262,27 +262,34 @@ async function updatePoll(){
   if(!poll) return;
 
   try{
-    // Получаем реальные результаты голосования из API
-    const res = await apiGet({action:'getVoteResults', question_id:currentPollId, num_options:(poll.options||[]).length});
-    if(res.success && res.results){
-      const results = res.results;
-      const total = res.total_votes || 0;
-      
-      document.getElementById('poll-session').textContent = poll.session;
-      document.getElementById('poll-question').textContent = poll.question;
-      document.getElementById('poll-total').textContent = `${total} голосов`;
-      
-      const barsEl = document.getElementById('poll-options');
-      const maxPct = Math.max(...results.map(r=>r.percent), 1);
-      barsEl.innerHTML = results.map((r,i)=>`
-        <div class="poll-opt-row">
-          <div class="poll-opt-label">${poll.options[i]||''}</div>
-          <div class="poll-bar-wrap">
-            <div class="poll-bar-fill${r.percent===maxPct?' top':''}" style="width:${r.percent}%"></div>
-          </div>
-          <div class="poll-opt-pct">${r.percent}% <span style="font-size:13px;opacity:0.6">${r.count} гол.</span></div>
-        </div>`).join('');
-      return;
+    // Получаем результаты через getPollResults (тот же что использует admin)
+    const res = await apiGet({action:'getPollResults'});
+    if(res.polls){
+      const serverPoll = res.polls.find(p => p.id === currentPollId);
+      if(serverPoll && serverPoll.votes){
+        const votes = serverPoll.votes;
+        const total = votes.reduce((a,b)=>a+b,0) || 0;
+        const maxVotes = Math.max(...votes, 1);
+
+        document.getElementById('poll-session').textContent = poll.session;
+        document.getElementById('poll-question').textContent = poll.question;
+        document.getElementById('poll-total').textContent = `${total} голосов`;
+
+        const barsEl = document.getElementById('poll-options');
+        barsEl.innerHTML = poll.options.map((opt,i)=>{
+          const pct = total > 0 ? Math.round(votes[i]/total*100) : 0;
+          const isTop = votes[i] === maxVotes && votes[i] > 0;
+          return`<div class="poll-opt-row">
+            <div class="poll-opt-label">${opt}</div>
+            <div class="poll-bar-wrap">
+              <div class="poll-bar-fill${isTop?' top':''}" style="width:${pct}%"></div>
+            </div>
+            <div class="poll-opt-pct">${pct}%</div>
+            <div class="poll-opt-count">${votes[i]} гол.</div>
+          </div>`;
+        }).join('');
+        return;
+      }
     }
   }catch(e){}
 
