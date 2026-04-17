@@ -1360,8 +1360,15 @@ async function getActivePollFromAnnouncements(){
 
 async function loadActivePollResults(pollId){
   try {
-    const res = await api({action:'getQuestionResults', question_id: pollId});
-    if(res.question) activePollResults = res.question;
+    const poll = POLLS.find(p => p.id === pollId);
+    const numOptions = poll ? poll.options.length : 4;
+    const res = await api({action:'getVoteResults', question_id: pollId, num_options: numOptions});
+    if(res.success && res.results) {
+      activePollResults = {
+        total_votes: res.total_votes,
+        results: res.results.map(r => ({ count: r.count, percent: r.percent }))
+      };
+    }
   } catch(e){}
 }
 
