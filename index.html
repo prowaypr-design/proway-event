@@ -1307,22 +1307,25 @@ async function handleVendorScan(vendorId){
 }
 
 async function syncMetContacts(){
-  // Получаем всех участников и проверяем кто из них смотрел наш профиль
-  // Используем networking лист через getParticipants — серверная синхронизация met_
   if(!participant) return;
   try{
-    // Запрашиваем тех кто смотрел наш профиль (viewed_id = participant.id)
+    // Получаем всех участников и проверяем — у кого в networking есть запись
+    // что они смотрели наш профиль (viewed_id = participant.id)
+    // Используем getViewers если есть, иначе пропускаем
     const res = await api({action:'getViewers', participant_id: participant.id});
-    if(res.viewers && res.viewers.length){
+    if(res && res.viewers && res.viewers.length){
+      let updated = false;
       res.viewers.forEach(id => {
-        if(!localStorage.getItem('met_'+id)){
+        if(id && !localStorage.getItem('met_'+id)){
           localStorage.setItem('met_'+id, '1');
+          updated = true;
         }
       });
-      // Обновляем нетворкинг чтобы показались почты
-      loadNetwork();
+      if(updated) loadNetwork();
     }
-  }catch(e){}
+  }catch(e){
+    // getViewers не добавлен в Apps Script — тихо игнорируем
+  }
 }
 
 async function loadLeaderboard(){
@@ -1341,6 +1344,21 @@ async function loadLeaderboard(){
     if(!myRank && participant) {
       const meInTop = res.leaderboard.findIndex(x => x.id === participant.id);
       if(meInTop !== -1) myRank = meInTop + 1;
+    }
+
+    // Если всё ещё нет места — считаем через getParticipants (все участники)
+    if(!myRank && participant) {
+      api({action:'getParticipants', exclude:''}).then(r => {
+        if(r && r.participants) {
+          const all = r.participants.sort((a,b) => (b.points||0) - (a.points||0));
+          const pos = all.findIndex(x => x.id === participant.id);
+          if(pos !== -1) {
+            myRank = pos + 1;
+            document.getElementById('p-rank').textContent = '#'+myRank;
+            document.getElementById('s-rank2').textContent = myRank;
+          }
+        }
+      }).catch(()=>{});
     }
 
     // Всегда обновляем баллы через getParticipant (независимо от топ-20)
