@@ -264,35 +264,35 @@ async function updatePoll(){
   if(!poll) return;
 
   try{
-    // Получаем результаты через getPollResults (тот же endpoint что у admin)
-    const res = await apiGet({action:'getPollResults'});
-    if(res.polls){
-      const serverPoll = res.polls.find(p => p.id === currentPollId);
-      if(serverPoll && serverPoll.votes){
-        const votes = serverPoll.votes;
-        const total = votes.reduce((a,b)=>a+b,0) || 0;
-        const maxVotes = Math.max(...votes, 1);
+    // Используем getVoteResults — именно он хранит голоса по poll1/poll2/poll3
+    const res = await apiGet({
+      action: 'getVoteResults',
+      question_id: currentPollId,
+      num_options: poll.options.length
+    });
+    if(res.success && res.results){
+      const results = res.results;
+      const total = res.total_votes || 0;
+      const maxCount = Math.max(...results.map(r=>r.count), 1);
 
-        document.getElementById('poll-session').textContent = poll.session;
-        document.getElementById('poll-question').textContent = poll.question;
-        document.getElementById('poll-total').textContent = total + ' голосов';
+      document.getElementById('poll-session').textContent = poll.session;
+      document.getElementById('poll-question').textContent = poll.question;
+      document.getElementById('poll-total').textContent = total + ' голосов';
 
-        const barsEl = document.getElementById('poll-options');
-        barsEl.innerHTML = poll.options.map((opt,i)=>{
-          const v = votes[i] || 0;
-          const pct = total > 0 ? Math.round(v/total*100) : 0;
-          const isTop = v === maxVotes && v > 0;
-          return '<div class="poll-opt-row">'
-            + '<div class="poll-opt-label">' + opt + '</div>'
-            + '<div class="poll-bar-wrap"><div class="poll-bar-fill' + (isTop?' top':'') + '" style="width:' + pct + '%"></div></div>'
-            + '<div class="poll-opt-pct">' + pct + '%</div>'
-            + '<div class="poll-opt-count">' + v + ' гол.</div>'
-            + '</div>';
-        }).join('');
-        return;
-      }
+      const barsEl = document.getElementById('poll-options');
+      barsEl.innerHTML = poll.options.map((opt,i)=>{
+        const r = results[i] || {count:0, percent:0};
+        const isTop = r.count === maxCount && r.count > 0;
+        return '<div class="poll-opt-row">'
+          + '<div class="poll-opt-label">' + opt + '</div>'
+          + '<div class="poll-bar-wrap"><div class="poll-bar-fill' + (isTop?' top':'') + '" style="width:' + r.percent + '%"></div></div>'
+          + '<div class="poll-opt-pct">' + r.percent + '%</div>'
+          + '<div class="poll-opt-count">' + r.count + ' гол.</div>'
+          + '</div>';
+      }).join('');
+      return;
     }
-  }catch(e){}
+  }catch(e){ console.error('getVoteResults error:', e); }
 
   // Fallback — показываем вопрос без результатов
   if(!poll) return;
