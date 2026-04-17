@@ -918,7 +918,7 @@ function openRegistration(){
 
 const ACHIEVEMENTS = [
   { id:'register', icon:'🎖️', name:'Первый шаг',  check: ()=> !!participant },
-  { id:'vendors',  icon:'🗺️', name:'Картограф',   check: ()=> scannedVendors.size >= 4 },
+  { id:'vendors',  icon:'🗺️', name:'Картограф',   check: ()=> scannedVendors.size >= 8 },
   { id:'polls',    icon:'🧠', name:'Аналитик',     check: ()=> Object.keys(pollAnswers).length >= 3 },
   { id:'network',  icon:'🤝', name:'Связной',      check: ()=> { let m=0; for(let k in localStorage){if(k.startsWith('met_'))m++;} return m>=5; }},
   { id:'top3',     icon:'🏆', name:'Топ-3',        check: ()=> myRank > 0 && myRank <= 3 },
