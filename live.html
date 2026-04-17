@@ -149,7 +149,7 @@ let localPolls = [
   {id:'poll3',session:'// ПРЯМАЯ_ЛИНИЯ',question:'Готовы ли российские ИБ-решения полностью заменить зарубежные?',options:['Полностью готовы','В большинстве сегментов','Есть пробелы','Пока не готовы'],votes:[0,0,0,0]},
 ];
 
-async async function apiGet(params){
+async function apiGet(params){
   const url = new URL(API);
   Object.entries(params).forEach(([k,v])=>url.searchParams.set(k,v));
   const r = await fetch(url,{redirect:'follow'});
