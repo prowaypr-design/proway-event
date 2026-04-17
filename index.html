@@ -1318,6 +1318,14 @@ async function loadLeaderboard(){
 
     myRank = res.my_position || 0;
 
+    // Если my_position не вернулся (старый деплой) — считаем по leaderboard
+    // и дополнительно пробуем получить через getParticipant
+    if(!myRank && participant) {
+      // Ищем в топ-20
+      const meInTop = res.leaderboard.findIndex(x => x.id === participant.id);
+      if(meInTop !== -1) myRank = meInTop + 1;
+    }
+
     wrap.innerHTML=res.leaderboard.map((p,i)=>{
       const isMe=participant&&p.id===participant.id;
       if(isMe){
@@ -1358,34 +1366,38 @@ async function loadNetwork(){
     const res=await api({action:'getParticipants',exclude:participant.id});
     const wrap=document.getElementById('network-list');
     if(!res.participants||!res.participants.length){wrap.innerHTML='<div class="empty-state"><div class="empty-text">// ДРУГИХ АГЕНТОВ ПОКА НЕТ</div></div>';return;}
-    const myInterests=(participant.interests||'').split(',').filter(Boolean);
-    const scored=res.participants.map(p=>{const their=(p.interests||'').split(',').filter(Boolean);const matches=myInterests.filter(i=>their.includes(i));return{...p,matches,score:matches.length};}).sort((a,b)=>b.score-a.score||b.points-a.points);
-    wrap.innerHTML=scored.map(p=>{
-      const their=(p.interests||'').split(',').filter(Boolean);const mySet=new Set(myInterests);
-      const tagsHtml=their.map(t=>`<span class="net-tag${mySet.has(t)?' match':''}">${t}</span>`).join('');
+    // Сортируем: сначала знакомые (met), потом остальные по баллам
+    const participants = res.participants.map(p => ({
+      ...p,
+      met: !!localStorage.getItem('met_'+p.id)
+    })).sort((a,b) => {
+      if(a.met && !b.met) return -1;
+      if(!a.met && b.met) return 1;
+      return (b.points||0) - (a.points||0);
+    });
+    wrap.innerHTML=participants.map(p=>{
       const avHtml=p.avatar?`<img src="${p.avatar.startsWith('http')?p.avatar:'https://proway-event.vercel.app/'+p.avatar}" alt="">`:`<span style="font-size:18px;color:var(--text2);">◈</span>`;
-      const liked=likedProfiles.has(p.id);
-      const met=!!localStorage.getItem('met_'+p.id);
+      const met=p.met;
       return`<div class="net-card">
-        <div class="net-av">${avHtml}</div>
-        <div class="net-info"><div class="net-name">${p.name}</div><div class="net-co">${p.company||''}${p.role?' · '+p.role:''}</div><div class="net-tags">${tagsHtml}</div>
-          <div class="net-actions">
+        <div class="net-av" style="position:relative;">
+          ${avHtml}
+          ${met?`<div style="position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;background:#00c864;border-radius:50%;border:2px solid var(--bg2);"></div>`:''}
+        </div>
+        <div class="net-info">
+          <div class="net-name">${p.name}</div>
+          <div class="net-co">${p.company||''}${p.role?' · '+p.role:''}</div>
+          <div class="net-actions" style="margin-top:8px;">
             ${met && p.email
               ? `<button onclick="navigator.clipboard.writeText('${p.email}').then(()=>showToast('// ПОЧТА СКОПИРОВАНА'))" class="net-btn contact" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;">
                   <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="flex-shrink:0"><rect x="1" y="4" width="10" height="8" rx="1.5" stroke="#00c864" stroke-width="1.3"/><rect x="4" y="1" width="10" height="8" rx="1.5" stroke="#00c864" stroke-width="1.3"/></svg>
                   ${p.email}
                 </button>`
               : met
-              ? `<span style="font-size:11px;color:var(--text2);padding:7px 0;">// ЗНАКОМЫ · ПОЧТА НЕ УКАЗАНА</span>`
-              : `<button class="net-btn${liked?' liked':''}" onclick="toggleLike('${p.id}',this)">
-                  <svg width="13" height="13" viewBox="0 0 16 16" fill="${liked?'#a29bfe':'none'}"><path d="M8 14s-6-3.5-6-8a4 4 0 018 0 4 4 0 018 0c0 4.5-6 8-6 8z" stroke="${liked?'#a29bfe':'rgba(255,255,255,0.4)'}" stroke-width="1.3"/></svg>
-                  ${liked?'Интересно':'Отметить'}
-                </button>
-                ${p.email?`<button class="net-btn contact" onclick="window.location.href='mailto:${p.email}'"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="#00c864" stroke-width="1.3"/><path d="M1 5l7 5 7-5" stroke="#00c864" stroke-width="1.3" stroke-linecap="round"/></svg>Написать</button>`:''}`
+              ? `<span style="font-size:11px;color:#00c864;padding:7px 0;">// ЗНАКОМЫ</span>`
+              : `<span style="font-size:11px;color:var(--text2);padding:7px 0;">${p.company||''}</span>`
             }
           </div>
         </div>
-        <div><div class="net-match-n${p.score>0?' hot':''}">${p.score}</div><div class="net-match-l">СОВП.</div></div>
       </div>`;
     }).join('');
   }catch(e){document.getElementById('network-list').innerHTML='<div class="loader">// ОШИБКА СВЯЗИ</div>';}
