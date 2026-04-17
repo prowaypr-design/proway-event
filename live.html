@@ -149,7 +149,7 @@ let localPolls = [
   {id:'poll3',session:'// ПРЯМАЯ_ЛИНИЯ',question:'Готовы ли российские ИБ-решения полностью заменить зарубежные?',options:['Полностью готовы','В большинстве сегментов','Есть пробелы','Пока не готовы'],votes:[0,0,0,0]},
 ];
 
-async function apiGet(params){
+async async function apiGet(params){
   const url = new URL(API);
   Object.entries(params).forEach(([k,v])=>url.searchParams.set(k,v));
   const r = await fetch(url,{redirect:'follow'});
@@ -263,10 +263,10 @@ async function updatePoll(){
 
   try{
     // Получаем реальные результаты голосования из API
-    const res = await apiGet({action:'getQuestionResults', question_id:currentPollId});
-    if(res.question && res.question.results){
-      const results = res.question.results;
-      const total = res.question.total_votes || 0;
+    const res = await apiGet({action:'getVoteResults', question_id:currentPollId});
+    if(res.success && res.results){
+      const results = res.results;
+      const total = res.total_votes || 0;
       
       document.getElementById('poll-session').textContent = poll.session;
       document.getElementById('poll-question').textContent = poll.question;
