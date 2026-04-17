@@ -1151,7 +1151,7 @@ function initApp(){
   document.getElementById('navbar').style.display='flex';
   document.getElementById('ticker-wrap').style.display='flex';
   setAvatarUI();renderProfile();checkAchievements();renderAgentCard();renderPolls();renderVendors();
-  loadLeaderboard();loadNetwork();checkAnnouncements();syncMetContacts();
+  loadLeaderboard();loadNetwork();checkAnnouncements();
   setInterval(loadLeaderboard,15000);setInterval(checkAchievements,20000);
   setInterval(loadNetwork,30000);setInterval(checkAnnouncements,20000);setInterval(checkFinale,15000);
   checkFinale();
@@ -1708,17 +1708,22 @@ async function showScannedProfile(targetId){
   try{
     const res = await api({action:'getParticipant', id: targetId});
     if(!res || res.error || !res.id){ showToast('// АГЕНТ НЕ НАЙДЕН'); return; }
-    // +10 баллов за знакомство (один раз на каждого агента)
+    // Знакомство — meetAgent пишет обе стороны в networking и начисляет +10 обоим
     const metKey = 'met_' + targetId;
-    if(participant && participant.id !== targetId && !localStorage.getItem(metKey)){
+    const isNew = participant && participant.id !== targetId && !localStorage.getItem(metKey);
+    if(isNew){
       localStorage.setItem(metKey, '1');
-      // Также сообщаем серверу что этот человек теперь знает нас — 
-      // чтобы у него тоже появилась наша почта (через viewProfile с обратным направлением)
-      api({action:'viewProfile', participant_id: targetId, viewed_id: participant.id}).catch(()=>{});
-      participant.points = (participant.points||0) + 10;
+      api({action:'meetAgent', scanner_id: participant.id, target_id: targetId}).then(r=>{
+        if(r && r.success && r.scanner_points){
+          participant.points = (participant.points||0) + r.scanner_points;
+        } else if(r && !r.already) {
+          participant.points = (participant.points||0) + 10;
+        }
+        renderProfile();
+      }).catch(()=>{});
+      participant.points = (participant.points||0) + 10; // оптимистично до ответа сервера
       renderProfile();
       showToast('// ЗНАКОМСТВО ЗАСЧИТАНО · +10 Б');
-      api({action:'viewProfile', participant_id: participant.id, viewed_id: targetId}).catch(()=>{});
     }
     const p = res;
     // Показываем модалку с профилем
