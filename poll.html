@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#050a12">
+<title>Опрос — PROWAY Security Day</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Share+Tech+Mono&family=Bangers&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080920;--bg2:#0e0f28;--bg3:#13152f;
+  --cyan:#a29bfe;--orange:#ee672a;--yellow:#f5e642;
+  --blue:#4834d4;--violet:#6c5ce7;--white:#fff;
+  --border:#6c5ce722;--border2:#6c5ce744;
+  --text:#ffffffcc;--text2:#ffffff66;--text3:#ffffff22;
+  --grad:linear-gradient(135deg,#6c5ce7,#4834d4);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;}
+
+/* HEADER */
+.header{background:#06071a;border-bottom:1px solid var(--border);padding:52px 20px 16px;text-align:center;}
+.header-eyebrow{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:3px;margin-bottom:6px;}
+.header-title{font-family:'Bangers',sans-serif;font-size:28px;color:#fff;letter-spacing:3px;}
+.header-sub{font-size:11px;color:var(--text2);margin-top:4px;letter-spacing:1px;}
+
+/* MAIN */
+.main{padding:20px 16px;max-width:480px;margin:0 auto;}
+
+/* POLL CARD */
+.poll-card{background:var(--bg2);border:0.5px solid rgba(108,92,231,0.3);border-radius:16px;padding:20px;margin-bottom:16px;}
+.poll-session{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:3px;margin-bottom:10px;}
+.poll-q{font-size:16px;font-weight:700;color:var(--white);line-height:1.4;margin-bottom:16px;}
+.poll-opt{width:100%;text-align:left;padding:12px 16px;border-radius:10px;border:0.5px solid rgba(108,92,231,0.25);background:transparent;font-size:13px;font-weight:600;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;margin-bottom:8px;display:block;transition:all 0.15s;}
+.poll-opt:last-child{margin-bottom:0;}
+.poll-opt:active{opacity:0.7;}
+.poll-opt.sel{background:rgba(108,92,231,0.15);color:var(--cyan);border-color:var(--violet);}
+
+/* RESULTS */
+.poll-result{position:relative;overflow:hidden;cursor:default;margin-bottom:8px;}
+.poll-result:last-child{margin-bottom:0;}
+.poll-bar-bg{position:absolute;left:0;top:0;bottom:0;background:rgba(108,92,231,0.08);transition:width 0.8s ease;z-index:0;border-radius:10px;}
+.poll-bar-me{background:rgba(108,92,231,0.18);}
+.poll-result-inner{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-radius:10px;border:0.5px solid rgba(108,92,231,0.2);}
+.poll-result-inner.me{border-color:var(--cyan);}
+.poll-opt-text{font-size:13px;font-weight:600;color:var(--text);}
+.poll-opt-text.me{color:var(--cyan);}
+.poll-pct{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text2);white-space:nowrap;margin-left:8px;}
+.poll-pct.me{color:var(--cyan);}
+
+/* SUBMIT BTN */
+.submit-btn{width:100%;padding:14px;background:var(--grad);border:none;border-radius:12px;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;color:#fff;cursor:pointer;margin-top:16px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.submit-btn:disabled{opacity:0.45;cursor:not-allowed;}
+.submit-btn:active:not(:disabled){opacity:0.8;}
+
+/* THANKS */
+.thanks{background:rgba(0,200,100,0.08);border:0.5px solid rgba(0,200,100,0.3);border-radius:12px;padding:16px;text-align:center;margin-top:16px;}
+.thanks-icon{font-size:32px;margin-bottom:8px;}
+.thanks-title{font-size:15px;font-weight:700;color:#00c864;margin-bottom:4px;}
+.thanks-sub{font-size:12px;color:var(--text2);}
+
+/* STATES */
+.state-loading{text-align:center;padding:60px 20px;}
+.state-loading-text{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text3);letter-spacing:3px;animation:pulse 1.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:0.3}50%{opacity:1}}
+
+.state-empty{text-align:center;padding:60px 20px;}
+.state-empty-icon{font-size:40px;margin-bottom:16px;opacity:0.4;}
+.state-empty-title{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--text2);letter-spacing:2px;margin-bottom:8px;}
+.state-empty-sub{font-size:12px;color:var(--text3);line-height:1.5;}
+
+/* GRID BACKGROUND */
+.bg-grid{position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+.content{position:relative;z-index:1;}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:16px;right:16px;background:#0e0f28;color:var(--cyan);border:0.5px solid rgba(108,92,231,0.4);border-left:3px solid var(--violet);border-radius:12px;padding:12px 16px;font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:1px;text-align:center;z-index:300;opacity:0;transition:opacity 0.25s;pointer-events:none;max-width:480px;margin:0 auto;}
+.toast.show{opacity:1;}
+
+/* COUNTER */
+.counter{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text2);letter-spacing:2px;text-align:center;margin-bottom:12px;}
+
+/* VOTED COUNT */
+.voted-count{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:12px;}
+.voted-dot{width:6px;height:6px;border-radius:50%;background:var(--violet);}
+.voted-text{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text2);letter-spacing:1px;}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="content">
+
+<div class="header">
+  <div class="header-eyebrow">// PROWAY_SECURITY_DAY_2026</div>
+  <div class="header-title">ОПРОС</div>
+  <div class="header-sub">Голосуй — результаты сразу на экране</div>
+</div>
+
+<div class="main">
+  <div id="poll-container">
+    <div class="state-loading">
+      <div class="state-loading-text">ЗАГРУЗКА ВОПРОСА...</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API = 'https://script.google.com/macros/s/AKfycbyDyYFwHvLPwHZSqd2abQCLhr9RaoqgVTA96OIw4-mxvRSRkioSe2Th2MD8LYiKhRFstw/exec';
+
+// Статичные опросы (синхронизированы с index.html)
+const POLLS = [
+  {id:'poll1', session:'// SECURITY_TALKS', question:'Что будет основным «рецептом» выживаемости вендоров на российском рынке?', options:['Регуляторка — соответствие требованиям','Технологии — развитие до мировых решений','Комплексный подход — экосистемы','Маркетинг — расширение аудитории']},
+  {id:'poll2', session:'// ПРЯМАЯ_ЛИНИЯ', question:'Что является решающим фактором при выборе NGFW?', options:['Цена','Производительность','Функциональность','Сертификация','Другое']},
+  {id:'poll3', session:'// ПРЯМАЯ_ЛИНИЯ', question:'Готовы ли российские ИБ-решения полностью заменить зарубежные?', options:['Полностью готовы','В большинстве сегментов','Есть пробелы','Пока не готовы']},
+];
+
+let currentQuestion = null;
+let selectedOption = null;
+let voted = false;
+let pollResults = null;
+// Анонимный ID — сохраняем в localStorage чтобы не голосовать дважды
+let anonId = localStorage.getItem('poll_anon_id');
+if (!anonId) {
+  anonId = 'anon_' + Math.random().toString(36).slice(2) + Date.now();
+  localStorage.setItem('poll_anon_id', anonId);
+}
+
+function api(p) { return fetch(API + '?' + new URLSearchParams(p)).then(r => r.json()); }
+function showToast(m, d=2500) {
+  const t = document.getElementById('toast');
+  t.textContent = m; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), d);
+}
+
+async function loadPoll() {
+  try {
+    const res = await api({ action: 'getActiveQuestion' });
+    if (!res.question) {
+      renderEmpty();
+      return;
+    }
+    currentQuestion = res.question;
+
+    // Проверяем голосовали ли уже
+    const votedKey = 'poll_voted_' + currentQuestion.id;
+    const savedVote = localStorage.getItem(votedKey);
+    if (savedVote !== null) {
+      voted = true;
+      selectedOption = parseInt(savedVote);
+      await loadResults();
+    } else {
+      renderQuestion();
+    }
+  } catch(e) {
+    renderEmpty();
+  }
+}
+
+async function loadResults() {
+  try {
+    const res = await api({ action: 'getQuestionResults', question_id: currentQuestion.id });
+    if (res.question) {
+      pollResults = res.question;
+    }
+    renderQuestion();
+  } catch(e) {
+    renderQuestion();
+  }
+}
+
+function renderEmpty() {
+  document.getElementById('poll-container').innerHTML = `
+    <div class="state-empty">
+      <div class="state-empty-icon">📡</div>
+      <div class="state-empty-title">// ОПРОС НЕ АКТИВЕН</div>
+      <div class="state-empty-sub">Ведущий ещё не запустил опрос.<br>Страница обновится автоматически.</div>
+    </div>`;
+}
+
+function renderQuestion() {
+  if (!currentQuestion) return renderEmpty();
+
+  const poll = currentQuestion;
+  const options = poll.options || [];
+  const total = pollResults ? (pollResults.total_votes || 0) : 0;
+  const results = pollResults ? (pollResults.results || []) : [];
+
+  let optionsHtml = '';
+
+  if (voted) {
+    // Показываем результаты
+    optionsHtml = options.map((opt, i) => {
+      const r = results[i] || { count: 0, percent: 0 };
+      const isMe = i === selectedOption;
+      return `
+        <div class="poll-result" onclick="">
+          <div class="poll-bar-bg ${isMe ? 'poll-bar-me' : ''}" style="width:${r.percent}%"></div>
+          <div class="poll-result-inner ${isMe ? 'me' : ''}">
+            <span class="poll-opt-text ${isMe ? 'me' : ''}">${opt}${isMe ? ' ✓' : ''}</span>
+            <span class="poll-pct ${isMe ? 'me' : ''}">${r.percent}%</span>
+          </div>
+        </div>`;
+    }).join('');
+  } else {
+    // Показываем варианты для голосования
+    optionsHtml = options.map((opt, i) => `
+      <button class="poll-opt ${selectedOption === i ? 'sel' : ''}" onclick="selectOpt(${i})">${opt}</button>
+    `).join('');
+  }
+
+  const votedCountHtml = voted && total > 0 ? `
+    <div class="voted-count">
+      <div class="voted-dot"></div>
+      <div class="voted-text">${total} ГОЛОСОВ</div>
+    </div>` : '';
+
+  const thanksHtml = voted ? `
+    <div class="thanks">
+      <div class="thanks-icon">✓</div>
+      <div class="thanks-title">Голос принят!</div>
+      <div class="thanks-sub">Результаты обновляются в реальном времени</div>
+    </div>` : '';
+
+  const submitHtml = !voted ? `
+    <button class="submit-btn" id="submit-btn" onclick="submitVote()" ${selectedOption === null ? 'disabled' : ''}>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8l4 4 8-8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Проголосовать
+    </button>` : '';
+
+  document.getElementById('poll-container').innerHTML = `
+    <div class="counter">${voted ? 'ВАШИ РЕЗУЛЬТАТЫ' : 'ВЫБЕРИ ОДИН ВАРИАНТ'}</div>
+    <div class="poll-card">
+      <div class="poll-session">${poll.session || '// ОПРОС'}</div>
+      <div class="poll-q">${poll.question}</div>
+      ${optionsHtml}
+      ${votedCountHtml}
+    </div>
+    ${thanksHtml}
+    ${submitHtml}`;
+}
+
+function selectOpt(i) {
+  if (voted) return;
+  selectedOption = i;
+  renderQuestion();
+}
+
+async function submitVote() {
+  if (selectedOption === null || voted) return;
+  const btn = document.getElementById('submit-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Отправляем...'; }
+
+  try {
+    const res = await api({
+      action: 'submitVote',
+      question_id: currentQuestion.id,
+      participant_id: anonId,
+      option_index: selectedOption
+    });
+
+    if (res.success || res.already) {
+      voted = true;
+      localStorage.setItem('poll_voted_' + currentQuestion.id, selectedOption);
+      await loadResults();
+      showToast('// ГОЛОС ПРИНЯТ');
+    } else {
+      showToast('// ОШИБКА — ПОПРОБУЙ ЕЩЁ РАЗ');
+      if (btn) { btn.disabled = false; btn.textContent = 'Проголосовать'; }
+    }
+  } catch(e) {
+    showToast('// НЕТ СВЯЗИ');
+    if (btn) { btn.disabled = false; btn.textContent = 'Проголосовать'; }
+  }
+}
+
+// Автообновление — каждые 10 секунд проверяем новый активный опрос
+async function refresh() {
+  try {
+    const res = await api({ action: 'getActiveQuestion' });
+    if (!res.question) {
+      // Опрос закрыт — показываем пустой экран
+      currentQuestion = null; voted = false; selectedOption = null; pollResults = null;
+      renderEmpty();
+      return;
+    }
+    // Новый опрос — сбрасываем если изменился
+    if (!currentQuestion || res.question.id !== currentQuestion.id) {
+      currentQuestion = res.question;
+      const votedKey = 'poll_voted_' + currentQuestion.id;
+      const savedVote = localStorage.getItem(votedKey);
+      if (savedVote !== null) {
+        voted = true;
+        selectedOption = parseInt(savedVote);
+        await loadResults();
+      } else {
+        voted = false; selectedOption = null; pollResults = null;
+        renderQuestion();
+      }
+      return;
+    }
+    // Тот же опрос — обновляем результаты если уже проголосовали
+    if (voted) {
+      await loadResults();
+    }
+  } catch(e) {}
+}
+
+// Запуск
+loadPoll();
+setInterval(refresh, 10000);
+</script>
+</body>
+</html>
