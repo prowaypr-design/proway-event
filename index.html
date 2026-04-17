@@ -1151,7 +1151,7 @@ function initApp(){
   document.getElementById('navbar').style.display='flex';
   document.getElementById('ticker-wrap').style.display='flex';
   setAvatarUI();renderProfile();checkAchievements();renderAgentCard();renderPolls();renderVendors();
-  loadLeaderboard();loadNetwork();checkAnnouncements();
+  loadLeaderboard();loadNetwork();checkAnnouncements();syncMetContacts();
   setInterval(loadLeaderboard,15000);setInterval(checkAchievements,20000);
   setInterval(loadNetwork,30000);setInterval(checkAnnouncements,20000);setInterval(checkFinale,15000);
   checkFinale();
@@ -1306,6 +1306,25 @@ async function handleVendorScan(vendorId){
   }catch(e){showToast('// НЕТ СВЯЗИ');}
 }
 
+async function syncMetContacts(){
+  // Получаем всех участников и проверяем кто из них смотрел наш профиль
+  // Используем networking лист через getParticipants — серверная синхронизация met_
+  if(!participant) return;
+  try{
+    // Запрашиваем тех кто смотрел наш профиль (viewed_id = participant.id)
+    const res = await api({action:'getViewers', participant_id: participant.id});
+    if(res.viewers && res.viewers.length){
+      res.viewers.forEach(id => {
+        if(!localStorage.getItem('met_'+id)){
+          localStorage.setItem('met_'+id, '1');
+        }
+      });
+      // Обновляем нетворкинг чтобы показались почты
+      loadNetwork();
+    }
+  }catch(e){}
+}
+
 async function loadLeaderboard(){
   try{
     const pid = participant ? participant.id : null;
@@ -1318,12 +1337,24 @@ async function loadLeaderboard(){
 
     myRank = res.my_position || 0;
 
-    // Если my_position не вернулся (старый деплой) — считаем по leaderboard
-    // и дополнительно пробуем получить через getParticipant
+    // Если my_position не вернулся — ищем в топ-20
     if(!myRank && participant) {
-      // Ищем в топ-20
       const meInTop = res.leaderboard.findIndex(x => x.id === participant.id);
       if(meInTop !== -1) myRank = meInTop + 1;
+    }
+
+    // Всегда обновляем баллы через getParticipant (независимо от топ-20)
+    if(participant) {
+      api({action:'getParticipant', id: participant.id}).then(r => {
+        if(r && r.points !== undefined) {
+          participant.points = r.points;
+          document.getElementById('p-pts').textContent = r.points;
+          document.getElementById('p-pct').textContent = Math.min(Math.round(r.points/MAX_PTS*100),100)+'%';
+          const b = document.getElementById('p-bar');
+          if(b) b.style.width = (Math.min(r.points/MAX_PTS,1)*100)+'%';
+          renderAgentCard();
+        }
+      }).catch(()=>{});
     }
 
     wrap.innerHTML=res.leaderboard.map((p,i)=>{
@@ -1647,6 +1678,9 @@ async function showScannedProfile(targetId){
     const metKey = 'met_' + targetId;
     if(participant && participant.id !== targetId && !localStorage.getItem(metKey)){
       localStorage.setItem(metKey, '1');
+      // Также сообщаем серверу что этот человек теперь знает нас — 
+      // чтобы у него тоже появилась наша почта (через viewProfile с обратным направлением)
+      api({action:'viewProfile', participant_id: targetId, viewed_id: participant.id}).catch(()=>{});
       participant.points = (participant.points||0) + 10;
       renderProfile();
       showToast('// ЗНАКОМСТВО ЗАСЧИТАНО · +10 Б');
