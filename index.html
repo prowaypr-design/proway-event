@@ -1316,19 +1316,18 @@ async function loadLeaderboard(){
     const wrap=document.getElementById('leaderboard-wrap');
     if(!res.leaderboard||!res.leaderboard.length){wrap.innerHTML='<div class="loader">// АГЕНТОВ НЕТ</div>';return;}
 
-    // Обновляем позицию — используем my_position если есть
-    if(res.my_position){
-      myRank = res.my_position;
-    } else {
-      myRank = 0;
-    }
+    myRank = res.my_position || 0;
 
     wrap.innerHTML=res.leaderboard.map((p,i)=>{
       const isMe=participant&&p.id===participant.id;
       if(isMe){
+        // Фолбэк: если my_position не вернулся — берём из топ-20
         if(!myRank) myRank=i+1;
-        participant.points=p.points;renderProfile();renderAgentCard();
-        const b=document.getElementById('p-bar');if(b)b.style.width=(Math.min(p.points/MAX_PTS,1)*100)+'%';
+        participant.points=p.points;
+        renderProfile();
+        renderAgentCard();
+        const b=document.getElementById('p-bar');
+        if(b)b.style.width=(Math.min(p.points/MAX_PTS,1)*100)+'%';
         document.getElementById('p-pts').textContent=p.points;
         document.getElementById('p-pct').textContent=Math.min(Math.round(p.points/MAX_PTS*100),100)+'%';
       }
@@ -1342,7 +1341,6 @@ async function loadLeaderboard(){
       </div>`;
     }).join('');
 
-    // Показываем реальное место
     document.getElementById('p-rank').textContent = myRank > 0 ? '#'+myRank : '#—';
     document.getElementById('s-rank2').textContent = myRank > 0 ? myRank : '—';
   }catch(e){}
