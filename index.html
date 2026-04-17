@@ -2,6 +2,12 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<script>
+// iOS: заменяем Bangers на Impact (встроен на всех iOS устройствах)
+if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+  document.documentElement.classList.add('ios-device');
+}
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="theme-color" content="#050a12">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -34,6 +40,14 @@
 })();
 </script>
 <style>
+.ios-device h1, .ios-device .ob-title, .ios-device .topbar-logo,
+.ios-device .section-hdr-title, .ios-device .fn-title, .ios-device .fn-codename,
+.ios-device .pts-big, .ios-device .rank-n, .ios-device .cd-num,
+.ios-device .acf-codename, .ios-device [style*="Bangers"],
+.ios-device [class*="Bangers"] {
+  font-family: Impact, "Arial Black", sans-serif !important;
+  letter-spacing: 2px !important;
+}
 :root{
   --bg:#080920;--bg2:#0e0f28;--bg3:#13152f;
   --cyan:#a29bfe;--orange:#ee672a;--yellow:#f5e642;
@@ -1707,6 +1721,25 @@ function handleQrResult(value){
     if(scanId){ showScannedProfile(scanId); return; }
   } catch(e){}
   showToast('// НЕИЗВЕСТНЫЙ QR-КОД');
+}
+
+// iOS: заменяем Bangers на Impact после загрузки DOM
+if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+  var _iosFont = function() {
+    document.querySelectorAll('*').forEach(function(el) {
+      var cs = window.getComputedStyle(el);
+      if (cs && cs.fontFamily && cs.fontFamily.indexOf('Bangers') !== -1) {
+        el.style.fontFamily = 'Impact, "Arial Black", sans-serif';
+      }
+      // Также инлайн стили
+      if (el.style && el.style.fontFamily && el.style.fontFamily.indexOf('Bangers') !== -1) {
+        el.style.fontFamily = 'Impact, "Arial Black", sans-serif';
+      }
+    });
+  };
+  document.addEventListener('DOMContentLoaded', _iosFont);
+  // Повторяем через 500мс на случай динамического контента
+  setTimeout(_iosFont, 500);
 }
 
 window.addEventListener('load',()=>{
