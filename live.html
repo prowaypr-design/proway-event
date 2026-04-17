@@ -172,7 +172,9 @@ async function checkMode(){
     const anns = res.announcements||[];
     
     // Ищем команды управления экраном
-    const modeCmd = anns.find(a=>a.message.startsWith('__LIVE_MODE__'));
+    // Берём ПОСЛЕДНЮЮ команду режима (не первую)
+    const liveCmds = anns.filter(a=>a.message.startsWith('__LIVE_MODE__'));
+    const modeCmd = liveCmds.length ? liveCmds[liveCmds.length-1] : null;
     if(modeCmd){
       const parts = modeCmd.message.replace('__LIVE_MODE__','').split(':');
       const newMode = parts[0];
@@ -262,7 +264,7 @@ async function updatePoll(){
   if(!poll) return;
 
   try{
-    // Получаем результаты через getPollResults (тот же что использует admin)
+    // Получаем результаты через getPollResults (тот же endpoint что у admin)
     const res = await apiGet({action:'getPollResults'});
     if(res.polls){
       const serverPoll = res.polls.find(p => p.id === currentPollId);
@@ -273,20 +275,19 @@ async function updatePoll(){
 
         document.getElementById('poll-session').textContent = poll.session;
         document.getElementById('poll-question').textContent = poll.question;
-        document.getElementById('poll-total').textContent = `${total} голосов`;
+        document.getElementById('poll-total').textContent = total + ' голосов';
 
         const barsEl = document.getElementById('poll-options');
         barsEl.innerHTML = poll.options.map((opt,i)=>{
-          const pct = total > 0 ? Math.round(votes[i]/total*100) : 0;
-          const isTop = votes[i] === maxVotes && votes[i] > 0;
-          return`<div class="poll-opt-row">
-            <div class="poll-opt-label">${opt}</div>
-            <div class="poll-bar-wrap">
-              <div class="poll-bar-fill${isTop?' top':''}" style="width:${pct}%"></div>
-            </div>
-            <div class="poll-opt-pct">${pct}%</div>
-            <div class="poll-opt-count">${votes[i]} гол.</div>
-          </div>`;
+          const v = votes[i] || 0;
+          const pct = total > 0 ? Math.round(v/total*100) : 0;
+          const isTop = v === maxVotes && v > 0;
+          return '<div class="poll-opt-row">'
+            + '<div class="poll-opt-label">' + opt + '</div>'
+            + '<div class="poll-bar-wrap"><div class="poll-bar-fill' + (isTop?' top':'') + '" style="width:' + pct + '%"></div></div>'
+            + '<div class="poll-opt-pct">' + pct + '%</div>'
+            + '<div class="poll-opt-count">' + v + ' гол.</div>'
+            + '</div>';
         }).join('');
         return;
       }
