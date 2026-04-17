@@ -275,12 +275,12 @@ async function updatePoll(){
       const barsEl = document.getElementById('poll-options');
       const maxPct = Math.max(...results.map(r=>r.percent), 1);
       barsEl.innerHTML = results.map((r,i)=>`
-        <div class="poll-bar-row">
-          <div class="poll-bar-label">${poll.options[i]||''}</div>
+        <div class="poll-opt-row">
+          <div class="poll-opt-label">${poll.options[i]||''}</div>
           <div class="poll-bar-wrap">
-            <div class="poll-bar-fill" style="width:${r.percent}%;background:${r.percent===maxPct?'var(--cyan)':'var(--violet)'}"></div>
+            <div class="poll-bar-fill${r.percent===maxPct?' top':''}" style="width:${r.percent}%"></div>
           </div>
-          <div class="poll-bar-pct">${r.percent}%</div>
+          <div class="poll-opt-pct">${r.percent}% <span style="font-size:13px;opacity:0.6">${r.count} гол.</span></div>
         </div>`).join('');
       return;
     }
