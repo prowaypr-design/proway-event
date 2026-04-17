@@ -172,9 +172,9 @@ async function checkMode(){
     const anns = res.announcements||[];
     
     // Ищем команды управления экраном
-    // Берём ПОСЛЕДНЮЮ команду режима (не первую)
+    // Берём ПЕРВУЮ команду — API отдаёт по убыванию даты, первая = самая свежая
     const liveCmds = anns.filter(a=>a.message.startsWith('__LIVE_MODE__'));
-    const modeCmd = liveCmds.length ? liveCmds[liveCmds.length-1] : null;
+    const modeCmd = liveCmds.length ? liveCmds[0] : null;
     if(modeCmd){
       const parts = modeCmd.message.replace('__LIVE_MODE__','').split(':');
       const newMode = parts[0];
