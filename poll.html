@@ -323,7 +323,13 @@ async function refresh() {
 
 // Запуск
 loadPoll();
-setInterval(refresh, 10000);
+// Умный интервал: 5 сек если опрос активен, 15 сек если нет
+async function smartRefresh(){
+  await refresh();
+  const interval = currentQuestion ? 5000 : 15000;
+  setTimeout(smartRefresh, interval);
+}
+smartRefresh();
 </script>
 </body>
 </html>
