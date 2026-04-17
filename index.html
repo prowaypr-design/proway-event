@@ -546,6 +546,14 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
           </button>
         </div>
       </div>
+      <div style="display:flex;align-items:flex-start;gap:10px;background:rgba(108,92,231,0.06);border:1px solid rgba(162,155,254,0.2);border-radius:10px;padding:12px 14px;">
+        <input type="checkbox" id="consent-checkbox" style="width:18px;height:18px;min-width:18px;margin-top:2px;accent-color:#7c6ef0;cursor:pointer;">
+        <label for="consent-checkbox" style="font-size:12px;color:rgba(255,255,255,0.8);line-height:1.5;cursor:pointer;">
+          Я даю согласие на обработку персональных данных в соответствии с 
+          <a href="https://proway.tech/personal-data-event" target="_blank" style="color:#b8b0ff;text-decoration:underline;">политикой обработки данных</a> 
+          ООО «АйТи Системс»
+        </label>
+      </div>
       <button class="ob-btn" onclick="register()">ПРИСТУПИТЬ К МИССИИ ›</button>
     </div>
   </div>
@@ -1079,6 +1087,8 @@ async function register(){
   const company=document.getElementById('reg-company').value.trim();
   const role=document.getElementById('reg-role').value.trim();
   if(!name||!company){showToast('// ЗАПОЛНИ ПОЗЫВНОЙ И ОРГАНИЗАЦИЮ');return;}
+  const consent=document.getElementById('consent-checkbox');
+  if(!consent||!consent.checked){showToast('// НЕОБХОДИМО СОГЛАСИЕ НА ОБРАБОТКУ ДАННЫХ');return;}
   const btn=document.querySelector('#ob-reveal .ob-btn');
   btn.innerHTML='<span style="display:inline-flex;align-items:center;gap:10px;justify-content:center;"><svg style="animation:spin 1s linear infinite;width:16px;height:16px;" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,0.3)" stroke-width="2"/><path d="M12 3a9 9 0 019 9" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>Авторизация...</span>';
   btn.disabled=true;
