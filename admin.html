@@ -177,7 +177,7 @@ body{font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--text);mi
       <div class="info-row"><span class="info-key">Обновление</span><span class="info-val">каждые 5 сек</span></div>
     </div>
 
-    <button class="btn btn-primary" onclick="window.open('live.html','_blank')" style="margin-top:8px">
+    <button class="btn btn-primary" onclick="window.open('/live','_blank')" style="margin-top:8px">
       ОТКРЫТЬ LIVE-ЭКРАН ↗
     </button>
   </div>
@@ -341,13 +341,21 @@ function loadLiveMode(){
   updateLiveModeUI();
 }
 
-function setLiveMode(mode, pollId){
+async function setLiveMode(mode, pollId){
   currentLiveMode = mode;
   currentLivePoll = pollId || null;
   localStorage.setItem('liveMode', mode);
   localStorage.setItem('livePoll', pollId || '');
-  // Сохраняем в API как объявление-команду
-  api({action:'addAnnouncement', secret:SECRET,
+  // Удаляем все старые команды __LIVE_MODE__ перед добавлением новой
+  try{
+    const res = await api({action:'getAnnouncements'});
+    const oldCmds = (res.announcements||[]).filter(a=>a.message.startsWith('__LIVE_MODE__'));
+    for(const cmd of oldCmds){
+      await api({action:'deleteAnnouncement', secret:SECRET, id:cmd.id});
+    }
+  }catch(e){}
+  // Добавляем новую команду
+  await api({action:'addAnnouncement', secret:SECRET,
     message: '__LIVE_MODE__' + mode + (pollId?':'+pollId:''),
     type:'info'
   });
