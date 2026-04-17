@@ -138,14 +138,28 @@ function showToast(m, d=2500) {
   setTimeout(() => t.classList.remove('show'), d);
 }
 
+// Получаем активный опрос из announcements (__LIVE_MODE__poll:pollX)
+async function getActivePollId() {
+  const res = await api({ action: 'getAnnouncements' });
+  if (!res.announcements) return null;
+  // Берём самое свежее сообщение с __LIVE_MODE__poll:
+  const pollMsg = res.announcements
+    .filter(a => a.message && a.message.startsWith('__LIVE_MODE__poll:'))
+    .sort((a,b) => new Date(b.created_at) - new Date(a.created_at))[0];
+  if (!pollMsg) return null;
+  return pollMsg.message.replace('__LIVE_MODE__poll:', '').trim();
+}
+
 async function loadPoll() {
   try {
-    const res = await api({ action: 'getActiveQuestion' });
-    if (!res.question) {
-      renderEmpty();
-      return;
-    }
-    currentQuestion = res.question;
+    const pollId = await getActivePollId();
+    if (!pollId) { renderEmpty(); return; }
+
+    // Находим опрос в локальном массиве
+    const poll = POLLS.find(p => p.id === pollId);
+    if (!poll) { renderEmpty(); return; }
+
+    currentQuestion = { id: poll.id, session: poll.session, question: poll.question, options: poll.options };
 
     // Проверяем голосовали ли уже
     const votedKey = 'poll_voted_' + currentQuestion.id;
@@ -153,8 +167,10 @@ async function loadPoll() {
     if (savedVote !== null) {
       voted = true;
       selectedOption = parseInt(savedVote);
-      await loadResults();
+      // Считаем локальные результаты из votes
+      await loadResultsFromVotes();
     } else {
+      voted = false; selectedOption = null;
       renderQuestion();
     }
   } catch(e) {
@@ -162,7 +178,7 @@ async function loadPoll() {
   }
 }
 
-async function loadResults() {
+async function loadResultsFromVotes() {
   try {
     const res = await api({ action: 'getQuestionResults', question_id: currentQuestion.id });
     if (res.question) {
@@ -267,7 +283,7 @@ async function submitVote() {
     if (res.success || res.already) {
       voted = true;
       localStorage.setItem('poll_voted_' + currentQuestion.id, selectedOption);
-      await loadResults();
+      await loadResultsFromVotes();
       showToast('// ГОЛОС ПРИНЯТ');
     } else {
       showToast('// ОШИБКА — ПОПРОБУЙ ЕЩЁ РАЗ');
@@ -282,32 +298,26 @@ async function submitVote() {
 // Автообновление — каждые 10 секунд проверяем новый активный опрос
 async function refresh() {
   try {
-    const res = await api({ action: 'getActiveQuestion' });
-    if (!res.question) {
-      // Опрос закрыт — показываем пустой экран
+    const pollId = await getActivePollId();
+    if (!pollId) {
       currentQuestion = null; voted = false; selectedOption = null; pollResults = null;
-      renderEmpty();
-      return;
+      renderEmpty(); return;
     }
-    // Новый опрос — сбрасываем если изменился
-    if (!currentQuestion || res.question.id !== currentQuestion.id) {
-      currentQuestion = res.question;
-      const votedKey = 'poll_voted_' + currentQuestion.id;
-      const savedVote = localStorage.getItem(votedKey);
+    const poll = POLLS.find(p => p.id === pollId);
+    if (!poll) { renderEmpty(); return; }
+    if (!currentQuestion || currentQuestion.id !== pollId) {
+      currentQuestion = { id: poll.id, session: poll.session, question: poll.question, options: poll.options };
+      const savedVote = localStorage.getItem('poll_voted_' + pollId);
       if (savedVote !== null) {
-        voted = true;
-        selectedOption = parseInt(savedVote);
-        await loadResults();
+        voted = true; selectedOption = parseInt(savedVote);
+        await loadResultsFromVotes();
       } else {
         voted = false; selectedOption = null; pollResults = null;
         renderQuestion();
       }
       return;
     }
-    // Тот же опрос — обновляем результаты если уже проголосовали
-    if (voted) {
-      await loadResults();
-    }
+    if (voted) await loadResultsFromVotes();
   } catch(e) {}
 }
 
