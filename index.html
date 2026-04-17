@@ -1365,15 +1365,24 @@ async function loadNetwork(){
       const tagsHtml=their.map(t=>`<span class="net-tag${mySet.has(t)?' match':''}">${t}</span>`).join('');
       const avHtml=p.avatar?`<img src="${p.avatar.startsWith('http')?p.avatar:'https://proway-event.vercel.app/'+p.avatar}" alt="">`:`<span style="font-size:18px;color:var(--text2);">◈</span>`;
       const liked=likedProfiles.has(p.id);
+      const met=!!localStorage.getItem('met_'+p.id);
       return`<div class="net-card">
         <div class="net-av">${avHtml}</div>
         <div class="net-info"><div class="net-name">${p.name}</div><div class="net-co">${p.company||''}${p.role?' · '+p.role:''}</div><div class="net-tags">${tagsHtml}</div>
           <div class="net-actions">
-            <button class="net-btn${liked?' liked':''}" onclick="toggleLike('${p.id}',this)">
-              <svg width="13" height="13" viewBox="0 0 16 16" fill="${liked?'#a29bfe':'none'}"><path d="M8 14s-6-3.5-6-8a4 4 0 018 0 4 4 0 018 0c0 4.5-6 8-6 8z" stroke="${liked?'#a29bfe':'rgba(255,255,255,0.4)'}" stroke-width="1.3"/></svg>
-              ${liked?'Интересно':'Отметить'}
-            </button>
-            ${p.email?`<button class="net-btn contact" onclick="window.location.href='mailto:${p.email}'"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="#00c864" stroke-width="1.3"/><path d="M1 5l7 5 7-5" stroke="#00c864" stroke-width="1.3" stroke-linecap="round"/></svg>Написать</button>`:''}
+            ${met && p.email
+              ? `<button onclick="navigator.clipboard.writeText('${p.email}').then(()=>showToast('// ПОЧТА СКОПИРОВАНА'))" class="net-btn contact" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;">
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="flex-shrink:0"><rect x="1" y="4" width="10" height="8" rx="1.5" stroke="#00c864" stroke-width="1.3"/><rect x="4" y="1" width="10" height="8" rx="1.5" stroke="#00c864" stroke-width="1.3"/></svg>
+                  ${p.email}
+                </button>`
+              : met
+              ? `<span style="font-size:11px;color:var(--text2);padding:7px 0;">// ЗНАКОМЫ · ПОЧТА НЕ УКАЗАНА</span>`
+              : `<button class="net-btn${liked?' liked':''}" onclick="toggleLike('${p.id}',this)">
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="${liked?'#a29bfe':'none'}"><path d="M8 14s-6-3.5-6-8a4 4 0 018 0 4 4 0 018 0c0 4.5-6 8-6 8z" stroke="${liked?'#a29bfe':'rgba(255,255,255,0.4)'}" stroke-width="1.3"/></svg>
+                  ${liked?'Интересно':'Отметить'}
+                </button>
+                ${p.email?`<button class="net-btn contact" onclick="window.location.href='mailto:${p.email}'"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="#00c864" stroke-width="1.3"/><path d="M1 5l7 5 7-5" stroke="#00c864" stroke-width="1.3" stroke-linecap="round"/></svg>Написать</button>`:''}`
+            }
           </div>
         </div>
         <div><div class="net-match-n${p.score>0?' hot':''}">${p.score}</div><div class="net-match-l">СОВП.</div></div>
@@ -1650,7 +1659,14 @@ async function showScannedProfile(targetId){
         <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(108,92,231,0.12);border:0.5px solid rgba(108,92,231,0.3);border-radius:20px;padding:5px 14px;font-size:12px;color:#a29bfe;margin-bottom:20px;">
           ${p.points||0} баллов
         </div>
-        ${p.email ? `<div style="margin-bottom:16px;"><a href="mailto:${p.email}" style="display:block;padding:10px;background:rgba(0,200,100,0.08);border:0.5px solid rgba(0,200,100,0.3);border-radius:12px;font-size:13px;font-weight:600;color:#00c864;text-decoration:none;">Написать агенту</a></div>` : ''}
+        ${p.email ? `<div style="margin-bottom:12px;display:flex;gap:8px;">
+          <a href="mailto:${p.email}" style="flex:1;display:block;padding:10px;background:rgba(0,200,100,0.08);border:0.5px solid rgba(0,200,100,0.3);border-radius:12px;font-size:13px;font-weight:600;color:#00c864;text-decoration:none;text-align:center;">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;margin-right:4px"><rect x="1" y="3" width="14" height="10" rx="2" stroke="#00c864" stroke-width="1.3"/><path d="M1 5l7 5 7-5" stroke="#00c864" stroke-width="1.3" stroke-linecap="round"/></svg>Написать
+          </a>
+          <button onclick="navigator.clipboard.writeText('${p.email}').then(()=>{this.textContent='✓ Скопировано';this.style.color='#00c864';setTimeout(()=>{this.innerHTML='<svg width=13 height=13 viewBox=\\'0 0 16 16\\' fill=\\'none\\' style=\\'vertical-align:middle;margin-right:4px\\'><rect x=1 y=4 width=10 height=8 rx=1.5 stroke=\\'rgba(255,255,255,0.4)\\' stroke-width=1.3/><path d=\\'M4 4V3a2 2 0 014 0v1\\' stroke=\\'rgba(255,255,255,0.4)\\' stroke-width=1.3/></svg>Почта'},2000);})" style="padding:10px 14px;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.15);border-radius:12px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;display:flex;align-items:center;gap:4px;">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="vertical-align:middle"><rect x="1" y="4" width="10" height="8" rx="1.5" stroke="rgba(255,255,255,0.4)" stroke-width="1.3"/><rect x="4" y="1" width="10" height="8" rx="1.5" stroke="rgba(255,255,255,0.4)" stroke-width="1.3"/></svg>Почта
+          </button>
+        </div>` : ''}
         <button onclick="this.closest('[style*=fixed]').remove()" style="width:100%;padding:12px;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:12px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;font-family:'Inter',sans-serif;">Закрыть</button>
       </div>`;
     document.body.appendChild(modal);
