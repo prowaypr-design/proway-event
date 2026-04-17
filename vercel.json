@@ -3,17 +3,45 @@
     {
       "source": "/(.*).woff2",
       "headers": [
-        { "key": "Content-Type", "value": "font/woff2" },
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Content-Type",
+          "value": "font/woff2"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     }
   ],
   "rewrites": [
-    { "source": "/vendor", "destination": "/vendor.html" },
-    { "source": "/live-admin", "destination": "/live-admin.html" },
-    { "source": "/live", "destination": "/live.html" },
-    { "source": "/profile-scan", "destination": "/profile-scan.html" },
-    { "source": "/((?!vendor|live-admin|live|profile-scan|.*\\..+).*)", "destination": "/index.html" }
+    {
+      "source": "/vendor",
+      "destination": "/vendor.html"
+    },
+    {
+      "source": "/live-admin",
+      "destination": "/live-admin.html"
+    },
+    {
+      "source": "/live",
+      "destination": "/live.html"
+    },
+    {
+      "source": "/profile-scan",
+      "destination": "/profile-scan.html"
+    },
+    {
+      "source": "/poll",
+      "destination": "/poll.html"
+    },
+    {
+      "source": "/((?!vendor|live-admin|live|profile-scan|poll|.*\\..+).*)",
+      "destination": "/index.html"
+    }
   ]
 }
