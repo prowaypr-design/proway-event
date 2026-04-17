@@ -263,7 +263,7 @@ async function updatePoll(){
 
   try{
     // Получаем реальные результаты голосования из API
-    const res = await apiGet({action:'getVoteResults', question_id:currentPollId});
+    const res = await apiGet({action:'getVoteResults', question_id:currentPollId, num_options:(poll.options||[]).length});
     if(res.success && res.results){
       const results = res.results;
       const total = res.total_votes || 0;
@@ -272,7 +272,7 @@ async function updatePoll(){
       document.getElementById('poll-question').textContent = poll.question;
       document.getElementById('poll-total').textContent = `${total} голосов`;
       
-      const barsEl = document.getElementById('poll-bars');
+      const barsEl = document.getElementById('poll-options');
       const maxPct = Math.max(...results.map(r=>r.percent), 1);
       barsEl.innerHTML = results.map((r,i)=>`
         <div class="poll-bar-row">
