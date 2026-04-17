@@ -130,7 +130,7 @@ body{font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--text);mi
     <div class="tab" onclick="switchTab('polls')">ОПРОСЫ</div>
     <div class="tab" onclick="switchTab('announce')">ОБЪЯВЛЕНИЯ</div>
     <div class="tab" onclick="switchTab('rating')">РЕЙТИНГ</div>
-    <div class="tab" onclick="switchTab('finale')">ФИНАЛ</div>
+
   </div>
 
   <!-- ═══ TAB: LIVE ═══ -->
@@ -251,21 +251,7 @@ body{font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--text);mi
     </div>
   </div>
 
-  <!-- ═══ TAB: ФИНАЛ ═══ -->
-  <div id="tab-finale" class="section">
-    <div class="section-title">ЗАВЕРШЕНИЕ МЕРОПРИЯТИЯ</div>
-    <div class="card" style="border-color:rgba(238,103,42,.3);">
-      <div class="card-title" style="color:var(--orange)">Запустить финальный экран</div>
-      <div class="card-sub" style="margin-bottom:14px;">Все участники увидят финальную анимацию с результатами. Действие необратимо.</div>
-      <button class="btn btn-orange" onclick="triggerFinale()">ЗАПУСТИТЬ ФИНАЛ 🏆</button>
-    </div>
-    <div class="card" style="margin-top:12px;">
-      <div class="card-title" style="margin-bottom:10px;">Статистика мероприятия</div>
-      <div id="stats-list">
-        <div style="text-align:center;padding:12px;font-size:12px;color:var(--text2)">Загрузка...</div>
-      </div>
-    </div>
-  </div>
+
 </div>
 
 <div class="toast" id="toast"></div>
@@ -313,15 +299,14 @@ function init(){
 // ── TABS ──────────────────────────────────────────────
 function switchTab(name){
   document.querySelectorAll('.tab').forEach((t,i)=>{
-    t.classList.toggle('active', t.textContent.toLowerCase().includes(name) || 
-      (name==='live'&&i===0)||(name==='polls'&&i===1)||(name==='announce'&&i===2)||(name==='rating'&&i===3)||(name==='finale'&&i===4));
+    t.classList.toggle('active',
+      (name==='live'&&i===0)||(name==='polls'&&i===1)||(name==='announce'&&i===2)||(name==='rating'&&i===3));
   });
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
   if(name==='rating') loadRating();
   if(name==='announce') loadAnnouncements();
   if(name==='polls') renderPollsAdmin();
-  if(name==='finale') loadStats();
 }
 
 // ── API ──────────────────────────────────────────────
