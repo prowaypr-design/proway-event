@@ -1116,7 +1116,7 @@ function initApp(){
   setAvatarUI();renderProfile();checkAchievements();renderAgentCard();renderPolls();renderVendors();
   loadLeaderboard();loadNetwork();checkAnnouncements();
   setInterval(loadLeaderboard,15000);setInterval(checkAchievements,20000);
-  setInterval(loadNetwork,30000);setInterval(checkAnnouncements,20000);setInterval(checkFinale,15000);
+  setInterval(loadNetwork,30000);setInterval(checkAnnouncements,20000);setInterval(checkFinale,15000);startPollWatcher();
   checkFinale();
   setTimeout(()=>{const b=document.getElementById('p-bar');if(b)b.style.width=(Math.min((participant.points||0)/MAX_PTS,1)*100)+'%';},300);
 }
@@ -1332,29 +1332,109 @@ async function loadNetwork(){
   }catch(e){document.getElementById('network-list').innerHTML='<div class="loader">// ОШИБКА СВЯЗИ</div>';}
 }
 
-function renderPolls(){
-  document.getElementById('polls-list').innerHTML=POLLS.map(poll=>{
-    const answered=pollAnswers[poll.id]!==undefined;
-    if(answered){
-      const total=poll.votes.reduce((a,b)=>a+b,0)||1;
-      return`<div class="poll-card"><div class="poll-session">${poll.session}</div><div class="poll-q">${poll.question}</div>
-        ${poll.options.map((opt,i)=>{const pct=Math.round(poll.votes[i]/total*100);const isMe=pollAnswers[poll.id]===i;
-          return`<div class="poll-opt poll-result" style="${isMe?'border-color:var(--cyan);':''}"><div class="poll-bar${isMe?' me-bar':''}" style="width:${pct}%"></div><div class="poll-content"><span style="${isMe?'color:var(--cyan);':''}">${opt}</span><span class="poll-pct${isMe?' me':''}">${pct}%</span></div></div>`;}).join('')}
-      </div>`;
-    }
-    return`<div class="poll-card"><div class="poll-session">${poll.session}</div><div class="poll-q">${poll.question}</div>
-      ${poll.options.map((opt,i)=>`<button class="poll-opt" onclick="answerPoll('${poll.id}',${i})">${opt}</button>`).join('')}
-    </div>`;
-  }).join('');
+// Активный опрос из announcements
+let activePollId = null;
+let activePollResults = null;
+
+async function getActivePollFromAnnouncements(){
+  try {
+    const res = await api({action:'getAnnouncements'});
+    if(!res.announcements) return null;
+    const msg = res.announcements
+      .filter(a => a.message && a.message.startsWith('__LIVE_MODE__poll:'))
+      .sort((a,b) => new Date(b.created_at) - new Date(a.created_at))[0];
+    if(!msg) return null;
+    return msg.message.replace('__LIVE_MODE__poll:','').trim();
+  } catch(e){ return null; }
 }
 
-function answerPoll(pollId,optIdx){
+async function loadActivePollResults(pollId){
+  try {
+    const res = await api({action:'getQuestionResults', question_id: pollId});
+    if(res.question) activePollResults = res.question;
+  } catch(e){}
+}
+
+async function renderPolls(){
+  const el = document.getElementById('polls-list');
+  el.innerHTML = '<div class="loader">ЗАГРУЗКА...</div>';
+
+  const newPollId = await getActivePollFromAnnouncements();
+
+  // Опрос сменился — сбрасываем результаты
+  if(newPollId !== activePollId) {
+    activePollId = newPollId;
+    activePollResults = null;
+  }
+
+  if(!activePollId) {
+    el.innerHTML = '<div class="loader" style="color:var(--text2);">// ОПРОС НЕ АКТИВЕН</div>';
+    return;
+  }
+
+  const poll = POLLS.find(p => p.id === activePollId);
+  if(!poll) {
+    el.innerHTML = '<div class="loader" style="color:var(--text2);">// ОПРОС НЕ НАЙДЕН</div>';
+    return;
+  }
+
+  const answered = pollAnswers[poll.id] !== undefined;
+
+  // Если уже ответили — загружаем результаты с сервера
+  if(answered && !activePollResults) {
+    await loadActivePollResults(poll.id);
+  }
+
+  if(answered && activePollResults) {
+    const total = activePollResults.total_votes || 0;
+    const results = activePollResults.results || [];
+    el.innerHTML = `<div class="poll-card">
+      <div class="poll-session">${poll.session}</div>
+      <div class="poll-q">${poll.question}</div>
+      ${poll.options.map((opt,i)=>{
+        const r = results[i] || {count:0,percent:0};
+        const isMe = pollAnswers[poll.id] === i;
+        return `<div class="poll-opt poll-result" style="${isMe?'border-color:var(--cyan);':''}">
+          <div class="poll-bar${isMe?' me-bar':''}" style="width:${r.percent}%"></div>
+          <div class="poll-content"><span style="${isMe?'color:var(--cyan);':''}">${opt}</span><span class="poll-pct${isMe?' me':''}">${r.percent}%</span></div>
+        </div>`;
+      }).join('')}
+      <div style="margin-top:8px;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text2);letter-spacing:2px;">${total} ГОЛОСОВ</div>
+    </div>`;
+    return;
+  }
+
+  if(answered) {
+    // Проголосовали но результаты ещё не загрузились
+    el.innerHTML = `<div class="poll-card">
+      <div class="poll-session">${poll.session}</div>
+      <div class="poll-q">${poll.question}</div>
+      <div class="loader" style="font-size:10px;">ЗАГРУЗКА РЕЗУЛЬТАТОВ...</div>
+    </div>`;
+    return;
+  }
+
+  // Ещё не голосовали
+  el.innerHTML = `<div class="poll-card">
+    <div class="poll-session">${poll.session}</div>
+    <div class="poll-q">${poll.question}</div>
+    ${poll.options.map((opt,i)=>`<button class="poll-opt" onclick="answerPoll('${poll.id}',${i})">${opt}</button>`).join('')}
+  </div>`;
+}
+
+async function answerPoll(pollId,optIdx){
   if(pollAnswers[pollId]!==undefined)return;
   pollAnswers[pollId]=optIdx;
-  const poll=POLLS.find(p=>p.id===pollId);poll.votes[optIdx]++;renderPolls();
   document.getElementById('s-polls').textContent=Object.keys(pollAnswers).length;
-  if(participant)api({action:'addPoints',participant_id:participant.id,points:15});
+  renderPolls();
   showToast('// ГОЛОС ПРИНЯТ · +15 Б');
+  try {
+    const pid = participant ? participant.id : ('anon_'+Math.random().toString(36).slice(2));
+    await api({action:'submitVote', question_id: pollId, participant_id: pid, option_index: optIdx});
+    // Загружаем обновлённые результаты
+    await loadActivePollResults(pollId);
+    renderPolls();
+  } catch(e){}
 }
 
 function checkAchievements(){
@@ -1712,6 +1792,20 @@ function handleQrResult(value){
     if(scanId){ showScannedProfile(scanId); return; }
   } catch(e){}
   showToast('// НЕИЗВЕСТНЫЙ QR-КОД');
+}
+
+
+// ── УМНЫЙ ОПРОС WATCHER ──────────────────────────────────────────
+// Адаптивный интервал: редко когда нет опроса, часто когда есть
+let pollWatcherTimer = null;
+async function pollWatcherTick(){
+  await renderPolls();
+  const interval = activePollId ? 5000 : 15000; // 5 сек если опрос активен, 15 сек если нет
+  pollWatcherTimer = setTimeout(pollWatcherTick, interval);
+}
+function startPollWatcher(){
+  if(pollWatcherTimer) clearTimeout(pollWatcherTimer);
+  pollWatcherTick();
 }
 
 window.addEventListener('load',()=>{
