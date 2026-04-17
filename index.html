@@ -554,7 +554,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
       <div style="background:rgba(108,92,231,0.06);border:1px solid rgba(108,92,231,0.25);border-radius:10px;padding:12px 14px;display:flex;align-items:flex-start;gap:12px;">
         <input type="checkbox" id="reg-consent" style="width:18px;height:18px;min-width:18px;margin-top:2px;accent-color:var(--violet);cursor:pointer;">
         <label for="reg-consent" style="font-size:12px;color:var(--text2);line-height:1.5;cursor:pointer;">
-          Я даю согласие на обработку персональных данных при регистрации и участии в мероприятии в соответствии с <a href="https://proway.tech/personal-data-event" target="_blank" style="color:var(--cyan);text-decoration:underline;">Политикой конфиденциальности</a>
+          Я даю согласие на <a href="https://proway.tech/personal-data-event" target="_blank" style="color:var(--cyan);text-decoration:underline;">обработку персональных данных при регистрации/участии в мероприятии</a>
         </label>
       </div>
       <button class="ob-btn" onclick="register()">ПРИСТУПИТЬ К МИССИИ ›</button>
@@ -1308,17 +1308,30 @@ async function handleVendorScan(vendorId){
 
 async function loadLeaderboard(){
   try{
-    const res=await api({action:'getLeaderboard'});
+    const pid = participant ? participant.id : null;
+    const res = await api(pid
+      ? {action:'getLeaderboard', participant_id: pid}
+      : {action:'getLeaderboard'}
+    );
     const wrap=document.getElementById('leaderboard-wrap');
     if(!res.leaderboard||!res.leaderboard.length){wrap.innerHTML='<div class="loader">// АГЕНТОВ НЕТ</div>';return;}
-    myRank=0;
+
+    // Обновляем позицию — используем my_position если есть
+    if(res.my_position){
+      myRank = res.my_position;
+    } else {
+      myRank = 0;
+    }
+
     wrap.innerHTML=res.leaderboard.map((p,i)=>{
       const isMe=participant&&p.id===participant.id;
-      if(isMe){myRank=i+1;participant.points=p.points;renderProfile();renderAgentCard();
+      if(isMe){
+        if(!myRank) myRank=i+1;
+        participant.points=p.points;renderProfile();renderAgentCard();
         const b=document.getElementById('p-bar');if(b)b.style.width=(Math.min(p.points/MAX_PTS,1)*100)+'%';
         document.getElementById('p-pts').textContent=p.points;
         document.getElementById('p-pct').textContent=Math.min(Math.round(p.points/MAX_PTS*100),100)+'%';
-        document.getElementById('s-rank2').textContent=i+1;}
+      }
       const avHtml=p.avatar?`<img src="${p.avatar.startsWith('http')?p.avatar:'https://proway-event.vercel.app/'+p.avatar}" alt="">`:`<span style="font-size:13px;color:var(--text2);">◈</span>`;
       return`<div class="lb-row${isMe?' me':''}">
         ${i===0?'<div class="lb-leader">ЛИДЕР</div>':''}
@@ -1328,7 +1341,10 @@ async function loadLeaderboard(){
         <span class="lb-pts${isMe?' me':''}">${p.points} б</span>
       </div>`;
     }).join('');
-    document.getElementById('p-rank').textContent='#'+myRank;
+
+    // Показываем реальное место
+    document.getElementById('p-rank').textContent = myRank > 0 ? '#'+myRank : '#—';
+    document.getElementById('s-rank2').textContent = myRank > 0 ? myRank : '—';
   }catch(e){}
 }
 
