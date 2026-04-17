@@ -137,6 +137,16 @@ body{font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--text);mi
   <div id="tab-live" class="section active">
     <div class="section-title">УПРАВЛЕНИЕ LIVE-ЭКРАНОМ</div>
 
+    <!-- БЫСТРЫЙ СТАРТ -->
+    <div class="card" style="border:2px solid var(--violet);background:rgba(108,92,231,0.08);margin-bottom:16px;">
+      <div class="card-title" style="margin-bottom:12px;color:var(--cyan);">⚡ БЫСТРЫЙ СТАРТ</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;" id="quick-start-polls"></div>
+      <button onclick="setLiveMode('rating')"
+        style="width:100%;padding:12px;background:rgba(245,230,66,0.1);border:2px solid #f5e642;border-radius:8px;color:#f5e642;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:15px;cursor:pointer;letter-spacing:1px;">
+        🏆 ПОКАЗАТЬ РЕЙТИНГ
+      </button>
+    </div>
+
     <div class="live-switch">
       <div class="live-switch-title">Что показывать на проекторе</div>
       <div class="mode-btns">
@@ -151,10 +161,14 @@ body{font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--text);mi
       </div>
     </div>
 
-    <!-- Выбор опроса для live -->
-    <div id="poll-selector" style="display:none;" class="card">
-      <div class="card-title" style="margin-bottom:10px">Выберите опрос для показа</div>
-      <div id="poll-selector-list"></div>
+    <!-- Быстрые кнопки опросов -->
+    <div id="poll-selector" class="card" style="display:none;">
+      <div class="card-title" style="margin-bottom:12px">⚡ БЫСТРЫЙ ЗАПУСК ОПРОСА</div>
+      <div style="display:flex;flex-direction:column;gap:8px;" id="quick-poll-btns"></div>
+      <button onclick="setLiveMode('rating');document.getElementById('poll-selector').style.display='none';"
+        style="width:100%;margin-top:10px;padding:12px;background:rgba(255,255,255,0.05);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;cursor:pointer;letter-spacing:1px;">
+        ✕ ВЫКЛЮЧИТЬ ОПРОС → РЕЙТИНГ
+      </button>
     </div>
 
     <div class="card">
@@ -277,6 +291,7 @@ function doLogin(){
   if(pwd === SECRET){
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('main-screen').style.display = 'block';
+    renderQuickStart();
     init();
   } else {
     showToast('// НЕВЕРНЫЙ ПАРОЛЬ');
@@ -349,16 +364,32 @@ function updateLiveModeUI(){
   document.getElementById('live-mode-badge').textContent = 'LIVE: ' + (currentLiveMode==='rating'?'РЕЙТИНГ':'ОПРОС');
 }
 
+
+// ── БЫСТРЫЙ СТАРТ ────────────────────────────────────────────────
+function renderQuickStart(){
+  const colors = ['#6c5ce7','#00b894','#e17055','#0984e3'];
+  const el = document.getElementById('quick-start-polls');
+  if(!el) return;
+  el.innerHTML = allPolls.map((p,i)=>`
+    <button onclick="setLiveMode('poll','${p.id}');showToast('Опрос ${i+1} запущен!');"
+      style="padding:12px 8px;background:${colors[i%colors.length]}22;border:2px solid ${colors[i%colors.length]};border-radius:8px;color:#fff;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;cursor:pointer;text-align:center;letter-spacing:0.5px;line-height:1.3;">
+      🗳️ ОПРОС ${i+1}<br><span style="font-size:10px;opacity:0.7;font-weight:400;">${p.session}</span>
+    </button>
+  `).join('');
+}
+
 function openPollSelector(){
   const sel = document.getElementById('poll-selector');
-  const list = document.getElementById('poll-selector-list');
   sel.style.display = sel.style.display==='none' ? 'block' : 'none';
-  list.innerHTML = allPolls.map(p=>`
-    <div style="padding:10px;border-bottom:1px solid var(--border);cursor:pointer;border-radius:6px"
-         onclick="setLiveMode('poll','${p.id}');document.getElementById('poll-selector').style.display='none'">
-      <div style="font-size:12px;color:var(--cyan);margin-bottom:2px;font-family:'Share Tech Mono',monospace">${p.session}</div>
-      <div style="font-size:13px;color:var(--white)">${p.question}</div>
-    </div>
+  if(sel.style.display === 'none') return;
+  // Рендерим быстрые кнопки
+  const colors = ['#6c5ce7','#00b894','#e17055','#0984e3'];
+  document.getElementById('quick-poll-btns').innerHTML = allPolls.map((p,i)=>`
+    <button onclick="setLiveMode('poll','${p.id}');document.getElementById('poll-selector').style.display='none';"
+      style="width:100%;padding:14px 16px;background:${colors[i%colors.length]}22;border:2px solid ${colors[i%colors.length]};border-radius:10px;color:#fff;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:15px;cursor:pointer;text-align:left;letter-spacing:0.5px;line-height:1.3;">
+      <div style="font-size:10px;color:${colors[i%colors.length]};letter-spacing:2px;margin-bottom:4px;">${p.session}</div>
+      ${p.question.length > 80 ? p.question.slice(0,80)+'...' : p.question}
+    </button>
   `).join('');
 }
 
