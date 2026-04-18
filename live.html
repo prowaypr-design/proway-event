@@ -266,38 +266,20 @@ async function updateRating(){
 // ── ОПРОС ─────────────────────────────────────────────
 async function updatePoll(){
   if(currentMode !== 'poll') return;
-
   try{
-    // Всегда берём активный вопрос с сервера
     const qRes = await apiGet({action:'getActiveQuestion'});
-    if(!qRes || !qRes.question){ return; }
-
+    if(!qRes || !qRes.question) return;
     const q = qRes.question;
-    const poll = {
-      id: q.id,
-      session: '// ПРЯМАЯ_ЛИНИЯ',
-      question: q.question,
-      options: q.options || []
-    };
-
-    // Получаем результаты
-    const res = await apiGet({
-      action: 'getVoteResults',
-      question_id: q.id,
-      num_options: poll.options.length
-    });
-
+    const opts = q.options || [];
+    document.getElementById('poll-session').textContent = '// ПРЯМАЯ_ЛИНИЯ';
+    document.getElementById('poll-question').textContent = q.question;
+    const res = await apiGet({action:'getVoteResults', question_id:q.id, num_options:opts.length});
     if(res.success && res.results){
       const results = res.results;
       const total = res.total_votes || 0;
       const maxCount = Math.max(...results.map(r=>r.count), 1);
-
-      document.getElementById('poll-session').textContent = poll.session;
-      document.getElementById('poll-question').textContent = poll.question;
       document.getElementById('poll-total').textContent = total + ' голосов';
-
-      const barsEl = document.getElementById('poll-options');
-      barsEl.innerHTML = poll.options.map((opt,i)=>{
+      document.getElementById('poll-options').innerHTML = opts.map((opt,i)=>{
         const r = results[i] || {count:0, percent:0};
         const isTop = r.count === maxCount && r.count > 0;
         return '<div class="poll-opt-row">'
@@ -307,33 +289,15 @@ async function updatePoll(){
           + '<div class="poll-opt-count">' + r.count + ' гол.</div>'
           + '</div>';
       }).join('');
-      return;
+    } else {
+      document.getElementById('poll-total').textContent = '0 голосов';
+      document.getElementById('poll-options').innerHTML = opts.map(opt=>
+        '<div class="poll-opt-row"><div class="poll-opt-label">'+opt+'</div>'
+        +'<div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:0%"></div></div>'
+        +'<div class="poll-opt-pct">0%</div><div class="poll-opt-count">0 гол.</div></div>'
+      ).join('');
     }
   }catch(e){ console.error('updatePoll error:', e); }
-
-  // Fallback — показываем вопрос без результатов
-  if(!poll) return;
-
-  document.getElementById('poll-session').textContent = poll.session;
-  document.getElementById('poll-question').textContent = poll.question;
-  
-  const total = poll.votes.reduce((a,b)=>a+b,0)||1;
-  document.getElementById('poll-total').textContent = `${total} голосов`;
-
-  const maxVotes = Math.max(...poll.votes)||1;
-
-  document.getElementById('poll-options').innerHTML = poll.options.map((opt,i)=>{
-    const pct = Math.round(poll.votes[i]/total*100);
-    const isTop = poll.votes[i] === Math.max(...poll.votes) && poll.votes[i] > 0;
-    return`<div class="poll-opt-row">
-      <div class="poll-opt-label">${opt}</div>
-      <div class="poll-bar-wrap">
-        <div class="poll-bar-fill ${isTop?'top':''}" style="width:${pct}%"></div>
-      </div>
-      <div class="poll-opt-pct">${pct}%</div>
-      <div class="poll-opt-count">${poll.votes[i]} гол.</div>
-    </div>`;
-  }).join('');
 }
 
 // ── INIT & LOOP ───────────────────────────────────────
