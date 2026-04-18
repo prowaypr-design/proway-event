@@ -1866,16 +1866,23 @@ async function generateShareCard(){
 function loadImg(src){return new Promise((res,rej)=>{const img=new Image();img.crossOrigin='anonymous';img.onload=()=>res(img);img.onerror=rej;img.src=src;});}
 function roundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
 
+function pluralRu(n,one,few,many){
+  const n10=n%10,n100=n%100;
+  if(n100>=11&&n100<=19)return many;
+  if(n10===1)return one;
+  if(n10>=2&&n10<=4)return few;
+  return many;
+}
 function startCountdown(){
   function update(){
     const diff=LAUNCH_DATE-new Date();
-    if(diff<=0){ /* мероприятие началось — таймер останавливаем */ return; }
+    if(diff<=0){return;}
     const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
     ['countdown','countdown2'].forEach(cid=>{const el=document.getElementById(cid);if(el)el.innerHTML=
-      `<span class="cd-block"><span class="cd-num">${d}</span><span class="cd-lbl">${(d%100>=11&&d%100<=19)?'дней':d%10===1?'день':d%10>=2&&d%10<=4?'дня':'дней'}</span></span>`+
-      `<span class="cd-block"><span class="cd-num">${String(h).padStart(2,'0')}</span><span class="cd-lbl">${(h%100>=11&&h%100<=19)?'часов':h%10===1?'час':h%10>=2&&h%10<=4?'часа':'часов'}</span></span>`+
-      `<span class="cd-block"><span class="cd-num">${String(m).padStart(2,'0')}</span><span class="cd-lbl">${(m%100>=11&&m%100<=19)?'минут':m%10===1?'минута':m%10>=2&&m%10<=4?'минуты':'минут'}</span></span>`+
-      `<span class="cd-block"><span class="cd-num">${String(s).padStart(2,'0')}</span><span class="cd-lbl">${(s%100>=11&&s%100<=19)?'секунд':s%10===1?'секунда':s%10>=2&&s%10<=4?'секунды':'секунд'}</span></span>`;});
+      `<span class="cd-block"><span class="cd-num">${d}</span><span class="cd-lbl">${pluralRu(d,'день','дня','дней')}</span></span>`+
+      `<span class="cd-block"><span class="cd-num">${String(h).padStart(2,'0')}</span><span class="cd-lbl">${pluralRu(h,'час','часа','часов')}</span></span>`+
+      `<span class="cd-block"><span class="cd-num">${String(m).padStart(2,'0')}</span><span class="cd-lbl">${pluralRu(m,'минута','минуты','минут')}</span></span>`+
+      `<span class="cd-block"><span class="cd-num">${String(s).padStart(2,'0')}</span><span class="cd-lbl">${pluralRu(s,'секунда','секунды','секунд')}</span></span>`;});
   }
   update();setInterval(update,1000);
 }
