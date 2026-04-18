@@ -2,6 +2,13 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<script>
+// iOS: заменяем Bangers на Impact (встроен на всех iOS устройствах)
+if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+  document.documentElement.classList.add('ios-device');
+}
+</script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="theme-color" content="#050a12">
 <title>Опрос — PROWAY Security Day</title>
@@ -86,6 +93,14 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .voted-count{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:12px;}
 .voted-dot{width:6px;height:6px;border-radius:50%;background:var(--violet);}
 .voted-text{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text2);letter-spacing:1px;}
+
+/* iOS: Bangers → Impact */
+.ios-device .header-title,
+.ios-device [style*="Bangers"],
+.ios-device [class*="Bangers"] {
+  font-family: Impact, "Arial Black", sans-serif !important;
+  letter-spacing: 2px !important;
+}
 </style>
 </head>
 <body>
