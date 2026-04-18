@@ -919,7 +919,12 @@ function openRegistration(){
 const ACHIEVEMENTS = [
   { id:'register', icon:'🎖️', name:'Первый шаг',  check: ()=> !!participant },
   { id:'vendors',  icon:'🗺️', name:'Картограф',   check: ()=> scannedVendors.size >= 4 },
-  { id:'polls',    icon:'🧠', name:'Аналитик',     check: ()=> Object.keys(pollAnswers).length >= 3 },
+  { id:'polls',    icon:'🧠', name:'Аналитик',     check: ()=> {
+    // Ачивка за ответы на ВСЕ опросы запущенные админом
+    const adminVoted = Object.keys(localStorage).filter(k=>k.startsWith('poll_voted_'));
+    if(!adminVoted.length) return false;
+    return adminVoted.every(k=>pollAnswers[k.replace('poll_voted_','')]!==undefined);
+  }},
   { id:'network',  icon:'🤝', name:'Связной',      check: ()=> { let m=0; for(let k in localStorage){if(k.startsWith('met_'))m++;} return m>=5; }},
   { id:'top3',     icon:'🏆', name:'Топ-3',        check: ()=> myRank > 0 && myRank <= 3 },
   { id:'100pts',   icon:'⚡', name:'100 баллов',   check: ()=> (participant?.points||0) >= 100 },
@@ -1148,6 +1153,7 @@ const POLLS=[
 ];
 
 let participant=null,selectedTags=[],pollAnswers={};
+let activeAdminPoll=null; // активный опрос запущенный админом
 let myRank=0,selectedGender=null,assignedAvatar=null;
 let scannedVendors=new Set();
 let lastAnnouncementId=null,announcements=[];
@@ -1278,6 +1284,28 @@ async function checkAnnouncements(){
     }
     const latest=visibleList[0];
     if(latest&&latest.id!==lastAnnouncementId){lastAnnouncementId=latest.id;showBanner(latest.message);}
+    // Проверяем активный admin-опрос
+    const pollMsg=list.find(a=>a.message&&a.message.startsWith('__LIVE_MODE__poll:'));
+    if(pollMsg){
+      const pollId=pollMsg.message.replace('__LIVE_MODE__poll:','').trim();
+      if(!activeAdminPoll||activeAdminPoll.id!==pollId){
+        // Загружаем вопрос с сервера
+        try{
+          const qRes=await api({action:'getActiveQuestion'});
+          if(qRes&&qRes.question&&qRes.question.id===pollId){
+            const q=qRes.question;
+            activeAdminPoll={id:q.id,session:q.question?'// ПРЯМАЯ_ЛИНИЯ':'// ПРЯМАЯ_ЛИНИЯ',question:q.question,options:q.options};
+            // Восстанавливаем ответ если уже голосовали
+            const saved=localStorage.getItem('poll_voted_'+pollId);
+            if(saved!==null) pollAnswers[pollId]=parseInt(saved);
+            renderPolls();
+          }
+        }catch(e){}
+      }
+    } else if(activeAdminPoll){
+      activeAdminPoll=null;
+      renderPolls();
+    }
     announcements=visibleList;
     const badge=document.getElementById('bell-badge');
     const dot=document.getElementById('nav-feed-dot');
@@ -1571,7 +1599,31 @@ async function loadNetwork(){
 }
 
 function renderPolls(){
-  document.getElementById('polls-list').innerHTML=POLLS.map(poll=>{
+  // Карточка активного admin-опроса (сверху если есть)
+  let adminPollHtml = '';
+  if(activeAdminPoll){
+    const ap = activeAdminPoll;
+    const apAnswered = pollAnswers[ap.id] !== undefined;
+    if(apAnswered){
+      const savedIdx = pollAnswers[ap.id];
+      adminPollHtml = `<div class="poll-card" style="border-color:rgba(238,103,42,0.4);margin-bottom:12px;">
+        <div class="poll-session" style="color:var(--orange);">// LIVE · ${ap.session||'ПРЯМАЯ_ЛИНИЯ'}</div>
+        <div class="poll-q">${ap.question}</div>
+        ${ap.options.map((opt,i)=>`<div class="poll-opt poll-result" style="${i===savedIdx?'border-color:var(--cyan);':''}">
+          <div class="poll-bar${i===savedIdx?' me-bar':''}" style="width:0%"></div>
+          <div class="poll-content"><span style="${i===savedIdx?'color:var(--cyan);':''}">${opt}</span>
+          ${i===savedIdx?'<span class="poll-pct me">✓</span>':''}</div></div>`).join('')}
+      </div>`;
+    } else {
+      adminPollHtml = `<div class="poll-card" style="border-color:rgba(238,103,42,0.5);margin-bottom:12px;">
+        <div class="poll-session" style="color:var(--orange);">// LIVE · ${ap.session||'ПРЯМАЯ_ЛИНИЯ'}</div>
+        <div class="poll-q">${ap.question}</div>
+        ${ap.options.map((opt,i)=>`<button class="poll-opt" style="border-color:rgba(238,103,42,0.3);" onclick="answerAdminPoll('${ap.id}',${i})">${opt}</button>`).join('')}
+      </div>`;
+    }
+  }
+
+  document.getElementById('polls-list').innerHTML = adminPollHtml + POLLS.map(poll=>{
     const answered=pollAnswers[poll.id]!==undefined;
     if(answered){
       const total=poll.votes.reduce((a,b)=>a+b,0)||1;
@@ -1589,10 +1641,34 @@ function renderPolls(){
 function answerPoll(pollId,optIdx){
   if(pollAnswers[pollId]!==undefined)return;
   pollAnswers[pollId]=optIdx;
+  localStorage.setItem('pollAnswers',JSON.stringify(pollAnswers));
   const poll=POLLS.find(p=>p.id===pollId);poll.votes[optIdx]++;renderPolls();
   document.getElementById('s-polls').textContent=Object.keys(pollAnswers).length;
-  if(participant)api({action:'addPoints',participant_id:participant.id,points:15});
+  if(participant){
+    api({action:'submitVote',participant_id:participant.id,question_id:pollId,option_index:optIdx});
+  }
   showToast('// ГОЛОС ПРИНЯТ · +15 Б');
+  checkAchievements();
+}
+
+async function answerAdminPoll(pollId,optIdx){
+  if(pollAnswers[pollId]!==undefined)return;
+  if(!activeAdminPoll||activeAdminPoll.id!==pollId)return;
+  pollAnswers[pollId]=optIdx;
+  localStorage.setItem('pollAnswers',JSON.stringify(pollAnswers));
+  localStorage.setItem('poll_voted_'+pollId, optIdx);
+  renderPolls();
+  document.getElementById('s-polls').textContent=Object.keys(pollAnswers).length;
+  try{
+    const pid = participant ? participant.id : localStorage.getItem('poll_anon_id') || 'anon_'+Date.now();
+    await api({action:'submitVote',participant_id:pid,question_id:pollId,option_index:optIdx});
+    if(participant){
+      participant.points=(participant.points||0)+15;
+      renderProfile();
+    }
+    showToast('// ГОЛОС ПРИНЯТ · +15 Б');
+  }catch(e){showToast('// ГОЛОС ПРИНЯТ · +15 Б');}
+  checkAchievements();
 }
 
 function checkAchievements(){
