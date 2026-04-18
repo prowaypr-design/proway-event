@@ -88,7 +88,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 <div class="toast" id="toast"></div>
 
 <script>
-const API = 'https://script.google.com/macros/s/AKfycbxfT6fIa5zKHdc9TccA9oRA6C1l-ZYcEGXnicazvCBmqf0PivYqExSc5oxv91ZwO1krpg/exec';
+const API = 'https://script.google.com/macros/s/AKfycbwDm_OLeuAtPtBzXXkjJvkK37tIeQ2ixrngPjgNyM66i7s7SgxKYnBAUUHwuAxrQ-V7NA/exec';
 
 let currentQuestion = null;
 let selectedOption = null;
@@ -103,7 +103,9 @@ if (!anonId) {
 }
 
 function apiCall(params) {
-  return fetch(API + '?' + new URLSearchParams(params)).then(r => r.json());
+  const url = new URL(API);
+  Object.entries(params).forEach(([k,v]) => url.searchParams.set(k, v));
+  return fetch(url, {redirect:'follow'}).then(r => r.json());
 }
 
 function showToast(m, d=2500) {
