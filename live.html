@@ -178,7 +178,7 @@ async function checkMode(){
     const modeCmd = liveCmds.length ? liveCmds[0] : null;
     if(modeCmd){
       const parts = modeCmd.message.replace('__LIVE_MODE__','').split(':');
-      const newMode = parts[0];
+      const newMode = parts[0]; // 'poll' или 'rating'
       const newPoll = parts[1]||null;
       if(newMode !== currentMode || newPoll !== currentPollId){
         currentMode = newMode;
@@ -264,27 +264,29 @@ async function updateRating(){
 }
 
 // ── ОПРОС ─────────────────────────────────────────────
-async function updatePoll(){
-  if(currentMode !== 'poll' || !currentPollId) return;
-  
-  // Берём вопрос из localPolls, если нет — с сервера
-  let poll = localPolls.find(p=>p.id===currentPollId);
-  if(!poll){
-    try{
-      const qRes=await apiGet({action:'getActiveQuestion'});
-      if(qRes&&qRes.question&&qRes.question.id===currentPollId)
-        poll={id:qRes.question.id,session:'// ПРЯМАЯ_ЛИНИЯ',question:qRes.question.question,options:qRes.question.options};
-    }catch(e){}
-  }
-  if(!poll) return;
+async function updatePoll(){\
+  if(currentMode !== 'poll') return;
 
   try{
-    // Используем getVoteResults — именно он хранит голоса по poll1/poll2/poll3
+    // Всегда берём активный вопрос с сервера
+    const qRes = await apiGet({action:'getActiveQuestion'});
+    if(!qRes || !qRes.question){ return; }
+
+    const q = qRes.question;
+    const poll = {
+      id: q.id,
+      session: '// ПРЯМАЯ_ЛИНИЯ',
+      question: q.question,
+      options: q.options || []
+    };
+
+    // Получаем результаты
     const res = await apiGet({
       action: 'getVoteResults',
-      question_id: currentPollId,
+      question_id: q.id,
       num_options: poll.options.length
     });
+
     if(res.success && res.results){
       const results = res.results;
       const total = res.total_votes || 0;
@@ -307,7 +309,7 @@ async function updatePoll(){
       }).join('');
       return;
     }
-  }catch(e){ console.error('getVoteResults error:', e); }
+  }catch(e){ console.error('updatePoll error:', e); }
 
   // Fallback — показываем вопрос без результатов
   if(!poll) return;
