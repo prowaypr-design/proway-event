@@ -511,12 +511,12 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     <div class="agent-grid">
       <div class="agent-card" onclick="selectGender('male')">
         <div class="ac-top"><div class="ac-label">// DEFENDER</div></div>
-        <div class="ac-face" style="background:#0a1525;"><img src="https://proway-event.vercel.app/Defense_Grid_Icon.png" alt="defender" onerror="this.parentElement.innerHTML='<span style=font-size:50px>🦸‍♂️</span>'"></div>
+        <div class="ac-face" style="background:#0a1525;"><img id="preview-male" src="" alt="defender" style="width:100%;height:100%;object-fit:cover;" onerror="this.src=''"></div>
         <div class="ac-name" style="color:var(--cyan);">БОЕЦ</div>
       </div>
       <div class="agent-card" onclick="selectGender('female')">
         <div class="ac-top"><div class="ac-label" style="color:#e879f9;">// TRACER</div></div>
-        <div class="ac-face" style="background:#150a25;"><img src="https://proway-event.vercel.app/Stealth_Tracer_Icon.png" alt="tracer" onerror="this.parentElement.innerHTML='<span style=font-size:50px>🦸‍♀️</span>'"></div>
+        <div class="ac-face" style="background:#150a25;"><img id="preview-female" src="" alt="tracer" style="width:100%;height:100%;object-fit:cover;" onerror="this.src=''"></div>
         <div class="ac-name" style="color:#e879f9;">АГЕНТ</div>
       </div>
     </div>
@@ -738,7 +738,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     </button>
     <button onclick="openQrScanner('agent')" style="flex:1;padding:12px;background:rgba(0,200,100,0.08);border:0.5px solid rgba(0,200,100,0.3);border-radius:14px;font-size:13px;font-weight:700;color:#00c864;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4V2a1 1 0 011-1h2" stroke="#00c864" stroke-width="1.4" stroke-linecap="round"/><path d="M15 4V2a1 1 0 00-1-1h-2" stroke="#00c864" stroke-width="1.4" stroke-linecap="round"/><path d="M1 12v2a1 1 0 001 1h2" stroke="#00c864" stroke-width="1.4" stroke-linecap="round"/><path d="M15 12v2a1 1 0 01-1 1h-2" stroke="#00c864" stroke-width="1.4" stroke-linecap="round"/><rect x="4" y="4" width="8" height="8" rx="1" stroke="#00c864" stroke-width="1.2"/><rect x="6.5" y="6.5" width="3" height="3" fill="#00c864"/></svg>
-      Сканировать QR
+      Сканировать QR игрока
     </button>
   </div>
   <div class="section-hdr"><div class="section-hdr-title">МОЯ КАРТОЧКА</div><div class="section-hdr-sub">// ДОСЬЕ АГЕНТА</div></div>
@@ -1163,6 +1163,23 @@ function api(p){return fetch(API+'?'+new URLSearchParams(p)).then(r=>r.json());}
 function showToast(m,d=2500){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),d);}
 function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
 
+
+// Устанавливаем превью аватаров на экране выбора
+function initAvatarPreviews(){
+  const BASE = 'https://proway-event.vercel.app/';
+  const malePool = AVATARS.male;
+  const femalePool = AVATARS.female;
+  if(malePool && malePool.length){
+    const m = malePool[Math.floor(Math.random()*malePool.length)];
+    const el = document.getElementById('preview-male');
+    if(el) el.src = BASE + m.file;
+  }
+  if(femalePool && femalePool.length){
+    const f = femalePool[Math.floor(Math.random()*femalePool.length)];
+    const el = document.getElementById('preview-female');
+    if(el) el.src = BASE + f.file;
+  }
+}
 function selectGender(g){
   selectedGender=g;
   const pool=AVATARS[g];
@@ -1947,7 +1964,7 @@ async function openQrScanner(mode){
   overlay.style.display = 'flex';
   document.getElementById('qr-status').textContent = '';
   document.getElementById('qr-scanner-title').textContent =
-    mode === 'vendor' ? '// НАВЕДИ НА QR СТЕНДА' : '// НАВЕДИ НА QR АГЕНТА';
+    mode === 'vendor' ? '// НАВЕДИ НА QR СТЕНДА' : '// НАВЕДИ НА QR ИГРОКА';
 
   // Загружаем jsQR как fallback если BarcodeDetector недоступен
   if(!('BarcodeDetector' in window) && !_jsqrLoaded){
@@ -2054,6 +2071,7 @@ if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
     });
   };
   document.addEventListener('DOMContentLoaded', _iosFont);
+document.addEventListener('DOMContentLoaded', initAvatarPreviews);
   // Повторяем через 500мс на случай динамического контента
   setTimeout(_iosFont, 500);
 }
