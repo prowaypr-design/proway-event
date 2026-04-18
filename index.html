@@ -1161,7 +1161,7 @@ const likedProfiles=new Set(JSON.parse(localStorage.getItem('liked_profiles')||'
 
 function api(p){return fetch(API+'?'+new URLSearchParams(p)).then(r=>r.json());}
 function showToast(m,d=2500){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),d);}
-function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);if(id==='ob-choose')initAvatarPreviews();}
 
 
 // Устанавливаем превью аватаров на экране выбора
