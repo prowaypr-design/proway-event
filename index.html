@@ -183,7 +183,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .acf-bar{height:100%;border-radius:2px;}
 .acf-stat-val{font-family:'Share Tech Mono',monospace;font-size:11px;color:#fff;min-width:26px;text-align:right;}
 .acf-story{padding:12px 14px;background:rgba(255,255,255,0.02);}
-.acf-story-lbl{font-size:9px;font-weight:700;color:var(--orange);letter-spacing:3px;margin-bottom:8px;text-transform:uppercase;}
+.acf-story-lbl{font-size:9px;font-weight:700;color:var(--orange);letter-spacing:3px;margin-bottom:2px;text-transform:uppercase;}
+.acf-story-sub{font-size:10px;color:var(--text2);margin-bottom:8px;letter-spacing:0.5px;}
 .acf-chapter-badge{display:inline-block;background:rgba(238,103,42,0.12);border:0.5px solid rgba(238,103,42,0.35);border-radius:20px;padding:3px 10px;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--orange);letter-spacing:2px;margin-bottom:6px;}
 .acf-chapter-text{font-size:12px;font-weight:500;color:var(--text2);line-height:1.6;margin-bottom:10px;}
 .acf-locked{display:flex;align-items:center;gap:6px;margin-bottom:4px;opacity:0.35;}
@@ -1399,12 +1400,16 @@ function renderAgentCard(){
   const baseStory = story ? story.intro : (gender==='female'
     ? `${lastName} не планировала становиться агентом. Конверт лежал прямо на клавиатуре. Только координаты и время. Она пришла.`
     : `${lastName} не планировал становиться агентом. Конверт лежал прямо на клавиатуре. Только координаты и время. Он пришёл.`);
-  let chaptersHtml=`<div class="acf-chapter-badge">НАЧАЛО</div><div class="acf-chapter-text">${baseStory}</div>`;
+  let chaptersHtml=`<div class="acf-chapter-badge">ДОСЬЕ</div><div class="acf-chapter-text">${baseStory}</div>`;
   const chapters = story ? story.chapters : [];
   for(let i=0;i<8;i++){
     if(i < scanned || unlocked){
       const text = chapters[i] || `Глава ${i+1}.`;
-      chaptersHtml+=`<div class="acf-chapter-badge">ГЛАВА ${i+1}</div><div class="acf-chapter-text">${text}</div>`;
+      // Разбиваем текст на название (до первой точки) и тело
+      const dotIdx = text.indexOf('. ');
+      const chTitle = dotIdx > 0 ? text.slice(0, dotIdx) : '';
+      const chBody = dotIdx > 0 ? text.slice(dotIdx+2) : text;
+      chaptersHtml+=`<div class="acf-chapter-badge">ГЛАВА ${i+1}${chTitle?' · '+chTitle:''}</div><div class="acf-chapter-text">${chBody}</div>`;
     } else {
       chaptersHtml+=`<div class="acf-locked"><div class="acf-lock"></div><span class="acf-locked-text">ГЛАВА ${i+1} · ОТСКАНИРУЙ ЕЩЁ ${i+1-scanned} СТЕНД${i+1-scanned===1?'':'А'}</span></div>`;
     }
@@ -1419,7 +1424,7 @@ function renderAgentCard(){
     <div class="acf-namebar"><span class="acf-codename">${codename}</span><span class="acf-badge" style="background:${rarity.bg};color:${rarity.color};border-color:${rarity.color}44;">${rarity.label}</span></div>
     <div class="acf-art">${artHtml}<div class="acf-rarity">${starsHtml}</div></div>
     <div class="acf-stats">${statsHtml}</div>
-    <div class="acf-story"><div class="acf-story-lbl">// ДОСЬЕ</div>${chaptersHtml}</div>
+    <div class="acf-story"><div class="acf-story-lbl">// ИСТОРИЯ</div><div class="acf-story-sub">Сканируй QR-коды и открывай новые главы</div>${chaptersHtml}</div>
     <div class="acf-footer"><span class="acf-footer-name">${participant.name.toUpperCase()}</span><span class="acf-footer-pts">${pts} Б</span></div>`;
 }
 
@@ -1816,8 +1821,7 @@ async function generateShareCard(){
       // Масштабируем по ширине, центрируем по высоте
       const scale=W/img.naturalWidth;
       const artH=img.naturalHeight*scale;
-      const artY=(H-artH)/2;
-      ctx.drawImage(img,0,artY,W,artH);
+      ctx.drawImage(img,0,0,W,artH);
     }catch(e){
       // fallback — просто тёмный фон
     }
