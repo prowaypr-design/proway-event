@@ -2083,7 +2083,7 @@ document.addEventListener('DOMContentLoaded', initAvatarPreviews);
   setTimeout(_iosFont, 500);
 }
 
-window.addEventListener('load',()=>{
+document.addEventListener('DOMContentLoaded',()=>{
 // ── DEV BYPASS: открой ?dev=true чтобы пропустить pre-launch ──────
 const _dp=new URLSearchParams(window.location.search);
 if(_dp.get('dev')==='true'){
