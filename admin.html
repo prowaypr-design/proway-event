@@ -344,8 +344,6 @@ async function setLiveMode(mode, pollId){
         if(res.success && res.id){
           // Обновляем ID на серверный UUID
           poll.serverId = res.id;
-          // Пишем серверный UUID в announcements для live.html
-          await api({action:'addAnnouncement', secret:SECRET, message:'__LIVE_MODE__poll:'+res.id, type:'info'});
         }
       }catch(e){
         showToast('// ОШИБКА АКТИВАЦИИ ОПРОСА');
@@ -359,7 +357,6 @@ async function setLiveMode(mode, pollId){
       if(qRes && qRes.question){
         await api({action:'closeQuestion', secret:SECRET, question_id:qRes.question.id});
       }
-      await api({action:'addAnnouncement', secret:SECRET, message:'__LIVE_MODE__rating', type:'info'});
     }catch(e){}
   }
 
@@ -388,6 +385,12 @@ function renderQuickStart(){
       🗳️ ОПРОС ${i+1}<br><span style="font-size:10px;opacity:0.7;font-weight:400;">${p.session}</span>
     </button>
   `).join('');
+}
+
+function renderQuickPollBtns(){
+  renderQuickStart();
+  const sel = document.getElementById('poll-selector');
+  if(sel && sel.style.display !== 'none') openPollSelector();
 }
 
 function openPollSelector(){
@@ -554,12 +557,7 @@ async function loadRating(){
         </div>
         <div class="lb-pts">${p.points} б</div>
       </div>`).join('')}</div>`;
-    // Обновляем статистику
-    document.getElementById('stats-list').innerHTML = `
-      <div class="info-row"><span class="info-key">Участников</span><span class="info-val">${lb.length}</span></div>
-      <div class="info-row"><span class="info-key">Топ-1</span><span class="info-val">${lb[0]?.name||'—'} · ${lb[0]?.points||0} б</span></div>
-      <div class="info-row"><span class="info-key">Средний балл</span><span class="info-val">${Math.round(lb.reduce((a,p)=>a+p.points,0)/lb.length)||0} б</span></div>
-    `;
+
   }catch(e){ showToast('// ОШИБКА ЗАГРУЗКИ'); }
 }
 
