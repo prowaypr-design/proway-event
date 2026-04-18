@@ -24,8 +24,12 @@
       "destination": "/vendor.html"
     },
     {
+      "source": "/admin",
+      "destination": "/admin.html"
+    },
+    {
       "source": "/live-admin",
-      "destination": "/live-admin.html"
+      "destination": "/admin.html"
     },
     {
       "source": "/live",
@@ -40,7 +44,7 @@
       "destination": "/poll.html"
     },
     {
-      "source": "/((?!vendor|live-admin|live|profile-scan|poll|bangers\\.woff2|.*\\..+).*)",
+      "source": "/((?!vendor|admin|live-admin|live|profile-scan|poll|bangers\\.woff2|.*\\..+).*)",
       "destination": "/index.html"
     }
   ]
