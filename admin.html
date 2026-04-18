@@ -455,15 +455,18 @@ async function addPoll(){
   if(!question || opts.length < 2){ showToast('// ЗАПОЛНИ ВОПРОС И ВАРИАНТЫ'); return; }
   const id = 'poll_' + Date.now();
   const newPoll = {id, session, question, options:opts, votes:opts.map(()=>0)};
-  // Сохраняем через API
   try{
-    await api({action:'addPoll', secret:SECRET, id, session, question, options:JSON.stringify(opts)});
-    showToast('// ОПРОС ДОБАВЛЕН');
+    // Используем createQuestion — сохраняет в Google Sheets и активирует опрос
+    await api({action:'createQuestion', secret:SECRET, question, options:opts.join('|')});
+    // Запускаем на live-экране через announcement
+    await api({action:'addAnnouncement', secret:SECRET, message:'__LIVE_MODE__poll:'+id, type:'system'});
+    showToast('// ОПРОС ДОБАВЛЕН И ЗАПУЩЕН');
   }catch(e){
     showToast('// СОХРАНЕНО ЛОКАЛЬНО');
   }
   allPolls.push(newPoll);
   renderPollsAdmin();
+  renderQuickPollBtns();
   document.getElementById('new-poll-q').value = '';
   document.querySelectorAll('.opt-input').forEach((el,i)=>{ el.value=''; el.placeholder=`Вариант ${i+1}`; });
 }
