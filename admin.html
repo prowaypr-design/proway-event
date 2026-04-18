@@ -454,20 +454,21 @@ async function addPoll(){
   const question = document.getElementById('new-poll-q').value.trim();
   const opts = [...document.querySelectorAll('.opt-input')].map(i=>i.value.trim()).filter(Boolean);
   if(!question || opts.length < 2){ showToast('// ЗАПОЛНИ ВОПРОС И ВАРИАНТЫ'); return; }
-  const id = 'poll_' + Date.now();
-  const newPoll = {id, session, question, options:opts, votes:opts.map(()=>0)};
   try{
-    // Используем createQuestion — сохраняет в Google Sheets и активирует опрос
-    await api({action:'createQuestion', secret:SECRET, question, options:opts.join('|')});
-    // Запускаем на live-экране через announcement
-    await api({action:'addAnnouncement', secret:SECRET, message:'__LIVE_MODE__poll:'+id, type:'system'});
+    // createQuestion сохраняет в Sheets, деактивирует предыдущие, возвращает UUID
+    const res = await api({action:'createQuestion', secret:SECRET, question, options:opts.join('|')});
+    if(!res.success || !res.id){ showToast('// ОШИБКА СОЗДАНИЯ'); return; }
+    const serverId = res.id;
+    // Сигнал для live-экрана и poll.html — используем серверный UUID
+    await api({action:'addAnnouncement', secret:SECRET, message:'__LIVE_MODE__poll:'+serverId, type:'info'});
+    const newPoll = {id:serverId, session, question, options:opts, votes:opts.map(()=>0)};
+    allPolls.push(newPoll);
+    renderPollsAdmin();
+    renderQuickPollBtns();
     showToast('// ОПРОС ДОБАВЛЕН И ЗАПУЩЕН');
   }catch(e){
-    showToast('// СОХРАНЕНО ЛОКАЛЬНО');
+    showToast('// ОШИБКА СЕТИ');
   }
-  allPolls.push(newPoll);
-  renderPollsAdmin();
-  renderQuickPollBtns();
   document.getElementById('new-poll-q').value = '';
   document.querySelectorAll('.opt-input').forEach((el,i)=>{ el.value=''; el.placeholder=`Вариант ${i+1}`; });
 }
