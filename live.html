@@ -138,7 +138,7 @@ body{font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--text);}
 </div>
 
 <script>
-const API = 'https://script.google.com/macros/s/AKfycbwDm_OLeuAtPtBzXXkjJvkK37tIeQ2ixrngPjgNyM66i7s7SgxKYnBAUUHwuAxrQ-V7NA/exec';
+const API = 'https://script.google.com/macros/s/AKfycbxj8GtZV4Stzlkg6Hkrck11AvPF4AkLeQXlHGi4i2akOitYOjmixscxEq02PPdZI8NqCQ/exec';
 
 let currentMode = 'rating';
 let currentPollId = null;
@@ -178,19 +178,12 @@ async function checkMode(){
     const modeCmd = liveCmds.length ? liveCmds[0] : null;
     if(modeCmd){
       const parts = modeCmd.message.replace('__LIVE_MODE__','').split(':');
-      const newMode = parts[0]; // 'poll' или 'rating'
+      const newMode = parts[0];
       const newPoll = parts[1]||null;
       if(newMode !== currentMode || newPoll !== currentPollId){
         currentMode = newMode;
         currentPollId = newPoll;
         switchScreen(currentMode);
-      }
-    } else {
-      // Нет команд — переключаем на рейтинг
-      if(currentMode !== 'rating'){
-        currentMode = 'rating';
-        currentPollId = null;
-        switchScreen('rating');
       }
     }
 
@@ -265,21 +258,37 @@ async function updateRating(){
 
 // ── ОПРОС ─────────────────────────────────────────────
 async function updatePoll(){
-  if(currentMode !== 'poll') return;
+  if(currentMode !== 'poll' || !currentPollId) return;
+  
+  // Берём вопрос из localPolls, если нет — с сервера
+  let poll = localPolls.find(p=>p.id===currentPollId);
+  if(!poll){
+    try{
+      const qRes=await apiGet({action:'getActiveQuestion'});
+      if(qRes&&qRes.question&&qRes.question.id===currentPollId)
+        poll={id:qRes.question.id,session:'// ПРЯМАЯ_ЛИНИЯ',question:qRes.question.question,options:qRes.question.options};
+    }catch(e){}
+  }
+  if(!poll) return;
+
   try{
-    const qRes = await apiGet({action:'getActiveQuestion'});
-    if(!qRes || !qRes.question) return;
-    const q = qRes.question;
-    const opts = q.options || [];
-    document.getElementById('poll-session').textContent = '// ПРЯМАЯ_ЛИНИЯ';
-    document.getElementById('poll-question').textContent = q.question;
-    const res = await apiGet({action:'getVoteResults', question_id:q.id, num_options:opts.length});
+    // Используем getVoteResults — именно он хранит голоса по poll1/poll2/poll3
+    const res = await apiGet({
+      action: 'getVoteResults',
+      question_id: currentPollId,
+      num_options: poll.options.length
+    });
     if(res.success && res.results){
       const results = res.results;
       const total = res.total_votes || 0;
       const maxCount = Math.max(...results.map(r=>r.count), 1);
+
+      document.getElementById('poll-session').textContent = poll.session;
+      document.getElementById('poll-question').textContent = poll.question;
       document.getElementById('poll-total').textContent = total + ' голосов';
-      document.getElementById('poll-options').innerHTML = opts.map((opt,i)=>{
+
+      const barsEl = document.getElementById('poll-options');
+      barsEl.innerHTML = poll.options.map((opt,i)=>{
         const r = results[i] || {count:0, percent:0};
         const isTop = r.count === maxCount && r.count > 0;
         return '<div class="poll-opt-row">'
@@ -289,29 +298,49 @@ async function updatePoll(){
           + '<div class="poll-opt-count">' + r.count + ' гол.</div>'
           + '</div>';
       }).join('');
-    } else {
-      document.getElementById('poll-total').textContent = '0 голосов';
-      document.getElementById('poll-options').innerHTML = opts.map(opt=>
-        '<div class="poll-opt-row"><div class="poll-opt-label">'+opt+'</div>'
-        +'<div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:0%"></div></div>'
-        +'<div class="poll-opt-pct">0%</div><div class="poll-opt-count">0 гол.</div></div>'
-      ).join('');
+      return;
     }
-  }catch(e){ console.error('updatePoll error:', e); }
+  }catch(e){ console.error('getVoteResults error:', e); }
+
+  // Fallback — показываем вопрос без результатов
+  if(!poll) return;
+
+  document.getElementById('poll-session').textContent = poll.session;
+  document.getElementById('poll-question').textContent = poll.question;
+  
+  const total = poll.votes.reduce((a,b)=>a+b,0)||1;
+  document.getElementById('poll-total').textContent = `${total} голосов`;
+
+  const maxVotes = Math.max(...poll.votes)||1;
+
+  document.getElementById('poll-options').innerHTML = poll.options.map((opt,i)=>{
+    const pct = Math.round(poll.votes[i]/total*100);
+    const isTop = poll.votes[i] === Math.max(...poll.votes) && poll.votes[i] > 0;
+    return`<div class="poll-opt-row">
+      <div class="poll-opt-label">${opt}</div>
+      <div class="poll-bar-wrap">
+        <div class="poll-bar-fill ${isTop?'top':''}" style="width:${pct}%"></div>
+      </div>
+      <div class="poll-opt-pct">${pct}%</div>
+      <div class="poll-opt-count">${poll.votes[i]} гол.</div>
+    </div>`;
+  }).join('');
 }
 
 // ── INIT & LOOP ───────────────────────────────────────
-function init(){
-  // Скрываем лоадер сразу — не ждём данных
+async function init(){
   document.getElementById('loader').style.display = 'none';
-  // Запускаем загрузку в фоне
-  checkMode().then(()=>{
-    if(currentMode==='rating') updateRating();
-    else updatePoll();
-  });
+  updateRating();
+  checkMode();
 }
 
 init();
+// Запускаем сразу
+(async()=>{
+  await checkMode();
+  if(currentMode==='rating') await updateRating();
+  else await updatePoll();
+})();
 
 // Потом каждые 4 секунды
 setInterval(async ()=>{
