@@ -1623,19 +1623,15 @@ function renderPolls(){
     }
   }
 
-  document.getElementById('polls-list').innerHTML = adminPollHtml + POLLS.map(poll=>{
-    const answered=pollAnswers[poll.id]!==undefined;
-    if(answered){
-      const total=poll.votes.reduce((a,b)=>a+b,0)||1;
-      return`<div class="poll-card"><div class="poll-session">${poll.session}</div><div class="poll-q">${poll.question}</div>
-        ${poll.options.map((opt,i)=>{const pct=Math.round(poll.votes[i]/total*100);const isMe=pollAnswers[poll.id]===i;
-          return`<div class="poll-opt poll-result" style="${isMe?'border-color:var(--cyan);':''}"><div class="poll-bar${isMe?' me-bar':''}" style="width:${pct}%"></div><div class="poll-content"><span style="${isMe?'color:var(--cyan);':''}">${opt}</span><span class="poll-pct${isMe?' me':''}">${pct}%</span></div></div>`;}).join('')}
-      </div>`;
-    }
-    return`<div class="poll-card"><div class="poll-session">${poll.session}</div><div class="poll-q">${poll.question}</div>
-      ${poll.options.map((opt,i)=>`<button class="poll-opt" onclick="answerPoll('${poll.id}',${i})">${opt}</button>`).join('')}
+  // Показываем только активный опрос или заглушку
+  if(!adminPollHtml){
+    adminPollHtml = `<div class="empty-state" style="padding:40px 20px;text-align:center;">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text2);letter-spacing:2px;line-height:1.8;">
+        // ОПРОС БУДЕТ ЗАПУЩЕН<br>// В ХОДЕ МЕРОПРИЯТИЯ
+      </div>
     </div>`;
-  }).join('');
+  }
+  document.getElementById('polls-list').innerHTML = adminPollHtml;
 }
 
 function answerPoll(pollId,optIdx){
