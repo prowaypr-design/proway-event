@@ -103,9 +103,7 @@ if (!anonId) {
 }
 
 function apiCall(params) {
-  const url = new URL(API);
-  Object.entries(params).forEach(([k,v]) => url.searchParams.set(k, v));
-  return fetch(url, {redirect:'follow'}).then(r => r.json());
+  return fetch(API + '?' + new URLSearchParams(params)).then(r => r.json());
 }
 
 function showToast(m, d=2500) {
