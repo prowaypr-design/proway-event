@@ -768,7 +768,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     <div class="info-row"><div class="info-icon" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);width:40px;flex-shrink:0;">13:55</div><div><div class="info-title">Приветственное слово</div></div></div>
     <div class="info-row"><div class="info-icon" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);width:40px;flex-shrink:0;">14:00</div><div><div class="info-title">Панельная дискуссия «Ток-шоу»</div><div class="info-text">Check Point · Код Безопасности · ИнфоТеКС · Positive Technologies · Ideco</div></div></div>
     <div class="info-row"><div class="info-icon" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);width:40px;flex-shrink:0;">15:30</div><div><div class="info-title">Кофе-брейк, PROWAY Security Экспо</div></div></div>
-    <div class="info-row"><div class="info-icon" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);width:40px;flex-shrink:0;">16:00</div><div><div class="info-title">«Прямая линия PROWAY Security»</div><div class="info-text">Check Point · Код Безопасности · ИнфоТеКС · Эфшесть/F6 · TrafficSoft · NGR Softlab</div></div></div>
+    <div class="info-row"><div class="info-icon" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);width:40px;flex-shrink:0;">16:00</div><div><div class="info-title">«Прямая линия PROWAY Security»</div><div class="info-text">Check Point · Код Безопасности · ИнфоТеКС · F6 · TrafficSoft · NGR Softlab</div></div></div>
     <div class="info-row"><div class="info-icon" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);width:40px;flex-shrink:0;">17:30</div><div><div class="info-title">PROWAY Security Экспо</div></div></div>
     <div class="info-row"><div class="info-icon" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);width:40px;flex-shrink:0;">18:30</div><div><div class="info-title">Фуршет, награждение, DJ 🏆</div></div></div>
     <div class="info-row"><div class="info-icon" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);width:40px;flex-shrink:0;">22:00</div><div><div class="info-title">Завершение мероприятия</div></div></div>
@@ -940,7 +940,7 @@ const VENDORS=[
   {id:'positive',name:'Positive Technologies',system:'SIEM/PT',color:'#c0392b',icon:'PT',desc:'SIEM и мониторинг безопасности. Выявление угроз в реальном времени.',chapterMale:'Иванов указал на аномалию в потоке данных. «Вот.» Куратор молча сделал пометку.',chapterFemale:'Козлова указала на аномалию в потоке данных. «Вот.» Куратор молча сделал пометку.'},
   {id:'ngr_softlab',name:'NGR Softlab',system:'DLP',color:'#8e44ad',icon:'НГ',desc:'Система предотвращения утечек данных. Контроль всех каналов передачи информации.',chapterMale:'«Данные уходят тихо». Иванов налил кофе. Один канал. Один человек. Найден до второй чашки.',chapterFemale:'«Данные уходят тихо». Козлова налила кофе. Один канал. Один человек. Найден до второй чашки.'},
   {id:'trafficsoft',name:'TrafficSoft',system:'ANTI-DDOS',color:'#27ae60',icon:'ТС',desc:'Защита от DDoS-атак и управление трафиком. Непрерывная доступность сервисов.',chapterMale:'Миллионы запросов в секунду. Иванов смотрел как TrafficSoft поглощает атаку. Спокойно.',chapterFemale:'Миллионы запросов в секунду. Козлова смотрела как TrafficSoft поглощает атаку. Спокойно.'},
-  {id:'f6',name:'F6 / Эфшесть',system:'EDR',color:'#d35400',icon:'F6',desc:'Защита конечных точек и реагирование на инциденты.',chapterMale:'Угроза пришла изнутри. Иванов запустил сканирование. F6 нашёл её за 40 секунд.',chapterFemale:'Угроза пришла изнутри. Козлова запустила сканирование. F6 нашёл её за 40 секунд.'},
+  {id:'f6',name:'F6',system:'EDR',color:'#d35400',icon:'F6',desc:'Защита конечных точек и реагирование на инциденты.',chapterMale:'Угроза пришла изнутри. Иванов запустил сканирование. F6 нашёл её за 40 секунд.',chapterFemale:'Угроза пришла изнутри. Козлова запустила сканирование. F6 нашёл её за 40 секунд.'},
   {id:'ideco',name:'Ideco',system:'UTM',color:'#2980b9',icon:'ID',desc:'Универсальный шлюз безопасности. Интернет-шлюз с полным контролем трафика.',chapterMale:'Последний рубеж. Ideco стоял на выходе как часовой. Иванов проверил настройки. Всё под контролем.',chapterFemale:'Последний рубеж. Ideco стоял на выходе как часовой. Козлова проверила настройки. Всё под контролем.'},
 ];
 
@@ -1787,7 +1787,7 @@ function showQrModal(){
 }
 function closeQrModal(){document.getElementById('qr-modal-overlay').classList.remove('show');}
 
-// ── SHARE CARD (упрощённая версия) ──────────────────────────────
+// ── SHARE CARD ──────────────────────────────────────────────────
 async function generateShareCard(){
   if(!participant){showToast('Нет данных');return;}
   const btn=document.querySelector('.share-card-btn, .finale-btn');
@@ -1797,69 +1797,149 @@ async function generateShareCard(){
     const font=new FontFace('Bangers','url(https://fonts.gstatic.com/s/bangers/v24/FeVQS0BTqb0h60ACL5la2bxii28wYQ.woff2)');
     await font.load();document.fonts.add(font);
   }catch(e){}
-  const W=591,H=1380;
+
+  const W=591,H=1050;
   const canvas=document.getElementById('share-canvas');canvas.width=W;canvas.height=H;
   const ctx=canvas.getContext('2d');
-  const bgG=ctx.createLinearGradient(0,0,0,H);bgG.addColorStop(0,'#0a0520');bgG.addColorStop(1,'#120830');
+
+  // Фон — тёмный градиент
+  const bgG=ctx.createLinearGradient(0,0,0,H);
+  bgG.addColorStop(0,'#0a0520');bgG.addColorStop(1,'#120830');
   ctx.fillStyle=bgG;ctx.fillRect(0,0,W,H);
-  ctx.strokeStyle='rgba(108,92,231,0.07)';ctx.lineWidth=0.5;
+
+  // Арт в полный рост — занимает весь холст
+  const artSrc=participant.artFile?'https://proway-event.vercel.app/'+participant.artFile
+    :(participant.avatar?'https://proway-event.vercel.app/'+participant.avatar:null);
+  if(artSrc){
+    try{
+      const img=await loadImg(artSrc);
+      // Масштабируем по ширине, центрируем по высоте
+      const scale=W/img.naturalWidth;
+      const artH=img.naturalHeight*scale;
+      const artY=(H-artH)/2;
+      ctx.drawImage(img,0,artY,W,artH);
+    }catch(e){
+      // fallback — просто тёмный фон
+    }
+  }
+
+  // Блюр-оверлей снизу (где текст) — тёмный градиент
+  const BLUR_START=H*0.45;
+  const blurG=ctx.createLinearGradient(0,BLUR_START,0,H);
+  blurG.addColorStop(0,'rgba(8,5,28,0)');
+  blurG.addColorStop(0.3,'rgba(8,5,28,0.7)');
+  blurG.addColorStop(1,'rgba(8,5,28,0.97)');
+  ctx.fillStyle=blurG;ctx.fillRect(0,BLUR_START,W,H-BLUR_START);
+
+  // Сетка (поверх блюра, едва заметна)
+  ctx.strokeStyle='rgba(108,92,231,0.05)';ctx.lineWidth=0.5;
   for(let x=0;x<W;x+=80){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
   for(let y=0;y<H;y+=80){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
   // Уголки
-  ctx.strokeStyle='#f5e642';ctx.lineWidth=4;const c=36;
+  ctx.strokeStyle='rgba(245,230,66,0.8)';ctx.lineWidth=3;const c=28;
   ctx.beginPath();ctx.moveTo(0,c);ctx.lineTo(0,0);ctx.lineTo(c,0);ctx.stroke();
   ctx.beginPath();ctx.moveTo(W-c,0);ctx.lineTo(W,0);ctx.lineTo(W,c);ctx.stroke();
   ctx.beginPath();ctx.moveTo(W,H-c);ctx.lineTo(W,H);ctx.lineTo(W-c,H);ctx.stroke();
   ctx.beginPath();ctx.moveTo(c,H);ctx.lineTo(0,H);ctx.lineTo(0,H-c);ctx.stroke();
-  // Плашка с именем
+
   const PX=28;
-  ctx.fillStyle='rgba(108,92,231,0.2)';ctx.fillRect(0,44,W,52);
-  ctx.fillStyle='#fff';ctx.font='400 40px Bangers,cursive';ctx.textAlign='center';
-  ctx.fillText((participant.codename||'АГЕНТ').toUpperCase(),W/2,84);
-  // Аватар — с fallback
-  const avSrc=participant.avatar?'https://proway-event.vercel.app/'+participant.avatar:null;
-  if(avSrc){try{const img=await loadImg(avSrc);ctx.save();ctx.beginPath();ctx.arc(W/2,320,200,0,Math.PI*2);ctx.clip();ctx.drawImage(img,W/2-200,120,400,400);ctx.restore();}catch(e){
-    ctx.save();ctx.beginPath();ctx.arc(W/2,320,180,0,Math.PI*2);ctx.fillStyle='rgba(108,92,231,0.2)';ctx.fill();ctx.strokeStyle='rgba(108,92,231,0.5)';ctx.lineWidth=2;ctx.stroke();ctx.restore();
-    ctx.fillStyle='rgba(162,155,254,0.6)';ctx.font='400 48px Bangers,cursive';ctx.textAlign='center';ctx.fillText(participant.codename||'АГЕНТ',W/2,335);
-  }}
-  // Имя
+  const TEXT_TOP=Math.round(H*0.52);
+
+  // Позывной
+  ctx.fillStyle='rgba(162,155,254,0.9)';
+  ctx.font='700 12px Inter,sans-serif';
+  ctx.textAlign='left';
+  ctx.fillText('// '+((participant.codename||'АГЕНТ').toUpperCase()),PX,TEXT_TOP);
+
+  // Имя — уменьшенный шрифт
   const nameParts=(participant.name||'').toUpperCase().split(' ');
-  ctx.fillStyle='#fff';ctx.font='400 68px Bangers,cursive';ctx.textAlign='left';
-  ctx.fillText(nameParts[0]||'',PX,600);ctx.fillText(nameParts.slice(1).join(' ')||'',PX,668);
-  // Компания
-  ctx.fillStyle='rgba(162,155,254,0.8)';ctx.font='600 18px Inter,sans-serif';
-  ctx.fillText(([participant.company,participant.role].filter(Boolean).join(' · ')).toUpperCase(),PX,700);
+  ctx.fillStyle='#fff';
+  ctx.font='400 44px Bangers,cursive';
+  ctx.textAlign='left';
+  const fullName=nameParts.join(' ');
+  // Если имя длинное — разбиваем на две строки
+  if(ctx.measureText(fullName).width > W-PX*2){
+    ctx.fillText(nameParts[0]||'',PX,TEXT_TOP+36);
+    ctx.fillText(nameParts.slice(1).join(' ')||'',PX,TEXT_TOP+80);
+  } else {
+    ctx.fillText(fullName,PX,TEXT_TOP+42);
+  }
+
+  // Компания и роль
+  ctx.fillStyle='rgba(162,155,254,0.75)';
+  ctx.font='500 15px Inter,sans-serif';
+  ctx.fillText(([participant.company,participant.role].filter(Boolean).join(' · ')).toUpperCase(),PX,TEXT_TOP+105);
+
+  // Описание героя (intro из STORIES)
+  const gender=participant.gender||'male';
+  const avatarFile=participant.avatar||'';
+  const avatarList=AVATARS[gender]||[];
+  const charIdx=avatarList.findIndex(a=>a.file===avatarFile);
+  const story=STORIES[gender]&&charIdx>=0?STORIES[gender][charIdx]:null;
+  if(story&&story.intro){
+    ctx.fillStyle='rgba(255,255,255,0.55)';
+    ctx.font='400 13px Inter,sans-serif';
+    // Разбиваем описание на строки по ширине
+    const maxW=W-PX*2;
+    const words=story.intro.split(' ');
+    let line='',lineY=TEXT_TOP+135;
+    for(const word of words){
+      const test=line?line+' '+word:word;
+      if(ctx.measureText(test).width>maxW&&line){
+        ctx.fillText(line,PX,lineY);
+        line=word;lineY+=20;
+        if(lineY>TEXT_TOP+195)break; // максимум 3 строки
+      } else { line=test; }
+    }
+    if(line&&lineY<=TEXT_TOP+195)ctx.fillText(line,PX,lineY);
+  }
+
+  // Разделитель
+  ctx.strokeStyle='rgba(108,92,231,0.4)';ctx.lineWidth=0.5;
+  ctx.beginPath();ctx.moveTo(PX,TEXT_TOP+210);ctx.lineTo(W-PX,TEXT_TOP+210);ctx.stroke();
+
   // Баллы
-  ctx.fillStyle='rgba(108,92,231,0.2)';roundRect(ctx,PX,730,200,48,24);ctx.fill();
-  ctx.strokeStyle='rgba(108,92,231,0.5)';ctx.lineWidth=1;roundRect(ctx,PX,730,200,48,24);ctx.stroke();
-  ctx.fillStyle='#a29bfe';ctx.font='400 28px Bangers,cursive';ctx.textAlign='center';
-  ctx.fillText((participant.points||0)+' БАЛЛОВ',PX+100,762);
+  ctx.fillStyle='rgba(108,92,231,0.25)';
+  roundRect(ctx,PX,TEXT_TOP+222,180,40,20);ctx.fill();
+  ctx.strokeStyle='rgba(108,92,231,0.5)';ctx.lineWidth=1;
+  roundRect(ctx,PX,TEXT_TOP+222,180,40,20);ctx.stroke();
+  ctx.fillStyle='#a29bfe';ctx.font='400 24px Bangers,cursive';ctx.textAlign='center';
+  ctx.fillText((participant.points||0)+' БАЛЛОВ',PX+90,TEXT_TOP+248);
+
   // Статы
   const stats=calcStats();
   const statEntries=Object.entries(stats);
   const statColors={АНАЛИЗ:'#00aeee',СКОРОСТЬ:'#f5e642',КРИПТО:'#ee672a',ПЕРИМЕТР:'#2980b9',ВЛИЯНИЕ:'#8e44ad'};
-  const statY=800;const statH=24;const statGap=38;const barW=W-PX*2-90;
-  ctx.font='700 13px Inter,sans-serif';
+  const statY=TEXT_TOP+278;const statH=18;const statGap=30;const barW=W-PX*2-70;
+  ctx.font='700 11px Inter,sans-serif';
   statEntries.forEach(([k,v],i)=>{
     const y=statY+i*statGap;
-    // Метка
-    ctx.fillStyle='rgba(255,255,255,0.45)';ctx.textAlign='left';
-    ctx.fillText(k,PX,y+16);
-    // Фон бара
+    ctx.fillStyle='rgba(255,255,255,0.4)';ctx.textAlign='left';
+    ctx.fillText(k,PX,y+13);
     ctx.fillStyle='rgba(255,255,255,0.06)';
-    roundRect(ctx,PX+90,y,barW,statH,12);ctx.fill();
-    // Цветной бар
+    roundRect(ctx,PX+70,y,barW,statH,9);ctx.fill();
     ctx.fillStyle=statColors[k]||'#a29bfe';
-    roundRect(ctx,PX+90,y,Math.max(barW*v/100,24),statH,12);ctx.fill();
-    // Значение
+    roundRect(ctx,PX+70,y,Math.max(barW*v/100,18),statH,9);ctx.fill();
     ctx.fillStyle='#fff';ctx.textAlign='right';
-    ctx.fillText(v,W-PX,y+16);
+    ctx.fillText(v,W-PX,y+13);
   });
+
   // Нижняя полоса
-  const botG=ctx.createLinearGradient(0,0,W,0);botG.addColorStop(0,'#4834d4');botG.addColorStop(0.5,'#6c5ce7');botG.addColorStop(1,'#4834d4');
-  ctx.fillStyle=botG;ctx.fillRect(0,H-12,W,12);
+  const botG=ctx.createLinearGradient(0,0,W,0);
+  botG.addColorStop(0,'#4834d4');botG.addColorStop(0.5,'#6c5ce7');botG.addColorStop(1,'#4834d4');
+  ctx.fillStyle=botG;ctx.fillRect(0,H-8,W,8);
+
+  // PROWAY лого внизу
+  ctx.fillStyle='rgba(162,155,254,0.4)';
+  ctx.font='600 11px Inter,sans-serif';
+  ctx.textAlign='center';
+  ctx.fillText('PROWAY SECURITY DAY 2026',W/2,H-16);
+
   // Скачать
-  const a=document.createElement('a');a.download='agent-'+(participant.codename||'card').toLowerCase()+'.png';a.href=canvas.toDataURL('image/png');a.click();
+  const a=document.createElement('a');
+  a.download='agent-'+(participant.codename||'card').toLowerCase().replace(/\s+/g,'-')+'.png';
+  a.href=canvas.toDataURL('image/png');a.click();
   if(btn){btn.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 5l3-3 3 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11v2a1 1 0 001 1h10a1 1 0 001-1v-2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg> Скачать карточку агента';btn.disabled=false;}
   } catch(err) { console.error(err); showToast('// ОШИБКА ГЕНЕРАЦИИ'); if(btn){btn.textContent='Скачать карточку агента';btn.disabled=false;} }
 }
