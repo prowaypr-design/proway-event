@@ -301,18 +301,17 @@ async function updatePoll(){
 }
 
 // ── INIT & LOOP ───────────────────────────────────────
-async function init(){
-  await Promise.all([updateRating(), checkMode()]);
+function init(){
+  // Скрываем лоадер сразу — не ждём данных
   document.getElementById('loader').style.display = 'none';
+  // Запускаем загрузку в фоне
+  checkMode().then(()=>{
+    if(currentMode==='rating') updateRating();
+    else updatePoll();
+  });
 }
 
 init();
-// Запускаем сразу
-(async()=>{
-  await checkMode();
-  if(currentMode==='rating') await updateRating();
-  else await updatePoll();
-})();
 
 // Потом каждые 4 секунды
 setInterval(async ()=>{
