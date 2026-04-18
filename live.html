@@ -185,6 +185,13 @@ async function checkMode(){
         currentPollId = newPoll;
         switchScreen(currentMode);
       }
+    } else {
+      // Нет команд — переключаем на рейтинг
+      if(currentMode !== 'rating'){
+        currentMode = 'rating';
+        currentPollId = null;
+        switchScreen('rating');
+      }
     }
 
     // Обновляем ticker из объявлений
