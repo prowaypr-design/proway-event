@@ -170,8 +170,19 @@ async function loadPoll() {
     const pollId = await getActivePollId();
     if (!pollId) { renderEmpty(); return; }
 
-    // Находим опрос в локальном массиве
-    const poll = POLLS.find(p => p.id === pollId);
+    // Сначала ищем в локальном массиве
+    let poll = POLLS.find(p => p.id === pollId);
+
+    // Если не нашли — загружаем с сервера (вопрос создан через форму в админке)
+    if (!poll) {
+      try {
+        const qRes = await api({ action: 'getActiveQuestion' });
+        if (qRes && qRes.question && qRes.question.id === pollId) {
+          poll = { id: qRes.question.id, session: '// ПРЯМАЯ_ЛИНИЯ', question: qRes.question.question, options: qRes.question.options };
+        }
+      } catch(e) {}
+    }
+
     if (!poll) { renderEmpty(); return; }
 
     currentQuestion = { id: poll.id, session: poll.session, question: poll.question, options: poll.options };
@@ -182,7 +193,6 @@ async function loadPoll() {
     if (savedVote !== null) {
       voted = true;
       selectedOption = parseInt(savedVote);
-      // Считаем локальные результаты из votes
       await loadResultsFromVotes();
     } else {
       voted = false; selectedOption = null;
@@ -339,7 +349,14 @@ async function refresh() {
       currentQuestion = null; voted = false; selectedOption = null; pollResults = null;
       renderEmpty(); return;
     }
-    const poll = POLLS.find(p => p.id === pollId);
+    const poll = POLLS.find(p => p.id === pollId) || await (async()=>{
+      try{
+        const qRes=await api({action:'getActiveQuestion'});
+        if(qRes&&qRes.question&&qRes.question.id===pollId)
+          return{id:qRes.question.id,session:'// ПРЯМАЯ_ЛИНИЯ',question:qRes.question.question,options:qRes.question.options};
+      }catch(e){}
+      return null;
+    })();
     if (!poll) { renderEmpty(); return; }
     if (!currentQuestion || currentQuestion.id !== pollId) {
       currentQuestion = { id: poll.id, session: poll.session, question: poll.question, options: poll.options };
