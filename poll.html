@@ -3,12 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <script>
-// iOS: заменяем Bangers на Impact (встроен на всех iOS устройствах)
 if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
   document.documentElement.classList.add('ios-device');
 }
 </script>
-
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="theme-color" content="#050a12">
 <title>Опрос — PROWAY Security Day</title>
@@ -26,17 +24,11 @@ if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;}
-
-/* HEADER */
 .header{background:#06071a;border-bottom:1px solid var(--border);padding:52px 20px 16px;text-align:center;}
 .header-eyebrow{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:3px;margin-bottom:6px;}
 .header-title{font-family:'Bangers',sans-serif;font-size:28px;color:#fff;letter-spacing:3px;}
 .header-sub{font-size:11px;color:var(--text2);margin-top:4px;letter-spacing:1px;}
-
-/* MAIN */
 .main{padding:20px 16px;max-width:480px;margin:0 auto;}
-
-/* POLL CARD */
 .poll-card{background:var(--bg2);border:0.5px solid rgba(108,92,231,0.3);border-radius:16px;padding:20px;margin-bottom:16px;}
 .poll-session{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:3px;margin-bottom:10px;}
 .poll-q{font-size:16px;font-weight:700;color:var(--white);line-height:1.4;margin-bottom:16px;}
@@ -44,8 +36,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .poll-opt:last-child{margin-bottom:0;}
 .poll-opt:active{opacity:0.7;}
 .poll-opt.sel{background:rgba(108,92,231,0.15);color:var(--cyan);border-color:var(--violet);}
-
-/* RESULTS */
 .poll-result{position:relative;overflow:hidden;cursor:default;margin-bottom:8px;}
 .poll-result:last-child{margin-bottom:0;}
 .poll-bar-bg{position:absolute;left:0;top:0;bottom:0;background:rgba(108,92,231,0.08);transition:width 0.8s ease;z-index:0;border-radius:10px;}
@@ -56,184 +46,147 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .poll-opt-text.me{color:var(--cyan);}
 .poll-pct{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text2);white-space:nowrap;margin-left:8px;}
 .poll-pct.me{color:var(--cyan);}
-
-/* SUBMIT BTN */
 .submit-btn{width:100%;padding:14px;background:var(--grad);border:none;border-radius:12px;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;color:#fff;cursor:pointer;margin-top:16px;display:flex;align-items:center;justify-content:center;gap:8px;}
 .submit-btn:disabled{opacity:0.45;cursor:not-allowed;}
 .submit-btn:active:not(:disabled){opacity:0.8;}
-
-/* THANKS */
 .thanks{background:rgba(0,200,100,0.08);border:0.5px solid rgba(0,200,100,0.3);border-radius:12px;padding:16px;text-align:center;margin-top:16px;}
 .thanks-icon{font-size:32px;margin-bottom:8px;}
 .thanks-title{font-size:15px;font-weight:700;color:#00c864;margin-bottom:4px;}
 .thanks-sub{font-size:12px;color:var(--text2);}
-
-/* STATES */
-.state-loading{text-align:center;padding:60px 20px;}
-.state-loading-text{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text3);letter-spacing:3px;animation:pulse 1.5s ease-in-out infinite;}
-@keyframes pulse{0%,100%{opacity:0.3}50%{opacity:1}}
-
 .state-empty{text-align:center;padding:60px 20px;}
 .state-empty-icon{font-size:40px;margin-bottom:16px;opacity:0.4;}
 .state-empty-title{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--text2);letter-spacing:2px;margin-bottom:8px;}
 .state-empty-sub{font-size:12px;color:var(--text3);line-height:1.5;}
-
-/* GRID BACKGROUND */
 .bg-grid{position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
 .content{position:relative;z-index:1;}
-
-/* TOAST */
 .toast{position:fixed;bottom:24px;left:16px;right:16px;background:#0e0f28;color:var(--cyan);border:0.5px solid rgba(108,92,231,0.4);border-left:3px solid var(--violet);border-radius:12px;padding:12px 16px;font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:1px;text-align:center;z-index:300;opacity:0;transition:opacity 0.25s;pointer-events:none;max-width:480px;margin:0 auto;}
 .toast.show{opacity:1;}
-
-/* COUNTER */
 .counter{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text2);letter-spacing:2px;text-align:center;margin-bottom:12px;}
-
-/* VOTED COUNT */
 .voted-count{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:12px;}
 .voted-dot{width:6px;height:6px;border-radius:50%;background:var(--violet);}
 .voted-text{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text2);letter-spacing:1px;}
-
-/* iOS: Bangers → Impact */
-.ios-device .header-title,
-.ios-device [style*="Bangers"],
-.ios-device [class*="Bangers"] {
-  font-family: Impact, "Arial Black", sans-serif !important;
-  letter-spacing: 2px !important;
-}
+.state-loading{text-align:center;padding:60px 20px;}
+.state-loading-text{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text3);letter-spacing:3px;animation:pulse 1.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:0.3}50%{opacity:1}}
+.ios-device .header-title{font-family:Impact,"Arial Black",sans-serif !important;letter-spacing:2px !important;}
 </style>
 </head>
 <body>
 <div class="bg-grid"></div>
 <div class="content">
-
 <div class="header">
   <div class="header-eyebrow">// PROWAY_SECURITY_DAY_2026</div>
   <div class="header-title">ОПРОС</div>
   <div class="header-sub">Голосуй — результаты сразу на экране</div>
 </div>
-
 <div class="main">
   <div id="poll-container">
-    <div class="state-loading">
-      <div class="state-loading-text">ЗАГРУЗКА ВОПРОСА...</div>
-    </div>
+    <div class="state-loading"><div class="state-loading-text">ЗАГРУЗКА ВОПРОСА...</div></div>
   </div>
 </div>
-
-</div><!-- /content -->
-
+</div>
 <div class="toast" id="toast"></div>
 
 <script>
 const API = 'https://script.google.com/macros/s/AKfycbyYuilmUoMlTsWc_M0GeuOxmsbJ7QWK9cyOg20j-uUD8HvHBxzsyW5lm-o0kFT0G53tVA/exec';
 
-// Статичные опросы (синхронизированы с index.html)
-const POLLS = [
-  {id:'poll1',session:'// ПРЯМАЯ_ЛИНИЯ',question:'Обращались ли к вам заказчики с задачами, связанными с защитой искусственного интеллекта (ИИ)?',options:['Да, обращались и у нас есть такие решения','Да, но мы не знаем, что предложить','Да, но это не наш профиль','Нет, не обращались']},
-  {id:'poll2',session:'// ПРЯМАЯ_ЛИНИЯ',question:'Что может служить драйвером роста рынка ИБ в 2026 году?',options:['Продукты ИБ на базе ИИ и для защиты ИИ','Выполнение новых требований регуляторов','Рост числа кибератак и изменение их структуры','Продолжающееся импортозамещение','Развитие сервисов в сфере ИБ','Другое']},
-  {id:'poll3',session:'// ПРЯМАЯ_ЛИНИЯ',question:'Будет ли российский сегмент Интернета отрезан от глобального?',options:['Всё заблокируют, в том числе и альтернативные технологии доступа','Продолжим пользоваться зарубежными сервисами через альтернативные каналы','Продолжим пользоваться, но это будет дорого и сложно','Верю в лучшее и открытый глобальный Интернет']},
-  {id:'poll4',session:'// ПРЯМАЯ_ЛИНИЯ',question:'Как вы оцениваете темпы развития российских вендоров по ИБ?',options:['Превосходят ожидания','Соответствуют ожиданиям','Частично соответствуют ожиданиям','Не соответствуют ожиданиям']},
-];
-
 let currentQuestion = null;
 let selectedOption = null;
 let voted = false;
 let pollResults = null;
-// Анонимный ID — сохраняем в localStorage чтобы не голосовать дважды
+
+// Анонимный ID
 let anonId = localStorage.getItem('poll_anon_id');
 if (!anonId) {
   anonId = 'anon_' + Math.random().toString(36).slice(2) + Date.now();
   localStorage.setItem('poll_anon_id', anonId);
 }
 
-function api(p) { return fetch(API + '?' + new URLSearchParams(p)).then(r => r.json()); }
+function apiCall(params) {
+  const url = new URL(API);
+  Object.entries(params).forEach(([k,v]) => url.searchParams.set(k, v));
+  return fetch(url, {redirect:'follow'}).then(r => r.json());
+}
+
 function showToast(m, d=2500) {
   const t = document.getElementById('toast');
   t.textContent = m; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), d);
 }
 
-// Получаем активный опрос из announcements (__LIVE_MODE__poll:pollX)
-async function getActivePollId() {
-  const res = await api({ action: 'getAnnouncements' });
-  if (!res.announcements) return null;
-  // Берём самое свежее сообщение с __LIVE_MODE__poll:
-  const pollMsg = res.announcements
-    .filter(a => a.message && a.message.startsWith('__LIVE_MODE__poll:'))
-    .sort((a,b) => new Date(b.created_at) - new Date(a.created_at))[0];
-  if (!pollMsg) return null;
-  return pollMsg.message.replace('__LIVE_MODE__poll:', '').trim();
-}
-
+// ─── Главная логика: просто берём getActiveQuestion ───
 async function loadPoll() {
   try {
-    const pollId = await getActivePollId();
-    if (!pollId) { renderEmpty(); return; }
+    const res = await apiCall({ action: 'getActiveQuestion' });
+    console.log('getActiveQuestion response:', JSON.stringify(res));
 
-    // Сначала ищем в локальном массиве
-    let poll = POLLS.find(p => p.id === pollId);
-
-    // Если не нашли — загружаем с сервера (вопрос создан через форму в админке)
-    if (!poll) {
-      try {
-        const qRes = await api({ action: 'getActiveQuestion' });
-        if (qRes && qRes.question && qRes.question.id === pollId) {
-          poll = { id: qRes.question.id, session: '// ПРЯМАЯ_ЛИНИЯ', question: qRes.question.question, options: qRes.question.options };
-        }
-      } catch(e) {}
+    if (!res.question) {
+      currentQuestion = null;
+      renderEmpty();
+      return;
     }
 
-    if (!poll) { renderEmpty(); return; }
+    const q = res.question;
 
-    currentQuestion = { id: poll.id, session: poll.session, question: poll.question, options: poll.options };
+    // Новый вопрос?
+    if (!currentQuestion || currentQuestion.id !== q.id) {
+      currentQuestion = {
+        id: q.id,
+        question: q.question,
+        options: q.options || [],
+        vote_count: q.vote_count || 0
+      };
 
-    // Проверяем голосовали ли уже
-    const votedKey = 'poll_voted_' + currentQuestion.id;
-    const savedVote = localStorage.getItem(votedKey);
-    if (savedVote !== null) {
-      voted = true;
-      selectedOption = parseInt(savedVote);
-      await loadResultsFromVotes();
-    } else {
-      voted = false; selectedOption = null;
-      renderQuestion();
+      // Уже голосовали за этот вопрос?
+      const savedVote = localStorage.getItem('poll_voted_' + q.id);
+      if (savedVote !== null) {
+        voted = true;
+        selectedOption = parseInt(savedVote);
+        await loadResults();
+      } else {
+        voted = false;
+        selectedOption = null;
+        pollResults = null;
+        renderQuestion();
+      }
+    } else if (voted) {
+      // Тот же вопрос, уже голосовали — обновляем результаты
+      await loadResults();
     }
   } catch(e) {
+    console.error('loadPoll error:', e);
     renderEmpty();
   }
 }
 
-async function loadResultsFromVotes() {
+async function loadResults() {
+  if (!currentQuestion) return;
   try {
-    const res = await api({ action: 'getQuestionResults', question_id: currentQuestion.id });
+    // Используем getQuestionResults (есть в Apps Script)
+    const res = await apiCall({ action: 'getQuestionResults', question_id: currentQuestion.id });
+    console.log('getQuestionResults response:', JSON.stringify(res));
+
     if (res.question && res.question.total_votes > 0) {
       pollResults = {
         total_votes: res.question.total_votes,
         results: res.question.results.map(r => ({ count: r.count, percent: r.percent }))
       };
     } else {
-      // Fallback: строим результаты из количества голосов если API вернул пустое
-      // Показываем хотя бы свой голос
+      // Fallback — показываем хотя бы свой голос
       if (selectedOption !== null) {
         const opts = currentQuestion.options || [];
         const counts = new Array(opts.length).fill(0);
         counts[selectedOption] = 1;
-        const total = 1;
         pollResults = {
-          total_votes: total,
-          results: opts.map((opt, i) => ({
-            option: opt,
-            count: counts[i],
-            percent: counts[i] > 0 ? 100 : 0
-          }))
+          total_votes: 1,
+          results: opts.map((opt, i) => ({ count: counts[i], percent: counts[i] > 0 ? 100 : 0 }))
         };
       }
     }
-    renderQuestion();
   } catch(e) {
-    renderQuestion();
+    console.error('loadResults error:', e);
   }
+  renderQuestion();
 }
 
 function renderEmpty() {
@@ -248,20 +201,18 @@ function renderEmpty() {
 function renderQuestion() {
   if (!currentQuestion) return renderEmpty();
 
-  const poll = currentQuestion;
-  const options = poll.options || [];
+  const opts = currentQuestion.options || [];
   const total = pollResults ? (pollResults.total_votes || 0) : 0;
   const results = pollResults ? (pollResults.results || []) : [];
 
   let optionsHtml = '';
 
   if (voted) {
-    // Показываем результаты
-    optionsHtml = options.map((opt, i) => {
+    optionsHtml = opts.map((opt, i) => {
       const r = results[i] || { count: 0, percent: 0 };
       const isMe = i === selectedOption;
       return `
-        <div class="poll-result" onclick="">
+        <div class="poll-result">
           <div class="poll-bar-bg ${isMe ? 'poll-bar-me' : ''}" style="width:${r.percent}%"></div>
           <div class="poll-result-inner ${isMe ? 'me' : ''}">
             <span class="poll-opt-text ${isMe ? 'me' : ''}">${opt}${isMe ? ' ✓' : ''}</span>
@@ -270,8 +221,7 @@ function renderQuestion() {
         </div>`;
     }).join('');
   } else {
-    // Показываем варианты для голосования
-    optionsHtml = options.map((opt, i) => `
+    optionsHtml = opts.map((opt, i) => `
       <button class="poll-opt ${selectedOption === i ? 'sel' : ''}" onclick="selectOpt(${i})">${opt}</button>
     `).join('');
   }
@@ -298,8 +248,8 @@ function renderQuestion() {
   document.getElementById('poll-container').innerHTML = `
     <div class="counter">${voted ? 'ВАШИ РЕЗУЛЬТАТЫ' : 'ВЫБЕРИ ОДИН ВАРИАНТ'}</div>
     <div class="poll-card">
-      <div class="poll-session">${poll.session || '// ОПРОС'}</div>
-      <div class="poll-q">${poll.question}</div>
+      <div class="poll-session">// ПРЯМАЯ_ЛИНИЯ</div>
+      <div class="poll-q">${currentQuestion.question}</div>
       ${optionsHtml}
       ${votedCountHtml}
     </div>
@@ -319,70 +269,37 @@ async function submitVote() {
   if (btn) { btn.disabled = true; btn.textContent = 'Отправляем...'; }
 
   try {
-    const res = await api({
+    const res = await apiCall({
       action: 'submitVote',
       question_id: currentQuestion.id,
       participant_id: anonId,
       option_index: selectedOption
     });
+    console.log('submitVote response:', JSON.stringify(res));
 
     if (res.success || res.already) {
       voted = true;
       localStorage.setItem('poll_voted_' + currentQuestion.id, selectedOption);
-      await loadResultsFromVotes();
+      await loadResults();
       showToast('// ГОЛОС ПРИНЯТ');
     } else {
       showToast('// ОШИБКА — ПОПРОБУЙ ЕЩЁ РАЗ');
       if (btn) { btn.disabled = false; btn.textContent = 'Проголосовать'; }
     }
   } catch(e) {
+    console.error('submitVote error:', e);
     showToast('// НЕТ СВЯЗИ');
     if (btn) { btn.disabled = false; btn.textContent = 'Проголосовать'; }
   }
 }
 
-// Автообновление — каждые 10 секунд проверяем новый активный опрос
-async function refresh() {
-  try {
-    const pollId = await getActivePollId();
-    if (!pollId) {
-      currentQuestion = null; voted = false; selectedOption = null; pollResults = null;
-      renderEmpty(); return;
-    }
-    const poll = POLLS.find(p => p.id === pollId) || await (async()=>{
-      try{
-        const qRes=await api({action:'getActiveQuestion'});
-        if(qRes&&qRes.question&&qRes.question.id===pollId)
-          return{id:qRes.question.id,session:'// ПРЯМАЯ_ЛИНИЯ',question:qRes.question.question,options:qRes.question.options};
-      }catch(e){}
-      return null;
-    })();
-    if (!poll) { renderEmpty(); return; }
-    if (!currentQuestion || currentQuestion.id !== pollId) {
-      currentQuestion = { id: poll.id, session: poll.session, question: poll.question, options: poll.options };
-      const savedVote = localStorage.getItem('poll_voted_' + pollId);
-      if (savedVote !== null) {
-        voted = true; selectedOption = parseInt(savedVote);
-        await loadResultsFromVotes();
-      } else {
-        voted = false; selectedOption = null; pollResults = null;
-        renderQuestion();
-      }
-      return;
-    }
-    if (voted) await loadResultsFromVotes();
-  } catch(e) {}
-}
-
-// Запуск
+// ─── Автообновление ───
 loadPoll();
-// Умный интервал: 5 сек если опрос активен, 15 сек если нет
-async function smartRefresh(){
-  await refresh();
-  const interval = currentQuestion ? 5000 : 15000;
-  setTimeout(smartRefresh, interval);
+async function smartRefresh() {
+  await loadPoll();
+  setTimeout(smartRefresh, currentQuestion ? 5000 : 10000);
 }
-smartRefresh();
+setTimeout(smartRefresh, 5000);
 </script>
 </body>
 </html>
