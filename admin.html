@@ -344,6 +344,8 @@ async function setLiveMode(mode, pollId){
         if(res.success && res.id){
           // Обновляем ID на серверный UUID
           poll.serverId = res.id;
+          // Пишем серверный UUID в announcements для live.html
+          await api({action:'addAnnouncement', secret:SECRET, message:'__LIVE_MODE__poll:'+res.id, type:'info'});
         }
       }catch(e){
         showToast('// ОШИБКА АКТИВАЦИИ ОПРОСА');
@@ -357,6 +359,7 @@ async function setLiveMode(mode, pollId){
       if(qRes && qRes.question){
         await api({action:'closeQuestion', secret:SECRET, question_id:qRes.question.id});
       }
+      await api({action:'addAnnouncement', secret:SECRET, message:'__LIVE_MODE__rating', type:'info'});
     }catch(e){}
   }
 
