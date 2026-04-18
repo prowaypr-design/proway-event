@@ -1016,7 +1016,7 @@ const RARITY=[
   {min:0,label:'НОВОБРАНЕЦ',bg:'rgba(255,255,255,0.06)',color:'#ffffff44',stars:0},
   {min:1,label:'АГЕНТ',bg:'rgba(0,255,255,0.1)',color:'#00ffff',stars:2},
   {min:3,label:'МАСТЕР',bg:'rgba(255,107,53,0.12)',color:'#ff6b35',stars:3},
-  {min:5,label:'ЛЕГЕНДА КИБЕРБЕЗА',bg:'rgba(255,204,0,0.12)',color:'#ffcc00',stars:4},
+  {min:5,label:'ЛЕГЕНДА',bg:'rgba(255,204,0,0.12)',color:'#ffcc00',stars:4},
 ];
 
 const AVATARS={
@@ -1301,28 +1301,22 @@ async function checkAnnouncements(){
     }
     const latest=visibleList[0];
     if(latest&&latest.id!==lastAnnouncementId){lastAnnouncementId=latest.id;showBanner(latest.message);}
-    // Проверяем активный admin-опрос
-    const pollMsg=list.find(a=>a.message&&a.message.startsWith('__LIVE_MODE__poll:'));
-    if(pollMsg){
-      const pollId=pollMsg.message.replace('__LIVE_MODE__poll:','').trim();
-      if(!activeAdminPoll||activeAdminPoll.id!==pollId){
-        // Загружаем вопрос с сервера
-        try{
-          const qRes=await api({action:'getActiveQuestion'});
-          if(qRes&&qRes.question&&qRes.question.id===pollId){
-            const q=qRes.question;
-            activeAdminPoll={id:q.id,session:q.question?'// ПРЯМАЯ_ЛИНИЯ':'// ПРЯМАЯ_ЛИНИЯ',question:q.question,options:q.options};
-            // Восстанавливаем ответ если уже голосовали
-            const saved=localStorage.getItem('poll_voted_'+pollId);
-            if(saved!==null) pollAnswers[pollId]=parseInt(saved);
-            renderPolls();
-          }
-        }catch(e){}
+    // Проверяем активный опрос НАПРЯМУЮ через getActiveQuestion
+    try{
+      const qRes=await api({action:'getActiveQuestion'});
+      if(qRes&&qRes.question){
+        const q=qRes.question;
+        if(!activeAdminPoll||activeAdminPoll.id!==q.id){
+          activeAdminPoll={id:q.id,session:'// ПРЯМАЯ_ЛИНИЯ',question:q.question,options:q.options};
+          const saved=localStorage.getItem('poll_voted_'+q.id);
+          if(saved!==null) pollAnswers[q.id]=parseInt(saved);
+          renderPolls();
+        }
+      } else if(activeAdminPoll){
+        activeAdminPoll=null;
+        renderPolls();
       }
-    } else if(activeAdminPoll){
-      activeAdminPoll=null;
-      renderPolls();
-    }
+    }catch(e){}
     announcements=visibleList;
     const badge=document.getElementById('bell-badge');
     const dot=document.getElementById('nav-feed-dot');
@@ -1432,7 +1426,7 @@ function renderVendors(){
     const scanned=scannedVendors.has(v.id);
     return`<div class="vendor-card${scanned?' scanned':''}">
       <div class="vendor-top"><div class="vendor-icon" style="background:${v.color}18;border-color:${v.color}44;color:${v.color};">${v.icon}</div><div class="vendor-info"><div class="vendor-name">${v.name}</div><div class="vendor-system">${v.system}</div></div><div><div class="vendor-pts${scanned?' done':''}">${scanned?'ПОЛУЧЕНО':'+20 Б'}</div><div class="vendor-pts-lbl">${scanned?'✓':'ЗА СКАН'}</div></div></div>
-      ${scanned?`<div class="vendor-chapter"><span class="vc-badge">ГЛАВА ${idx+1} · ОТКРЫТА</span><span class="vc-text">Фрагмент досье добавлен в карточку агента</span></div>`:`<div class="vendor-locked"><span class="vl-text">// НОВАЯ ГЛАВА · ОТСКАНИРУЙ QR НА СТЕНДЕ</span></div>`}
+      ${scanned?`<div class="vendor-chapter"><span class="vc-badge">ГЛАВА ${idx+1} · ОТКРЫТА</span><span class="vc-text">Фрагмент досье добавлен в карточку агента</span></div>`:`<div class="vendor-locked"><span class="vl-text">// ГЛАВА ${idx+1} · ОТСКАНИРУЙ QR НА СТЕНДЕ</span></div>`}
     </div>`;
   }).join('');
 }
