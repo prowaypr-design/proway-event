@@ -1869,7 +1869,7 @@ function roundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x
 function startCountdown(){
   function update(){
     const diff=LAUNCH_DATE-new Date();
-    if(diff<=0){location.reload();return;}
+    if(diff<=0){ /* мероприятие началось — таймер останавливаем */ return; }
     const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
     ['countdown','countdown2'].forEach(cid=>{const el=document.getElementById(cid);if(el)el.innerHTML=
       `<span class="cd-block"><span class="cd-num">${d}</span><span class="cd-lbl">${(d%100>=11&&d%100<=19)?'дней':d%10===1?'день':d%10>=2&&d%10<=4?'дня':'дней'}</span></span>`+
