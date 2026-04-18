@@ -126,7 +126,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 <div class="toast" id="toast"></div>
 
 <script>
-const API = 'https://script.google.com/macros/s/AKfycbxj8GtZV4Stzlkg6Hkrck11AvPF4AkLeQXlHGi4i2akOitYOjmixscxEq02PPdZI8NqCQ/exec';
+const API = 'https://script.google.com/macros/s/AKfycbyYuilmUoMlTsWc_M0GeuOxmsbJ7QWK9cyOg20j-uUD8HvHBxzsyW5lm-o0kFT0G53tVA/exec';
 
 // Статичные опросы (синхронизированы с index.html)
 const POLLS = [
@@ -206,12 +206,11 @@ async function loadPoll() {
 
 async function loadResultsFromVotes() {
   try {
-    const res = await api({ action: 'getVoteResults', question_id: currentQuestion.id });
-    if (res.success && res.results && res.total_votes > 0) {
-      // Адаптируем формат под renderQuestion
+    const res = await api({ action: 'getQuestionResults', question_id: currentQuestion.id });
+    if (res.question && res.question.total_votes > 0) {
       pollResults = {
-        total_votes: res.total_votes,
-        results: res.results.map(r => ({ count: r.count, percent: r.percent }))
+        total_votes: res.question.total_votes,
+        results: res.question.results.map(r => ({ count: r.count, percent: r.percent }))
       };
     } else {
       // Fallback: строим результаты из количества голосов если API вернул пустое
