@@ -88,7 +88,7 @@ body{font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--text);}
 @keyframes tickerMove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* LOADER */
-.loader{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:100;font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--cyan);letter-spacing:4px;}
+
 </style>
 </head>
 <body>
@@ -96,7 +96,7 @@ body{font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--text);}
 <div class="grid-bg"></div>
 <div class="glow"></div>
 
-<div class="loader" id="loader">ЗАГРУЗКА...</div>
+
 
 <div class="live-header">
   <div class="live-logo">PROWAY <span>SECURITY DAY</span></div>
@@ -329,7 +329,6 @@ async function updatePoll(){
 
 // ── INIT & LOOP ───────────────────────────────────────
 async function init(){
-  document.getElementById('loader').style.display = 'none';
   updateRating();
   checkMode();
 }
