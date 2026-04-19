@@ -273,7 +273,7 @@ async function updatePoll(){
     // Используем getVoteResults — именно он хранит голоса по poll1/poll2/poll3
     const res = await apiGet({
       action: 'getVoteResults',
-      question_id: currentPollId,
+      question_id: poll.id,
       num_options: poll.options.length
     });
     if(res.success && res.results){
