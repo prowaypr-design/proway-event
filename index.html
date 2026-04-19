@@ -1186,6 +1186,8 @@ function selectGender(g){
   assignedAvatar=pool[Math.floor(Math.random()*pool.length)];
   document.getElementById('reveal-img').src='https://proway-event.vercel.app/'+assignedAvatar.file;
   document.getElementById('reveal-codename').textContent=assignedAvatar.codename;
+  const nameInput=document.getElementById('reg-name');
+  if(nameInput) nameInput.placeholder=g==='male'?'Иван Иванов':'Анна Козлова';
   goTo('ob-reveal');
 }
 
