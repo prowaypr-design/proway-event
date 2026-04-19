@@ -201,7 +201,7 @@ function switchScreen(mode){
   document.getElementById('screen-rating').classList.toggle('active', mode==='rating');
   document.getElementById('screen-poll').classList.toggle('active', mode==='poll');
   document.getElementById('mode-label').textContent = mode==='rating' ? 'РЕЙТИНГ' : 'ОПРОС';
-  if(mode==='poll' && currentPollId) updatePoll();
+  if(mode==='poll') updatePoll();
 }
 
 // ── РЕЙТИНГ ──────────────────────────────────────────
@@ -261,14 +261,12 @@ async function updatePoll(){
   if(currentMode !== 'poll' || !currentPollId) return;
   
   // Берём вопрос из localPolls, если нет — с сервера
-  let poll = localPolls.find(p=>p.id===currentPollId);
-  if(!poll){
-    try{
-      const qRes=await apiGet({action:'getActiveQuestion'});
-      if(qRes&&qRes.question&&qRes.question.id===currentPollId)
-        poll={id:qRes.question.id,session:'// ПРЯМАЯ_ЛИНИЯ',question:qRes.question.question,options:qRes.question.options};
-    }catch(e){}
-  }
+  let poll = null;
+  try{
+    const qRes=await apiGet({action:'getActiveQuestion'});
+    if(qRes&&qRes.question)
+      poll={id:qRes.question.id,session:'// ПРЯМАЯ_ЛИНИЯ',question:qRes.question.question,options:qRes.question.options};
+  }catch(e){}
   if(!poll) return;
 
   try{
