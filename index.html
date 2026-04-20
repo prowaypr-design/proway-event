@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -2049,28 +2050,46 @@ async function openQrScanner(mode){
   document.getElementById('qr-scanner-title').textContent =
     mode === 'vendor' ? '// НАВЕДИ НА QR СТЕНДА' : '// НАВЕДИ НА QR ИГРОКА';
 
-  // Загружаем jsQR как fallback если BarcodeDetector недоступен
-  if(!('BarcodeDetector' in window) && !_jsqrLoaded){
+  // Загружаем jsQR заранее — не ждём BarcodeDetector
+  if(!_jsqrLoaded){
     await new Promise((res)=>{
       const s = document.createElement('script');
+      // Используем несколько CDN как запасные
       s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js';
       s.onload = ()=>{ _jsqrLoaded = true; res(); };
-      s.onerror = ()=>res();
+      s.onerror = ()=>{
+        // Fallback CDN
+        const s2 = document.createElement('script');
+        s2.src = 'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js';
+        s2.onload = ()=>{ _jsqrLoaded = true; res(); };
+        s2.onerror = ()=>res();
+        document.head.appendChild(s2);
+      };
       document.head.appendChild(s);
     });
   }
 
   try{
+    // Не указываем жёсткое разрешение — браузер выбирает сам
     _scanStream = await navigator.mediaDevices.getUserMedia({
-      video:{ facingMode:'environment', width:{ideal:1280}, height:{ideal:720} }
+      video:{ facingMode:{ ideal:'environment' } }
     });
     const video = document.getElementById('qr-video');
     video.srcObject = _scanStream;
     await video.play();
     _startScanLoop();
   } catch(e){
-    closeQrScanner();
-    showToast('// НЕТ ДОСТУПА К КАМЕРЕ');
+    // Если задняя камера недоступна — пробуем любую
+    try{
+      _scanStream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const video = document.getElementById('qr-video');
+      video.srcObject = _scanStream;
+      await video.play();
+      _startScanLoop();
+    } catch(e2){
+      closeQrScanner();
+      showToast('// НЕТ ДОСТУПА К КАМЕРЕ');
+    }
   }
 }
 
@@ -2085,40 +2104,52 @@ function closeQrScanner(){
 function _startScanLoop(){
   const video = document.getElementById('qr-video');
   const canvas = document.getElementById('qr-canvas');
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d', {willReadFrequently: true});
   let detected = false;
 
-  // BarcodeDetector (Chrome Android, некоторые браузеры)
-  if('BarcodeDetector' in window){
-    const bd = new BarcodeDetector({formats:['qr_code']});
-    _scanTimer = setInterval(async()=>{
-      if(detected || video.readyState < 2) return;
-      try{
-        const codes = await bd.detect(video);
-        if(codes.length){
+  function scanFrame(){
+    if(detected) return;
+    if(video.readyState < 2){
+      requestAnimationFrame(scanFrame);
+      return;
+    }
+
+    // jsQR — работает на всех браузерах включая Safari iOS
+    if(window.jsQR){
+      const w = video.videoWidth;
+      const h = video.videoHeight;
+      if(w > 0 && h > 0){
+        canvas.width = w;
+        canvas.height = h;
+        ctx.drawImage(video, 0, 0, w, h);
+        const img = ctx.getImageData(0, 0, w, h);
+        // attemptBoth — пробует обычный и инвертированный QR
+        const code = jsQR(img.data, img.width, img.height, {inversionAttempts:'attemptBoth'});
+        if(code && code.data){
           detected = true;
-          clearInterval(_scanTimer);
-          _onQrDetected(codes[0].rawValue);
+          _onQrDetected(code.data);
+          return;
         }
+      }
+    }
+
+    // BarcodeDetector как дополнительный метод (Chrome Android)
+    if(!detected && 'BarcodeDetector' in window){
+      try{
+        const bd = new BarcodeDetector({formats:['qr_code']});
+        bd.detect(video).then(codes=>{
+          if(!detected && codes.length){
+            detected = true;
+            _onQrDetected(codes[0].rawValue);
+          }
+        }).catch(()=>{});
       }catch(e){}
-    }, 300);
-    return;
+    }
+
+    if(!detected) _scanTimer = setTimeout(scanFrame, 250);
   }
 
-  // jsQR fallback (Safari, Яндекс и др.)
-  _scanTimer = setInterval(()=>{
-    if(detected || video.readyState < 2 || !window.jsQR) return;
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    ctx.drawImage(video, 0, 0);
-    const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const code = jsQR(img.data, img.width, img.height, {inversionAttempts:'dontInvert'});
-    if(code){
-      detected = true;
-      clearInterval(_scanTimer);
-      _onQrDetected(code.data);
-    }
-  }, 300);
+  scanFrame();
 }
 
 function _onQrDetected(value){
