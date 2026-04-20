@@ -477,7 +477,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     <div class="ticker-inner" id="ticker-inner">
       <span class="ticker-msg">ДОБРО ПОЖАЛОВАТЬ ВО ВСЕЛЕННУЮ PROWAY SECURITY DAY 2026</span>
       <span class="ticker-sep"> · </span>
-      <span class="ticker-msg">СКАНИРУЙ QR-КОДЫ НА СТЕНДАХ И ОТКРЫВАЙ ГЛАВЫ СВОЕГО ДОСЬЕ</span>
+      <span class="ticker-msg">СКАНИРУЙ QR-КОДЫ НА СТЕНДАХ И ОТКРЫВАЙ НОВЫЕ ГЛАВЫ ИСТОРИИ СВОЕГО ПЕРСОНАЖА</span>
       <span class="ticker-sep"> · </span>
     </div>
   </div>
@@ -1441,7 +1441,7 @@ function renderVendors(){
     const scanned=scannedVendors.has(v.id);
     return`<div class="vendor-card${scanned?' scanned':''}">
       <div class="vendor-top"><div class="vendor-icon" style="background:${v.color}18;border-color:${v.color}44;color:${v.color};">${v.icon}</div><div class="vendor-info"><div class="vendor-name">${v.name}</div><div class="vendor-system">${v.system}</div></div><div><div class="vendor-pts${scanned?' done':''}">${scanned?'ПОЛУЧЕНО':'+20 Б'}</div><div class="vendor-pts-lbl">${scanned?'✓':'ЗА СКАН'}</div></div></div>
-      ${scanned?`<div class="vendor-chapter"><span class="vc-badge">НОВАЯ ГЛАВА ОТКРЫТА</span><span class="vc-text">Фрагмент досье добавлен в карточку агента</span></div>`:`<div class="vendor-locked"><span class="vl-text">// ОТСКАНИРУЙ QR НА СТЕНДЕ</span></div>`}
+      ${scanned?`<div class="vendor-chapter"><span class="vc-badge">НОВАЯ ГЛАВА ОТКРЫТА</span><span class="vc-text">Фрагмент истории в карточку агента</span></div>`:`<div class="vendor-locked"><span class="vl-text">// ОТСКАНИРУЙ QR НА СТЕНДЕ</span></div>`}
     </div>`;
   }).join('');
 }
