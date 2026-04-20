@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -207,6 +208,9 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .lb-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:0.5px solid var(--border);background:var(--bg2);position:relative;}
 .lb-row:last-child{border-bottom:none;}
 .lb-row.me{background:rgba(108,92,231,0.05);border-left:2px solid var(--cyan);}
+.lb-row.top1{border:1.5px solid rgba(245,230,66,0.7);box-shadow:0 0 12px rgba(245,230,66,0.15);background:rgba(245,230,66,0.04);}
+.lb-row.top2{border:1.5px solid rgba(162,155,254,0.6);box-shadow:0 0 10px rgba(162,155,254,0.12);background:rgba(162,155,254,0.04);}
+.lb-row.top3{border:1.5px solid rgba(238,103,42,0.6);box-shadow:0 0 10px rgba(238,103,42,0.12);background:rgba(238,103,42,0.04);}
 .lb-pos{font-family:'Inter',sans-serif;font-size:16px;font-weight:700;min-width:20px;color:var(--text3);line-height:1;}
 .lb-pos.gold{color:var(--yellow);}
 .lb-pos.me-c{color:var(--cyan);}
@@ -1411,7 +1415,7 @@ function renderAgentCard(){
       const text = chapters[i] || `Глава ${i+1}.`;
       chaptersHtml+=`<div class="acf-chapter-badge">ГЛАВА ${i+1}</div><div class="acf-chapter-text">${text}</div>`;
     } else {
-      chaptersHtml+=`<div class="acf-locked"><div class="acf-lock"></div><span class="acf-locked-text">ГЛАВА ${i+1} · ОТСКАНИРУЙ ЕЩЁ ${i+1-scanned} СТЕНД${i+1-scanned===1?'':'А'}</span></div>`;
+      chaptersHtml+=`<div class="acf-locked"><div class="acf-lock"></div><span class="acf-locked-text">ГЛАВА ${i+1} · ОТСКАНИРУЙ ЕЩЁ ${i+1-scanned} СТЕНД${(()=>{const n=i+1-scanned;return n%10===1&&n%100!==11?'':(n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?'а':'ов')})()}</span></div>`;
     }
   }
   const avSrc=participant.avatar?'https://proway-event.vercel.app/'+participant.avatar:'';
@@ -1437,7 +1441,7 @@ function renderVendors(){
     const scanned=scannedVendors.has(v.id);
     return`<div class="vendor-card${scanned?' scanned':''}">
       <div class="vendor-top"><div class="vendor-icon" style="background:${v.color}18;border-color:${v.color}44;color:${v.color};">${v.icon}</div><div class="vendor-info"><div class="vendor-name">${v.name}</div><div class="vendor-system">${v.system}</div></div><div><div class="vendor-pts${scanned?' done':''}">${scanned?'ПОЛУЧЕНО':'+20 Б'}</div><div class="vendor-pts-lbl">${scanned?'✓':'ЗА СКАН'}</div></div></div>
-      ${scanned?`<div class="vendor-chapter"><span class="vc-badge">ГЛАВА ${idx+1} · ОТКРЫТА</span><span class="vc-text">Фрагмент досье добавлен в карточку агента</span></div>`:`<div class="vendor-locked"><span class="vl-text">// ГЛАВА ${idx+1} · ОТСКАНИРУЙ QR НА СТЕНДЕ</span></div>`}
+      ${scanned?`<div class="vendor-chapter"><span class="vc-badge">ГЛАВА ${idx+1} · ОТКРЫТА</span><span class="vc-text">Фрагмент досье добавлен в карточку агента</span></div>`:`<div class="vendor-locked"><span class="vl-text">// ОТСКАНИРУЙ QR НА СТЕНДЕ</span></div>`}
     </div>`;
   }).join('');
 }
@@ -1445,9 +1449,14 @@ function renderVendors(){
 async function handleVendorScan(vendorId){
   if(!participant){showToast('// СНАЧАЛА ЗАРЕГИСТРИРУЙСЯ');return;}
   if(scannedVendors.has(vendorId)){showToast('// СТЕНД УЖЕ ОТСКАНИРОВАН');showScreen('vendors');return;}
+  // Показываем плашку загрузки
+  const scanOvV = document.getElementById('scan-loading-overlay');
+  if(scanOvV) scanOvV.style.display='flex';
   try{
     const res=await api({action:'scanVendor',participant_id:participant.id,vendor_id:vendorId});
     if(res.success||res.already){
+      const scanOvV2 = document.getElementById('scan-loading-overlay');
+      if(scanOvV2) scanOvV2.style.display='none';
       scannedVendors.add(vendorId);localStorage.setItem('scanned_vendors',JSON.stringify([...scannedVendors]));
       if(res.success)participant.points=(participant.points||0)+20;
       document.getElementById('s-vendors').textContent=scannedVendors.size;
@@ -1541,7 +1550,8 @@ async function loadLeaderboard(){
         document.getElementById('p-pct').textContent=Math.min(Math.round(p.points/MAX_PTS*100),100)+'%';
       }
       const avHtml=p.avatar?`<img src="${p.avatar.startsWith('http')?p.avatar:'https://proway-event.vercel.app/'+p.avatar}" alt="">`:`<span style="font-size:13px;color:var(--text2);">◈</span>`;
-      return`<div class="lb-row${isMe?' me':''}">
+      const topClass = i===0?' top1':i===1?' top2':i===2?' top3':'';
+      return`<div class="lb-row${isMe?' me':''}${topClass}">
         ${i===0?'<div class="lb-leader">ЛИДЕР</div>':''}
         <span class="lb-pos${i===0?' gold':''}${isMe?' me-c':''}">${i+1}</span>
         <div class="lb-av${isMe?' me':''}">${avHtml}</div>
@@ -1599,7 +1609,7 @@ async function loadNetwork(){
       return`<div class="net-card">
         <div class="net-av" style="position:relative;">
           ${avHtml}
-          ${met?`<div style="position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;background:#00c864;border-radius:50%;border:2px solid var(--bg2);"></div>`:''}
+
         </div>
         <div class="net-info">
           <div class="net-name">${p.name}</div>
