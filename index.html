@@ -1269,8 +1269,16 @@ async function register(){
 }
 
 function setAvatarUI(){
-  const av=participant&&participant.avatar?(participant.avatar.startsWith('http')?participant.avatar:'https://proway-event.vercel.app/'+participant.avatar):'';
-  ['p-av-img','p-av-img2','p-av-img3'].forEach(id=>{const el=document.getElementById(id);if(el&&av){el.src=av;el.style.display='block';}});
+  // Берём artFile (полноразмерный) вместо avatar (иконка с белым фоном)
+  const gender = participant&&participant.gender||'male';
+  const avatarList = AVATARS[gender]||[];
+  const avatarEntry = avatarList.find(a=>a.file===participant?.avatar);
+  const artFile = participant?.artFile || (avatarEntry&&avatarEntry.artFile) || participant?.avatar || '';
+  const av = artFile ? (artFile.startsWith('http')?artFile:'https://proway-event.vercel.app/'+artFile) : '';
+  ['p-av-img','p-av-img2','p-av-img3'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&av){el.src=av;el.style.display='block';el.style.objectPosition='center top';}
+  });
   if(av){['p-av-emoji','p-av-emoji2','p-av-emoji3'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});}
 }
 
@@ -1550,7 +1558,8 @@ async function loadLeaderboard(){
         document.getElementById('p-pts').textContent=p.points;
         document.getElementById('p-pct').textContent=Math.min(Math.round(p.points/MAX_PTS*100),100)+'%';
       }
-      const avHtml=p.avatar?`<img src="${p.avatar.startsWith('http')?p.avatar:'https://proway-event.vercel.app/'+p.avatar}" alt="">`:`<span style="font-size:13px;color:var(--text2);">◈</span>`;
+      const avFile = p.artFile || p.avatar;
+      const avHtml=avFile?`<img src="${avFile.startsWith('http')?avFile:'https://proway-event.vercel.app/'+avFile}" alt="" style="object-position:center top;">`:`<span style="font-size:13px;color:var(--text2);">◈</span>`;
       const topClass = i===0?' top1':i===1?' top2':i===2?' top3':'';
       return`<div class="lb-row${isMe?' me':''}${topClass}">
         ${i===0?'<div class="lb-leader">ЛИДЕР</div>':''}
@@ -1605,7 +1614,8 @@ async function loadNetwork(){
       return;
     }
     wrap.innerHTML=metOnly.map(p=>{
-      const avHtml=p.avatar?`<img src="${p.avatar.startsWith('http')?p.avatar:'https://proway-event.vercel.app/'+p.avatar}" alt="">`:`<span style="font-size:18px;color:var(--text2);">◈</span>`;
+      const avFile2 = p.artFile || p.avatar;
+      const avHtml=avFile2?`<img src="${avFile2.startsWith('http')?avFile2:'https://proway-event.vercel.app/'+avFile2}" alt="" style="object-position:center top;">`:`<span style="font-size:18px;color:var(--text2);">◈</span>`;
       const met=p.met;
       return`<div class="net-card">
         <div class="net-av" style="position:relative;">
@@ -2037,7 +2047,8 @@ async function showScannedProfile(targetId){
     }
     const p = res;
     // Показываем модалку с профилем
-    const avSrc = p.avatar ? 'https://proway-event.vercel.app/' + p.avatar : '';
+    const avSrc = p.artFile ? 'https://proway-event.vercel.app/' + p.artFile
+      : (p.avatar ? 'https://proway-event.vercel.app/' + p.avatar : '');
     const avHtml = avSrc
       ? `<img src="${avSrc}" style="width:80px;height:80px;border-radius:50%;border:2px solid var(--violet);object-fit:cover;">`
       : `<div style="width:80px;height:80px;border-radius:50%;border:2px solid var(--violet);background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--text2);">◈</div>`;
