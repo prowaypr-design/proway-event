@@ -847,7 +847,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 </div>
 
 <div id="screen-polls" class="app-screen">
-  <div class="topbar"><div><div class="topbar-logo">МИССИЯ</div><div class="topbar-sub">// ОПРОСЫ · +15 Б ЗА ГОЛОС</div></div></div>
+  <div class="topbar"><div><div class="topbar-logo">ОПРОСЫ</div><div class="topbar-sub">// ОПРОСЫ · +15 Б ЗА ГОЛОС</div></div></div>
   <div style="height:12px;"></div>
   <div id="polls-list"></div>
   <div style="height:12px;"></div>
@@ -884,6 +884,14 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 
 
 <div class="toast" id="toast"></div>
+
+<!-- Плашка загрузки профиля -->
+<div id="scan-loading-overlay" style="display:none;position:fixed;inset:0;z-index:700;background:rgba(8,9,32,0.85);display:none;align-items:center;justify-content:center;">
+  <div style="background:#0e0f28;border:0.5px solid rgba(108,92,231,0.4);border-radius:20px;padding:28px 32px;text-align:center;max-width:280px;width:90%;">
+    <div style="width:36px;height:36px;border:2px solid rgba(108,92,231,0.3);border-top-color:var(--cyan);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;"></div>
+    <div style="font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--cyan);letter-spacing:2px;line-height:1.6;">Секундочку,<br>сканируем вселенную</div>
+  </div>
+</div>
 
 <script>
 const API='https://script.google.com/macros/s/AKfycbwDm_OLeuAtPtBzXXkjJvkK37tIeQ2ixrngPjgNyM66i7s7SgxKYnBAUUHwuAxrQ-V7NA/exec';
@@ -1579,7 +1587,13 @@ async function loadNetwork(){
       return (b.points||0) - (a.points||0);
     });
 
-    wrap.innerHTML=participants.map(p=>{
+    // Показываем только тех с кем познакомились
+    const metOnly = participants.filter(p => p.met);
+    if(!metOnly.length){
+      wrap.innerHTML='<div class="empty-state"><div class="empty-text">// ЕЩЁ НЕТ ЗНАКОМСТВ<br><span style="font-size:11px;opacity:0.5">Сканируй QR-коды участников</span></div></div>';
+      return;
+    }
+    wrap.innerHTML=metOnly.map(p=>{
       const avHtml=p.avatar?`<img src="${p.avatar.startsWith('http')?p.avatar:'https://proway-event.vercel.app/'+p.avatar}" alt="">`:`<span style="font-size:18px;color:var(--text2);">◈</span>`;
       const met=p.met;
       return`<div class="net-card">
@@ -2043,10 +2057,13 @@ async function showScannedProfile(targetId){
         </div>
         <button onclick="this.closest('[style*=fixed]').remove()" style="width:100%;padding:12px;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:12px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;font-family:'Inter',sans-serif;">Закрыть</button>
       </div>`;
+    // Скрываем плашку загрузки
+    const scanOv = document.getElementById('scan-loading-overlay');
+    if(scanOv) scanOv.style.display='none';
     document.body.appendChild(modal);
     // Убираем ?scan= из URL без перезагрузки
     window.history.replaceState({}, '', window.location.pathname);
-  } catch(e){ showToast('// ОШИБКА СВЯЗИ'); }
+  } catch(e){ showToast('// ОШИБКА СВЯЗИ'); const scanOv2=document.getElementById('scan-loading-overlay'); if(scanOv2)scanOv2.style.display='none'; }
 }
 
 // ── QR SCANNER ───────────────────────────────────────────────────
@@ -2170,6 +2187,11 @@ function _onQrDetected(value){
   // Вибрация если поддерживается
   if(navigator.vibrate) navigator.vibrate(100);
   closeQrScanner();
+  // Показываем плашку загрузки если сканируем игрока
+  if(_scanMode === 'agent'){
+    const ov = document.getElementById('scan-loading-overlay');
+    if(ov){ ov.style.display='flex'; }
+  }
   handleQrResult(value);
 }
 
