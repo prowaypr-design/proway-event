@@ -335,24 +335,25 @@ async function setLiveMode(mode, pollId){
   localStorage.setItem('livePoll', pollId || '');
 
   if(mode === 'poll' && pollId){
-    // Найти опрос в локальном списке
+    let serverId = pollId;
     const poll = allPolls.find(p => p.id === pollId);
     if(poll){
-      // Создаём/активируем вопрос в Google Sheets через createQuestion
-      // Это деактивирует предыдущие и сделает этот активным
+      // Создаём/активируем вопрос в Google Sheets — деактивирует предыдущие
       try{
         const res = await api({action:'createQuestion', secret:SECRET, question:poll.question, options:poll.options.join('|')});
         if(res.success && res.id){
-          // Обновляем ID на серверный UUID
           poll.serverId = res.id;
-          // Сигнал для live-экрана
-          await api({action:'addAnnouncement', secret:SECRET, message:'__LIVE_MODE__poll:'+res.id, type:'info'});
+          serverId = res.id;
         }
       }catch(e){
         showToast('// ОШИБКА АКТИВАЦИИ ОПРОСА');
         return;
       }
     }
+    // Сигнал для live-экрана ВСЕГДА шлём, даже если опрос уже существовал на сервере
+    try{
+      await api({action:'addAnnouncement', secret:SECRET, message:'__LIVE_MODE__poll:'+serverId, type:'info'});
+    }catch(e){}
   } else if(mode === 'rating'){
     // Деактивируем текущий опрос — закрываем активный вопрос
     try{
