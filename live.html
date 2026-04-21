@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -172,10 +174,18 @@ async function checkMode(){
     const res = await apiGet({action:'getAnnouncements'});
     const anns = res.announcements||[];
     
-    // Ищем команды управления экраном
-    // Берём ПЕРВУЮ команду — API отдаёт по убыванию даты, первая = самая свежая
+    // Ищем команды управления экраном.
+    // Берём ПОСЛЕДНЮЮ команду из массива — она самая свежая, если API отдаёт по возрастанию даты.
+    // Если API отдаёт по убыванию — тоже корректно работает: выбираем по максимальному created_at/timestamp.
     const liveCmds = anns.filter(a=>a.message.startsWith('__LIVE_MODE__'));
-    const modeCmd = liveCmds.length ? liveCmds[0] : null;
+    let modeCmd = null;
+    if(liveCmds.length){
+      modeCmd = liveCmds.reduce((latest,cur)=>{
+        const tCur = new Date(cur.created_at || cur.timestamp || cur.date || 0).getTime() || 0;
+        const tLat = new Date(latest.created_at || latest.timestamp || latest.date || 0).getTime() || 0;
+        return tCur >= tLat ? cur : latest;
+      }, liveCmds[0]);
+    }
     if(modeCmd){
       const parts = modeCmd.message.replace('__LIVE_MODE__','').split(':');
       const newMode = parts[0];
@@ -202,8 +212,7 @@ function switchScreen(mode){
   document.getElementById('screen-poll').classList.toggle('active', mode==='poll');
   document.getElementById('mode-label').textContent = mode==='rating' ? 'РЕЙТИНГ' : 'ОПРОС';
   if(mode==='poll') updatePoll();
-  // При переключении на рейтинг — сразу обновляем данные
-  if(mode==='rating') updateRating();
+  else if(mode==='rating') updateRating();
 }
 
 // ── РЕЙТИНГ ──────────────────────────────────────────
@@ -212,7 +221,7 @@ async function updateRating(){
   try{
     const res = await apiGet({action:'getLeaderboard'});
     const lb = res.leaderboard || [];
-    if(!lb.length) return; // Нет данных — не трогаем экран, оставляем что было
+    if(!lb.length) return;
     const maxPts = lb[0].points || 1;
 
     // Топ-3
@@ -328,19 +337,25 @@ async function updatePoll(){
 }
 
 // ── INIT & LOOP ───────────────────────────────────────
-// Один запуск при старте — без дублирования
+async function init(){
+  updateRating();
+  checkMode();
+}
+
+init();
+// Запускаем сразу
 (async()=>{
   await checkMode();
   if(currentMode==='rating') await updateRating();
   else await updatePoll();
 })();
 
-// Потом каждые 5 секунд
+// Потом каждые 4 секунды
 setInterval(async ()=>{
   await checkMode();
   if(currentMode==='rating') await updateRating();
   else await updatePoll();
-}, 5000);
+}, 4000);
 </script>
 </body>
 </html>
