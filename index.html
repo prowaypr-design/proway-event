@@ -4,6 +4,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -587,7 +588,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     <div class="qr-modal-title">Мой QR-код</div>
     <div class="qr-modal-sub">Попроси другого участника отсканировать</div>
     <div class="qr-modal-code"><img id="qr-modal-img" src="" alt="QR"></div>
-    <div class="qr-modal-pts">+10 баллов за знакомство</div>
+    <div class="qr-modal-pts">+0 баллов за знакомство</div>
     <button class="qr-modal-close" onclick="closeQrModal()">Закрыть</button>
   </div>
 </div>
@@ -846,7 +847,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 </div>
 
 <div id="screen-vendors" class="app-screen">
-  <div class="topbar"><div><div class="topbar-logo">СТЕНДЫ</div><div class="topbar-sub">// СКАНИРУЙ QR · +20 Б · ОТКРЫВАЙ ДОСЬЕ</div></div></div>
+  <div class="topbar"><div><div class="topbar-logo">СТЕНДЫ</div><div class="topbar-sub">// СКАНИРУЙ QR · +0 Б · ОТКРЫВАЙ ДОСЬЕ</div></div></div>
   <div style="height:12px;"></div>
   <div class="vendor-prog">
     <div class="vp-label">// ПРОГРЕСС МИССИИ</div>
@@ -863,7 +864,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 </div>
 
 <div id="screen-polls" class="app-screen">
-  <div class="topbar"><div><div class="topbar-logo">ОПРОСЫ</div><div class="topbar-sub">// +15 Б ЗА ГОЛОС</div></div></div>
+  <div class="topbar"><div><div class="topbar-logo">ОПРОСЫ</div><div class="topbar-sub">// +0 Б ЗА ГОЛОС</div></div></div>
   <div style="height:12px;"></div>
   <div id="polls-list"></div>
   <div style="height:12px;"></div>
@@ -1272,10 +1273,10 @@ async function register(){
       save('participant_codename',assignedAvatar?assignedAvatar.codename:'');
       save('participant_artfile',assignedAvatar?assignedAvatar.artFile:'');
       save('participant_registered_at',new Date().toISOString());
-      participant={id:res.id,name,email,company,role,points:15,interests:selectedTags.join(','),
+      participant={id:res.id,name,email,company,role,points:0,interests:position,
         avatar:assignedAvatar?assignedAvatar.file:'',gender:selectedGender,
         codename:assignedAvatar?assignedAvatar.codename:'',artFile:assignedAvatar?assignedAvatar.artFile:''};
-      initApp();showToast('// ДОБРО ПОЖАЛОВАТЬ, АГЕНТ! +15 Б');
+      initApp();showToast('// ДОБРО ПОЖАЛОВАТЬ, АГЕНТ! +0 Б');
     }else{showToast('// ОШИБКА АВТОРИЗАЦИИ');btn.innerHTML='ПРИСТУПИТЬ К МИССИИ ›';btn.disabled=false;}
   }catch(e){showToast('// НЕТ СВЯЗИ');btn.innerHTML='ПРИСТУПИТЬ К МИССИИ ›';btn.disabled=false;}
 }
@@ -1453,7 +1454,7 @@ function renderVendors(){
   document.getElementById('vendor-list').innerHTML=VENDORS.map((v,idx)=>{
     const scanned=scannedVendors.has(v.id);
     return`<div class="vendor-card${scanned?' scanned':''}">
-      <div class="vendor-top"><div class="vendor-icon" style="background:${v.color}18;border-color:${v.color}44;color:${v.color};">${v.icon}</div><div class="vendor-info"><div class="vendor-name">${v.name}</div></div><div><div class="vendor-pts${scanned?' done':''}">${scanned?'ПОЛУЧЕНО':'+20 Б'}</div><div class="vendor-pts-lbl">${scanned?'✓':'ЗА СКАН'}</div></div></div>
+      <div class="vendor-top"><div class="vendor-icon" style="background:${v.color}18;border-color:${v.color}44;color:${v.color};">${v.icon}</div><div class="vendor-info"><div class="vendor-name">${v.name}</div></div><div><div class="vendor-pts${scanned?' done':''}">${scanned?'ПОЛУЧЕНО':'+0 Б'}</div><div class="vendor-pts-lbl">${scanned?'✓':'ЗА СКАН'}</div></div></div>
       ${scanned?`<div class="vendor-chapter"><span class="vc-badge">НОВАЯ ГЛАВА ОТКРЫТА</span><span class="vc-text">Фрагмент истории в карточку агента</span></div>`:`<div class="vendor-locked"><span class="vl-text">// ОТСКАНИРУЙ QR НА СТЕНДЕ</span></div>`}
     </div>`;
   }).join('');
@@ -1471,10 +1472,10 @@ async function handleVendorScan(vendorId){
       const scanOvV2 = document.getElementById('scan-loading-overlay');
       if(scanOvV2) scanOvV2.style.display='none';
       scannedVendors.add(vendorId);localStorage.setItem('scanned_vendors',JSON.stringify([...scannedVendors]));
-      if(res.success)participant.points=(participant.points||0)+20;
+      if(res.success)participant.points=(participant.points||0)+0;
       document.getElementById('s-vendors').textContent=scannedVendors.size;
       renderVendors();renderProfile();renderAgentCard();
-      showToast(res.already?'// СТЕНД УЖЕ БЫЛ ЗАСЧИТАН':'// СТЕНД ЗАСЧИТАН! +20 Б · ГЛАВА ОТКРЫТА');
+      showToast(res.already?'// СТЕНД УЖЕ БЫЛ ЗАСЧИТАН':'// СТЕНД ЗАСЧИТАН! +0 Б · ГЛАВА ОТКРЫТА');
       showScreen('vendors');
     }
   }catch(e){showToast('// НЕТ СВЯЗИ');}
@@ -1694,7 +1695,7 @@ function answerPoll(pollId,optIdx){
   if(participant){
     api({action:'submitVote',participant_id:participant.id,question_id:pollId,option_index:optIdx});
   }
-  showToast('// ГОЛОС ПРИНЯТ · +15 Б');
+  showToast('// ГОЛОС ПРИНЯТ · +0 Б');
   checkAchievements();
 }
 
@@ -1710,11 +1711,11 @@ async function answerAdminPoll(pollId,optIdx){
     const pid = participant ? participant.id : localStorage.getItem('poll_anon_id') || 'anon_'+Date.now();
     await api({action:'submitVote',participant_id:pid,question_id:pollId,option_index:optIdx});
     if(participant){
-      participant.points=(participant.points||0)+15;
+      participant.points=(participant.points||0)+0;
       renderProfile();
     }
-    showToast('// ГОЛОС ПРИНЯТ · +15 Б');
-  }catch(e){showToast('// ГОЛОС ПРИНЯТ · +15 Б');}
+    showToast('// ГОЛОС ПРИНЯТ · +0 Б');
+  }catch(e){showToast('// ГОЛОС ПРИНЯТ · +0 Б');}
   checkAchievements();
 }
 
@@ -2045,7 +2046,7 @@ async function showScannedProfile(targetId){
       }).catch(()=>{});
       participant.points = (participant.points||0) + 10; // оптимистично до ответа сервера
       renderProfile();
-      showToast('// ЗНАКОМСТВО ЗАСЧИТАНО · +10 Б');
+      showToast('// ЗНАКОМСТВО ЗАСЧИТАНО · +0 Б');
     }
     const p = res;
     // Показываем модалку с профилем
