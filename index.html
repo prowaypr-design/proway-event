@@ -496,7 +496,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     <div class="ob-grid"></div>
     <div class="ob-glow"></div>
     <div class="ob-eyebrow">// PROWAY_SECURITY_DAY_2026</div>
-    <div class="ob-title">МИР<br><span class="accent">ПОД</span><br>УГРОЗОЙ</div>
+    <div class="ob-title">ВСЕЛЕННАЯ<br><span class="accent">В</span><br>ОПАСНОСТИ</div>
     <div class="ob-line"></div>
     <div class="ob-speech">
       <div class="ob-speech-text">Кибератаки участились. Старые методы защиты не работают. Нужны новые герои, способные противостоять угрозам цифрового мира.</div>
@@ -926,7 +926,7 @@ function updateRegBtn(){
   }
 }
 function openRegistration(){
-  if(new Date()<LAUNCH_DATE){showToast('// РЕГИСТРАЦИЯ ОТКРОЕТСЯ 21.04 В 11:00 МСК');return;}
+  // Регистрация открыта
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('ob-welcome').classList.add('active');
 }
@@ -2271,16 +2271,11 @@ if(id){
     if(vendorId)handleVendorScan(vendorId);
     if(scanId)showScannedProfile(scanId);
   }
-  else{showPrelaunchDone();startCountdown();}
+  else{initApp();}  // Мероприятие идёт — сразу в приложение
   return;
 }
-if(!isLaunched()){
-  document.getElementById('screen-prelaunch').classList.remove('hidden');
-  startCountdown();
-} else {
-  // Мероприятие уже началось — показываем prelaunch с кнопкой регистрации
-  document.getElementById('screen-prelaunch').classList.remove('hidden');
-}
+// Мероприятие уже началось — сразу показываем экран с кнопкой регистрации
+document.getElementById('ob-welcome').classList.add('active');
 if(vendorId)handleVendorScan(vendorId);
 if(scanId)showScannedProfile(scanId);
 });
@@ -2291,7 +2286,7 @@ if(scanId)showScannedProfile(scanId);
   <div class="pl-grid"></div><div class="pl-glow"></div>
   <div style="padding:52px 20px 0;position:relative;z-index:1;text-align:center;">
     <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:4px;margin-bottom:8px">// PROWAY_SECURITY_DAY_2026</div>
-    <h1 style="font-family:'Bangers',cursive;font-size:52px;color:var(--white);letter-spacing:4px;line-height:.95;margin-bottom:6px">МИР<br><span style="color:var(--cyan)">ПОД</span><br>УГРОЗОЙ</h1>
+    <h1 style="font-family:'Bangers',cursive;font-size:52px;color:var(--white);letter-spacing:4px;line-height:.95;margin-bottom:6px">ВСЕЛЕННАЯ<br><span style="color:var(--cyan)">В</span><br>ОПАСНОСТИ</h1>
     <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:4px">21 апреля · Пространство «Connect»</div>
     <div style="font-size:11px;color:var(--text2)">5-й Донской проезд, д. 17</div>
   </div>
