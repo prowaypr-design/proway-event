@@ -1,6 +1,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -266,7 +267,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .vendor-top{padding:12px 14px;display:flex;align-items:center;gap:12px;}
 .vendor-icon{width:44px;height:44px;border-radius:10px;border:0.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:16px;font-weight:700;flex-shrink:0;}
 .vendor-info{flex:1;}
-.vendor-name{font-size:14px;font-weight:600;color:#fff;margin-bottom:2px;}
+.vendor-name{font-size:17px;font-weight:700;color:#fff;margin-bottom:2px;}
 .vendor-system{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:2px;}
 .vendor-pts{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--orange);text-align:right;}
 .vendor-pts.done{color:#00ff88;}
@@ -1441,7 +1442,7 @@ function renderVendors(){
   document.getElementById('vendor-list').innerHTML=VENDORS.map((v,idx)=>{
     const scanned=scannedVendors.has(v.id);
     return`<div class="vendor-card${scanned?' scanned':''}">
-      <div class="vendor-top"><div class="vendor-icon" style="background:${v.color}18;border-color:${v.color}44;color:${v.color};">${v.icon}</div><div class="vendor-info"><div class="vendor-name">${v.name}</div><div class="vendor-system">${v.system}</div></div><div><div class="vendor-pts${scanned?' done':''}">${scanned?'ПОЛУЧЕНО':'+20 Б'}</div><div class="vendor-pts-lbl">${scanned?'✓':'ЗА СКАН'}</div></div></div>
+      <div class="vendor-top"><div class="vendor-icon" style="background:${v.color}18;border-color:${v.color}44;color:${v.color};">${v.icon}</div><div class="vendor-info"><div class="vendor-name">${v.name}</div></div><div><div class="vendor-pts${scanned?' done':''}">${scanned?'ПОЛУЧЕНО':'+20 Б'}</div><div class="vendor-pts-lbl">${scanned?'✓':'ЗА СКАН'}</div></div></div>
       ${scanned?`<div class="vendor-chapter"><span class="vc-badge">НОВАЯ ГЛАВА ОТКРЫТА</span><span class="vc-text">Фрагмент истории в карточку агента</span></div>`:`<div class="vendor-locked"><span class="vl-text">// ОТСКАНИРУЙ QR НА СТЕНДЕ</span></div>`}
     </div>`;
   }).join('');
