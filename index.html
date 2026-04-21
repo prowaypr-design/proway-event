@@ -44,13 +44,20 @@ if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
 })();
 </script>
 <style>
-.ios-device h1, .ios-device .ob-title, .ios-device .topbar-logo,
-.ios-device .section-hdr-title, .ios-device .fn-title, .ios-device .fn-codename,
+/* iOS: крупные геймовые элементы — Impact подходит */
+.ios-device h1, .ios-device .ob-title, .ios-device .fn-title, .ios-device .fn-codename,
 .ios-device .pts-big, .ios-device .rank-n, .ios-device .cd-num,
 .ios-device .acf-codename, .ios-device [style*="Bangers"],
 .ios-device [class*="Bangers"] {
   font-family: Impact, "Arial Black", sans-serif !important;
   letter-spacing: 2px !important;
+}
+/* iOS: заголовки интерфейса — системный шрифт, лёгкий и читаемый */
+.ios-device .topbar-logo,
+.ios-device .section-hdr-title {
+  font-family: -apple-system, "SF Pro Display", "Helvetica Neue", Arial, sans-serif !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.5px !important;
 }
 :root{
   --bg:#080920;--bg2:#0e0f28;--bg3:#13152f;
@@ -135,7 +142,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 
 /* TOPBAR */
 .topbar{background:#06071a;padding:46px 16px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:26px;z-index:50;}
-.topbar-logo{font-family:'Inter',sans-serif;font-size:16px;font-weight:700;color:#fff;letter-spacing:2px;}
+.topbar-logo{font-family:'Inter',sans-serif;font-size:16px;font-weight:600;color:#fff;letter-spacing:1px;}
 .topbar-sub{font-size:9px;font-weight:600;color:var(--text2);letter-spacing:2px;margin-top:2px;}
 .topbar-right{display:flex;align-items:center;gap:6px;}
 .topbar-dosye{font-size:9px;font-weight:600;color:var(--cyan);letter-spacing:2px;opacity:0.7;}
@@ -166,7 +173,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 
 /* SECTION HDR */
 .section-hdr{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-.section-hdr-title{font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:#fff;letter-spacing:1px;text-transform:uppercase;}
+.section-hdr-title{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#fff;letter-spacing:0.5px;text-transform:uppercase;}
 .section-hdr-sub{font-size:9px;font-weight:600;color:var(--cyan);letter-spacing:2px;opacity:0.7;}
 
 /* AGENT CARD */
@@ -496,7 +503,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     <div class="ob-grid"></div>
     <div class="ob-glow"></div>
     <div class="ob-eyebrow">// PROWAY_SECURITY_DAY_2026</div>
-    <div class="ob-title">ВСЕЛЕННАЯ<br><span class="accent">В</span><br>ОПАСНОСТИ</div>
+    <div class="ob-title">МИР<br><span class="accent">ПОД</span><br>УГРОЗОЙ</div>
     <div class="ob-line"></div>
     <div class="ob-speech">
       <div class="ob-speech-text">Кибератаки участились. Старые методы защиты не работают. Нужны новые герои, способные противостоять угрозам цифрового мира.</div>
