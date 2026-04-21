@@ -2,6 +2,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -1258,7 +1259,8 @@ async function register(){
   btn.innerHTML='<span style="display:inline-flex;align-items:center;gap:10px;justify-content:center;"><svg style="animation:spin 1s linear infinite;width:16px;height:16px;" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,0.3)" stroke-width="2"/><path d="M12 3a9 9 0 019 9" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>Авторизация...</span>';
   btn.disabled=true;
   try{
-    const res=await api({action:'register',name,email,company,role,interests:selectedTags.join(','),avatar:assignedAvatar?assignedAvatar.file:'',codename:assignedAvatar?assignedAvatar.codename:''});
+    const participant_type=(selectedTags&&selectedTags[0])||'';
+    const res=await api({action:'register',name,email,company,role,participant_type,interests:selectedTags.join(','),avatar:assignedAvatar?assignedAvatar.file:'',codename:assignedAvatar?assignedAvatar.codename:''});
     if(res.success){
       const save=(k,v)=>localStorage.setItem(k,v);
       save('participant_id',res.id);save('participant_name',name);save('participant_email',email);
