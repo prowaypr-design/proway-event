@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -203,6 +202,8 @@ function switchScreen(mode){
   document.getElementById('screen-poll').classList.toggle('active', mode==='poll');
   document.getElementById('mode-label').textContent = mode==='rating' ? 'РЕЙТИНГ' : 'ОПРОС';
   if(mode==='poll') updatePoll();
+  // При переключении на рейтинг — сразу обновляем данные
+  if(mode==='rating') updateRating();
 }
 
 // ── РЕЙТИНГ ──────────────────────────────────────────
@@ -211,7 +212,7 @@ async function updateRating(){
   try{
     const res = await apiGet({action:'getLeaderboard'});
     const lb = res.leaderboard || [];
-    if(!lb.length) return;
+    if(!lb.length) return; // Нет данных — не трогаем экран, оставляем что было
     const maxPts = lb[0].points || 1;
 
     // Топ-3
@@ -327,25 +328,19 @@ async function updatePoll(){
 }
 
 // ── INIT & LOOP ───────────────────────────────────────
-async function init(){
-  updateRating();
-  checkMode();
-}
-
-init();
-// Запускаем сразу
+// Один запуск при старте — без дублирования
 (async()=>{
   await checkMode();
   if(currentMode==='rating') await updateRating();
   else await updatePoll();
 })();
 
-// Потом каждые 4 секунды
+// Потом каждые 5 секунд
 setInterval(async ()=>{
   await checkMode();
   if(currentMode==='rating') await updateRating();
   else await updatePoll();
-}, 4000);
+}, 5000);
 </script>
 </body>
 </html>
