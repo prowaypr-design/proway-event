@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -515,7 +508,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   </div>
   <div class="ob-bottom">
     <div class="ob-desc">Конференция PROWAY Security Day — место где рождаются герои кибербезопасности. Пройди регистрацию, получи своего агента и начни миссию.</div>
-    <button class="ob-btn" onclick="goTo('ob-choose')">ПРИНЯТЬ МИССИЮ ›</button>
+    <button class="ob-btn" id="accept-mission-btn" onclick="goTo('ob-choose')">ПРИНЯТЬ МИССИЮ ›</button>
   </div>
 </div>
 
@@ -1179,6 +1172,10 @@ const POLLS=[
 ];
 
 let participant=null,selectedTags=[],pollAnswers={};
+
+// ── ФЛАГ ЗАКРЫТИЯ РЕГИСТРАЦИИ ─────────────────────────
+// Поставь true чтобы закрыть регистрацию для новых пользователей
+const REGISTRATION_CLOSED = true;
 let activeAdminPoll=null; // активный опрос запущенный админом
 let myRank=0,selectedGender=null,assignedAvatar=null;
 let scannedVendors=new Set();
@@ -2287,7 +2284,14 @@ if(id){
   return;
 }
 // Мероприятие уже началось — сразу показываем экран с кнопкой регистрации
+// Незарегистрированный пользователь
 document.getElementById('ob-welcome').classList.add('active');
+if(REGISTRATION_CLOSED){
+  const btn = document.getElementById('accept-mission-btn');
+  if(btn) btn.style.display = 'none';
+  const hint = document.querySelector('#ob-welcome .ob-desc');
+  if(hint) hint.innerHTML = '<span style="color:#ee672a;font-family:monospace;font-size:13px;letter-spacing:2px;">// РЕГИСТРАЦИЯ ЗАКРЫТА</span>';
+}
 if(vendorId)handleVendorScan(vendorId);
 if(scanId)showScannedProfile(scanId);
 });
